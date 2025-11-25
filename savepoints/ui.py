@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import os
+
 import bpy
 
 from . import utils
@@ -29,6 +31,18 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         settings = scene.savepoints_settings
+
+        if settings.original_filepath:
+            box = layout.box()
+            box.label(text="Snapshot Mode", icon='INFO')
+            # Show only filename to keep it short
+            filename = os.path.basename(settings.original_filepath)
+            box.label(text=f"Parent: {filename}")
+            box.operator("savepoints.restore", text="Save as Parent", icon='FILE_TICK')
+
+            layout.separator()
+            layout.label(text="To view history, restore to parent.")
+            return
 
         layout.operator("savepoints.commit", text="Save Version", icon='FILE_TICK')
 

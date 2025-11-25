@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
+import shutil
+import time
 
 import bpy
 
@@ -52,7 +54,15 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         # 3. Save Snapshot
         blend_filename = "snapshot.blend"
         snapshot_path = os.path.join(version_dir, blend_filename)
-        bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+
+        # Store original filepath in settings so the snapshot knows its parent
+        context.scene.savepoints_settings.original_filepath = bpy.data.filepath
+
+        try:
+            bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+        finally:
+            # Clear it in the current file so we don't carry it around
+            context.scene.savepoints_settings.original_filepath = ""
 
         # Capture file size
         file_size = 0
@@ -131,4 +141,58 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
 
     def execute(self, context):
         sync_history_to_props(context)
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_restore(bpy.types.Operator):
+    """Restore this snapshot to the parent file, overwriting it."""
+    bl_idname = "savepoints.restore"
+    bl_label = "Save as Parent"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_confirm(self, event)
+
+    def execute(self, context):
+        settings = context.scene.savepoints_settings
+        original_path = settings.original_filepath
+
+        if not original_path:
+            self.report({'ERROR'}, "Original filepath not set. Cannot restore.")
+            return {'CANCELLED'}
+
+        # Verify if we can write to original path
+        # Backup first
+        if os.path.exists(original_path):
+            timestamp = int(time.time())
+
+            from .utils import get_history_dir_for_path
+            history_dir = get_history_dir_for_path(original_path)
+            os.makedirs(history_dir, exist_ok=True)
+
+            filename = os.path.basename(original_path)
+            backup_filename = f"{filename}.{timestamp}.bak"
+            backup_path = os.path.join(history_dir, backup_filename)
+
+            try:
+                shutil.copy2(original_path, backup_path)
+                self.report({'INFO'}, f"Backup created: {backup_filename}")
+            except Exception as e:
+                self.report({'ERROR'}, f"Backup failed: {e}")
+                return {'CANCELLED'}
+        else:
+            self.report({'WARNING'}, "Original file not found. Creating new one.")
+
+        # Clear property before saving to parent
+        settings.original_filepath = ""
+
+        try:
+            bpy.ops.wm.save_as_mainfile(filepath=original_path)
+            self.report({'INFO'}, "Restored to parent file successfully.")
+        except Exception as e:
+            # Restore property in case of failure (though save_as_mainfile usually raises or crashes)
+            settings.original_filepath = original_path
+            self.report({'ERROR'}, f"Failed to save: {e}")
+            return {'CANCELLED'}
+
         return {'FINISHED'}

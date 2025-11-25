@@ -26,13 +26,16 @@ def get_project_path():
     return bpy.data.filepath
 
 
-def get_history_dir():
-    blend_path = get_project_path()
+def get_history_dir_for_path(blend_path):
     if not blend_path:
         return None
     filename = os.path.basename(blend_path)
     name_without_ext = os.path.splitext(filename)[0]
     return os.path.join(os.path.dirname(blend_path), f".{name_without_ext}_history")
+
+
+def get_history_dir():
+    return get_history_dir_for_path(get_project_path())
 
 
 def get_manifest_path():
@@ -97,7 +100,7 @@ def sync_history_to_props(context):
         item.thumbnail_rel_path = v_data.get("thumbnail", "")
         item.blend_rel_path = v_data.get("blend", "")
         item.object_count = v_data.get("object_count", 0)
-        
+
         fsize = v_data.get("file_size", 0)
         item.file_size_display = format_file_size(fsize)
 

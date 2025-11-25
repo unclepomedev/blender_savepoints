@@ -6,8 +6,10 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 
 - **Incremental Saves**: Automatically generates version IDs (v001, v002, etc.) for each save.
 - **Visual Previews**: Captures a thumbnail of your viewport for every save point.
+- **Detailed Info**: Displays object count and file size for each version.
 - **Notes**: Add custom notes to remember what changed in each version.
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
+- **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 
 ## Usage
 
@@ -19,5 +21,8 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - A new version is created inside a hidden history folder next to your `.blend` file.
 4. **Restore a Version**:
    - Select a version from the history list.
-   - View the thumbnail and details.
+   - View the thumbnail, note, object count, and file size.
    - Click **Checkout (Restore)** to open that version.
+   - You are now in **Snapshot Mode**.
+   - To restore this version as the main file, click **Save as Parent**.
+   - A backup of the previous main file will be saved in the history folder (e.g., `.Project_history/Project.blend.123456.bak`).
