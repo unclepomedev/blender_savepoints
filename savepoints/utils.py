@@ -3,8 +3,23 @@
 import datetime
 import json
 import os
+import shutil
 
 import bpy
+import bpy.utils.previews
+
+preview_collections = {}
+
+
+def register_previews():
+    pcoll = bpy.utils.previews.new()
+    preview_collections["main"] = pcoll
+
+
+def unregister_previews():
+    for pcoll in preview_collections.values():
+        bpy.utils.previews.remove(pcoll)
+    preview_collections.clear()
 
 
 def get_project_path():
@@ -52,6 +67,13 @@ def sync_history_to_props(context):
     settings = context.scene.savepoints_settings
     settings.versions.clear()
 
+    # Update Previews
+    pcoll = preview_collections.get("main")
+    if pcoll is not None:
+        pcoll.clear()
+
+    history_dir = get_history_dir()
+
     for v_data in data.get("versions", []):
         item = settings.versions.add()
         item.version_id = v_data.get("id", "")
@@ -60,9 +82,21 @@ def sync_history_to_props(context):
         item.thumbnail_rel_path = v_data.get("thumbnail", "")
         item.blend_rel_path = v_data.get("blend", "")
 
+        _load_item_preview(pcoll, history_dir, item)
+
     # If we have versions and no active index, set to 0
     if len(settings.versions) > 0 and settings.active_version_index < 0:
         settings.active_version_index = 0
+
+
+def _load_item_preview(pcoll, history_dir, item):
+    if pcoll is not None and history_dir and item.thumbnail_rel_path:
+        full_path = os.path.join(history_dir, item.thumbnail_rel_path)
+        if os.path.exists(full_path):
+            try:
+                pcoll.load(item.version_id, full_path, 'IMAGE')
+            except Exception as e:
+                print(f"Failed to load preview for {item.version_id}: {e}")
 
 
 def get_next_version_id(versions):
@@ -70,15 +104,20 @@ def get_next_version_id(versions):
     max_id = 0
     for v in versions:
         vid = v.get("id", "")
-        if vid.startswith("v"):
-            try:
-                num = int(vid[1:])
-                if num > max_id:
-                    max_id = num
-            except:
-                pass
+        num = _extract_version_number(vid)
+        if num > max_id:
+            max_id = num
     new_id_num = max_id + 1
     return f"v{new_id_num:03d}"
+
+
+def _extract_version_number(vid):
+    if vid.startswith("v"):
+        try:
+            return int(vid[1:])
+        except:
+            pass
+    return -1
 
 
 def capture_thumbnail(context, thumb_path):
@@ -113,3 +152,26 @@ def add_version_to_manifest(manifest, version_id, note, thumb_rel, blend_rel):
     versions.append(new_version)
     manifest["versions"] = versions
     save_manifest(manifest)
+
+
+def delete_version_by_id(version_id):
+    manifest = load_manifest()
+    versions = manifest.get("versions", [])
+
+    target_v = None
+    for v in versions:
+        if v.get("id") == version_id:
+            target_v = v
+            break
+
+    if target_v:
+        history_dir = get_history_dir()
+        if target_v.get('blend'):
+            v_folder = os.path.dirname(os.path.join(history_dir, target_v['blend']))
+            # Security check: ensure we are deleting inside history dir
+            if history_dir and os.path.abspath(history_dir) in os.path.abspath(v_folder):
+                shutil.rmtree(v_folder, ignore_errors=True)
+
+        versions.remove(target_v)
+        manifest["versions"] = versions
+        save_manifest(manifest)

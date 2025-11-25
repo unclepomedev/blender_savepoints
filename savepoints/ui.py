@@ -2,10 +2,20 @@
 
 import bpy
 
+from . import utils
+
 
 class SAVEPOINTS_UL_version_list(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
-        layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})")
+        pcoll = utils.preview_collections.get("main")
+        icon_val = 0
+        if pcoll and item.version_id in pcoll:
+            icon_val = pcoll[item.version_id].icon_id
+
+        if icon_val:
+            layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon_value=icon_val)
+        else:
+            layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon='FILE_BACKUP')
 
 
 class SAVEPOINTS_PT_main(bpy.types.Panel):
@@ -36,6 +46,21 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             item = settings.versions[settings.active_version_index]
 
             box = layout.box()
+
+            pcoll = utils.preview_collections.get("main")
+            has_preview = False
+            if pcoll and item.version_id in pcoll:
+                has_preview = True
+
+            if has_preview:
+                row = box.row()
+                row.alignment = 'CENTER'
+                row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=8)
+            else:
+                row = box.row()
+                row.alignment = 'CENTER'
+                row.label(text="No Preview", icon='IMAGE_DATA')
+
             box.label(text=f"ID: {item.version_id}")
             box.label(text=f"Date: {item.timestamp}")
             box.label(text=f"Note: {item.note}")
