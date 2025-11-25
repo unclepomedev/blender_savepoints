@@ -41,6 +41,9 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         version_dir = os.path.join(history_dir, folder_name)
         os.makedirs(version_dir, exist_ok=True)
 
+        # Capture stats
+        obj_count = len(bpy.data.objects)
+
         # 2. Thumbnail
         thumb_filename = "thumbnail.png"
         thumb_path = os.path.join(version_dir, thumb_filename)
@@ -51,13 +54,20 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         snapshot_path = os.path.join(version_dir, blend_filename)
         bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
 
+        # Capture file size
+        file_size = 0
+        if os.path.exists(snapshot_path):
+            file_size = os.path.getsize(snapshot_path)
+
         # 4. Update Manifest
         add_version_to_manifest(
             manifest,
             new_id_str,
             self.note,
             os.path.join(folder_name, thumb_filename),
-            os.path.join(folder_name, blend_filename)
+            os.path.join(folder_name, blend_filename),
+            object_count=obj_count,
+            file_size=file_size
         )
 
         # 5. Update UI

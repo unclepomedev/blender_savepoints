@@ -61,6 +61,21 @@ def save_manifest(data):
             json.dump(data, f, indent=4, ensure_ascii=False)
 
 
+def format_file_size(size_in_bytes):
+    try:
+        size = float(size_in_bytes)
+    except (ValueError, TypeError):
+        return "0 B"
+
+    for unit in ['B', 'KB', 'MB', 'GB']:
+        if size < 1024.0:
+            if unit == 'B':
+                return f"{int(size)} {unit}"
+            return f"{size:.1f} {unit}"
+        size /= 1024.0
+    return f"{size:.1f} TB"
+
+
 def sync_history_to_props(context):
     """Read manifest and update the scene property group."""
     data = load_manifest()
@@ -81,6 +96,10 @@ def sync_history_to_props(context):
         item.note = v_data.get("note", "")
         item.thumbnail_rel_path = v_data.get("thumbnail", "")
         item.blend_rel_path = v_data.get("blend", "")
+        item.object_count = v_data.get("object_count", 0)
+        
+        fsize = v_data.get("file_size", 0)
+        item.file_size_display = format_file_size(fsize)
 
         _load_item_preview(pcoll, history_dir, item)
 
@@ -138,7 +157,7 @@ def capture_thumbnail(context, thumb_path):
         render.filepath = old_filepath
 
 
-def add_version_to_manifest(manifest, version_id, note, thumb_rel, blend_rel):
+def add_version_to_manifest(manifest, version_id, note, thumb_rel, blend_rel, object_count=0, file_size=0):
     """Add a new version entry to the manifest and save it."""
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     new_version = {
@@ -146,7 +165,9 @@ def add_version_to_manifest(manifest, version_id, note, thumb_rel, blend_rel):
         "timestamp": now_str,
         "note": note,
         "thumbnail": thumb_rel,
-        "blend": blend_rel
+        "blend": blend_rel,
+        "object_count": object_count,
+        "file_size": file_size
     }
     versions = manifest.get("versions", [])
     versions.append(new_version)

@@ -9,6 +9,8 @@ class SavePointsVersion(bpy.types.PropertyGroup):
     note: bpy.props.StringProperty(name="Note")
     thumbnail_rel_path: bpy.props.StringProperty(name="Thumbnail Path")
     blend_rel_path: bpy.props.StringProperty(name="Blend Path")
+    object_count: bpy.props.IntProperty(name="Object Count", default=0)
+    file_size_display: bpy.props.StringProperty(name="File Size", default="")
 
 
 class SavePointsSettings(bpy.types.PropertyGroup):

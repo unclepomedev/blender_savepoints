@@ -64,5 +64,6 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             box.label(text=f"ID: {item.version_id}")
             box.label(text=f"Date: {item.timestamp}")
             box.label(text=f"Note: {item.note}")
+            box.label(text=f"Objects: {item.object_count} | Size: {item.file_size_display}")
 
             layout.operator("savepoints.checkout", text="Checkout (Restore)", icon='RECOVER_LAST')
