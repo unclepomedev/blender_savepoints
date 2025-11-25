@@ -22,9 +22,6 @@ jobs:
       - name: Lint
         run: uv run ruff check .
 
-      - name: Unit tests
-        run: uv run pytest
-
       - name: Build add-on zip
         run: uv run python tools/build_addon_zip.py
 

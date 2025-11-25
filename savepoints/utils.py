@@ -137,7 +137,7 @@ def _extract_version_number(vid):
     if vid.startswith("v"):
         try:
             return int(vid[1:])
-        except:
+        except ValueError:
             pass
     return -1
 

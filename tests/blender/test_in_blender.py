@@ -143,7 +143,7 @@ def main() -> None:
         # Unregister might fail if register failed half-way, but try anyway
         try:
             savepoints.unregister()
-        except:
+        except Exception:
             pass
         cleanup_test_env(test_dir)
 
