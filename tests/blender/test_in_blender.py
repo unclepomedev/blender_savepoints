@@ -105,6 +105,17 @@ def main() -> None:
         if Path(parent_path_detected) != blend_file_path:
             raise RuntimeError(f"Parent path mismatch: {parent_path_detected} vs {blend_file_path}")
 
+        # Verify Commit Guard (should fail in snapshot mode)
+        print("Testing Commit Guard...")
+        try:
+            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Illegal Commit")
+            raise RuntimeError("Commit should have failed in snapshot mode but succeeded")
+        except RuntimeError:
+            # Expected failure: poll() failed
+            print("Commit blocked as expected.")
+        except Exception as e:
+            raise RuntimeError(f"Unexpected error during commit guard test: {e}")
+
         print("Checkout Verification: OK")
 
         # 5. Test Restore (Save as Parent)

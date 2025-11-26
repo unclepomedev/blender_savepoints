@@ -157,6 +157,32 @@ class TestPathUtils(unittest.TestCase):
             self.assertEqual(detected_folder, "/project/.history/v001")
             self.assertNotEqual(detected_folder, history_dir)
 
+    def test_commit_poll_guard(self):
+        # Test that SAVEPOINTS_OT_commit.poll returns False when in snapshot mode
+        # We need to import operators here so it uses the mocked bpy
+        from savepoints.operators import SAVEPOINTS_OT_commit
+        
+        mock_context = mock.MagicMock()
+        
+        # Case 1: Normal file -> poll should be True
+        # We use platform specific separator construction to be safe, 
+        # though the mocked bpy is just a value holder.
+        # get_parent_path_from_snapshot uses os.path, so we must match os.sep
+        
+        base = os.path.abspath("/project")
+        filename = "MyScene.blend"
+        normal_path = os.path.join(base, filename)
+        
+        bpy.data.filepath = normal_path
+        self.assertTrue(SAVEPOINTS_OT_commit.poll(mock_context), f"Poll should be True for normal file: {normal_path}")
+        
+        # Case 2: Snapshot file -> poll should be False
+        history_dir = ".MyScene_history"
+        snapshot_path = os.path.join(base, history_dir, "v001", "snapshot.blend")
+        
+        bpy.data.filepath = snapshot_path
+        self.assertFalse(SAVEPOINTS_OT_commit.poll(mock_context), f"Poll should be False for snapshot file: {snapshot_path}")
+
 
 if __name__ == '__main__':
     unittest.main()

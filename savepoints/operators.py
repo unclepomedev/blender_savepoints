@@ -14,6 +14,7 @@ from .utils import (
     capture_thumbnail,
     add_version_to_manifest,
     delete_version_by_id,
+    get_parent_path_from_snapshot,
 )
 
 
@@ -24,6 +25,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     note: bpy.props.StringProperty(name="Commit Message", default="")
+
+    @classmethod
+    def poll(cls, context):
+        return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
     def invoke(self, context, event):
         return context.window_manager.invoke_props_dialog(self)
@@ -147,8 +152,8 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         return context.window_manager.invoke_confirm(self, event)
 
     def execute(self, context):
-        from .utils import get_parent_path_from_snapshot, get_history_dir_for_path
-        
+        from .utils import get_parent_path_from_snapshot
+
         original_path = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if not original_path:
