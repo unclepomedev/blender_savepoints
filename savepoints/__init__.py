@@ -6,7 +6,7 @@ from bpy.app.handlers import persistent
 from . import operators
 from . import properties
 from . import ui
-from . import utils
+from . import ui_utils
 
 classes = (
     properties.SavePointsVersion,
@@ -25,11 +25,11 @@ classes = (
 def load_handler(dummy):
     """Sync history when file is loaded."""
     if bpy.context.scene:
-        utils.sync_history_to_props(bpy.context)
+        ui_utils.sync_history_to_props(bpy.context)
 
 
 def register():
-    utils.register_previews()
+    ui_utils.register_previews()
     for cls in classes:
         bpy.utils.register_class(cls)
 
@@ -41,7 +41,7 @@ def unregister():
     if load_handler in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(load_handler)
 
-    utils.unregister_previews()
+    ui_utils.unregister_previews()
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
 

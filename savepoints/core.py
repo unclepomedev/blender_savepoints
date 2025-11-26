@@ -4,41 +4,56 @@ import datetime
 import json
 import os
 import shutil
+from typing import Any, Dict, List, Optional
 
 import bpy
-import bpy.utils.previews
-
-preview_collections = {}
 
 
-def register_previews():
-    pcoll = bpy.utils.previews.new()
-    preview_collections["main"] = pcoll
-
-
-def unregister_previews():
-    for pcoll in preview_collections.values():
-        bpy.utils.previews.remove(pcoll)
-    preview_collections.clear()
-
-
-def to_posix_path(path):
+def to_posix_path(path: Optional[str]) -> str:
+    """
+    Convert a path to POSIX style (forward slashes).
+    
+    Args:
+        path: The path to convert.
+    
+    Returns:
+        The converted path string, or empty string if input is None.
+    """
     if not path:
         return ""
     return path.replace("\\", "/")
 
 
-def from_posix_path(path):
+def from_posix_path(path: Optional[str]) -> str:
+    """
+    Convert a POSIX path to the current OS separator.
+    
+    Args:
+        path: The POSIX path.
+        
+    Returns:
+        The path using OS-specific separators.
+    """
     if not path:
         return ""
     return path.replace("/", os.sep).replace("\\", os.sep)
 
 
-def get_project_path():
+def get_project_path() -> str:
+    """Return the current Blender project filepath."""
     return bpy.data.filepath
 
 
-def get_history_dir_for_path(blend_path):
+def get_history_dir_for_path(blend_path: Optional[str]) -> Optional[str]:
+    """
+    Get the history directory path for a given blend file.
+    
+    Args:
+        blend_path: The path to the .blend file.
+        
+    Returns:
+        The path to the history directory, or None if blend_path is empty.
+    """
     if not blend_path:
         return None
     filename = os.path.basename(blend_path)
@@ -46,11 +61,17 @@ def get_history_dir_for_path(blend_path):
     return os.path.join(os.path.dirname(blend_path), f".{name_without_ext}_history")
 
 
-def get_parent_path_from_snapshot(blend_path):
+def get_parent_path_from_snapshot(blend_path: Optional[str]) -> Optional[str]:
     """
     Determine the parent .blend file path if the current file is a snapshot.
     Structure: [ProjectDir]/.{filename}_history/{version_id}/snapshot.blend
     Parent:    [ProjectDir]/{filename}.blend
+    
+    Args:
+        blend_path: The path of the current snapshot file.
+        
+    Returns:
+        The path to the parent project file, or None if not in a snapshot.
     """
     if not blend_path:
         return None
@@ -79,18 +100,36 @@ def get_parent_path_from_snapshot(blend_path):
     return None
 
 
-def get_history_dir():
+def get_history_dir() -> Optional[str]:
+    """
+    Get the history directory for the current project.
+    
+    Returns:
+        The history directory path, or None.
+    """
     return get_history_dir_for_path(get_project_path())
 
 
-def get_manifest_path():
+def get_manifest_path() -> Optional[str]:
+    """
+    Get the full path to the manifest.json file.
+    
+    Returns:
+        Path to manifest.json, or None if history dir cannot be determined.
+    """
     history_dir = get_history_dir()
     if history_dir:
         return os.path.join(history_dir, "manifest.json")
     return None
 
 
-def load_manifest():
+def load_manifest() -> Dict[str, Any]:
+    """
+    Load the manifest file.
+    
+    Returns:
+        A dictionary containing manifest data. Returns a default structure if loading fails.
+    """
     path = get_manifest_path()
     if path and os.path.exists(path):
         try:
@@ -101,7 +140,13 @@ def load_manifest():
     return {"parent_file": get_project_path(), "versions": []}
 
 
-def save_manifest(data):
+def save_manifest(data: Dict[str, Any]) -> None:
+    """
+    Save data to the manifest file.
+    
+    Args:
+        data: The dictionary data to save.
+    """
     path = get_manifest_path()
     if path:
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -109,7 +154,16 @@ def save_manifest(data):
             json.dump(data, f, indent=4, ensure_ascii=False)
 
 
-def format_file_size(size_in_bytes):
+def format_file_size(size_in_bytes: float | int) -> str:
+    """
+    Format bytes into human-readable string.
+    
+    Args:
+        size_in_bytes: Size in bytes.
+        
+    Returns:
+        Formatted string (e.g. "1.5 MB").
+    """
     try:
         size = float(size_in_bytes)
     except (ValueError, TypeError):
@@ -124,50 +178,16 @@ def format_file_size(size_in_bytes):
     return f"{size:.1f} TB"
 
 
-def sync_history_to_props(context):
-    """Read manifest and update the scene property group."""
-    data = load_manifest()
-    settings = context.scene.savepoints_settings
-    settings.versions.clear()
-
-    # Update Previews
-    pcoll = preview_collections.get("main")
-    if pcoll is not None:
-        pcoll.clear()
-
-    history_dir = get_history_dir()
-
-    for v_data in data.get("versions", []):
-        item = settings.versions.add()
-        item.version_id = v_data.get("id", "")
-        item.timestamp = v_data.get("timestamp", "")
-        item.note = v_data.get("note", "")
-        item.thumbnail_rel_path = from_posix_path(v_data.get("thumbnail", ""))
-        item.blend_rel_path = from_posix_path(v_data.get("blend", ""))
-        item.object_count = v_data.get("object_count", 0)
-
-        fsize = v_data.get("file_size", 0)
-        item.file_size_display = format_file_size(fsize)
-
-        _load_item_preview(pcoll, history_dir, item)
-
-    # If we have versions and no active index, set to 0
-    if len(settings.versions) > 0 and settings.active_version_index < 0:
-        settings.active_version_index = 0
-
-
-def _load_item_preview(pcoll, history_dir, item):
-    if pcoll is not None and history_dir and item.thumbnail_rel_path:
-        full_path = os.path.join(history_dir, item.thumbnail_rel_path)
-        if os.path.exists(full_path):
-            try:
-                pcoll.load(item.version_id, full_path, 'IMAGE')
-            except Exception as e:
-                print(f"Failed to load preview for {item.version_id}: {e}")
-
-
-def get_next_version_id(versions):
-    """Determine the next version ID string (e.g., v005)."""
+def get_next_version_id(versions: List[Dict[str, Any]]) -> str:
+    """
+    Determine the next version ID string (e.g., v005).
+    
+    Args:
+        versions: List of version dictionaries.
+        
+    Returns:
+        Next version ID string.
+    """
     max_id = 0
     for v in versions:
         vid = v.get("id", "")
@@ -178,7 +198,7 @@ def get_next_version_id(versions):
     return f"v{new_id_num:03d}"
 
 
-def _extract_version_number(vid):
+def _extract_version_number(vid: str) -> int:
     if vid.startswith("v"):
         try:
             return int(vid[1:])
@@ -187,8 +207,14 @@ def _extract_version_number(vid):
     return -1
 
 
-def capture_thumbnail(context, thumb_path):
-    """Capture the current viewport as a thumbnail."""
+def capture_thumbnail(context: bpy.types.Context, thumb_path: str) -> None:
+    """
+    Capture the current viewport as a thumbnail.
+    
+    Args:
+        context: Blender context.
+        thumb_path: Path where the thumbnail should be saved.
+    """
     render = context.scene.render
     old_filepath = render.filepath
 
@@ -205,8 +231,27 @@ def capture_thumbnail(context, thumb_path):
         render.filepath = old_filepath
 
 
-def add_version_to_manifest(manifest, version_id, note, thumb_rel, blend_rel, object_count=0, file_size=0):
-    """Add a new version entry to the manifest and save it."""
+def add_version_to_manifest(
+        manifest: Dict[str, Any],
+        version_id: str,
+        note: str,
+        thumb_rel: str,
+        blend_rel: str,
+        object_count: int = 0,
+        file_size: int = 0
+) -> None:
+    """
+    Add a new version entry to the manifest and save it.
+    
+    Args:
+        manifest: The current manifest data.
+        version_id: The new version ID.
+        note: Commit note.
+        thumb_rel: Relative path to thumbnail.
+        blend_rel: Relative path to blend file.
+        object_count: Number of objects.
+        file_size: Size of the blend file in bytes.
+    """
     now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     new_version = {
         "id": version_id,
@@ -223,7 +268,13 @@ def add_version_to_manifest(manifest, version_id, note, thumb_rel, blend_rel, ob
     save_manifest(manifest)
 
 
-def delete_version_by_id(version_id):
+def delete_version_by_id(version_id: str) -> None:
+    """
+    Delete a version from the manifest and file system.
+    
+    Args:
+        version_id: The ID of the version to delete.
+    """
     manifest = load_manifest()
     versions = manifest.get("versions", [])
 
@@ -237,9 +288,9 @@ def delete_version_by_id(version_id):
         history_dir = get_history_dir()
         if target_v.get('blend'):
             blend_rel = from_posix_path(target_v['blend'])
-            v_folder = os.path.dirname(os.path.join(history_dir, blend_rel))
+            v_folder = os.path.dirname(os.path.join(history_dir, blend_rel)) if history_dir else None
             # Security check: ensure we are deleting inside history dir
-            if history_dir and os.path.abspath(history_dir) in os.path.abspath(v_folder):
+            if history_dir and v_folder and os.path.abspath(history_dir) in os.path.abspath(v_folder):
                 shutil.rmtree(v_folder, ignore_errors=True)
 
         versions.remove(target_v)

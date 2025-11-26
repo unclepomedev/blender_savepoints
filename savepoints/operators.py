@@ -6,16 +6,16 @@ import time
 
 import bpy
 
-from .utils import (
+from .core import (
     get_history_dir,
     load_manifest,
-    sync_history_to_props,
     get_next_version_id,
     capture_thumbnail,
     add_version_to_manifest,
     delete_version_by_id,
     get_parent_path_from_snapshot,
 )
+from .ui_utils import sync_history_to_props
 
 
 class SAVEPOINTS_OT_commit(bpy.types.Operator):
@@ -152,7 +152,7 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         return context.window_manager.invoke_confirm(self, event)
 
     def execute(self, context):
-        from .utils import get_parent_path_from_snapshot
+        from .core import get_parent_path_from_snapshot
 
         original_path = get_parent_path_from_snapshot(bpy.data.filepath)
 
@@ -165,7 +165,7 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         if os.path.exists(original_path):
             timestamp = int(time.time())
 
-            from .utils import get_history_dir_for_path
+            from .core import get_history_dir_for_path
             history_dir = get_history_dir_for_path(original_path)
             os.makedirs(history_dir, exist_ok=True)
 

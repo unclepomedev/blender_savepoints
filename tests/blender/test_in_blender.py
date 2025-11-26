@@ -96,7 +96,7 @@ def main() -> None:
             raise RuntimeError("Snapshot contains TransientSphere (should have been discarded)")
 
         # Verify Snapshot Mode
-        from savepoints.utils import get_parent_path_from_snapshot
+        from savepoints.core import get_parent_path_from_snapshot
         parent_path_detected = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if not parent_path_detected:

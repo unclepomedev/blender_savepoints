@@ -4,12 +4,12 @@ import os
 
 import bpy
 
-from . import utils
+from . import core, ui_utils
 
 
 class SAVEPOINTS_UL_version_list(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
-        pcoll = utils.preview_collections.get("main")
+        pcoll = ui_utils.preview_collections.get("main")
         icon_val = 0
         if pcoll and item.version_id in pcoll:
             icon_val = pcoll[item.version_id].icon_id
@@ -33,7 +33,7 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         settings = scene.savepoints_settings
 
         # Dynamic check for Snapshot Mode
-        parent_filepath = utils.get_parent_path_from_snapshot(bpy.data.filepath)
+        parent_filepath = core.get_parent_path_from_snapshot(bpy.data.filepath)
 
         if parent_filepath:
             box = layout.box()
@@ -64,7 +64,7 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
 
             box = layout.box()
 
-            pcoll = utils.preview_collections.get("main")
+            pcoll = ui_utils.preview_collections.get("main")
             has_preview = False
             if pcoll and item.version_id in pcoll:
                 has_preview = True

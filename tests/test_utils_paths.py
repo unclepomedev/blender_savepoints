@@ -31,6 +31,12 @@ sys.modules["bpy.props"] = bpy.props
 sys.modules["bpy.data"] = bpy.data
 
 
+class MockImagePreviewCollection: pass
+
+
+bpy.utils.previews.ImagePreviewCollection = MockImagePreviewCollection
+
+
 # Mock specific attributes used by import time code
 def persistent(func): return func
 
@@ -62,6 +68,12 @@ class MockPanel: pass
 
 bpy.types.Panel = MockPanel
 
+
+class MockContext: pass
+
+
+bpy.types.Context = MockContext
+
 # Mock props
 bpy.props.StringProperty = mock.MagicMock()
 bpy.props.IntProperty = mock.MagicMock()
@@ -70,7 +82,7 @@ bpy.props.PointerProperty = mock.MagicMock()
 
 # --- ROBUST MOCKING END ---
 
-from savepoints.utils import get_parent_path_from_snapshot
+from savepoints.core import get_parent_path_from_snapshot
 
 
 class TestPathUtils(unittest.TestCase):
@@ -116,43 +128,43 @@ class TestPathUtils(unittest.TestCase):
         # On POSIX (Mac/Linux), backslash is NOT a separator.
         # os.path.join joining a dir and this string results in: dir/v001\snapshot.blend
         # os.path.dirname of this is 'dir' (the history folder), NOT 'dir/v001'.
-        
+
         # Only run this test on POSIX
         if os.name == 'nt':
             return
 
         history_dir = "/project/.history"
         windows_blend_path = "v001\\snapshot.blend"
-        
+
         full_path = os.path.join(history_dir, windows_blend_path)
-        
+
         # On POSIX, the filename is "v001\snapshot.blend", so dirname is history_dir
         detected_folder = os.path.dirname(full_path)
-        
+
         # This confirms the bug: we would inadvertently target the history root for deletion
         self.assertEqual(detected_folder, history_dir)
 
     def test_safe_path_resolution_with_fix(self):
         # Test the fix using from_posix_path
-        from savepoints.utils import from_posix_path
-        
+        from savepoints.core import from_posix_path
+
         if os.name == 'nt':
             # On Windows, both are separators or handled, but let's test logic explicitly
             pass
-            
+
         history_dir = "/project/.history"
         windows_blend_path = "v001\\snapshot.blend"
-        
+
         # 1. Normalize the path from manifest
         normalized_path = from_posix_path(windows_blend_path)
-        
+
         if os.name != 'nt':
             # On POSIX, it should replace backslash with slash
             self.assertEqual(normalized_path, "v001/snapshot.blend")
-            
+
             full_path = os.path.join(history_dir, normalized_path)
             detected_folder = os.path.dirname(full_path)
-            
+
             # Should be .../v001
             self.assertEqual(detected_folder, "/project/.history/v001")
             self.assertNotEqual(detected_folder, history_dir)
@@ -161,27 +173,28 @@ class TestPathUtils(unittest.TestCase):
         # Test that SAVEPOINTS_OT_commit.poll returns False when in snapshot mode
         # We need to import operators here so it uses the mocked bpy
         from savepoints.operators import SAVEPOINTS_OT_commit
-        
+
         mock_context = mock.MagicMock()
-        
+
         # Case 1: Normal file -> poll should be True
         # We use platform specific separator construction to be safe, 
         # though the mocked bpy is just a value holder.
         # get_parent_path_from_snapshot uses os.path, so we must match os.sep
-        
+
         base = os.path.abspath("/project")
         filename = "MyScene.blend"
         normal_path = os.path.join(base, filename)
-        
+
         bpy.data.filepath = normal_path
         self.assertTrue(SAVEPOINTS_OT_commit.poll(mock_context), f"Poll should be True for normal file: {normal_path}")
-        
+
         # Case 2: Snapshot file -> poll should be False
         history_dir = ".MyScene_history"
         snapshot_path = os.path.join(base, history_dir, "v001", "snapshot.blend")
-        
+
         bpy.data.filepath = snapshot_path
-        self.assertFalse(SAVEPOINTS_OT_commit.poll(mock_context), f"Poll should be False for snapshot file: {snapshot_path}")
+        self.assertFalse(SAVEPOINTS_OT_commit.poll(mock_context),
+                         f"Poll should be False for snapshot file: {snapshot_path}")
 
 
 if __name__ == '__main__':
