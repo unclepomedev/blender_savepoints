@@ -96,12 +96,14 @@ def main() -> None:
             raise RuntimeError("Snapshot contains TransientSphere (should have been discarded)")
 
         # Verify Snapshot Mode
-        settings = bpy.context.scene.savepoints_settings
-        if not settings.original_filepath:
-            raise RuntimeError("Original filepath not set in settings (Snapshot Mode inactive)")
+        from savepoints.utils import get_parent_path_from_snapshot
+        parent_path_detected = get_parent_path_from_snapshot(bpy.data.filepath)
 
-        if Path(settings.original_filepath) != blend_file_path:
-            raise RuntimeError(f"Original filepath mismatch: {settings.original_filepath}")
+        if not parent_path_detected:
+            raise RuntimeError("Snapshot Mode not detected (get_parent_path_from_snapshot returned None)")
+
+        if Path(parent_path_detected) != blend_file_path:
+            raise RuntimeError(f"Parent path mismatch: {parent_path_detected} vs {blend_file_path}")
 
         print("Checkout Verification: OK")
 

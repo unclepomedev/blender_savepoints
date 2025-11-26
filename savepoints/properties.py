@@ -16,4 +16,3 @@ class SavePointsVersion(bpy.types.PropertyGroup):
 class SavePointsSettings(bpy.types.PropertyGroup):
     versions: bpy.props.CollectionProperty(type=SavePointsVersion)
     active_version_index: bpy.props.IntProperty(name="Active Version Index", default=-1)
-    original_filepath: bpy.props.StringProperty(name="Original Filepath", default="")

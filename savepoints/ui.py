@@ -32,11 +32,14 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         scene = context.scene
         settings = scene.savepoints_settings
 
-        if settings.original_filepath:
+        # Dynamic check for Snapshot Mode
+        parent_filepath = utils.get_parent_path_from_snapshot(bpy.data.filepath)
+
+        if parent_filepath:
             box = layout.box()
             box.label(text="Snapshot Mode", icon='INFO')
             # Show only filename to keep it short
-            filename = os.path.basename(settings.original_filepath)
+            filename = os.path.basename(parent_filepath)
             box.label(text=f"Parent: {filename}")
             box.operator("savepoints.restore", text="Save as Parent", icon='FILE_TICK')
 

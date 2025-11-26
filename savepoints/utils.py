@@ -22,6 +22,18 @@ def unregister_previews():
     preview_collections.clear()
 
 
+def to_posix_path(path):
+    if not path:
+        return ""
+    return path.replace("\\", "/")
+
+
+def from_posix_path(path):
+    if not path:
+        return ""
+    return path.replace("/", os.sep).replace("\\", os.sep)
+
+
 def get_project_path():
     return bpy.data.filepath
 
@@ -32,6 +44,39 @@ def get_history_dir_for_path(blend_path):
     filename = os.path.basename(blend_path)
     name_without_ext = os.path.splitext(filename)[0]
     return os.path.join(os.path.dirname(blend_path), f".{name_without_ext}_history")
+
+
+def get_parent_path_from_snapshot(blend_path):
+    """
+    Determine the parent .blend file path if the current file is a snapshot.
+    Structure: [ProjectDir]/.{filename}_history/{version_id}/snapshot.blend
+    Parent:    [ProjectDir]/{filename}.blend
+    """
+    if not blend_path:
+        return None
+
+    abspath = os.path.abspath(blend_path)
+
+    # .../vXXX/snapshot.blend -> dirname -> .../vXXX
+    version_dir = os.path.dirname(abspath)
+
+    # .../vXXX -> dirname -> .../.{filename}_history
+    history_dir = os.path.dirname(version_dir)
+
+    history_dirname = os.path.basename(history_dir)
+
+    if history_dirname.startswith(".") and history_dirname.endswith("_history"):
+        # Extract filename: .my_project_history -> my_project
+        name_without_ext = history_dirname[1:-8]
+
+        # Parent dir: .../ProjectDir
+        project_dir = os.path.dirname(history_dir)
+
+        # Reconstruct parent path. We assume .blend extension.
+        parent_path = os.path.join(project_dir, f"{name_without_ext}.blend")
+        return parent_path
+
+    return None
 
 
 def get_history_dir():
@@ -97,8 +142,8 @@ def sync_history_to_props(context):
         item.version_id = v_data.get("id", "")
         item.timestamp = v_data.get("timestamp", "")
         item.note = v_data.get("note", "")
-        item.thumbnail_rel_path = v_data.get("thumbnail", "")
-        item.blend_rel_path = v_data.get("blend", "")
+        item.thumbnail_rel_path = from_posix_path(v_data.get("thumbnail", ""))
+        item.blend_rel_path = from_posix_path(v_data.get("blend", ""))
         item.object_count = v_data.get("object_count", 0)
 
         fsize = v_data.get("file_size", 0)
@@ -167,8 +212,8 @@ def add_version_to_manifest(manifest, version_id, note, thumb_rel, blend_rel, ob
         "id": version_id,
         "timestamp": now_str,
         "note": note,
-        "thumbnail": thumb_rel,
-        "blend": blend_rel,
+        "thumbnail": to_posix_path(thumb_rel),
+        "blend": to_posix_path(blend_rel),
         "object_count": object_count,
         "file_size": file_size
     }
@@ -191,7 +236,8 @@ def delete_version_by_id(version_id):
     if target_v:
         history_dir = get_history_dir()
         if target_v.get('blend'):
-            v_folder = os.path.dirname(os.path.join(history_dir, target_v['blend']))
+            blend_rel = from_posix_path(target_v['blend'])
+            v_folder = os.path.dirname(os.path.join(history_dir, blend_rel))
             # Security check: ensure we are deleting inside history dir
             if history_dir and os.path.abspath(history_dir) in os.path.abspath(v_folder):
                 shutil.rmtree(v_folder, ignore_errors=True)

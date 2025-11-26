@@ -55,14 +55,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         blend_filename = "snapshot.blend"
         snapshot_path = os.path.join(version_dir, blend_filename)
 
-        # Store original filepath in settings so the snapshot knows its parent
-        context.scene.savepoints_settings.original_filepath = bpy.data.filepath
-
-        try:
-            bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
-        finally:
-            # Clear it in the current file so we don't carry it around
-            context.scene.savepoints_settings.original_filepath = ""
+        bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
 
         # Capture file size
         file_size = 0
@@ -154,11 +147,12 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         return context.window_manager.invoke_confirm(self, event)
 
     def execute(self, context):
-        settings = context.scene.savepoints_settings
-        original_path = settings.original_filepath
+        from .utils import get_parent_path_from_snapshot, get_history_dir_for_path
+        
+        original_path = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if not original_path:
-            self.report({'ERROR'}, "Original filepath not set. Cannot restore.")
+            self.report({'ERROR'}, "Could not determine parent file path. Are you in a snapshot?")
             return {'CANCELLED'}
 
         # Verify if we can write to original path
@@ -183,15 +177,10 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         else:
             self.report({'WARNING'}, "Original file not found. Creating new one.")
 
-        # Clear property before saving to parent
-        settings.original_filepath = ""
-
         try:
             bpy.ops.wm.save_as_mainfile(filepath=original_path)
             self.report({'INFO'}, "Restored to parent file successfully.")
         except Exception as e:
-            # Restore property in case of failure (though save_as_mainfile usually raises or crashes)
-            settings.original_filepath = original_path
             self.report({'ERROR'}, f"Failed to save: {e}")
             return {'CANCELLED'}
 
