@@ -4,12 +4,12 @@ import datetime
 import json
 import os
 import shutil
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import bpy
 
 
-def to_posix_path(path: Optional[str]) -> str:
+def to_posix_path(path: str | None) -> str:
     """
     Convert a path to POSIX style (forward slashes).
     
@@ -24,7 +24,7 @@ def to_posix_path(path: Optional[str]) -> str:
     return path.replace("\\", "/")
 
 
-def from_posix_path(path: Optional[str]) -> str:
+def from_posix_path(path: str | None) -> str:
     """
     Convert a POSIX path to the current OS separator.
     
@@ -44,7 +44,7 @@ def get_project_path() -> str:
     return bpy.data.filepath
 
 
-def get_history_dir_for_path(blend_path: Optional[str]) -> Optional[str]:
+def get_history_dir_for_path(blend_path: str | None) -> str | None:
     """
     Get the history directory path for a given blend file.
     
@@ -61,7 +61,7 @@ def get_history_dir_for_path(blend_path: Optional[str]) -> Optional[str]:
     return os.path.join(os.path.dirname(blend_path), f".{name_without_ext}_history")
 
 
-def get_parent_path_from_snapshot(blend_path: Optional[str]) -> Optional[str]:
+def get_parent_path_from_snapshot(blend_path: str | None) -> str | None:
     """
     Determine the parent .blend file path if the current file is a snapshot.
     Structure: [ProjectDir]/.{filename}_history/{version_id}/snapshot.blend
@@ -100,7 +100,7 @@ def get_parent_path_from_snapshot(blend_path: Optional[str]) -> Optional[str]:
     return None
 
 
-def get_history_dir() -> Optional[str]:
+def get_history_dir() -> str | None:
     """
     Get the history directory for the current project.
     
@@ -110,7 +110,7 @@ def get_history_dir() -> Optional[str]:
     return get_history_dir_for_path(get_project_path())
 
 
-def get_manifest_path() -> Optional[str]:
+def get_manifest_path() -> str | None:
     """
     Get the full path to the manifest.json file.
     
@@ -123,7 +123,7 @@ def get_manifest_path() -> Optional[str]:
     return None
 
 
-def load_manifest() -> Dict[str, Any]:
+def load_manifest() -> dict[str, Any]:
     """
     Load the manifest file.
     
@@ -140,7 +140,7 @@ def load_manifest() -> Dict[str, Any]:
     return {"parent_file": get_project_path(), "versions": []}
 
 
-def save_manifest(data: Dict[str, Any]) -> None:
+def save_manifest(data: dict[str, Any]) -> None:
     """
     Save data to the manifest file.
     
@@ -178,7 +178,7 @@ def format_file_size(size_in_bytes: float | int) -> str:
     return f"{size:.1f} TB"
 
 
-def get_next_version_id(versions: List[Dict[str, Any]]) -> str:
+def get_next_version_id(versions: list[dict[str, Any]]) -> str:
     """
     Determine the next version ID string (e.g., v005).
     
@@ -232,7 +232,7 @@ def capture_thumbnail(context: bpy.types.Context, thumb_path: str) -> None:
 
 
 def add_version_to_manifest(
-        manifest: Dict[str, Any],
+        manifest: dict[str, Any],
         version_id: str,
         note: str,
         thumb_rel: str,

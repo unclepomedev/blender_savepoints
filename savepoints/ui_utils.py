@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
-from typing import Optional, Any
+from typing import Any
 
 import bpy
 import bpy.utils.previews
@@ -24,7 +24,7 @@ def unregister_previews() -> None:
     preview_collections.clear()
 
 
-def _load_item_preview(pcoll: bpy.utils.previews.ImagePreviewCollection, history_dir: Optional[str], item: Any) -> None:
+def _load_item_preview(pcoll: bpy.utils.previews.ImagePreviewCollection, history_dir: str | None, item: Any) -> None:
     if pcoll is not None and history_dir and item.thumbnail_rel_path:
         full_path = os.path.join(history_dir, item.thumbnail_rel_path)
         if os.path.exists(full_path):
