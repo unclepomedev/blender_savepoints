@@ -34,8 +34,12 @@ This repository includes an end-to-end (E2E) test script to verify the core func
 To run the tests:
 
 ```bash
-blender --factory-startup -b -P tests/blender/test_in_blender.py
+just test-blender
 ```
+
+> **Note**: 
+> - Check and configure the `blender_exe` path in `justfile` to match your environment.
+> - [Just](https://github.com/casey/just) is required to run the command.
 
 This script tests:
 - Committing a new version.
