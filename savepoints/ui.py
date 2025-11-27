@@ -19,6 +19,24 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
         else:
             layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon='FILE_BACKUP')
 
+    def filter_items(self, context, data, propname):
+        items = getattr(data, propname)
+        flt_flags = []
+        flt_neworder = []
+
+        if self.filter_name:
+            filter_text = self.filter_name.lower()
+            for item in items:
+                if (filter_text in item.version_id.lower() or
+                        filter_text in item.note.lower()):
+                    flt_flags.append(self.bitflag_filter_item)
+                else:
+                    flt_flags.append(0)
+        else:
+            flt_flags = [self.bitflag_filter_item] * len(items)
+
+        return flt_flags, flt_neworder
+
 
 class SAVEPOINTS_PT_main(bpy.types.Panel):
     bl_label = "SavePoints"
