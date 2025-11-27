@@ -14,6 +14,7 @@ classes = (
     operators.SAVEPOINTS_OT_commit,
     operators.SAVEPOINTS_OT_checkout,
     operators.SAVEPOINTS_OT_restore,
+    operators.SAVEPOINTS_OT_open_parent,
     operators.SAVEPOINTS_OT_delete,
     operators.SAVEPOINTS_OT_refresh,
     ui.SAVEPOINTS_UL_version_list,

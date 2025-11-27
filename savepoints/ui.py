@@ -41,7 +41,10 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             # Show only filename to keep it short
             filename = os.path.basename(parent_filepath)
             box.label(text=f"Parent: {filename}")
-            box.operator("savepoints.restore", text="Save as Parent", icon='FILE_TICK')
+
+            col = box.column(align=True)
+            col.operator("savepoints.restore", text="Save as Parent", icon='FILE_TICK')
+            col.operator("savepoints.open_parent", text="Return to Parent", icon='LOOP_BACK')
 
             layout.separator()
             layout.label(text="To view history, restore to parent.")

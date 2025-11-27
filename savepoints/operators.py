@@ -190,3 +190,26 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
             return {'CANCELLED'}
 
         return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_open_parent(bpy.types.Operator):
+    """Return to the parent file without saving current snapshot as parent."""
+    bl_idname = "savepoints.open_parent"
+    bl_label = "Return to Parent"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
+
+        if not parent_path:
+            self.report({'ERROR'}, "Could not determine parent file path. Are you in a snapshot?")
+            return {'CANCELLED'}
+
+        if not os.path.exists(parent_path):
+            self.report({'ERROR'}, f"Parent file not found: {parent_path}")
+            return {'CANCELLED'}
+
+        # Open the parent file
+        # Note: In UI, this might prompt to save changes if modified.
+        bpy.ops.wm.open_mainfile(filepath=parent_path)
+        return {'FINISHED'}
