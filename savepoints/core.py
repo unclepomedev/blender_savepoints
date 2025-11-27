@@ -223,6 +223,28 @@ def capture_thumbnail(context: bpy.types.Context, thumb_path: str) -> None:
         # OpenGL render of viewport
         if context.window_manager.windows:
             bpy.ops.render.opengl(write_still=True)
+
+            # Resize thumbnail to save space
+            if os.path.exists(thumb_path):
+                try:
+                    img = bpy.data.images.load(thumb_path)
+                    width, height = img.size
+                    max_dim = 360  # Max dimension in pixels
+
+                    if width > max_dim or height > max_dim:
+                        scale_factor = min(max_dim / width, max_dim / height)
+                        new_width = int(width * scale_factor)
+                        new_height = int(height * scale_factor)
+
+                        new_width = max(1, new_width)
+                        new_height = max(1, new_height)
+
+                        img.scale(new_width, new_height)
+                        img.save()
+
+                    bpy.data.images.remove(img)
+                except Exception as resize_e:
+                    print(f"Failed to resize thumbnail: {resize_e}")
         else:
             pass
     except Exception as e:
