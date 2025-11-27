@@ -64,8 +64,7 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         fsize = v_data.get("file_size", 0)
         item.file_size_display = core.format_file_size(fsize)
 
-        if pcoll:
-            _load_item_preview(pcoll, history_dir, item)
+        _load_item_preview(pcoll, history_dir, item)
 
     # If we have versions and no active index, set to 0
     if len(settings.versions) > 0 and settings.active_version_index < 0:
