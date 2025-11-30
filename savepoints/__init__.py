@@ -46,7 +46,7 @@ def register():
 
 
 def unregister():
-    if operators.autosave_timer in bpy.app.timers:
+    if bpy.app.timers.is_registered(operators.autosave_timer):
         bpy.app.timers.unregister(operators.autosave_timer)
 
     if load_handler in bpy.app.handlers.load_post:
