@@ -77,6 +77,9 @@ bpy.types.Context = MockContext
 # Mock props
 bpy.props.StringProperty = mock.MagicMock()
 bpy.props.IntProperty = mock.MagicMock()
+bpy.props.BoolProperty = mock.MagicMock()
+bpy.props.FloatProperty = mock.MagicMock()
+bpy.props.EnumProperty = mock.MagicMock()
 bpy.props.CollectionProperty = mock.MagicMock()
 bpy.props.PointerProperty = mock.MagicMock()
 
