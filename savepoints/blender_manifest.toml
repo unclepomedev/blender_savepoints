@@ -1,11 +1,11 @@
 schema_version = "1.0.0"
 id = "savepoints"
-version = "0.1.1"
+version = "1.0.0"
 name = "SavePoints"
 tagline = "Create save points with previews to restore project versions"
 type = "add-on"
 
-blender_version_min = "5.0.0"
+blender_version_min = "4.2.0"
 
 maintainer = "unclepomedev <unclepome.dev@gmail.com>"
 license = [
