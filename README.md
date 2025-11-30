@@ -10,6 +10,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Notes**: Add custom notes to remember what changed in each version.
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
+- **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
 
 ## Usage
 
@@ -27,6 +28,11 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - To restore this version as the main file, click **Save as Parent**.
    - To return to your original file without saving changes, click **Return to Parent**.
    - A backup of the previous main file will be saved in the history folder (e.g., `.Project_history/Project.blend.123456.bak`).
+
+5. **Auto Save**:
+   - Configure auto-save settings directly in the panel.
+   - Toggle on/off and set the interval (minimum 1 minute).
+   - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
 
 ## Testing
 

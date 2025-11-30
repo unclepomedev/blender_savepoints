@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import bpy
+import time
 from bpy.app.handlers import persistent
 
 from . import operators
@@ -27,6 +28,9 @@ def load_handler(dummy):
     """Sync history when file is loaded."""
     if bpy.context.scene:
         ui_utils.sync_history_to_props(bpy.context)
+        # Reset autosave timer
+        if hasattr(bpy.context.scene, "savepoints_settings"):
+            bpy.context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
 
 
 def register():
@@ -37,8 +41,14 @@ def register():
     bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
     bpy.app.handlers.load_post.append(load_handler)
 
+    if not bpy.app.timers.is_registered(operators.autosave_timer):
+        bpy.app.timers.register(operators.autosave_timer, first_interval=10.0, persistent=True)
+
 
 def unregister():
+    if operators.autosave_timer in bpy.app.timers:
+        bpy.app.timers.unregister(operators.autosave_timer)
+
     if load_handler in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(load_handler)
 

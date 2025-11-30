@@ -105,3 +105,10 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             box.label(text=f"Objects: {item.object_count} | Size: {item.file_size_display}")
 
             layout.operator("savepoints.checkout", text="Checkout (Restore)", icon='RECOVER_LAST')
+
+        layout.separator()
+        box = layout.box()
+        box.label(text="Auto Save", icon='TIME')
+        box.prop(settings, "use_auto_save")
+        if settings.use_auto_save:
+            box.prop(settings, "auto_save_interval")

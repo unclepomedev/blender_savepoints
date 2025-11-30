@@ -16,3 +16,17 @@ class SavePointsVersion(bpy.types.PropertyGroup):
 class SavePointsSettings(bpy.types.PropertyGroup):
     versions: bpy.props.CollectionProperty(type=SavePointsVersion)
     active_version_index: bpy.props.IntProperty(name="Active Version Index", default=-1)
+
+    # Auto Save Settings
+    use_auto_save: bpy.props.BoolProperty(
+        name="Auto Save",
+        description="Enable auto-save to a dedicated 'autosave' slot",
+        default=True
+    )
+    auto_save_interval: bpy.props.IntProperty(
+        name="Interval (min)",
+        description="Auto-save interval in minutes",
+        default=10,
+        min=1
+    )
+    last_autosave_timestamp: bpy.props.StringProperty(default="0.0")
