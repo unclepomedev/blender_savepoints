@@ -18,6 +18,6 @@ assignees: ""
 
 
 **Environment (For Bugs)**
-- OS: [e.g. Windows 10, macOS]
-- Blender Version: [e.g. 4.2.0]
+- OS: [e.g. Windows 11, macOS]
+- Blender Version: [e.g. 5.0.0]
 - Add-on Version: [e.g. 1.0.0]
