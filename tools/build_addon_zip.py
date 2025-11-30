@@ -30,7 +30,7 @@ def main():
     version = get_version()
     DIST_DIR.mkdir(exist_ok=True)
 
-    zip_filename = f"savepoints-{version}.zip"
+    zip_filename = f"savepoints_v{version}.zip"
     zip_path = DIST_DIR / zip_filename
 
     if zip_path.exists():

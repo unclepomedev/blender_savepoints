@@ -1,0 +1,29 @@
+name: Release Blender Addon
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set output for version name
+        id: version
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create Zip File
+        run: |
+          zip -r ./savepoints_${{ steps.version.outputs.TAG_NAME }}.zip savepoints -x "*.pyc" -x "*__pycache__*"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: savepoints_${{ steps.version.outputs.TAG_NAME }}.zip
+#          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -25,11 +25,11 @@ jobs:
       - name: Run Unit Tests
         run: uv run python tests/test_utils_paths.py
 
-      - name: Build add-on zip
-        run: uv run python tools/build_addon_zip.py
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: addon-zip
-          path: dist/*.zip
+#      - name: Build add-on zip
+#        run: uv run python tools/build_addon_zip.py
+#
+#      - name: Upload artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: addon-zip
+#          path: dist/*.zip
