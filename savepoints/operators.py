@@ -18,6 +18,108 @@ from .core import (
 from .ui_utils import sync_history_to_props
 
 
+def create_snapshot(context, version_id, note):
+    """Helper to create a snapshot."""
+    history_dir = get_history_dir()
+    if not history_dir:
+        return
+
+    manifest = load_manifest()
+
+    folder_name = version_id
+    version_dir = os.path.join(history_dir, folder_name)
+    os.makedirs(version_dir, exist_ok=True)
+
+    obj_count = len(bpy.data.objects)
+
+    # Thumbnail
+    thumb_filename = "thumbnail.png"
+    thumb_path = os.path.join(version_dir, thumb_filename)
+    capture_thumbnail(context, thumb_path)
+
+    # Save Snapshot
+    blend_filename = "snapshot.blend"
+    snapshot_path = os.path.join(version_dir, blend_filename)
+
+    bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+
+    # Capture file size
+    file_size = 0
+    if os.path.exists(snapshot_path):
+        file_size = os.path.getsize(snapshot_path)
+
+    # Update Manifest
+    add_version_to_manifest(
+        manifest,
+        version_id,
+        note,
+        os.path.join(folder_name, thumb_filename),
+        os.path.join(folder_name, blend_filename),
+        object_count=obj_count,
+        file_size=file_size
+    )
+
+    # Update UI
+    sync_history_to_props(context)
+
+
+def autosave_timer():
+    """Timer function for auto-save."""
+    # Check every 5 seconds for responsiveness
+    check_interval = 5.0
+
+    try:
+        context = bpy.context
+        scene = getattr(context, "scene", None)
+        if not scene:
+            return check_interval
+
+        settings = getattr(scene, "savepoints_settings", None)
+        if not settings:
+            return check_interval
+
+        if not settings.use_auto_save:
+            return check_interval
+
+        interval_min = settings.auto_save_interval
+        if interval_min < 1:
+            interval_min = 1
+
+        interval_sec = interval_min * 60.0
+
+        now = time.time()
+        try:
+            last_save = float(settings.last_autosave_timestamp)
+        except ValueError:
+            last_save = 0.0
+
+        # If last_save is 0 (initial), set it to now so we don't save immediately
+        if last_save == 0.0:
+            settings.last_autosave_timestamp = str(now)
+            return check_interval
+
+        if (now - last_save) < interval_sec:
+            return check_interval
+
+        # Check if we can save
+        if not bpy.data.filepath:
+            return check_interval
+
+        if get_parent_path_from_snapshot(bpy.data.filepath):
+            return check_interval
+
+        # Execute save
+        delete_version_by_id("autosave")
+        create_snapshot(context, "autosave", "Auto Save")
+        settings.last_autosave_timestamp = str(time.time())
+
+        return check_interval
+
+    except Exception as e:
+        print(f"Auto Save failed: {e}")
+        return check_interval
+
+
 class SAVEPOINTS_OT_commit(bpy.types.Operator):
     """Save a new version of the current project"""
     bl_idname = "savepoints.commit"
@@ -38,48 +140,9 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             self.report({'ERROR'}, "Save the project first!")
             return {'CANCELLED'}
 
-        # 1. Setup paths
-        history_dir = get_history_dir()
         manifest = load_manifest()
-
-        # Determine new ID
         new_id_str = get_next_version_id(manifest.get("versions", []))
-        folder_name = new_id_str
-        version_dir = os.path.join(history_dir, folder_name)
-        os.makedirs(version_dir, exist_ok=True)
-
-        # Capture stats
-        obj_count = len(bpy.data.objects)
-
-        # 2. Thumbnail
-        thumb_filename = "thumbnail.png"
-        thumb_path = os.path.join(version_dir, thumb_filename)
-        capture_thumbnail(context, thumb_path)
-
-        # 3. Save Snapshot
-        blend_filename = "snapshot.blend"
-        snapshot_path = os.path.join(version_dir, blend_filename)
-
-        bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
-
-        # Capture file size
-        file_size = 0
-        if os.path.exists(snapshot_path):
-            file_size = os.path.getsize(snapshot_path)
-
-        # 4. Update Manifest
-        add_version_to_manifest(
-            manifest,
-            new_id_str,
-            self.note,
-            os.path.join(folder_name, thumb_filename),
-            os.path.join(folder_name, blend_filename),
-            object_count=obj_count,
-            file_size=file_size
-        )
-
-        # 5. Update UI
-        sync_history_to_props(context)
+        create_snapshot(context, new_id_str, self.note)
 
         self.report({'INFO'}, f"Version {new_id_str} saved.")
         return {'FINISHED'}
