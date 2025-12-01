@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "savepoints"
-version = "1.0.0"
+version = "1.0.1"
 name = "SavePoints"
 tagline = "Create save points with previews to restore project versions"
 type = "add-on"
