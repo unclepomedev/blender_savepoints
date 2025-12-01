@@ -16,4 +16,4 @@ license = [
 text = "A lightweight version control tool for Blender. Create save points with thumbnails and notes, and restore them anytime from the UI."
 
 [permissions]
-files = "Create and manage version history folders next to the project file"
+files = "Create version history next to project file"
