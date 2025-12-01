@@ -19,6 +19,20 @@ jobs:
         id: version
         run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
+      - name: Verify Manifest Version
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          TAG_VERSION=${TAG_VERSION#v}
+          MANIFEST_VERSION=$(grep -m 1 "^version =" savepoints/blender_manifest.toml | cut -d '"' -f 2)
+
+          echo "Tag Version: $TAG_VERSION"
+          echo "Manifest Version: $MANIFEST_VERSION"
+
+          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "::error::Version mismatch! Tag says '$TAG_VERSION' but manifest says '$MANIFEST_VERSION'"
+            exit 1
+          fi
+
       - name: Create Zip File
         run: |
           zip -r ./savepoints_${{ steps.version.outputs.TAG_NAME }}.zip savepoints -x "*.pyc" -x "*__pycache__*"
