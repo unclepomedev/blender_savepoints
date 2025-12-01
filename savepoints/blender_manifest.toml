@@ -15,5 +15,5 @@ license = [
 [description]
 text = "A lightweight version control tool for Blender. Create save points with thumbnails and notes, and restore them anytime from the UI."
 
-# more details (bundle 3rd party modules, permissions, etc.)
-# https://docs.blender.org/manual/en/4.2/advanced/extensions/getting_started.html#manifest
+[permissions]
+files = "Create and manage version history folders next to the project file"
