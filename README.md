@@ -25,9 +25,9 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - View the thumbnail, note, object count, and file size.
    - Click **Checkout (Restore)** to open that version.
    - You are now in **Snapshot Mode**.
-   - To restore this version as the main file, click **Save as Parent**.
-   - To return to your original file without saving changes, click **Return to Parent**.
-   - A backup of the previous main file will be saved in the history folder (e.g., `.Project_history/Project.blend.123456.bak`).
+       - To restore this version as the main file, click **Save as Parent**.
+       - To return to your original file without saving changes, click **Return to Parent**.
+       - A backup of the previous main file will be saved in the history folder (e.g., `.Project_history/Project.blend.123456.bak`).
 
 5. **Auto Save**:
    - Configure auto-save settings directly in the panel.
