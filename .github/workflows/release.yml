@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*"
+    branches:
+      - ci  # TODO
 
 permissions:
   contents: write
@@ -24,7 +26,15 @@ jobs:
       - name: Setup Just
         uses: extractions/setup-just@v3
 
-      - name: Download & Setup Blender
+      - name: Cache Blender
+        id: cache-blender
+        uses: actions/cache@v4
+        with:
+          path: blender-bin
+          key: blender-${{ runner.os }}-${{ matrix.blender-version }}
+
+      - name: Download Blender
+        if: steps.cache-blender.outputs.cache-hit != 'true'
         run: |
           set -e
           VER="${{ matrix.blender-version }}"
@@ -34,61 +44,59 @@ jobs:
           echo "Downloading Blender ${VER} from: $URL"
           
           curl -SL --fail "$URL" -o blender.tar.xz || { echo "Failed to download Blender"; exit 1; }
-          tar -xf blender.tar.xz
           
-          BLENDER_DIR=$(find . -maxdepth 1 -type d -name "blender-*-linux-*")
-          if [ -z "$BLENDER_DIR" ]; then
-            echo "::error::Blender directory not found after extraction"
-            exit 1
-          fi
-          echo "$PWD/$BLENDER_DIR" >> $GITHUB_PATH
-          export PATH="$PWD/$BLENDER_DIR:$PATH"
+          mkdir -p blender-bin
+          tar -xf blender.tar.xz -C blender-bin --strip-components=1
+
+      - name: Setup Blender Path
+        run: |
+          echo "$PWD/blender-bin" >> $GITHUB_PATH
+          export PATH="$PWD/blender-bin:$PATH"
           
           if ! command -v blender &> /dev/null; then
             echo "::error::blender executable not found in PATH"
             exit 1
           fi
-          
-          echo "Installation complete."
+          echo "Blender setup complete."
 
       - name: Run Tests
         env:
           BLENDER_EXE: 'blender'
         run: just test-blender
 
-  build-and-release:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Set output for version name
-        id: version
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
-      - name: Verify Manifest Version
-        run: |
-          TAG_VERSION=${GITHUB_REF#refs/tags/}
-          TAG_VERSION=${TAG_VERSION#v}
-          MANIFEST_VERSION=$(grep -m 1 "^version =" savepoints/blender_manifest.toml | cut -d '"' -f 2)
-
-          echo "Tag Version: $TAG_VERSION"
-          echo "Manifest Version: $MANIFEST_VERSION"
-
-          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
-            echo "::error::Version mismatch! Tag says '$TAG_VERSION' but manifest says '$MANIFEST_VERSION'"
-            exit 1
-          fi
-
-      - name: Create Zip File
-        run: |
-          zip -r ./savepoints_${{ steps.version.outputs.TAG_NAME }}.zip savepoints -x "*.pyc" -x "*__pycache__*"
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: savepoints_${{ steps.version.outputs.TAG_NAME }}.zip
-#          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#  build-and-release: TODO
+#    needs: test
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v5
+#
+#      - name: Set output for version name
+#        id: version
+#        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+#
+#      - name: Verify Manifest Version
+#        run: |
+#          TAG_VERSION=${GITHUB_REF#refs/tags/}
+#          TAG_VERSION=${TAG_VERSION#v}
+#          MANIFEST_VERSION=$(grep -m 1 "^version =" savepoints/blender_manifest.toml | cut -d '"' -f 2)
+#
+#          echo "Tag Version: $TAG_VERSION"
+#          echo "Manifest Version: $MANIFEST_VERSION"
+#
+#          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+#            echo "::error::Version mismatch! Tag says '$TAG_VERSION' but manifest says '$MANIFEST_VERSION'"
+#            exit 1
+#          fi
+#
+#      - name: Create Zip File
+#        run: |
+#          zip -r ./savepoints_${{ steps.version.outputs.TAG_NAME }}.zip savepoints -x "*.pyc" -x "*__pycache__*"
+#
+#      - name: Create GitHub Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: savepoints_${{ steps.version.outputs.TAG_NAME }}.zip
+##          generate_release_notes: true
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
