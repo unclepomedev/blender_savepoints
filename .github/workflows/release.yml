@@ -26,17 +26,27 @@ jobs:
 
       - name: Download & Setup Blender
         run: |
+          set -e
           VER="${{ matrix.blender-version }}"
           MAJOR_MINOR=${VER%.*}
           URL="https://download.blender.org/release/Blender${MAJOR_MINOR}/blender-${VER}-linux-x64.tar.xz"
           
           echo "Downloading Blender ${VER} from: $URL"
           
-          curl -SL "$URL" -o blender.tar.xz
+          curl -SL --fail "$URL" -o blender.tar.xz || { echo "Failed to download Blender"; exit 1; }
           tar -xf blender.tar.xz
           
           BLENDER_DIR=$(find . -maxdepth 1 -type d -name "blender-*-linux-*")
+          if [ -z "$BLENDER_DIR" ]; then
+            echo "::error::Blender directory not found after extraction"
+            exit 1
+          fi
           echo "$PWD/$BLENDER_DIR" >> $GITHUB_PATH
+          
+          if ! command -v blender &> /dev/null; then
+            echo "::error::blender executable not found in PATH"
+            exit 1
+          fi
           
           echo "Installation complete."
 
