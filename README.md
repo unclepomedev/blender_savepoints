@@ -63,3 +63,4 @@ This script tests:
 ### CI Environment
 
 These E2E tests are automatically executed on **Blender 4.2** and **Blender 5.0** via GitHub Actions during the release process.
+
