@@ -37,6 +37,10 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
 
+## Note
+
+Thumbnails are skipped in no-GPU environments, but versioning remains fully functional.
+
 ## Testing
 
 This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
