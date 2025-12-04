@@ -9,7 +9,54 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    name: Test on Blender ${{ matrix.blender-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        blender-version: [ "4.2.0", "5.0.0" ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Just
+        uses: extractions/setup-just@v3
+
+      - name: Download & Setup Blender
+        run: |
+          set -e
+          VER="${{ matrix.blender-version }}"
+          MAJOR_MINOR=${VER%.*}
+          URL="https://download.blender.org/release/Blender${MAJOR_MINOR}/blender-${VER}-linux-x64.tar.xz"
+          
+          echo "Downloading Blender ${VER} from: $URL"
+          
+          curl -SL --fail "$URL" -o blender.tar.xz || { echo "Failed to download Blender"; exit 1; }
+          tar -xf blender.tar.xz
+          
+          BLENDER_DIR=$(find . -maxdepth 1 -type d -name "blender-*-linux-*")
+          if [ -z "$BLENDER_DIR" ]; then
+            echo "::error::Blender directory not found after extraction"
+            exit 1
+          fi
+          echo "$PWD/$BLENDER_DIR" >> $GITHUB_PATH
+          
+          if ! command -v blender &> /dev/null; then
+            echo "::error::blender executable not found in PATH"
+            exit 1
+          fi
+          
+          echo "Installation complete."
+
+      - name: Run Tests
+        env:
+          BLENDER_EXE: 'blender'
+        run: just test-blender
+
   build-and-release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
