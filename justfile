@@ -1,10 +1,7 @@
 # Path to Blender executable
-# macOS
-blender_exe := '/Applications/Blender.app/Contents/MacOS/Blender'
-# Windows
-# blender_exe := 'C:\Program Files\Blender Foundation\Blender 4.2\blender.exe'
-# Linux
-# blender_exe := '/usr/bin/blender'
+# You can override this by setting BLENDER_EXE environment variable
+# or passing it as an argument: just test-blender blender_exe=...
+blender_exe := env_var_or_default('BLENDER_EXE', '/Applications/Blender.app/Contents/MacOS/Blender')
 
 # Run E2E tests in Blender
 test-blender:
