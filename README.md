@@ -1,5 +1,7 @@
 # SavePoints
 
+[![Release Blender Addon](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml/badge.svg)](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml)
+
 SavePoints is a Blender add-on that helps you manage project versions easily. It allows you to create snapshots of your current work with automatic thumbnails, making it simple to browse and restore previous states.
 
 ## Features
@@ -53,3 +55,7 @@ This script tests:
 - Committing a new version.
 - Checking out a version.
 - Restoring a snapshot to the parent file (with backup).
+
+### CI Environment
+
+These E2E tests are automatically executed on **Blender 4.2** and **Blender 5.0** via GitHub Actions during the release process.
