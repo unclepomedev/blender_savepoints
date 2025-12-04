@@ -24,7 +24,15 @@ jobs:
       - name: Setup Just
         uses: extractions/setup-just@v3
 
-      - name: Download & Setup Blender
+      - name: Cache Blender
+        id: cache-blender
+        uses: actions/cache@v4
+        with:
+          path: blender-bin
+          key: blender-${{ runner.os }}-${{ matrix.blender-version }}
+
+      - name: Download Blender
+        if: steps.cache-blender.outputs.cache-hit != 'true'
         run: |
           set -e
           VER="${{ matrix.blender-version }}"
@@ -34,22 +42,20 @@ jobs:
           echo "Downloading Blender ${VER} from: $URL"
           
           curl -SL --fail "$URL" -o blender.tar.xz || { echo "Failed to download Blender"; exit 1; }
-          tar -xf blender.tar.xz
           
-          BLENDER_DIR=$(find . -maxdepth 1 -type d -name "blender-*-linux-*")
-          if [ -z "$BLENDER_DIR" ]; then
-            echo "::error::Blender directory not found after extraction"
-            exit 1
-          fi
-          echo "$PWD/$BLENDER_DIR" >> $GITHUB_PATH
-          export PATH="$PWD/$BLENDER_DIR:$PATH"
+          mkdir -p blender-bin
+          tar -xf blender.tar.xz -C blender-bin --strip-components=1
+
+      - name: Setup Blender Path
+        run: |
+          echo "$PWD/blender-bin" >> $GITHUB_PATH
+          export PATH="$PWD/blender-bin:$PATH"
           
           if ! command -v blender &> /dev/null; then
             echo "::error::blender executable not found in PATH"
             exit 1
           fi
-          
-          echo "Installation complete."
+          echo "Blender setup complete."
 
       - name: Run Tests
         env:
