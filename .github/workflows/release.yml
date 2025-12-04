@@ -4,43 +4,83 @@ on:
   push:
     tags:
       - "v*"
+    branches:
+      - ci  # TODO
+  workflow_dispatch:  # TODO
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
+  test:
+    name: Test on Blender ${{ matrix.blender-version }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        blender-version: [ "4.2.0", "5.0.0" ]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set output for version name
-        id: version
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      - name: Setup Just
+        uses: extractions/setup-just@v3
 
-      - name: Verify Manifest Version
+      - name: Download & Setup Blender
         run: |
-          TAG_VERSION=${GITHUB_REF#refs/tags/}
-          TAG_VERSION=${TAG_VERSION#v}
-          MANIFEST_VERSION=$(grep -m 1 "^version =" savepoints/blender_manifest.toml | cut -d '"' -f 2)
+          VER="${{ matrix.blender-version }}"
+          MAJOR_MINOR=${VER%.*}
+          URL="https://download.blender.org/release/Blender${MAJOR_MINOR}/blender-${VER}-linux-x64.tar.xz"
+          
+          echo "Downloading Blender ${VER} from: $URL"
+          
+          curl -SL "$URL" -o blender.tar.xz
+          tar -xf blender.tar.xz
+          
+          BLENDER_DIR=$(find . -maxdepth 1 -type d -name "blender-*-linux-*")
+          echo "$PWD/$BLENDER_DIR" >> $GITHUB_PATH
+          
+          echo "Installation complete."
 
-          echo "Tag Version: $TAG_VERSION"
-          echo "Manifest Version: $MANIFEST_VERSION"
-
-          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
-            echo "::error::Version mismatch! Tag says '$TAG_VERSION' but manifest says '$MANIFEST_VERSION'"
-            exit 1
-          fi
-
-      - name: Create Zip File
-        run: |
-          zip -r ./savepoints_${{ steps.version.outputs.TAG_NAME }}.zip savepoints -x "*.pyc" -x "*__pycache__*"
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: savepoints_${{ steps.version.outputs.TAG_NAME }}.zip
-#          generate_release_notes: true
+      - name: Run Tests
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BLENDER_EXE: 'blender'
+        run: just test-blender
+
+#  build-and-release:TODO
+#    needs: test
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v5
+#
+#      - name: Set output for version name
+#        id: version
+#        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+#
+#      - name: Verify Manifest Version
+#        run: |
+#          TAG_VERSION=${GITHUB_REF#refs/tags/}
+#          TAG_VERSION=${TAG_VERSION#v}
+#          MANIFEST_VERSION=$(grep -m 1 "^version =" savepoints/blender_manifest.toml | cut -d '"' -f 2)
+#
+#          echo "Tag Version: $TAG_VERSION"
+#          echo "Manifest Version: $MANIFEST_VERSION"
+#
+#          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+#            echo "::error::Version mismatch! Tag says '$TAG_VERSION' but manifest says '$MANIFEST_VERSION'"
+#            exit 1
+#          fi
+#
+#      - name: Create Zip File
+#        run: |
+#          zip -r ./savepoints_${{ steps.version.outputs.TAG_NAME }}.zip savepoints -x "*.pyc" -x "*__pycache__*"
+#
+#      - name: Create GitHub Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: savepoints_${{ steps.version.outputs.TAG_NAME }}.zip
+##          generate_release_notes: true
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
