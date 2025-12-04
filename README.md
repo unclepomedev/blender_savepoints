@@ -39,7 +39,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 
 ## Note
 
-Thumbnails are skipped in no-GPU environments, but versioning remains fully functional.
+Thumbnails are skipped in no-GPU environments, but versioning remains fully functional. (Compatible with headless mode for automation and CI/CD workflows.)
 
 ## Testing
 
