@@ -211,6 +211,73 @@ def main() -> None:
 
         print("Restore Verification: OK")
 
+        # 6. Test Multiple Versions
+        print("Testing Multiple Versions...")
+        # Create v002
+        bpy.ops.mesh.primitive_monkey_add()
+        bpy.context.object.name = "Monkey_v2"
+        res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Second Version")
+        if "FINISHED" not in res:
+            raise RuntimeError("Failed to commit v002")
+
+        # Verify existence
+        v002_dir = history_dir / "v002"
+        if not v002_dir.exists():
+            raise RuntimeError("v002 folder not created")
+
+        # 7. Test Deletion
+        print("Testing Deletion...")
+        # Force refresh to ensure UI list is up-to-date
+        bpy.ops.savepoints.refresh()
+
+        versions = bpy.context.scene.savepoints_settings.versions
+        print(f"Versions before delete: {[v.version_id for v in versions]}")
+
+        if len(versions) != 2:
+            raise RuntimeError(f"Expected 2 versions, found {len(versions)}")
+
+        # Find index of v001
+        v001_index = -1
+        for i, v in enumerate(versions):
+            if v.version_id == "v001":
+                v001_index = i
+                break
+
+        if v001_index == -1:
+            raise RuntimeError("v001 not found in versions list")
+
+        # Delete v001
+        bpy.context.scene.savepoints_settings.active_version_index = v001_index
+        res = bpy.ops.savepoints.delete()
+        if "FINISHED" not in res:
+            raise RuntimeError("Delete failed")
+
+        # Verify v001 gone
+        if v001_dir.exists():
+            raise RuntimeError("v001 directory still exists after deletion")
+
+        # Verify manifest updated
+        versions = bpy.context.scene.savepoints_settings.versions
+        print(f"Versions after delete: {[v.version_id for v in versions]}")
+
+        if len(versions) != 1:
+            raise RuntimeError(f"Expected 1 version, found {len(versions)}")
+
+        if versions[0].version_id != "v002":
+            raise RuntimeError(f"Expected remaining version to be v002, found {versions[0].version_id}")
+
+        # 8. Test Checkout of remaining version
+        print("Testing Checkout of remaining version...")
+        bpy.context.scene.savepoints_settings.active_version_index = 0  # v002 is now at index 0
+        res = bpy.ops.savepoints.checkout()
+        if "FINISHED" not in res:
+            raise RuntimeError("Checkout of v002 failed")
+
+        if "Monkey_v2" not in bpy.data.objects:
+            raise RuntimeError("Monkey_v2 not found in v002 snapshot")
+
+        print("Multiple Versions & Deletion Verification: OK")
+
         print("ALL TESTS PASSED")
 
     except Exception:
