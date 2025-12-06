@@ -37,9 +37,27 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
 
-## Note
+## Background Mode / CI Automation
 
-Thumbnails are skipped in no-GPU environments, but versioning remains fully functional. (Compatible with headless mode for automation and CI/CD workflows.)
+SavePoints is compatible with headless mode (`-b`), making it useful for automation and CI/CD workflows. However, there is a key limitation regarding **External Files**:
+
+### Limitation: Relative Paths
+If your project links to external files (textures, linked libraries, etc.) using **Relative Paths** (e.g., `//Textures/Wood.png`), snapshots created in background mode will have broken links.
+This is because snapshots are saved in a subdirectory (`.history/v001/`), breaking the relative reference.
+
+In interactive mode, the add-on temporarily converts paths to absolute using the Undo system, but this workaround is not available in background mode.
+
+**To prevent silent data loss, the add-on will fail with an error if it detects relative paths in background mode.**
+
+### Workarounds for Automation
+Before running your automated snapshot script, ensure one of the following:
+
+1. **Pack Resources**: Pack external files into the .blend file.
+   - `File > External Data > Pack Resources`
+2. **Make Paths Absolute**: Convert all paths to absolute.
+   - `bpy.ops.file.make_paths_absolute()` in your script before committing.
+
+> **Note**: Thumbnails are skipped in no-GPU environments, but versioning remains fully functional.
 
 ## Testing
 

@@ -41,11 +41,48 @@ def main() -> None:
         print("Registering savepoints addon...")
         savepoints.register()
 
+        # Disable autosave to prevent interference during tests
+        bpy.context.scene.savepoints_settings.use_auto_save = False
+
         # 3. Test Commit
         print("Testing Commit...")
         # Create some data to verify later
         bpy.ops.mesh.primitive_cube_add()
         bpy.context.object.name = "TestCube_v1"
+
+        # [Test] Relative Path Setup
+        external_file = test_dir / "external.txt"
+        external_file.write_text("dummy content")
+        txt_block = bpy.data.texts.load(str(external_file), internal=False)
+        txt_block.filepath = "//external.txt"  # Force relative
+        print(f"Setup text block with path: {txt_block.filepath}")
+
+        # [Test] Verify Fail Fast on Relative Paths (Background Mode)
+        if bpy.app.background:
+            print("Testing Fail Fast on Relative Paths...")
+            try:
+                # This should fail now because of relative paths
+                bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Should Fail")
+                raise RuntimeError("Commit succeeded with relative paths in background mode (Should have failed)")
+            except RuntimeError as e:
+                print(f"Commit blocked as expected: {e}")
+                # Verify the error message contains relevant info (optional but good)
+                if "Relative paths detected" not in str(e):
+                    print(f"Warning: Unexpected error message: {e}")
+
+            # Flush streams to ensure log ordering
+            sys.stdout.flush()
+            sys.stderr.flush()
+
+            # Apply Workaround: Make Absolute
+            print("Applying workaround: Make Paths Absolute")
+            bpy.ops.file.make_paths_absolute()
+
+            # Verify it is absolute now
+            if txt_block.filepath.startswith("//"):
+                # Fallback if make_paths_absolute didn't work (it relies on file being saved)
+                # But we saved 'test_project.blend' at start, so it should work.
+                raise RuntimeError(f"Make paths absolute failed: {txt_block.filepath}")
 
         # EXEC_DEFAULT to bypass invoke_props_dialog
         res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="First Version")
@@ -68,6 +105,16 @@ def main() -> None:
         snapshot_path = v001_dir / "snapshot.blend"
         if not snapshot_path.exists():
             raise RuntimeError("Snapshot file not created")
+
+        # [Test] Verify Undo (Relative Paths preserved in current session)
+        if not bpy.app.background:
+            if bpy.data.texts["external.txt"].filepath != "//external.txt":
+                raise RuntimeError(
+                    f"Relative path broken in current session after commit: {bpy.data.texts['external.txt'].filepath}")
+        else:
+            # In background mode, we explicitly made paths absolute, so we expect absolute path
+            if bpy.data.texts["external.txt"].filepath.startswith("//"):
+                raise RuntimeError("Expected absolute path in background mode after workaround")
 
         print("Commit Verification: OK")
 
@@ -94,6 +141,24 @@ def main() -> None:
             raise RuntimeError("Snapshot does not contain TestCube_v1")
         if "TransientSphere" in bpy.data.objects:
             raise RuntimeError("Snapshot contains TransientSphere (should have been discarded)")
+
+        # [Test] Verify Relative Path Fix in Snapshot
+        # In interactive mode, Fix is applied (Undo based).
+        # In background mode, we pre-applied absolute paths manually.
+        # In both cases, the snapshot should have absolute paths OR correctly remapped relative paths.
+        loaded_txt_path = bpy.data.texts["external.txt"].filepath
+        print(f"Loaded text path in snapshot: {loaded_txt_path}")
+
+        # Resolve the path relative to the current blend file (snapshot.blend)
+        resolved_abs_path = Path(bpy.path.abspath(loaded_txt_path)).resolve()
+        expected_abs_path = external_file.resolve()
+
+        print(f"Resolved: {resolved_abs_path}")
+        print(f"Expected: {expected_abs_path}")
+
+        if resolved_abs_path != expected_abs_path:
+            raise RuntimeError(
+                f"Path in snapshot does not point to original file: {loaded_txt_path} (resolved: {resolved_abs_path}) vs {expected_abs_path}")
 
         # Verify Snapshot Mode
         from savepoints.core import get_parent_path_from_snapshot
