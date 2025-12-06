@@ -41,6 +41,15 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 
 Thumbnails are skipped in no-GPU environments, but versioning remains fully functional. (Compatible with headless mode for automation and CI/CD workflows.)
 
+### ⚠️ Known Limitations: Relative Paths
+
+Because snapshots are saved in a subdirectory (`.Project_history/vXXX/snapshot.blend`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
+
+**Recommended Workflows:**
+To avoid this issue, please use one of the following methods before saving versions:
+1.  **Pack Resources (Recommended):** Go to `File > External Data > Pack Resources`. This embeds textures into the `.blend` file.
+2.  **Use Absolute Paths:** Ensure your external links use absolute paths.
+
 ## Testing
 
 This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
