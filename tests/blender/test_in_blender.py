@@ -47,6 +47,13 @@ def main() -> None:
         bpy.ops.mesh.primitive_cube_add()
         bpy.context.object.name = "TestCube_v1"
 
+        # [Test] Relative Path Setup
+        external_file = test_dir / "external.txt"
+        external_file.write_text("dummy content")
+        txt_block = bpy.data.texts.load(str(external_file), internal=False)
+        txt_block.filepath = "//external.txt"  # Force relative
+        print(f"Setup text block with path: {txt_block.filepath}")
+
         # EXEC_DEFAULT to bypass invoke_props_dialog
         res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="First Version")
         if "FINISHED" not in res:
@@ -68,6 +75,11 @@ def main() -> None:
         snapshot_path = v001_dir / "snapshot.blend"
         if not snapshot_path.exists():
             raise RuntimeError("Snapshot file not created")
+
+        # [Test] Verify Undo (Relative Paths preserved in current session)
+        if bpy.data.texts["external.txt"].filepath != "//external.txt":
+            raise RuntimeError(
+                f"Relative path broken in current session after commit: {bpy.data.texts['external.txt'].filepath}")
 
         print("Commit Verification: OK")
 
@@ -94,6 +106,21 @@ def main() -> None:
             raise RuntimeError("Snapshot does not contain TestCube_v1")
         if "TransientSphere" in bpy.data.objects:
             raise RuntimeError("Snapshot contains TransientSphere (should have been discarded)")
+
+        # [Test] Verify Relative Path Fix in Snapshot
+        # Fix is skipped in background mode, so we only verify if not background
+        if not bpy.app.background:
+            loaded_txt_path = bpy.data.texts["external.txt"].filepath
+            print(f"Loaded text path in snapshot: {loaded_txt_path}")
+            if loaded_txt_path.startswith("//"):
+                raise RuntimeError(f"Path in snapshot is still relative (Fix failed): {loaded_txt_path}")
+
+            # Verify it points to the correct file
+            if Path(loaded_txt_path).resolve() != external_file.resolve():
+                raise RuntimeError(
+                    f"Path in snapshot does not point to original file: {loaded_txt_path} vs {external_file}")
+        else:
+            print("Skipping relative path fix verification (Background mode detected)")
 
         # Verify Snapshot Mode
         from savepoints.core import get_parent_path_from_snapshot

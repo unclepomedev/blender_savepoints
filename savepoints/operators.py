@@ -19,7 +19,11 @@ from .ui_utils import sync_history_to_props
 
 
 def create_snapshot(context, version_id, note):
-    """Helper to create a snapshot."""
+    """
+    Helper to create a snapshot.
+    Note: In interactive mode, this temporarily converts paths to absolute
+    to prevent broken links in the subdirectory, utilizing the Undo stack.
+    """
     history_dir = get_history_dir()
     if not history_dir:
         return
@@ -41,7 +45,29 @@ def create_snapshot(context, version_id, note):
     blend_filename = "snapshot.blend"
     snapshot_path = os.path.join(version_dir, blend_filename)
 
-    bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+    # Workaround for relative paths breaking in subdirectories:
+    # Temporarily make paths absolute, save copy, then undo.
+    paths_changed = False
+    try:
+        # Check if undo is available to safely revert changes
+        # In background mode, undo is often unavailable or unreliable
+        if not bpy.app.background and hasattr(bpy.ops.ed, "undo_push") and bpy.ops.ed.undo_push.poll():
+            bpy.ops.ed.undo_push(message="SavePoints: Temp Absolute Paths")
+            bpy.ops.file.make_paths_absolute()
+            paths_changed = True
+        elif bpy.app.background:
+            print("SavePoints Warning: Background mode detected, skipping relative path fix.")
+    except Exception as e:
+        print(f"SavePoints Warning: Could not prepare absolute paths: {e}")
+
+    try:
+        bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+    finally:
+        if paths_changed:
+            try:
+                bpy.ops.ed.undo()
+            except Exception as e:
+                print(f"SavePoints Warning: Could not revert paths (undo failed): {e}")
 
     # Capture file size
     file_size = 0
