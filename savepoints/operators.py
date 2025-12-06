@@ -18,6 +18,33 @@ from .core import (
 from .ui_utils import sync_history_to_props
 
 
+def check_for_relative_paths():
+    """
+    Scans the current blend file for data blocks with relative paths that refer to external files.
+    Returns a list of strings describing the offenders (e.g., "Image: //textures/img.png").
+    """
+    offenders = []
+
+    def check_collection(datablocks, type_name):
+        for db in datablocks:
+            if hasattr(db, "filepath") and db.filepath.startswith("//"):
+                if db.filepath and len(db.filepath) > 2:
+                    if hasattr(db, "packed_file") and db.packed_file:
+                        continue
+                    offenders.append(f"{type_name} '{db.name}': {db.filepath}")
+
+    check_collection(bpy.data.images, "Image")
+    check_collection(bpy.data.libraries, "Library")
+    check_collection(bpy.data.texts, "Text")
+    check_collection(bpy.data.fonts, "Font")
+    check_collection(bpy.data.sounds, "Sound")
+    check_collection(bpy.data.movieclips, "MovieClip")
+    if hasattr(bpy.data, "cache_files"):
+        check_collection(bpy.data.cache_files, "CacheFile")
+
+    return offenders
+
+
 def create_snapshot(context, version_id, note):
     """
     Helper to create a snapshot.
@@ -48,6 +75,20 @@ def create_snapshot(context, version_id, note):
     # Workaround for relative paths breaking in subdirectories:
     # Temporarily make paths absolute, save copy, then undo.
     paths_changed = False
+
+    if bpy.app.background:
+        offenders = check_for_relative_paths()
+        if offenders:
+            msg = (
+                    "SavePoints Error: Relative paths detected in Background Mode.\n"
+                    "Snapshots saved in subdirectories will break these links.\n"
+                    "Please pack resources or make paths absolute before running.\n"
+                    "Offenders:\n" + "\n".join(offenders[:5])
+            )
+            if len(offenders) > 5:
+                msg += f"\n...and {len(offenders) - 5} more."
+            raise RuntimeError(msg)
+
     try:
         # Check if undo is available to safely revert changes
         # In background mode, undo is often unavailable or unreliable
@@ -55,8 +96,6 @@ def create_snapshot(context, version_id, note):
             bpy.ops.ed.undo_push(message="SavePoints: Temp Absolute Paths")
             bpy.ops.file.make_paths_absolute()
             paths_changed = True
-        elif bpy.app.background:
-            print("SavePoints Warning: Background mode detected, skipping relative path fix.")
     except Exception as e:
         print(f"SavePoints Warning: Could not prepare absolute paths: {e}")
 
