@@ -174,9 +174,11 @@ def autosave_timer():
             return check_interval
 
         # Execute save
-        delete_version_by_id("autosave")
-        create_snapshot(context, "autosave", "Auto Save")
-        settings.last_autosave_timestamp = str(time.time())
+        try:
+            delete_version_by_id("autosave")
+            create_snapshot(context, "autosave", "Auto Save")
+        finally:
+            settings.last_autosave_timestamp = str(time.time())
 
         return check_interval
 
