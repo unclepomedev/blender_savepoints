@@ -76,6 +76,11 @@ def create_snapshot(context, version_id, note):
     # Temporarily make paths absolute, save copy, then undo.
     paths_changed = False
 
+    # Find a valid window for context override (needed for ops in timers)
+    found_window = None
+    if context.window_manager.windows:
+        found_window = context.window_manager.windows[0]
+
     if bpy.app.background:
         offenders = check_for_relative_paths()
         if offenders:
@@ -93,18 +98,31 @@ def create_snapshot(context, version_id, note):
         # Check if undo is available to safely revert changes
         # In background mode, undo is often unavailable or unreliable
         if not bpy.app.background and hasattr(bpy.ops.ed, "undo_push") and bpy.ops.ed.undo_push.poll():
-            bpy.ops.ed.undo_push(message="SavePoints: Temp Absolute Paths")
-            bpy.ops.file.make_paths_absolute()
+            if found_window:
+                with context.temp_override(window=found_window):
+                    bpy.ops.ed.undo_push(message="SavePoints: Temp Absolute Paths")
+                    bpy.ops.file.make_paths_absolute()
+            else:
+                bpy.ops.ed.undo_push(message="SavePoints: Temp Absolute Paths")
+                bpy.ops.file.make_paths_absolute()
             paths_changed = True
     except Exception as e:
         print(f"SavePoints Warning: Could not prepare absolute paths: {e}")
 
     try:
-        bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+        if found_window:
+            with context.temp_override(window=found_window):
+                bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+        else:
+            bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
     finally:
         if paths_changed:
             try:
-                bpy.ops.ed.undo()
+                if found_window:
+                    with context.temp_override(window=found_window):
+                        bpy.ops.ed.undo()
+                else:
+                    bpy.ops.ed.undo()
             except Exception as e:
                 print(f"SavePoints Warning: Could not revert paths (undo failed): {e}")
 
@@ -200,6 +218,8 @@ def autosave_timer():
             settings.next_autosave_timestamp = str(now + interval_sec)
 
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             print(f"Auto Save failed: {e}")
             settings.autosave_fail_count += 1
 
@@ -215,6 +235,8 @@ def autosave_timer():
         return check_interval
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         print(f"Auto Save critical error: {e}")
         return check_interval
 

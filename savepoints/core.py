@@ -220,33 +220,59 @@ def capture_thumbnail(context: bpy.types.Context, thumb_path: str) -> None:
 
     try:
         render.filepath = thumb_path
+
+        # Find a 3D View area to render from
+        found_area = None
+        found_window = None
+        found_region = None
+
+        for window in context.window_manager.windows:
+            for area in window.screen.areas:
+                if area.type == 'VIEW_3D':
+                    found_area = area
+                    found_window = window
+                    for region in area.regions:
+                        if region.type == 'WINDOW':
+                            found_region = region
+                            break
+                    break
+            if found_area:
+                break
+
         # OpenGL render of viewport
-        if context.window_manager.windows:
-            bpy.ops.render.opengl(write_still=True)
-
-            # Resize thumbnail to save space
-            if os.path.exists(thumb_path):
-                try:
-                    img = bpy.data.images.load(thumb_path)
-                    width, height = img.size
-                    max_dim = 360  # Max dimension in pixels
-
-                    if width > max_dim or height > max_dim:
-                        scale_factor = min(max_dim / width, max_dim / height)
-                        new_width = int(width * scale_factor)
-                        new_height = int(height * scale_factor)
-
-                        new_width = max(1, new_width)
-                        new_height = max(1, new_height)
-
-                        img.scale(new_width, new_height)
-                        img.save()
-
-                    bpy.data.images.remove(img)
-                except Exception as resize_e:
-                    print(f"Failed to resize thumbnail: {resize_e}")
+        if found_window and found_area and found_region:
+            try:
+                with context.temp_override(window=found_window, area=found_area, region=found_region):
+                    bpy.ops.render.opengl(write_still=True)
+            except Exception as e:
+                print(f"Thumbnail generation failed (ops): {e}")
         else:
+            # Fallback if no 3D view found (e.g. in background or weird layout)
+            # We can't render OpenGL without a view.
             pass
+
+        # Resize thumbnail to save space
+        if os.path.exists(thumb_path):
+            try:
+                img = bpy.data.images.load(thumb_path)
+                width, height = img.size
+                max_dim = 360  # Max dimension in pixels
+
+                if width > max_dim or height > max_dim:
+                    scale_factor = min(max_dim / width, max_dim / height)
+                    new_width = int(width * scale_factor)
+                    new_height = int(height * scale_factor)
+
+                    new_width = max(1, new_width)
+                    new_height = max(1, new_height)
+
+                    img.scale(new_width, new_height)
+                    img.save()
+
+                bpy.data.images.remove(img)
+            except Exception as resize_e:
+                print(f"Failed to resize thumbnail: {resize_e}")
+
     except Exception as e:
         print(f"Thumbnail generation failed: {e}")
     finally:
