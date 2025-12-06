@@ -112,3 +112,8 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         box.prop(settings, "use_auto_save")
         if settings.use_auto_save:
             box.prop(settings, "auto_save_interval")
+
+            if settings.autosave_fail_count >= 3:
+                row = box.row()
+                row.alert = True
+                row.label(text=f"Failed {settings.autosave_fail_count} times!", icon='ERROR')

@@ -151,23 +151,39 @@ def autosave_timer():
             interval_min = 1
 
         interval_sec = interval_min * 60.0
-
         now = time.time()
-        try:
-            last_save = float(settings.last_autosave_timestamp)
-        except ValueError:
-            last_save = 0.0
 
-        # If last_save is 0 (initial), set it to now so we don't save immediately
-        if last_save == 0.0:
-            settings.last_autosave_timestamp = str(now)
+        try:
+            next_save = float(settings.next_autosave_timestamp)
+        except ValueError:
+            next_save = 0.0
+
+        # Initialize next_save if not set
+        if next_save == 0.0:
+            # Try to base on last save if valid
+            try:
+                last_save = float(settings.last_autosave_timestamp)
+            except ValueError:
+                last_save = 0.0
+
+            if last_save > 0:
+                # If we have a last save, next is last + interval
+                calculated_next = last_save + interval_sec
+                if calculated_next > now:
+                    settings.next_autosave_timestamp = str(calculated_next)
+                    return check_interval
+
+            # Otherwise schedule from now
+            settings.next_autosave_timestamp = str(now + interval_sec)
             return check_interval
 
-        if (now - last_save) < interval_sec:
+        if now < next_save:
             return check_interval
 
         # Check if we can save
         if not bpy.data.filepath:
+            # If file not saved, we can't autosave.
+            # Don't update next_timestamp, retry next tick (5s).
             return check_interval
 
         if get_parent_path_from_snapshot(bpy.data.filepath):
@@ -177,13 +193,29 @@ def autosave_timer():
         try:
             delete_version_by_id("autosave")
             create_snapshot(context, "autosave", "Auto Save")
-        finally:
-            settings.last_autosave_timestamp = str(time.time())
+
+            # Success: Reset failure count and update timestamps
+            settings.last_autosave_timestamp = str(now)
+            settings.autosave_fail_count = 0
+            settings.next_autosave_timestamp = str(now + interval_sec)
+
+        except Exception as e:
+            print(f"Auto Save failed: {e}")
+            settings.autosave_fail_count += 1
+
+            # Retry logic with backoff for transient errors
+            # Backoff: 10s * 2^(n-1)
+            count = settings.autosave_fail_count
+            backoff = 10.0 * (2 ** (count - 1))
+            # Cap backoff at interval_sec
+            backoff = min(backoff, interval_sec)
+
+            settings.next_autosave_timestamp = str(now + backoff)
 
         return check_interval
 
     except Exception as e:
-        print(f"Auto Save failed: {e}")
+        print(f"Auto Save critical error: {e}")
         return check_interval
 
 

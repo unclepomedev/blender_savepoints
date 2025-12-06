@@ -30,3 +30,5 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         min=1
     )
     last_autosave_timestamp: bpy.props.StringProperty(default="0.0")
+    next_autosave_timestamp: bpy.props.StringProperty(default="0.0")
+    autosave_fail_count: bpy.props.IntProperty(default=0)
