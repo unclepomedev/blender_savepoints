@@ -50,7 +50,7 @@ To avoid this issue, please use one of the following methods before saving versi
 1.  **Pack Resources (Recommended):** Go to `File > External Data > Pack Resources`. This embeds textures into the `.blend` file.
 2.  **Use Absolute Paths:** Ensure your external links use absolute paths.
 
-## Testing
+## Testing (for Developer)
 
 This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
 
