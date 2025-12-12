@@ -50,6 +50,16 @@ To avoid this issue, please use one of the following methods before saving versi
 1.  **Pack Resources (Recommended):** Go to `File > External Data > Pack Resources`. This embeds textures into the `.blend` file.
 2.  **Use Absolute Paths:** Ensure your external links use absolute paths.
 
+### ⚠️ Known Limitations: Asset Library Duplication
+
+If you have registered your current project folder path in Blender's Asset Libraries, assets may appear duplicated in the Asset Browser. This happens because Blender scans both your current working file and the backup files saved in the `.Project_history` folder.
+**This is expected behavior.** SavePoints preserves all data, including Asset Marks, so that versions can be fully restored.
+
+To avoid this:
+1. Do not register your "Work In Progress" folder as an Asset Library. 
+2. Or, use the "Current File" filter in the Asset Browser instead of "All" or a specific library when working.
+3. If duplicated, you can also delete unnecessary snapshots via SavePoints `Delete` to reduce scan targets.
+
 ## Testing (for Developer)
 
 This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
