@@ -5,6 +5,7 @@ import shutil
 import time
 
 import bpy
+from bpy.app.handlers import persistent
 
 from .core import (
     get_history_dir,
@@ -16,6 +17,26 @@ from .core import (
     get_parent_path_from_snapshot,
 )
 from .ui_utils import sync_history_to_props
+
+_is_rendering = False
+
+
+@persistent
+def render_init_handler(scene):
+    global _is_rendering
+    _is_rendering = True
+
+
+@persistent
+def render_complete_handler(scene):
+    global _is_rendering
+    _is_rendering = False
+
+
+@persistent
+def render_cancel_handler(scene):
+    global _is_rendering
+    _is_rendering = False
 
 
 def create_snapshot(context, version_id, note):
@@ -67,6 +88,9 @@ def autosave_timer():
     """Timer function for auto-save."""
     # Check every 5 seconds for responsiveness
     check_interval = 5.0
+
+    if _is_rendering:
+        return check_interval
 
     try:
         context = bpy.context
