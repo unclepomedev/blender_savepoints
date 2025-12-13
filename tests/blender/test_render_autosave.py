@@ -55,7 +55,7 @@ def main() -> None:
         print("Test 1: Autosave blocked during render")
 
         # Trigger render init
-        print(" Simonulating Render Init...")
+        print(" Simulating Render Init...")
         savepoints.operators.render_init_handler(bpy.context.scene)
 
         # Verify global flag (optional, but good for debug)
