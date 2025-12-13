@@ -2,41 +2,29 @@
 
 import datetime
 import json
-import os
 import shutil
+from pathlib import Path
 from typing import Any
 
 import bpy
 
+HISTORY_SUFFIX = "_history"
+SNAPSHOT_EXT = ".blend_snapshot"
+MANIFEST_NAME = "manifest.json"
+
 
 def to_posix_path(path: str | None) -> str:
-    """
-    Convert a path to POSIX style (forward slashes).
-    
-    Args:
-        path: The path to convert.
-    
-    Returns:
-        The converted path string, or empty string if input is None.
-    """
+    """Convert a path to POSIX style (forward slashes)."""
     if not path:
         return ""
-    return path.replace("\\", "/")
+    return Path(path).as_posix()
 
 
 def from_posix_path(path: str | None) -> str:
-    """
-    Convert a POSIX path to the current OS separator.
-    
-    Args:
-        path: The POSIX path.
-        
-    Returns:
-        The path using OS-specific separators.
-    """
+    """Convert a POSIX path to the current OS separator."""
     if not path:
         return ""
-    return path.replace("/", os.sep).replace("\\", os.sep)
+    return str(Path(path))
 
 
 def get_project_path() -> str:
