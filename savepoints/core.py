@@ -33,125 +33,92 @@ def get_project_path() -> str:
 
 
 def get_history_dir_for_path(blend_path: str | None) -> str | None:
-    """
-    Get the history directory path for a given blend file.
-    
-    Args:
-        blend_path: The path to the .blend file.
-        
-    Returns:
-        The path to the history directory, or None if blend_path is empty.
-    """
+    """Get the history directory path for a given blend file."""
     if not blend_path:
         return None
-    filename = os.path.basename(blend_path)
-    name_without_ext = os.path.splitext(filename)[0]
-    return os.path.join(os.path.dirname(blend_path), f".{name_without_ext}_history")
+
+    path = Path(blend_path)
+    # parent / .{stem}_history
+    history_dir = path.parent / f".{path.stem}{HISTORY_SUFFIX}"
+    return str(history_dir)
 
 
 def get_parent_path_from_snapshot(blend_path: str | None) -> str | None:
     """
     Determine the parent .blend file path if the current file is a snapshot.
-    Structure: [ProjectDir]/.{filename}_history/{version_id}/snapshot.blend_snapshot
-    Parent:    [ProjectDir]/{filename}.blend
-    
-    Args:
-        blend_path: The path of the current snapshot file.
-        
-    Returns:
-        The path to the parent project file, or None if not in a snapshot.
+    Structure: .../ProjectDir/.{filename}_history/{version_id}/snapshot.blend_snapshot
     """
     if not blend_path:
         return None
 
-    abspath = os.path.abspath(blend_path)
+    try:
+        path = Path(blend_path).resolve()
 
-    # .../vXXX/snapshot.blend_snapshot -> dirname -> .../vXXX
-    version_dir = os.path.dirname(abspath)
+        # .../vXXX/snapshot.blend_snapshot -> parent -> vXXX
+        version_dir = path.parent
+        # .../vXXX -> parent -> .{filename}_history
+        history_dir = version_dir.parent
 
-    # .../vXXX -> dirname -> .../.{filename}_history
-    history_dir = os.path.dirname(version_dir)
+        history_dirname = history_dir.name
 
-    history_dirname = os.path.basename(history_dir)
+        if history_dirname.startswith(".") and history_dirname.endswith(HISTORY_SUFFIX):
+            # Extract filename: .my_project_history -> my_project
+            name_without_ext = history_dirname[1:-len(HISTORY_SUFFIX)]
 
-    if history_dirname.startswith(".") and history_dirname.endswith("_history"):
-        # Extract filename: .my_project_history -> my_project
-        name_without_ext = history_dirname[1:-8]
+            # Parent dir: .../ProjectDir
+            project_dir = history_dir.parent
+            parent_path = project_dir / f"{name_without_ext}.blend"
 
-        # Parent dir: .../ProjectDir
-        project_dir = os.path.dirname(history_dir)
+            return str(parent_path)
 
-        # Reconstruct parent path. We assume .blend extension.
-        parent_path = os.path.join(project_dir, f"{name_without_ext}.blend")
-        return parent_path
+    except Exception:
+        return None
 
     return None
 
 
 def get_history_dir() -> str | None:
-    """
-    Get the history directory for the current project.
-    
-    Returns:
-        The history directory path, or None.
-    """
+    """Get the history directory for the current project."""
     return get_history_dir_for_path(get_project_path())
 
 
 def get_manifest_path() -> str | None:
-    """
-    Get the full path to the manifest.json file.
-    
-    Returns:
-        Path to manifest.json, or None if history dir cannot be determined.
-    """
+    """Get the full path to the manifest.json file."""
     history_dir = get_history_dir()
     if history_dir:
-        return os.path.join(history_dir, "manifest.json")
+        return str(Path(history_dir) / MANIFEST_NAME)
     return None
 
 
 def load_manifest() -> dict[str, Any]:
-    """
-    Load the manifest file.
-    
-    Returns:
-        A dictionary containing manifest data. Returns a default structure if loading fails.
-    """
-    path = get_manifest_path()
-    if path and os.path.exists(path):
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"Error loading manifest: {e}")
+    """Load the manifest file."""
+    path_str = get_manifest_path()
+    if path_str:
+        path = Path(path_str)
+        if path.exists():
+            try:
+                with path.open('r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"Error loading manifest: {e}")
     return {"parent_file": get_project_path(), "versions": []}
 
 
 def save_manifest(data: dict[str, Any]) -> None:
-    """
-    Save data to the manifest file.
-    
-    Args:
-        data: The dictionary data to save.
-    """
-    path = get_manifest_path()
-    if path:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
+    """Save data to the manifest file."""
+    path_str = get_manifest_path()
+    if path_str:
+        path = Path(path_str)
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open('w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error saving manifest: {e}")
 
 
 def format_file_size(size_in_bytes: float | int) -> str:
-    """
-    Format bytes into human-readable string.
-    
-    Args:
-        size_in_bytes: Size in bytes.
-        
-    Returns:
-        Formatted string (e.g. "1.5 MB").
-    """
+    """Format bytes into human-readable string."""
     try:
         size = float(size_in_bytes)
     except (ValueError, TypeError):
