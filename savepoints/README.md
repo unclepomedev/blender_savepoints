@@ -56,7 +56,7 @@ Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Ble
 ## ❓ FAQ / Troubleshooting
 
 **Q: What if I uninstall the add-on? Can I still access my history?**
-**A: Yes, absolutely.** SavePoints does not use any proprietary format. The snapshot files (`.blend_snapshot`) are standard Blender files with a different extension.
+**A: Yes.** SavePoints does not use any proprietary format. The snapshot files (`.blend_snapshot`) are standard Blender files with a different extension.
 
 **To manually recover a file without the add-on:**
 1. Navigate to the hidden history folder next to your project file (named like `.{YourFileName}_history`).
