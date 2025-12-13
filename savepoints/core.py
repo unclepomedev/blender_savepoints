@@ -206,64 +206,50 @@ def add_version_to_manifest(
         manifest: dict[str, Any],
         version_id: str,
         note: str,
-        thumb_rel: str,
-        blend_rel: str,
+        thumb_rel_path: str,
+        blend_rel_path: str,
         object_count: int = 0,
         file_size: int = 0
 ) -> None:
-    """
-    Add a new version entry to the manifest and save it.
-    
-    Args:
-        manifest: The current manifest data.
-        version_id: The new version ID.
-        note: Commit note.
-        thumb_rel: Relative path to thumbnail.
-        blend_rel: Relative path to blend file.
-        object_count: Number of objects.
-        file_size: Size of the blend file in bytes.
-    """
-    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    """Add a new version entry to the manifest."""
+    versions = manifest.get("versions", [])
+
     new_version = {
         "id": version_id,
-        "timestamp": now_str,
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "note": note,
-        "thumbnail": to_posix_path(thumb_rel),
-        "blend": to_posix_path(blend_rel),
+        "thumbnail": to_posix_path(thumb_rel_path),
+        "blend": to_posix_path(blend_rel_path),
         "object_count": object_count,
         "file_size": file_size
     }
-    versions = manifest.get("versions", [])
-    versions.append(new_version)
+    versions.insert(0, new_version)
     manifest["versions"] = versions
     save_manifest(manifest)
 
 
 def delete_version_by_id(version_id: str) -> None:
-    """
-    Delete a version from the manifest and file system.
-    
-    Args:
-        version_id: The ID of the version to delete.
-    """
+    """Delete a version from disk and manifest."""
     manifest = load_manifest()
     versions = manifest.get("versions", [])
 
-    target_v = None
+    version_to_remove = None
     for v in versions:
         if v.get("id") == version_id:
-            target_v = v
+            version_to_remove = v
             break
 
-    if target_v:
-        history_dir = get_history_dir()
-        if target_v.get('blend'):
-            blend_rel = from_posix_path(target_v['blend'])
-            v_folder = os.path.dirname(os.path.join(history_dir, blend_rel)) if history_dir else None
-            # Security check: ensure we are deleting inside history dir
-            if history_dir and v_folder and os.path.abspath(history_dir) in os.path.abspath(v_folder):
-                shutil.rmtree(v_folder, ignore_errors=True)
-
-        versions.remove(target_v)
+    if version_to_remove:
+        versions.remove(version_to_remove)
         manifest["versions"] = versions
         save_manifest(manifest)
+
+        # Remove directory
+        history_dir_str = get_history_dir()
+        if history_dir_str:
+            version_dir = Path(history_dir_str) / version_id
+            if version_dir.exists():
+                try:
+                    shutil.rmtree(version_dir)
+                except Exception as e:
+                    print(f"Failed to remove directory {version_dir}: {e}")
