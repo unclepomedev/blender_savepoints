@@ -11,33 +11,18 @@ _draw_handler = None
 
 
 def draw_hud():
-    try:
-        context = bpy.context
-    except AttributeError:
+    context = bpy.context
+    if not context or not context.area or context.area.type != "VIEW_3D":
         return
 
-    if not context.area or context.area.type != "VIEW_3D":
+    if not context.blend_data or not context.blend_data.filepath:
         return
 
-    try:
-        blend_path = context.blend_data.filepath
-    except AttributeError:
-        return
-
-    if not blend_path:
-        return
-
-    parent_path = core.get_parent_path_from_snapshot(blend_path)
+    parent_path = core.get_parent_path_from_snapshot(context.blend_data.filepath)
     if not parent_path:
         return
 
-    # --- Draw Text ---
-    font_id = 0
-    blf.size(font_id, 20)
-    blf.color(font_id, 1.0, 0.2, 0.2, 1.0)  # Red
-
-    text = "SNAPSHOT MODE (READ ONLY)"
-    text_width, text_height = blf.dimensions(font_id, text)
+    ui_scale = context.preferences.system.ui_scale
 
     region = context.region
     if not region:
@@ -45,23 +30,33 @@ def draw_hud():
 
     width = region.width
     height = region.height
-    padding = 20
 
-    # Bottom Left
-    blf.position(font_id, padding, padding, 0)
-    blf.draw(font_id, text)
+    # --- Draw Text ---
+    font_id = 0
+    font_size = int(20 * ui_scale)
+    padding = int(20 * ui_scale)
 
-    # Top Left
-    blf.position(font_id, padding, height - padding - text_height, 0)
-    blf.draw(font_id, text)
+    blf.size(font_id, font_size)
+    blf.color(font_id, 1.0, 0.3, 0.3, 1.0)  # red
 
-    # Top Right
-    blf.position(font_id, width - padding - text_width, height - padding - text_height, 0)
-    blf.draw(font_id, text)
+    blf.enable(font_id, blf.SHADOW)
+    blf.shadow(font_id, 3, 0.0, 0.0, 0.0, 1.0)
 
-    # Bottom Right
-    blf.position(font_id, width - padding - text_width, padding, 0)
-    blf.draw(font_id, text)
+    text = "SNAPSHOT MODE (READ ONLY)"
+    text_width, text_height = blf.dimensions(font_id, text)
+
+    positions = [
+        (padding, padding),  # Bottom Left
+        (padding, height - padding - text_height),  # Top Left
+        (width - padding - text_width, height - padding - text_height),  # Top Right
+        (width - padding - text_width, padding)  # Bottom Right
+    ]
+
+    for x, y in positions:
+        blf.position(font_id, x, y, 0)
+        blf.draw(font_id, text)
+
+    blf.disable(font_id, blf.SHADOW)
 
     # --- Draw Red Border ---
     try:
@@ -84,7 +79,7 @@ def draw_hud():
 
     try:
         gpu.state.blend_set("ALPHA")
-        gpu.state.line_width_set(4.0)
+        gpu.state.line_width_set(4.0 * ui_scale)
         shader.bind()
         shader.uniform_float("color", (1.0, 0.0, 0.0, 0.5))
         batch.draw(shader)
