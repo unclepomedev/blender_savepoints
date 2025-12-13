@@ -8,6 +8,7 @@ from . import operators
 from . import properties
 from . import ui
 from . import ui_utils
+from . import hud
 
 classes = (
     properties.SavePointsVersion,
@@ -35,6 +36,7 @@ def load_handler(dummy):
 
 def register():
     ui_utils.register_previews()
+    hud.register()
     for cls in classes:
         bpy.utils.register_class(cls)
 
@@ -53,6 +55,7 @@ def unregister():
         bpy.app.handlers.load_post.remove(load_handler)
 
     ui_utils.unregister_previews()
+    hud.unregister()
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
 
