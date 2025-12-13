@@ -54,12 +54,11 @@ To avoid this issue, please use one of the following methods before saving versi
 1.  **Pack Resources (Recommended):** Go to `File > External Data > Pack Resources`. This embeds textures into the `.blend` file.
 2.  **Use Absolute Paths:** Ensure your external links use absolute paths.
 
-### Asset Library Duplication (Resolved)
+### ℹ️ Note regarding Asset Browser
 
-Previously, assets in snapshots were scanned by Blender, causing duplicates in the Asset Browser.
-**As of recent versions, snapshots are saved with the `.blend_snapshot` extension, which prevents them from being scanned.**
+Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Blender from scanning them, ensuring **no duplicate assets appear in your Asset Browser**.
 
-*Note: Older snapshots saved as `.blend` files may still cause duplication. You can delete them via the SavePoints panel to resolve this.*
+*For users upgrading from older versions: Legacy snapshots saved as standard `.blend` files may still cause duplication. You can safely delete them via the SavePoints panel to clean up your library.*
 
 ## Testing (for Developer)
 
