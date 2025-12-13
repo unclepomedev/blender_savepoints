@@ -15,7 +15,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 ## Usage
 
 1. **Installation**: Install the add-on zip file in Blender.
-  It has been released on Blender Extensions, so you can get it from [there](https://extensions.blender.org/approval-queue/savepoints/).
+  It has been released on Blender Extensions, so you can get it from [there](https://extensions.blender.org/add-ons/savepoints/).
 2. **Locate the Panel**: Open the 3D Viewport and find the **SavePoints** tab in the N-Panel.
 3. **Save a Version**:
    - Click **Save Version**.
@@ -34,11 +34,11 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
 
-## Note
+## ⚠️ Note
 
 Thumbnails are skipped in no-GPU environments, but versioning remains fully functional. (Compatible with headless mode for automation and CI/CD workflows.)
 
-### ⚠️ Known Limitations: Relative Paths
+### Known Limitations: Relative Paths
 
 Because snapshots are saved in a subdirectory (`.history/vXXX/snapshot.blend`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
 
@@ -47,7 +47,7 @@ To avoid this issue, please use one of the following methods before saving versi
 1.  **Pack Resources (Recommended):** Go to `File > External Data > Pack Resources`. This embeds textures into the `.blend` file.
 2.  **Use Absolute Paths:** Ensure your external links use absolute paths.
 
-### ⚠️ Known Limitations: Asset Library Duplication
+### Known Limitations: Asset Library Duplication
 
 If you have registered your current project folder path in Blender's Asset Libraries, assets may appear duplicated in the Asset Browser. This happens because Blender scans both your current working file and the backup files saved in the `.Project_history` folder.
 **This is expected behavior.** SavePoints preserves all data, including Asset Marks, so that versions can be fully restored.
