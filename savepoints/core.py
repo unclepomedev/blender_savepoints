@@ -64,7 +64,7 @@ def get_history_dir_for_path(blend_path: str | None) -> str | None:
 def get_parent_path_from_snapshot(blend_path: str | None) -> str | None:
     """
     Determine the parent .blend file path if the current file is a snapshot.
-    Structure: [ProjectDir]/.{filename}_history/{version_id}/snapshot.blend
+    Structure: [ProjectDir]/.{filename}_history/{version_id}/snapshot.blend_snapshot
     Parent:    [ProjectDir]/{filename}.blend
     
     Args:
@@ -78,7 +78,7 @@ def get_parent_path_from_snapshot(blend_path: str | None) -> str | None:
 
     abspath = os.path.abspath(blend_path)
 
-    # .../vXXX/snapshot.blend -> dirname -> .../vXXX
+    # .../vXXX/snapshot.blend_snapshot -> dirname -> .../vXXX
     version_dir = os.path.dirname(abspath)
 
     # .../vXXX -> dirname -> .../.{filename}_history
