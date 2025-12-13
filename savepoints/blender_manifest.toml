@@ -5,6 +5,7 @@ name = "SavePoints"
 tagline = "Create save points with previews to restore project versions"
 type = "add-on"
 website = "https://github.com/unclepomedev/blender_savepoints"
+tags = ["System"]
 
 blender_version_min = "4.2.0"
 
