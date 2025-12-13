@@ -40,6 +40,12 @@ def register():
         bpy.utils.register_class(cls)
 
     bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
+    # Global state for rendering detection (persistent across scene copies)
+    bpy.types.WindowManager.savepoints_is_rendering = bpy.props.BoolProperty(
+        default=False,
+        options={'SKIP_SAVE'}
+    )
+
     bpy.app.handlers.load_post.append(load_handler)
 
     bpy.app.handlers.render_init.append(operators.render_init_handler)
@@ -69,6 +75,8 @@ def unregister():
         bpy.utils.unregister_class(cls)
 
     del bpy.types.Scene.savepoints_settings
+    if hasattr(bpy.types.WindowManager, "savepoints_is_rendering"):
+        del bpy.types.WindowManager.savepoints_is_rendering
 
 
 if __name__ == "__main__":
