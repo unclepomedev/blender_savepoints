@@ -40,7 +40,7 @@ Thumbnails are skipped in no-GPU environments, but versioning remains fully func
 
 ### Known Limitations: Relative Paths
 
-Because snapshots are saved in a subdirectory (`.history/vXXX/snapshot.blend_snapshot`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
+Because snapshots are saved in a subdirectory (`.Project_history/vXXX/snapshot.blend_snapshot`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
 
 **Recommended Workflows:**
 To avoid this issue, please use one of the following methods before saving versions:
