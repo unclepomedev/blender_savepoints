@@ -24,7 +24,7 @@ def from_posix_path(path: str | None) -> str:
     """Convert a POSIX path to the current OS separator."""
     if not path:
         return ""
-    return str(Path(path))
+    return str(Path(path.replace("\\", "/")))
 
 
 def get_project_path() -> str:
