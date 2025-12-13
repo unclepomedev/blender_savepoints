@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import time
-
 import bpy
+import time
 from bpy.app.handlers import persistent
 
 from . import operators
@@ -42,10 +41,6 @@ def register():
     bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
     bpy.app.handlers.load_post.append(load_handler)
 
-    bpy.app.handlers.render_init.append(operators.render_init_handler)
-    bpy.app.handlers.render_complete.append(operators.render_complete_handler)
-    bpy.app.handlers.render_cancel.append(operators.render_cancel_handler)
-
     if not bpy.app.timers.is_registered(operators.autosave_timer):
         bpy.app.timers.register(operators.autosave_timer, first_interval=10.0, persistent=True)
 
@@ -56,13 +51,6 @@ def unregister():
 
     if load_handler in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(load_handler)
-
-    if operators.render_init_handler in bpy.app.handlers.render_init:
-        bpy.app.handlers.render_init.remove(operators.render_init_handler)
-    if operators.render_complete_handler in bpy.app.handlers.render_complete:
-        bpy.app.handlers.render_complete.remove(operators.render_complete_handler)
-    if operators.render_cancel_handler in bpy.app.handlers.render_cancel:
-        bpy.app.handlers.render_cancel.remove(operators.render_cancel_handler)
 
     ui_utils.unregister_previews()
     for cls in reversed(classes):
