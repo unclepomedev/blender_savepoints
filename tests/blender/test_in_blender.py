@@ -65,7 +65,7 @@ def main() -> None:
         if not v001_dir.exists():
             raise RuntimeError("Version v001 folder not created")
 
-        snapshot_path = v001_dir / "snapshot.blend"
+        snapshot_path = v001_dir / "snapshot.blend_snapshot"
         if not snapshot_path.exists():
             raise RuntimeError("Snapshot file not created")
 
@@ -86,8 +86,8 @@ def main() -> None:
 
         # Verify loaded file
         current_path = Path(bpy.data.filepath)
-        if current_path.name != "snapshot.blend":
-            raise RuntimeError(f"Checkout did not load snapshot.blend, current: {current_path}")
+        if current_path.name != "snapshot.blend_snapshot":
+            raise RuntimeError(f"Checkout did not load snapshot.blend_snapshot, current: {current_path}")
 
         # Verify content (should have TestCube_v1, but NOT TransientSphere)
         if "TestCube_v1" not in bpy.data.objects:

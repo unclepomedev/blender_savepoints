@@ -38,7 +38,7 @@ def create_snapshot(context, version_id, note):
     capture_thumbnail(context, thumb_path)
 
     # Save Snapshot
-    blend_filename = "snapshot.blend"
+    blend_filename = "snapshot.blend_snapshot"
     snapshot_path = os.path.join(version_dir, blend_filename)
 
     bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)

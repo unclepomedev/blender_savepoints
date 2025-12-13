@@ -90,23 +90,25 @@ from savepoints.core import get_parent_path_from_snapshot
 
 class TestPathUtils(unittest.TestCase):
     def test_snapshot_path_detection(self):
-        # Case 1: Correct snapshot path
-        # Project: /projects/MyScene.blend
-        # History: /projects/.MyScene_history
-        # Version: /projects/.MyScene_history/v005
-        # Snapshot: /projects/.MyScene_history/v005/snapshot.blend
-
+        # Case 1a: New snapshot extension (.blend_snapshot)
         base = "/projects"
         filename = "MyScene"
         history_dir = f".{filename}_history"
         version = "v005"
-        snapshot = "snapshot.blend"
+        snapshot = "snapshot.blend_snapshot"
 
         full_path = os.path.join(base, history_dir, version, snapshot)
         expected_parent = os.path.join(base, f"{filename}.blend")
 
         result = get_parent_path_from_snapshot(full_path)
         self.assertEqual(result, expected_parent)
+
+        # Case 1b: Old snapshot extension (.blend)
+        snapshot_old = "snapshot.blend"
+        full_path_old = os.path.join(base, history_dir, version, snapshot_old)
+        
+        result_old = get_parent_path_from_snapshot(full_path_old)
+        self.assertEqual(result_old, expected_parent)
 
     def test_not_snapshot_path(self):
         # Case 2: Normal file
@@ -116,20 +118,20 @@ class TestPathUtils(unittest.TestCase):
 
     def test_nested_history_not_matched(self):
         # Case 3: Just inside a folder called history but not following convention
-        full_path = "/projects/history/v001/snapshot.blend"
+        full_path = "/projects/history/v001/snapshot.blend_snapshot"
         result = get_parent_path_from_snapshot(full_path)
         self.assertIsNone(result)
 
     def test_wrong_history_naming(self):
         # Case 4: History folder doesn't start with dot
-        full_path = "/projects/MyScene_history/v001/snapshot.blend"
+        full_path = "/projects/MyScene_history/v001/snapshot.blend_snapshot"
         result = get_parent_path_from_snapshot(full_path)
         self.assertIsNone(result)
 
     def test_windows_path_on_posix_danger(self):
-        # Simulate a manifest entry created on Windows: "v001\snapshot.blend"
+        # Simulate a manifest entry created on Windows: "v001\snapshot.blend_snapshot"
         # On POSIX (Mac/Linux), backslash is NOT a separator.
-        # os.path.join joining a dir and this string results in: dir/v001\snapshot.blend
+        # os.path.join joining a dir and this string results in: dir/v001\snapshot.blend_snapshot
         # os.path.dirname of this is 'dir' (the history folder), NOT 'dir/v001'.
 
         # Only run this test on POSIX
@@ -137,11 +139,11 @@ class TestPathUtils(unittest.TestCase):
             return
 
         history_dir = "/project/.history"
-        windows_blend_path = "v001\\snapshot.blend"
+        windows_blend_path = "v001\\snapshot.blend_snapshot"
 
         full_path = os.path.join(history_dir, windows_blend_path)
 
-        # On POSIX, the filename is "v001\snapshot.blend", so dirname is history_dir
+        # On POSIX, the filename is "v001\snapshot.blend_snapshot", so dirname is history_dir
         detected_folder = os.path.dirname(full_path)
 
         # This confirms the bug: we would inadvertently target the history root for deletion
@@ -156,14 +158,14 @@ class TestPathUtils(unittest.TestCase):
             pass
 
         history_dir = "/project/.history"
-        windows_blend_path = "v001\\snapshot.blend"
+        windows_blend_path = "v001\\snapshot.blend_snapshot"
 
         # 1. Normalize the path from manifest
         normalized_path = from_posix_path(windows_blend_path)
 
         if os.name != 'nt':
             # On POSIX, it should replace backslash with slash
-            self.assertEqual(normalized_path, "v001/snapshot.blend")
+            self.assertEqual(normalized_path, "v001/snapshot.blend_snapshot")
 
             full_path = os.path.join(history_dir, normalized_path)
             detected_folder = os.path.dirname(full_path)
@@ -193,7 +195,7 @@ class TestPathUtils(unittest.TestCase):
 
         # Case 2: Snapshot file -> poll should be False
         history_dir = ".MyScene_history"
-        snapshot_path = os.path.join(base, history_dir, "v001", "snapshot.blend")
+        snapshot_path = os.path.join(base, history_dir, "v001", "snapshot.blend_snapshot")
 
         bpy.data.filepath = snapshot_path
         self.assertFalse(SAVEPOINTS_OT_commit.poll(mock_context),
