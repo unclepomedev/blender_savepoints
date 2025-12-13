@@ -83,6 +83,19 @@ bpy.props.EnumProperty = mock.MagicMock()
 bpy.props.CollectionProperty = mock.MagicMock()
 bpy.props.PointerProperty = mock.MagicMock()
 
+# Mock graphics modules (needed because __init__ imports hud which imports these)
+blf = types.ModuleType("blf")
+sys.modules["blf"] = blf
+
+gpu = types.ModuleType("gpu")
+sys.modules["gpu"] = gpu
+
+gpu_extras = types.ModuleType("gpu_extras")
+gpu_extras.batch = types.ModuleType("gpu_extras.batch")
+sys.modules["gpu_extras"] = gpu_extras
+sys.modules["gpu_extras.batch"] = gpu_extras.batch
+gpu_extras.batch.batch_for_shader = mock.MagicMock()
+
 # --- ROBUST MOCKING END ---
 
 from savepoints.core import get_parent_path_from_snapshot
