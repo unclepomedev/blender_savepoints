@@ -18,7 +18,7 @@ from .core import (
 from .ui_utils import sync_history_to_props
 
 
-def create_snapshot(context, version_id, note):
+def create_snapshot(context, version_id, note, skip_thumbnail=False):
     """Helper to create a snapshot."""
     history_dir = get_history_dir()
     if not history_dir:
@@ -35,7 +35,8 @@ def create_snapshot(context, version_id, note):
     # Thumbnail
     thumb_filename = "thumbnail.png"
     thumb_path = os.path.join(version_dir, thumb_filename)
-    capture_thumbnail(context, thumb_path)
+    if not skip_thumbnail:
+        capture_thumbnail(context, thumb_path)
 
     # Save Snapshot
     blend_filename = "snapshot.blend_snapshot"
@@ -110,7 +111,7 @@ def autosave_timer():
 
         # Execute save
         delete_version_by_id("autosave")
-        create_snapshot(context, "autosave", "Auto Save")
+        create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)
         settings.last_autosave_timestamp = str(time.time())
 
         return check_interval

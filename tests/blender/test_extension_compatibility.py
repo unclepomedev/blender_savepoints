@@ -131,17 +131,6 @@ def main() -> None:
 
         # 6. Test Checkout New Format (.blend_snapshot)
         print("Testing Checkout v002 (.blend_snapshot)...")
-        # Need to refresh or ensure index is correct. 
-        # When opening parent, settings might be reset if not persistent, but here it's same session.
-        # But wait, open_mainfile resets bpy.context.scene.
-        # So we need to re-find the index.
-
-        # Reloading parent file re-initializes the addon properties if registered?
-        # Addon is registered globally. Scene properties are stored in file.
-        # Since we just opened the parent file (which we saved at start), 
-        # it doesn't have the history loaded in properties yet (unless we saved it after refresh).
-        # But `savepoints` operators load manifest on demand or refresh.
-        # We need to call refresh again after opening parent.
 
         bpy.ops.savepoints.refresh()
         settings = bpy.context.scene.savepoints_settings
