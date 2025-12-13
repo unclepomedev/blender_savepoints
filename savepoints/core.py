@@ -133,78 +133,72 @@ def format_file_size(size_in_bytes: float | int) -> str:
     return f"{size:.1f} TB"
 
 
-def get_next_version_id(versions: list[dict[str, Any]]) -> str:
-    """
-    Determine the next version ID string (e.g., v005).
-    
-    Args:
-        versions: List of version dictionaries.
-        
-    Returns:
-        Next version ID string.
-    """
+def get_next_version_id(versions: list[dict]) -> str:
+    """Generate the next version ID (e.g. "v001")."""
     max_id = 0
     for v in versions:
         vid = v.get("id", "")
-        num = _extract_version_number(vid)
-        if num > max_id:
-            max_id = num
-    new_id_num = max_id + 1
-    return f"v{new_id_num:03d}"
+        if vid.startswith("v") and vid[1:].isdigit():
+            try:
+                num = int(vid[1:])
+                if num > max_id:
+                    max_id = num
+            except ValueError:
+                pass
+    return f"v{max_id + 1:03d}"
 
 
-def _extract_version_number(vid: str) -> int:
-    if vid.startswith("v"):
-        try:
-            return int(vid[1:])
-        except ValueError:
-            pass
-    return -1
+def _resize_image_file(image_path: str, max_dim: int = 360) -> None:
+    """Resize the image file to save space."""
+    if not Path(image_path).exists():
+        return
+
+    try:
+        img = bpy.data.images.load(image_path)
+        width, height = img.size
+
+        if width > max_dim or height > max_dim:
+            scale_factor = min(max_dim / width, max_dim / height)
+            new_width = max(1, int(width * scale_factor))
+            new_height = max(1, int(height * scale_factor))
+
+            img.scale(new_width, new_height)
+            img.save()
+
+        bpy.data.images.remove(img)
+    except Exception as e:
+        print(f"Failed to resize thumbnail: {e}")
 
 
-def capture_thumbnail(context: bpy.types.Context, thumb_path: str) -> None:
+def capture_thumbnail(context: bpy.types.Context, filepath: str) -> None:
     """
-    Capture the current viewport as a thumbnail.
-    
-    Args:
-        context: Blender context.
-        thumb_path: Path where the thumbnail should be saved.
+    Capture a clean viewport render as a thumbnail.
     """
+    path = Path(filepath)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Background mode check
+    if not context.window_manager.windows:
+        return
+
     render = context.scene.render
+    # Store old settings
     old_filepath = render.filepath
 
     try:
-        render.filepath = thumb_path
-        # OpenGL render of viewport
-        if context.window_manager.windows:
-            bpy.ops.render.opengl(write_still=True)
+        # Use simple string for Blender API
+        render.filepath = str(path)
 
-            # Resize thumbnail to save space
-            if os.path.exists(thumb_path):
-                try:
-                    img = bpy.data.images.load(thumb_path)
-                    width, height = img.size
-                    max_dim = 360  # Max dimension in pixels
+        # OpenGL Render (Clean Viewport)
+        bpy.ops.render.opengl(write_still=True)
 
-                    if width > max_dim or height > max_dim:
-                        scale_factor = min(max_dim / width, max_dim / height)
-                        new_width = int(width * scale_factor)
-                        new_height = int(height * scale_factor)
+        # Resize logic (To save disk space)
+        _resize_image_file(str(path))
 
-                        new_width = max(1, new_width)
-                        new_height = max(1, new_height)
-
-                        img.scale(new_width, new_height)
-                        img.save()
-
-                    bpy.data.images.remove(img)
-                except Exception as resize_e:
-                    print(f"Failed to resize thumbnail: {resize_e}")
-        else:
-            pass
     except Exception as e:
         print(f"Thumbnail generation failed: {e}")
     finally:
+        # Restore settings
         render.filepath = old_filepath
 
 
