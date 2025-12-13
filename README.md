@@ -47,22 +47,19 @@ Thumbnails are skipped in no-GPU environments, but versioning remains fully func
 
 ### Known Limitations: Relative Paths
 
-Because snapshots are saved in a subdirectory (`.Project_history/vXXX/snapshot.blend`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
+Because snapshots are saved in a subdirectory (`.Project_history/vXXX/snapshot.blend_snapshot`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
 
 **Recommended Workflows:**
 To avoid this issue, please use one of the following methods before saving versions:
 1.  **Pack Resources (Recommended):** Go to `File > External Data > Pack Resources`. This embeds textures into the `.blend` file.
 2.  **Use Absolute Paths:** Ensure your external links use absolute paths.
 
-### Known Limitations: Asset Library Duplication
+### Asset Library Duplication (Resolved)
 
-If you have registered your current project folder path in Blender's Asset Libraries, assets may appear duplicated in the Asset Browser. This happens because Blender scans both your current working file and the backup files saved in the `.Project_history` folder.
-**This is expected behavior.** SavePoints preserves all data, including Asset Marks, so that versions can be fully restored.
+Previously, assets in snapshots were scanned by Blender, causing duplicates in the Asset Browser.
+**As of recent versions, snapshots are saved with the `.blend_snapshot` extension, which prevents them from being scanned.**
 
-To avoid this:
-1. Do not register your "Work In Progress" folder as an Asset Library. 
-2. Or, use the "Current File" filter in the Asset Browser instead of "All" or a specific library when working.
-3. If duplicated, you can also delete unnecessary snapshots via SavePoints `Delete` to reduce scan targets.
+*Note: Older snapshots saved as `.blend` files may still cause duplication. You can delete them via the SavePoints panel to resolve this.*
 
 ## Testing (for Developer)
 
