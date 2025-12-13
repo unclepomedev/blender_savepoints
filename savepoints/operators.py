@@ -18,25 +18,36 @@ from .core import (
 )
 from .ui_utils import sync_history_to_props
 
-_is_rendering = False
+
+def set_rendering_state(is_active: bool):
+    """Safely set the rendering state on the WindowManager."""
+    try:
+        wm = None
+        if hasattr(bpy.context, "window_manager"):
+            wm = bpy.context.window_manager
+
+        if not wm and bpy.data.window_managers:
+            wm = bpy.data.window_managers[0]
+
+        if wm:
+            wm.savepoints_is_rendering = is_active
+    except Exception as e:
+        print(f"SavePoints: Failed to update render state: {e}")
 
 
 @persistent
 def render_init_handler(scene):
-    global _is_rendering
-    _is_rendering = True
+    set_rendering_state(True)
 
 
 @persistent
 def render_complete_handler(scene):
-    global _is_rendering
-    _is_rendering = False
+    set_rendering_state(False)
 
 
 @persistent
 def render_cancel_handler(scene):
-    global _is_rendering
-    _is_rendering = False
+    set_rendering_state(False)
 
 
 def create_snapshot(context, version_id, note):
@@ -89,8 +100,16 @@ def autosave_timer():
     # Check every 5 seconds for responsiveness
     check_interval = 5.0
 
-    if _is_rendering:
-        return check_interval
+    # Check if rendering via WindowManager property
+    try:
+        wm = getattr(bpy.context, "window_manager", None)
+        if not wm and bpy.data.window_managers:
+            wm = bpy.data.window_managers[0]
+
+        if wm and getattr(wm, "savepoints_is_rendering", False):
+            return check_interval
+    except Exception:
+        pass
 
     try:
         context = bpy.context

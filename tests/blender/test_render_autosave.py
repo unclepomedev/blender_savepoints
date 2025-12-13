@@ -59,8 +59,8 @@ def main() -> None:
         savepoints.operators.render_init_handler(bpy.context.scene)
 
         # Verify global flag (optional, but good for debug)
-        if not savepoints.operators._is_rendering:
-            raise RuntimeError("_is_rendering flag not set after render_init_handler")
+        if not bpy.context.window_manager.savepoints_is_rendering:
+            raise RuntimeError("savepoints_is_rendering property not set after render_init_handler")
 
         # Force due
         make_autosave_due()
@@ -86,8 +86,8 @@ def main() -> None:
         print(" Simulating Render Complete...")
         savepoints.operators.render_complete_handler(bpy.context.scene)
 
-        if savepoints.operators._is_rendering:
-            raise RuntimeError("_is_rendering flag still set after render_complete_handler")
+        if bpy.context.window_manager.savepoints_is_rendering:
+            raise RuntimeError("savepoints_is_rendering property still set after render_complete_handler")
 
         # Run timer manually (still due because previous one was skipped)
         # Note: autosave_timer logic: if blocked, it returns but doesn't update timestamp.
