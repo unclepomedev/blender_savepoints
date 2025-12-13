@@ -34,7 +34,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - You are now in **Snapshot Mode**.
        - To restore this version as the main file, click **Save as Parent**.
        - To return to your original file without saving changes, click **Return to Parent**.
-       - A backup of the previous main file will be saved in the history folder (e.g., `.Project_history/Project.blend.123456.bak`).
+       - A backup of the previous main file will be saved in the history folder (e.g., `.{YourFileName}_history/Project.blend.123456.bak`).
 
 5. **Auto Save**:
    - Configure auto-save settings directly in the panel.
@@ -47,7 +47,7 @@ Thumbnails are skipped in no-GPU environments, but versioning remains fully func
 
 ### Known Limitations: Relative Paths
 
-Because snapshots are saved in a subdirectory (`.Project_history/vXXX/snapshot.blend_snapshot`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
+Because snapshots are saved in a subdirectory (`.{YourFileName}_history/vXXX/snapshot.blend_snapshot`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
 
 **Recommended Workflows:**
 To avoid this issue, please use one of the following methods before saving versions:
@@ -59,6 +59,18 @@ To avoid this issue, please use one of the following methods before saving versi
 Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Blender from scanning them, ensuring **no duplicate assets appear in your Asset Browser**.
 
 *For users upgrading from older versions: Legacy snapshots saved as standard `.blend` files may still cause duplication. You can safely delete them via the SavePoints panel to clean up your library.*
+
+## ❓ FAQ / Troubleshooting
+
+**Q: What if I uninstall the add-on? Can I still access my history?**
+**A: Yes, absolutely.** SavePoints does not use any proprietary format. The snapshot files (`.blend_snapshot`) are standard Blender files with a different extension.
+
+**To manually recover a file without the add-on:**
+1. Navigate to the hidden history folder next to your project file (named like `.{YourFileName}_history`).
+2. Open the version folder you want to recover (e.g., `v005`).
+3. **Copy** the snapshot file (`snapshot.blend_snapshot`) to another location (e.g., your Desktop).
+4. **Rename** the extension from `.blend_snapshot` to `.blend`.
+5. Open it normally in Blender.
 
 ## Testing (for Developer)
 
