@@ -145,12 +145,14 @@ def load_manifest() -> dict[str, Any]:
                     return data
             except Exception as e:
                 print(f"Error loading manifest: {e}")
-    return {
+    default_manifest = {
         "parent_file": get_project_path(),
         "versions": [],
         "schema_version": SCHEMA_VERSION,
         "project_uuid": str(uuid.uuid4()),
     }
+    save_manifest(default_manifest)
+    return default_manifest
 
 
 def save_manifest(data: dict[str, Any]) -> None:
