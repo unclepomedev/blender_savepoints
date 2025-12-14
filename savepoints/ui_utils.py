@@ -60,6 +60,7 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         item.thumbnail_rel_path = core.from_posix_path(v_data.get("thumbnail", ""))
         item.blend_rel_path = core.from_posix_path(v_data.get("blend", ""))
         item.object_count = v_data.get("object_count", 0)
+        item.is_protected = v_data.get("is_protected", False)
 
         fsize = v_data.get("file_size", 0)
         item.file_size_display = core.format_file_size(fsize)

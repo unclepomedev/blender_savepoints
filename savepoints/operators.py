@@ -14,6 +14,8 @@ from .core import (
     add_version_to_manifest,
     delete_version_by_id,
     get_parent_path_from_snapshot,
+    prune_versions,
+    set_version_protection,
 )
 from .ui_utils import sync_history_to_props
 
@@ -137,6 +139,17 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     def invoke(self, context, event):
         return context.window_manager.invoke_props_dialog(self)
 
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(self, "note")
+
+        settings = context.scene.savepoints_settings
+        if settings.use_limit_versions:
+            protected_count = sum(1 for v in settings.versions if v.version_id != "autosave" and v.is_protected)
+            if protected_count >= settings.max_versions_to_keep:
+                layout.label(text="Warning: Locked versions limit reached.", icon='ERROR')
+                layout.label(text="Auto-deletion will be skipped.", icon='INFO')
+
     def execute(self, context):
         if not bpy.data.filepath:
             self.report({'ERROR'}, "Save the project first!")
@@ -146,7 +159,40 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         new_id_str = get_next_version_id(manifest.get("versions", []))
         create_snapshot(context, new_id_str, self.note)
 
+        # Auto Pruning
+        settings = context.scene.savepoints_settings
+        if settings.use_limit_versions and settings.max_versions_to_keep > 0:
+            deleted = prune_versions(settings.max_versions_to_keep)
+            if deleted > 0:
+                sync_history_to_props(context)
+
         self.report({'INFO'}, f"Version {new_id_str} saved.")
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
+    """Toggle protection for a version"""
+    bl_idname = "savepoints.toggle_protection"
+    bl_label = "Toggle Protection"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    version_id: bpy.props.StringProperty()
+
+    def execute(self, context):
+        settings = context.scene.savepoints_settings
+
+        target_item = None
+        for item in settings.versions:
+            if item.version_id == self.version_id:
+                target_item = item
+                break
+
+        if not target_item:
+            return {'CANCELLED'}
+
+        new_state = not target_item.is_protected
+        set_version_protection(self.version_id, new_state)
+        target_item.is_protected = new_state
         return {'FINISHED'}
 
 
