@@ -17,6 +17,7 @@ from .core import (
     get_parent_path_from_snapshot,
     prune_versions,
     set_version_protection,
+    update_version_note,
 )
 from .ui_utils import sync_history_to_props
 
@@ -177,6 +178,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
     def invoke(self, context, event):
+        settings = context.scene.savepoints_settings
+        if not settings.show_save_dialog:
+            self.note = ""  # Quick save, no note
+            return self.execute(context)
         return context.window_manager.invoke_props_dialog(self)
 
     def draw(self, context):
@@ -207,6 +212,41 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
                 sync_history_to_props(context)
 
         self.report({'INFO'}, f"Version {new_id_str} saved.")
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
+    """Edit the note of an existing version"""
+    bl_idname = "savepoints.edit_note"
+    bl_label = "Edit Note"
+    bl_options = {'REGISTER'}
+
+    version_id: bpy.props.StringProperty(options={'HIDDEN'})
+    new_note: bpy.props.StringProperty(name="Note")
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(self, "new_note")
+
+    def execute(self, context):
+        if not self.version_id:
+            return {'CANCELLED'}
+
+        try:
+            update_version_note(self.version_id, self.new_note)
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to update note: {e}")
+            return {'CANCELLED'}
+
+        sync_history_to_props(context)
+
+        # Force UI redraw to update the note in the list immediately
+        for area in context.window.screen.areas:
+            area.tag_redraw()
+
         return {'FINISHED'}
 
 

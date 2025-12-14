@@ -20,6 +20,10 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon='FILE_BACKUP')
 
         if item.version_id != "autosave":
+            edit_op = layout.operator("savepoints.edit_note", text="", icon='GREASEPENCIL', emboss=False)
+            edit_op.version_id = item.version_id
+            edit_op.new_note = item.note
+
             lock_icon = 'LOCKED' if item.is_protected else 'UNLOCKED'
             op = layout.operator("savepoints.toggle_protection", text="", icon=lock_icon, emboss=False)
             op.version_id = item.version_id
@@ -111,6 +115,12 @@ def _draw_empty_state(layout):
     layout.operator("savepoints.commit", text="Create First Version", icon='FILE_TICK')
 
 
+def _draw_general_settings(layout, settings):
+    box = layout.box()
+    box.label(text="General", icon='PREFERENCES')
+    box.prop(settings, "show_save_dialog")
+
+
 def _draw_auto_save_settings(layout, settings):
     box = layout.box()
     box.label(text="Auto Save", icon='TIME')
@@ -159,6 +169,9 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             _draw_version_details(layout, settings)
         else:
             _draw_empty_state(layout)
+
+        layout.separator()
+        _draw_general_settings(layout, settings)
 
         layout.separator()
         _draw_auto_save_settings(layout, settings)

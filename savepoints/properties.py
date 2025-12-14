@@ -18,6 +18,12 @@ class SavePointsSettings(bpy.types.PropertyGroup):
     versions: bpy.props.CollectionProperty(type=SavePointsVersion)
     active_version_index: bpy.props.IntProperty(name="Active Version Index", default=-1)
 
+    show_save_dialog: bpy.props.BoolProperty(
+        name="Show Save Dialog",
+        description="Show the note input dialog when saving a version. Disable for instant 'Quick Save'",
+        default=True
+    )
+
     use_limit_versions: bpy.props.BoolProperty(
         name="Limit Versions",
         description="Enable automatic deletion of old versions to save disk space",
