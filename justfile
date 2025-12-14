@@ -12,3 +12,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_missing_file_handling.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_link_history.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_link_history_validation.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_link_history_parent_update.py
