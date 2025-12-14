@@ -6,3 +6,5 @@ blender_exe := env_var_or_default('BLENDER_EXE', '/Applications/Blender.app/Cont
 # Run E2E tests in Blender
 test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_in_blender.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_autosave_skip_thumb.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_extension_compatibility.py
