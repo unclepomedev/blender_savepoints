@@ -96,14 +96,14 @@ def main():
 
         if "v002" not in ids:
             raise RuntimeError("Protected version v002 was incorrectly pruned")
-        if "v003" in ids:
-            raise RuntimeError("Unprotected version v003 should have been pruned instead of v002")
+        if "v003" not in ids:
+            raise RuntimeError("Recent version v003 should have been kept alongside Protected v002")
 
-        # Remaining should be: v005, v004, v002 (order in list: v005, v004, v002)
+        # Remaining should be: v005, v004, v003, v002 (order in list: v005, v004, v003, v002)
         print("Test 2 Passed.")
 
         print("\n--- Test 3: Autosave Exclusion ---")
-        # Current: v005, v004, v002. Count=3. Limit=3.
+        # Current: v005, v004, v003, v002. Count=4. Limit=3.
 
         # Create Autosave manually (simulating the timer logic)
         from savepoints.operators import create_snapshot
@@ -111,16 +111,17 @@ def main():
 
         ids = get_version_ids()
         print(f"IDs with autosave: {ids}")
-        # Should be v005, v004, v002, autosave (or similar order)
+        # Should be v005, v004, v003, v002, autosave (or similar order)
 
         if "autosave" not in ids:
             raise RuntimeError("Autosave not created")
 
         # Create v006.
-        # Manual versions count: 3 (v005, v004, v002). Limit: 3.
-        # Adding v006 makes manual count 4. Excess 1.
-        # Oldest manual is v002 (Protected). Next is v004.
-        # v004 should be pruned. Autosave should persist.
+        # Manual versions count: 4 (v005, v004, v003, v002). Limit: 3.
+        # Adding v006 makes manual count 5.
+        # New Logic: Keep 3 recent (v006, v005, v004). Keep Protected (v002).
+        # v003 should be pruned (it is 4th recent, not protected).
+        # Autosave should persist.
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Ver 6")
 
         ids = get_version_ids()
@@ -128,17 +129,19 @@ def main():
 
         if "autosave" not in ids:
             raise RuntimeError("Autosave was incorrectly pruned")
-        if "v004" in ids:
-            raise RuntimeError("v004 should have been pruned")
+        if "v003" in ids:
+            raise RuntimeError("v003 should have been pruned")
+        if "v004" not in ids:
+            raise RuntimeError("v004 should have been kept (Recent)")
         if "v002" not in ids:
             raise RuntimeError("Protected v002 should still remain")
 
-        # Remaining manual: v006, v005, v002. Total 3 manual.
+        # Remaining manual: v006, v005, v004, v002. Total 4 manual.
         print("Test 3 Passed.")
 
         print("\n--- Test 4: Locked Limit Reached ---")
-        # Current Manual: v006, v005, v002.
-        # Lock v005 and v006 as well. All 3 manual versions are now locked.
+        # Current Manual: v006, v005, v004, v002.
+        # Lock v005 and v006 as well.
         bpy.ops.savepoints.toggle_protection(version_id="v005")
         bpy.ops.savepoints.toggle_protection(version_id="v006")
 
