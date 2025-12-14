@@ -11,6 +11,8 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 - **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
+- **Disk Management**: Automatically deletes oldest versions to keep the history size manageable (configurable).
+- **Version Protection**: Lock specific versions to prevent them from being auto-deleted or accidentally removed.
 
 ## Usage
 
@@ -34,6 +36,9 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
    - **Note**: Auto-save does not generate thumbnails to avoid rendering interruptions.
+6. **Disk Management & Protection**:
+   - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50).
+   - **Lock Versions**: Click the Lock icon next to a version to protect it. Locked versions are never auto-deleted and cannot be manually deleted unless unlocked.
 
 ## ⚠️ Note
 
