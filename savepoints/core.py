@@ -262,7 +262,12 @@ def prune_versions(max_keep: int) -> int:
     excess = len(manual_versions) - max_keep
     ids_to_delete = []
 
-    for v in reversed(manual_versions):
+    # Iterate from oldest (end of list) up to the second newest
+    # We exclude the newest version (index 0) from pruning candidates to ensure
+    # the version just created is never immediately deleted, even if limit is exceeded.
+    candidates = manual_versions[1:]
+
+    for v in reversed(candidates):
         if excess <= 0:
             break
 
