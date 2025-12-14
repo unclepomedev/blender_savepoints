@@ -10,3 +10,5 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_extension_compatibility.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_retention_policy.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_missing_file_handling.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_link_history.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_link_history_validation.py
