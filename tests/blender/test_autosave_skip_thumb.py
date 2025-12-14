@@ -2,7 +2,7 @@ import shutil
 import sys
 import traceback
 from pathlib import Path
-import os
+
 import bpy
 
 # Add project root to sys.path
