@@ -52,7 +52,11 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
 
     history_dir = core.get_history_dir()
 
-    for v_data in data.get("versions", []):
+    versions = data.get("versions", [])
+    # Sort: Normal versions first (by ID), autosave last
+    versions.sort(key=lambda v: (1 if v.get("id") == "autosave" else 0, v.get("id", "")))
+
+    for v_data in versions:
         item = settings.versions.add()
         item.version_id = v_data.get("id", "")
         item.timestamp = v_data.get("timestamp", "")
