@@ -28,6 +28,9 @@ sys.modules.update(modules)
 class MockImportHelper: pass
 modules["bpy_extras.io_utils"].ImportHelper = MockImportHelper
 
+class MockExportHelper: pass
+modules["bpy_extras.io_utils"].ExportHelper = MockExportHelper
+
 # Fix for multiple inheritance (metaclass conflict)
 class MockOperator: pass
 modules["bpy"].types.Operator = MockOperator

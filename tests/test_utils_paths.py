@@ -105,6 +105,9 @@ sys.modules["bpy_extras.io_utils"] = bpy_extras.io_utils
 class MockImportHelper: pass
 bpy_extras.io_utils.ImportHelper = MockImportHelper
 
+class MockExportHelper: pass
+bpy_extras.io_utils.ExportHelper = MockExportHelper
+
 # --- ROBUST MOCKING END ---
 
 from savepoints.core import get_parent_path_from_snapshot
