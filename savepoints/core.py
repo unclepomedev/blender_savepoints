@@ -355,4 +355,18 @@ def link_history(source_dir: str | Path, blend_filepath: str) -> str:
 
     shutil.move(str(source_path), str(target_path))
 
+    # Update manifest with new parent file
+    try:
+        manifest_path = target_path / MANIFEST_NAME
+        if manifest_path.exists():
+            with manifest_path.open('r', encoding='utf-8') as f:
+                manifest_data = json.load(f)
+
+            manifest_data["parent_file"] = to_posix_path(blend_filepath)
+
+            with manifest_path.open('w', encoding='utf-8') as f:
+                json.dump(manifest_data, f, indent=4)
+    except Exception as e:
+        print(f"Warning: Failed to update parent_file in linked manifest: {e}")
+
     return str(target_path)
