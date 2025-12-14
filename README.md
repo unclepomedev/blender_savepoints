@@ -45,6 +45,9 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 6. **Disk Management & Protection**:
    - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50).
    - **Lock Versions**: Click the Lock icon next to a version to protect it. Locked versions are never auto-deleted and cannot be manually deleted unless unlocked.
+7. **Relinking History**:
+   - If the history folder is missing (e.g., after moving the `.blend` file), a **Link Existing History Folder** button will appear.
+   - Click it to select and reconnect an existing history folder.
 
 ## ⚠️ Note
 
