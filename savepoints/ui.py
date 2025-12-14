@@ -19,9 +19,10 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
         else:
             layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon='FILE_BACKUP')
 
-        lock_icon = 'LOCKED' if item.is_protected else 'UNLOCKED'
-        op = layout.operator("savepoints.toggle_protection", text="", icon=lock_icon, emboss=False)
-        op.version_id = item.version_id
+        if item.version_id != "autosave":
+            lock_icon = 'LOCKED' if item.is_protected else 'UNLOCKED'
+            op = layout.operator("savepoints.toggle_protection", text="", icon=lock_icon, emboss=False)
+            op.version_id = item.version_id
 
     def filter_items(self, context, data, propname):
         items = getattr(data, propname)

@@ -219,6 +219,9 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
     version_id: bpy.props.StringProperty()
 
     def execute(self, context):
+        if self.version_id == "autosave":
+            return {'CANCELLED'}
+
         settings = context.scene.savepoints_settings
 
         target_item = None
