@@ -9,3 +9,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_autosave_skip_thumb.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_extension_compatibility.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_retention_policy.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_missing_file_handling.py
