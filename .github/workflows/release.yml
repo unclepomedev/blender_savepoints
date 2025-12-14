@@ -10,8 +10,8 @@ permissions:
   contents: write
 
 jobs:
-  test:
-    name: Test on Blender ${{ matrix.blender-version }}
+  test-linux:
+    name: Test on Linux - Blender ${{ matrix.blender-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -34,20 +34,22 @@ jobs:
 
       - name: Download Blender
         if: steps.cache-blender.outputs.cache-hit != 'true'
+        shell: bash
         run: |
           set -e
           VER="${{ matrix.blender-version }}"
           MAJOR_MINOR=${VER%.*}
+          mkdir -p blender-bin
+
           URL="https://download.blender.org/release/Blender${MAJOR_MINOR}/blender-${VER}-linux-x64.tar.xz"
-          
-          echo "Downloading Blender ${VER} from: $URL"
-          
+          echo "Downloading Blender ${VER} for Linux from: $URL"
           curl -SL --fail "$URL" -o blender.tar.xz || { echo "Failed to download Blender"; exit 1; }
           
-          mkdir -p blender-bin
           tar -xf blender.tar.xz -C blender-bin --strip-components=1
+          rm blender.tar.xz
 
       - name: Setup Blender Path
+        shell: bash
         run: |
           echo "$PWD/blender-bin" >> $GITHUB_PATH
           export PATH="$PWD/blender-bin:$PATH"
@@ -59,12 +61,71 @@ jobs:
           echo "Blender setup complete."
 
       - name: Run Tests
+        shell: bash
         env:
-          BLENDER_EXE: 'blender'
+          BLENDER_EXE: blender
+        run: just test-blender
+
+  test-windows:
+    name: Test on Windows - Blender ${{ matrix.blender-version }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        blender-version: [ "4.2.0", "4.5.0", "5.0.0" ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Just
+        uses: extractions/setup-just@v3
+
+      - name: Cache Blender
+        id: cache-blender
+        uses: actions/cache@v4
+        with:
+          path: blender-bin
+          key: blender-windows-${{ matrix.blender-version }}
+
+      - name: Download Blender
+        if: steps.cache-blender.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -e
+          VER="${{ matrix.blender-version }}"
+          MAJOR_MINOR=${VER%.*}
+          mkdir -p blender-bin
+
+          URL="https://download.blender.org/release/Blender${MAJOR_MINOR}/blender-${VER}-windows-x64.zip"
+          echo "Downloading Blender ${VER} for Windows from: $URL"
+          curl -SL --fail "$URL" -o blender.zip || { echo "Failed to download Blender"; exit 1; }
+          
+          unzip -q blender.zip -d blender_temp
+          INNER_DIR=$(ls blender_temp | head -n 1)
+          mv blender_temp/"$INNER_DIR"/* blender-bin/
+          rm -rf blender_temp blender.zip
+
+      - name: Setup Blender Path
+        shell: bash
+        run: |
+          echo "$PWD/blender-bin" >> $GITHUB_PATH
+          export PATH="$PWD/blender-bin:$PATH"
+          
+          if ! command -v blender.exe &> /dev/null; then
+            echo "::error::blender.exe executable not found in PATH"
+            exit 1
+          fi
+          echo "Blender setup complete."
+
+      - name: Run Tests
+        shell: bash
+        env:
+          BLENDER_EXE: blender.exe
         run: just test-blender
 
   build-and-release:
-    needs: test
+    needs: [ test-linux, test-windows ]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
