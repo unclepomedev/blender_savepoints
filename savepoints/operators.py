@@ -178,6 +178,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
     def invoke(self, context, event):
+        settings = context.scene.savepoints_settings
+        if not settings.show_save_dialog:
+            self.note = ""  # Quick save, no note
+            return self.execute(context)
         return context.window_manager.invoke_props_dialog(self)
 
     def draw(self, context):
