@@ -365,7 +365,7 @@ def link_history(source_dir: str | Path, blend_filepath: str) -> str:
             manifest_data["parent_file"] = to_posix_path(blend_filepath)
 
             with manifest_path.open('w', encoding='utf-8') as f:
-                json.dump(manifest_data, f, indent=4)
+                json.dump(manifest_data, f, indent=4, ensure_ascii=False)
     except Exception as e:
         print(f"Warning: Failed to update parent_file in linked manifest: {e}")
 
