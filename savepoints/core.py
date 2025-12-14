@@ -3,6 +3,7 @@
 import datetime
 import json
 import shutil
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -11,10 +12,18 @@ import bpy
 HISTORY_SUFFIX = "_history"
 SNAPSHOT_EXT = ".blend_snapshot"
 MANIFEST_NAME = "manifest.json"
+SCHEMA_VERSION = 1
 
 
 def to_posix_path(path: str | None) -> str:
-    """Convert a path to POSIX style (forward slashes)."""
+    """
+    Return the given filesystem path using POSIX-style forward slashes.
+    
+    If `path` is falsy (`None` or empty), returns an empty string.
+    
+    Returns:
+        str: The path with forward slashes, or an empty string if input was falsy.
+    """
     if not path:
         return ""
     return Path(path).as_posix()
@@ -91,21 +100,72 @@ def get_manifest_path() -> str | None:
 
 
 def load_manifest() -> dict[str, Any]:
-    """Load the manifest file."""
+    """
+    Load and return the savepoints manifest for the current project.
+    
+    Reads manifest.json from the project's history directory, validates that the file contains a JSON object, and backfills missing fields: `schema_version`, `project_uuid`, `parent_file`, and `versions` (ensuring `versions` is a list). If any backfilled fields are added the manifest is persisted. If the manifest file is missing or cannot be read/parsed, a default manifest with `parent_file`, empty `versions`, `schema_version`, and a new `project_uuid` is returned. Errors encountered while loading are printed.
+    
+    Returns:
+        manifest (dict): Manifest object containing at least the keys:
+            - `parent_file` (str): path to the parent .blend file
+            - `versions` (list): list of version entries
+            - `schema_version` (str): manifest schema version
+            - `project_uuid` (str): stable UUID for the project
+    """
     path_str = get_manifest_path()
     if path_str:
         path = Path(path_str)
         if path.exists():
             try:
                 with path.open('r', encoding='utf-8') as f:
-                    return json.load(f)
+                    data = json.load(f)
+
+                    if not isinstance(data, dict):
+                        raise ValueError("Manifest JSON must be an object")
+
+                    # Backfill for older manifests
+                    mutated = False
+                    if "schema_version" not in data:
+                        data["schema_version"] = SCHEMA_VERSION
+                        mutated = True
+                    if "project_uuid" not in data:
+                        data["project_uuid"] = str(uuid.uuid4())
+                        mutated = True
+                    if "parent_file" not in data:
+                        data["parent_file"] = get_project_path()
+                        mutated = True
+                    if not isinstance(data.get("versions", []), list):
+                        data["versions"] = []
+                        mutated = True
+
+                    # Optional: persist backfilled fields so UUID stabilizes after first load
+                    if mutated:
+                        save_manifest(data)
+
+                    return data
             except Exception as e:
                 print(f"Error loading manifest: {e}")
-    return {"parent_file": get_project_path(), "versions": []}
+    default_manifest = {
+        "parent_file": get_project_path(),
+        "versions": [],
+        "schema_version": SCHEMA_VERSION,
+        "project_uuid": str(uuid.uuid4()),
+    }
+    save_manifest(default_manifest)
+    return default_manifest
 
 
 def save_manifest(data: dict[str, Any]) -> None:
-    """Save data to the manifest file."""
+    """
+    Write the given manifest dictionary to the project's manifest.json inside the history directory.
+    
+    Parameters:
+        data (dict[str, Any]): Manifest data to persist. Will be serialized as pretty-printed JSON with UTF-8 encoding.
+    
+    Notes:
+        - Creates parent directories for the manifest file if they do not exist.
+        - Errors encountered while writing are caught and printed; the function does not raise.
+    """
     path_str = get_manifest_path()
     if path_str:
         path = Path(path_str)
