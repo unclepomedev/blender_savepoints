@@ -5,6 +5,7 @@ import time
 from bpy.app.handlers import persistent
 
 from . import operators
+from . import operators_io
 from . import properties
 from . import ui
 from . import ui_utils
@@ -39,6 +40,7 @@ def load_handler(dummy):
 def register():
     ui_utils.register_previews()
     hud.register()
+    operators_io.register()
     for cls in classes:
         bpy.utils.register_class(cls)
 
@@ -58,6 +60,7 @@ def unregister():
 
     ui_utils.unregister_previews()
     hud.unregister()
+    operators_io.unregister()
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
 
