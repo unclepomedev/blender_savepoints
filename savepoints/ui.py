@@ -115,6 +115,12 @@ def _draw_empty_state(layout):
     layout.operator("savepoints.commit", text="Create First Version", icon='FILE_TICK')
 
 
+def _draw_general_settings(layout, settings):
+    box = layout.box()
+    box.label(text="General", icon='PREFERENCES')
+    box.prop(settings, "show_save_dialog")
+
+
 def _draw_auto_save_settings(layout, settings):
     box = layout.box()
     box.label(text="Auto Save", icon='TIME')
@@ -163,6 +169,9 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             _draw_version_details(layout, settings)
         else:
             _draw_empty_state(layout)
+
+        layout.separator()
+        _draw_general_settings(layout, settings)
 
         layout.separator()
         _draw_auto_save_settings(layout, settings)
