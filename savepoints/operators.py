@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
 import shutil
 import time
+from pathlib import Path
 
 import bpy
 
@@ -20,42 +20,43 @@ from .ui_utils import sync_history_to_props
 
 def create_snapshot(context, version_id, note, skip_thumbnail=False):
     """Helper to create a snapshot."""
-    history_dir = get_history_dir()
-    if not history_dir:
+    history_dir_str = get_history_dir()
+    if not history_dir_str:
         return
 
+    history_dir = Path(history_dir_str)
     manifest = load_manifest()
 
     folder_name = version_id
-    version_dir = os.path.join(history_dir, folder_name)
-    os.makedirs(version_dir, exist_ok=True)
+    version_dir = history_dir / folder_name
+    version_dir.mkdir(parents=True, exist_ok=True)
 
     obj_count = len(bpy.data.objects)
 
     # Thumbnail
     thumb_filename = "thumbnail.png"
-    thumb_path = os.path.join(version_dir, thumb_filename)
+    thumb_path = version_dir / thumb_filename
     if not skip_thumbnail:
-        capture_thumbnail(context, thumb_path)
+        capture_thumbnail(context, str(thumb_path))
 
     # Save Snapshot
     blend_filename = "snapshot.blend_snapshot"
-    snapshot_path = os.path.join(version_dir, blend_filename)
+    snapshot_path = version_dir / blend_filename
 
-    bpy.ops.wm.save_as_mainfile(copy=True, filepath=snapshot_path)
+    bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path))
 
     # Capture file size
     file_size = 0
-    if os.path.exists(snapshot_path):
-        file_size = os.path.getsize(snapshot_path)
+    if snapshot_path.exists():
+        file_size = snapshot_path.stat().st_size
 
     # Update Manifest
     add_version_to_manifest(
         manifest,
         version_id,
         note,
-        os.path.join(folder_name, thumb_filename),
-        os.path.join(folder_name, blend_filename),
+        str(Path(folder_name) / thumb_filename),
+        str(Path(folder_name) / blend_filename),
         object_count=obj_count,
         file_size=file_size
     )
@@ -174,14 +175,15 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
             return {'CANCELLED'}
 
         item = settings.versions[settings.active_version_index]
-        history_dir = get_history_dir()
-        if not history_dir:
+        history_dir_str = get_history_dir()
+        if not history_dir_str:
             self.report({'ERROR'}, "History directory not found")
             return {'CANCELLED'}
 
-        blend_path = os.path.join(history_dir, item.blend_rel_path)
+        history_dir = Path(history_dir_str)
+        blend_path = history_dir / item.blend_rel_path
 
-        if not os.path.exists(blend_path):
+        if not blend_path.exists():
             self.report({'ERROR'}, f"File not found: {blend_path}")
             return {'CANCELLED'}
 
@@ -198,7 +200,7 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
                     self.report({'ERROR'}, "Current file is not saved. Cannot overwrite.")
                     return {'CANCELLED'}
 
-        bpy.ops.wm.open_mainfile(filepath=blend_path, check_existing=False)
+        bpy.ops.wm.open_mainfile(filepath=str(blend_path), check_existing=False)
         return {'FINISHED'}
 
 
@@ -243,36 +245,40 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
     def execute(self, context):
         from .core import get_parent_path_from_snapshot
 
-        original_path = get_parent_path_from_snapshot(bpy.data.filepath)
+        original_path_str = get_parent_path_from_snapshot(bpy.data.filepath)
 
-        if not original_path:
+        if not original_path_str:
             self.report({'ERROR'}, "Could not determine parent file path. Are you in a snapshot?")
             return {'CANCELLED'}
 
+        original_path = Path(original_path_str)
+
         # Verify if we can write to original path
         # Backup first
-        if os.path.exists(original_path):
+        if original_path.exists():
             timestamp = int(time.time())
 
             from .core import get_history_dir_for_path
-            history_dir = get_history_dir_for_path(original_path)
-            os.makedirs(history_dir, exist_ok=True)
+            history_dir_str = get_history_dir_for_path(str(original_path))
+            if history_dir_str:
+                history_dir = Path(history_dir_str)
+                history_dir.mkdir(parents=True, exist_ok=True)
 
-            filename = os.path.basename(original_path)
-            backup_filename = f"{filename}.{timestamp}.bak"
-            backup_path = os.path.join(history_dir, backup_filename)
+                filename = original_path.name
+                backup_filename = f"{filename}.{timestamp}.bak"
+                backup_path = history_dir / backup_filename
 
-            try:
-                shutil.copy2(original_path, backup_path)
-                self.report({'INFO'}, f"Backup created: {backup_filename}")
-            except Exception as e:
-                self.report({'ERROR'}, f"Backup failed: {e}")
-                return {'CANCELLED'}
+                try:
+                    shutil.copy2(original_path, backup_path)
+                    self.report({'INFO'}, f"Backup created: {backup_filename}")
+                except Exception as e:
+                    self.report({'ERROR'}, f"Backup failed: {e}")
+                    return {'CANCELLED'}
         else:
             self.report({'WARNING'}, "Original file not found. Creating new one.")
 
         try:
-            bpy.ops.wm.save_as_mainfile(filepath=original_path)
+            bpy.ops.wm.save_as_mainfile(filepath=str(original_path))
             self.report({'INFO'}, "Restored to parent file successfully.")
         except Exception as e:
             self.report({'ERROR'}, f"Failed to save: {e}")
@@ -288,17 +294,19 @@ class SAVEPOINTS_OT_open_parent(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
+        parent_path_str = get_parent_path_from_snapshot(bpy.data.filepath)
 
-        if not parent_path:
+        if not parent_path_str:
             self.report({'ERROR'}, "Could not determine parent file path. Are you in a snapshot?")
             return {'CANCELLED'}
 
-        if not os.path.exists(parent_path):
+        parent_path = Path(parent_path_str)
+
+        if not parent_path.exists():
             self.report({'ERROR'}, f"Parent file not found: {parent_path}")
             return {'CANCELLED'}
 
         # Open the parent file
         # Note: In UI, this might prompt to save changes if modified.
-        bpy.ops.wm.open_mainfile(filepath=parent_path)
+        bpy.ops.wm.open_mainfile(filepath=str(parent_path))
         return {'FINISHED'}

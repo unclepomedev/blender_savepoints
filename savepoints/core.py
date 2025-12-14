@@ -2,41 +2,29 @@
 
 import datetime
 import json
-import os
 import shutil
+from pathlib import Path
 from typing import Any
 
 import bpy
 
+HISTORY_SUFFIX = "_history"
+SNAPSHOT_EXT = ".blend_snapshot"
+MANIFEST_NAME = "manifest.json"
+
 
 def to_posix_path(path: str | None) -> str:
-    """
-    Convert a path to POSIX style (forward slashes).
-    
-    Args:
-        path: The path to convert.
-    
-    Returns:
-        The converted path string, or empty string if input is None.
-    """
+    """Convert a path to POSIX style (forward slashes)."""
     if not path:
         return ""
-    return path.replace("\\", "/")
+    return Path(path).as_posix()
 
 
 def from_posix_path(path: str | None) -> str:
-    """
-    Convert a POSIX path to the current OS separator.
-    
-    Args:
-        path: The POSIX path.
-        
-    Returns:
-        The path using OS-specific separators.
-    """
+    """Convert a POSIX path to the current OS separator."""
     if not path:
         return ""
-    return path.replace("/", os.sep).replace("\\", os.sep)
+    return str(Path(path.replace("\\", "/")))
 
 
 def get_project_path() -> str:
@@ -45,125 +33,92 @@ def get_project_path() -> str:
 
 
 def get_history_dir_for_path(blend_path: str | None) -> str | None:
-    """
-    Get the history directory path for a given blend file.
-    
-    Args:
-        blend_path: The path to the .blend file.
-        
-    Returns:
-        The path to the history directory, or None if blend_path is empty.
-    """
+    """Get the history directory path for a given blend file."""
     if not blend_path:
         return None
-    filename = os.path.basename(blend_path)
-    name_without_ext = os.path.splitext(filename)[0]
-    return os.path.join(os.path.dirname(blend_path), f".{name_without_ext}_history")
+
+    path = Path(blend_path)
+    # parent / .{stem}_history
+    history_dir = path.parent / f".{path.stem}{HISTORY_SUFFIX}"
+    return str(history_dir)
 
 
 def get_parent_path_from_snapshot(blend_path: str | None) -> str | None:
     """
     Determine the parent .blend file path if the current file is a snapshot.
-    Structure: [ProjectDir]/.{filename}_history/{version_id}/snapshot.blend_snapshot
-    Parent:    [ProjectDir]/{filename}.blend
-    
-    Args:
-        blend_path: The path of the current snapshot file.
-        
-    Returns:
-        The path to the parent project file, or None if not in a snapshot.
+    Structure: .../ProjectDir/.{filename}_history/{version_id}/snapshot.blend_snapshot
     """
     if not blend_path:
         return None
 
-    abspath = os.path.abspath(blend_path)
+    try:
+        path = Path(blend_path).resolve()
 
-    # .../vXXX/snapshot.blend_snapshot -> dirname -> .../vXXX
-    version_dir = os.path.dirname(abspath)
+        # .../vXXX/snapshot.blend_snapshot -> parent -> vXXX
+        version_dir = path.parent
+        # .../vXXX -> parent -> .{filename}_history
+        history_dir = version_dir.parent
 
-    # .../vXXX -> dirname -> .../.{filename}_history
-    history_dir = os.path.dirname(version_dir)
+        history_dirname = history_dir.name
 
-    history_dirname = os.path.basename(history_dir)
+        if history_dirname.startswith(".") and history_dirname.endswith(HISTORY_SUFFIX):
+            # Extract filename: .my_project_history -> my_project
+            name_without_ext = history_dirname[1:-len(HISTORY_SUFFIX)]
 
-    if history_dirname.startswith(".") and history_dirname.endswith("_history"):
-        # Extract filename: .my_project_history -> my_project
-        name_without_ext = history_dirname[1:-8]
+            # Parent dir: .../ProjectDir
+            project_dir = history_dir.parent
+            parent_path = project_dir / f"{name_without_ext}.blend"
 
-        # Parent dir: .../ProjectDir
-        project_dir = os.path.dirname(history_dir)
+            return str(parent_path)
 
-        # Reconstruct parent path. We assume .blend extension.
-        parent_path = os.path.join(project_dir, f"{name_without_ext}.blend")
-        return parent_path
+    except Exception:
+        return None
 
     return None
 
 
 def get_history_dir() -> str | None:
-    """
-    Get the history directory for the current project.
-    
-    Returns:
-        The history directory path, or None.
-    """
+    """Get the history directory for the current project."""
     return get_history_dir_for_path(get_project_path())
 
 
 def get_manifest_path() -> str | None:
-    """
-    Get the full path to the manifest.json file.
-    
-    Returns:
-        Path to manifest.json, or None if history dir cannot be determined.
-    """
+    """Get the full path to the manifest.json file."""
     history_dir = get_history_dir()
     if history_dir:
-        return os.path.join(history_dir, "manifest.json")
+        return str(Path(history_dir) / MANIFEST_NAME)
     return None
 
 
 def load_manifest() -> dict[str, Any]:
-    """
-    Load the manifest file.
-    
-    Returns:
-        A dictionary containing manifest data. Returns a default structure if loading fails.
-    """
-    path = get_manifest_path()
-    if path and os.path.exists(path):
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"Error loading manifest: {e}")
+    """Load the manifest file."""
+    path_str = get_manifest_path()
+    if path_str:
+        path = Path(path_str)
+        if path.exists():
+            try:
+                with path.open('r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"Error loading manifest: {e}")
     return {"parent_file": get_project_path(), "versions": []}
 
 
 def save_manifest(data: dict[str, Any]) -> None:
-    """
-    Save data to the manifest file.
-    
-    Args:
-        data: The dictionary data to save.
-    """
-    path = get_manifest_path()
-    if path:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
+    """Save data to the manifest file."""
+    path_str = get_manifest_path()
+    if path_str:
+        path = Path(path_str)
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open('w', encoding='utf-8') as f:
+                json.dump(data, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error saving manifest: {e}")
 
 
 def format_file_size(size_in_bytes: float | int) -> str:
-    """
-    Format bytes into human-readable string.
-    
-    Args:
-        size_in_bytes: Size in bytes.
-        
-    Returns:
-        Formatted string (e.g. "1.5 MB").
-    """
+    """Format bytes into human-readable string."""
     try:
         size = float(size_in_bytes)
     except (ValueError, TypeError):
@@ -178,78 +133,72 @@ def format_file_size(size_in_bytes: float | int) -> str:
     return f"{size:.1f} TB"
 
 
-def get_next_version_id(versions: list[dict[str, Any]]) -> str:
-    """
-    Determine the next version ID string (e.g., v005).
-    
-    Args:
-        versions: List of version dictionaries.
-        
-    Returns:
-        Next version ID string.
-    """
+def get_next_version_id(versions: list[dict]) -> str:
+    """Generate the next version ID (e.g. "v001")."""
     max_id = 0
     for v in versions:
         vid = v.get("id", "")
-        num = _extract_version_number(vid)
-        if num > max_id:
-            max_id = num
-    new_id_num = max_id + 1
-    return f"v{new_id_num:03d}"
+        if vid.startswith("v") and vid[1:].isdigit():
+            try:
+                num = int(vid[1:])
+                if num > max_id:
+                    max_id = num
+            except ValueError:
+                pass
+    return f"v{max_id + 1:03d}"
 
 
-def _extract_version_number(vid: str) -> int:
-    if vid.startswith("v"):
-        try:
-            return int(vid[1:])
-        except ValueError:
-            pass
-    return -1
+def _resize_image_file(image_path: str, max_dim: int = 360) -> None:
+    """Resize the image file to save space."""
+    if not Path(image_path).exists():
+        return
+
+    try:
+        img = bpy.data.images.load(image_path)
+        width, height = img.size
+
+        if width > max_dim or height > max_dim:
+            scale_factor = min(max_dim / width, max_dim / height)
+            new_width = max(1, int(width * scale_factor))
+            new_height = max(1, int(height * scale_factor))
+
+            img.scale(new_width, new_height)
+            img.save()
+
+        bpy.data.images.remove(img)
+    except Exception as e:
+        print(f"Failed to resize thumbnail: {e}")
 
 
-def capture_thumbnail(context: bpy.types.Context, thumb_path: str) -> None:
+def capture_thumbnail(context: bpy.types.Context, filepath: str) -> None:
     """
-    Capture the current viewport as a thumbnail.
-    
-    Args:
-        context: Blender context.
-        thumb_path: Path where the thumbnail should be saved.
+    Capture a clean viewport render as a thumbnail.
     """
+    path = Path(filepath)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Background mode check
+    if not context.window_manager.windows:
+        return
+
     render = context.scene.render
+    # Store old settings
     old_filepath = render.filepath
 
     try:
-        render.filepath = thumb_path
-        # OpenGL render of viewport
-        if context.window_manager.windows:
-            bpy.ops.render.opengl(write_still=True)
+        # Use simple string for Blender API
+        render.filepath = str(path)
 
-            # Resize thumbnail to save space
-            if os.path.exists(thumb_path):
-                try:
-                    img = bpy.data.images.load(thumb_path)
-                    width, height = img.size
-                    max_dim = 360  # Max dimension in pixels
+        # OpenGL Render (Clean Viewport)
+        bpy.ops.render.opengl(write_still=True)
 
-                    if width > max_dim or height > max_dim:
-                        scale_factor = min(max_dim / width, max_dim / height)
-                        new_width = int(width * scale_factor)
-                        new_height = int(height * scale_factor)
+        # Resize logic (To save disk space)
+        _resize_image_file(str(path))
 
-                        new_width = max(1, new_width)
-                        new_height = max(1, new_height)
-
-                        img.scale(new_width, new_height)
-                        img.save()
-
-                    bpy.data.images.remove(img)
-                except Exception as resize_e:
-                    print(f"Failed to resize thumbnail: {resize_e}")
-        else:
-            pass
     except Exception as e:
         print(f"Thumbnail generation failed: {e}")
     finally:
+        # Restore settings
         render.filepath = old_filepath
 
 
@@ -257,64 +206,50 @@ def add_version_to_manifest(
         manifest: dict[str, Any],
         version_id: str,
         note: str,
-        thumb_rel: str,
-        blend_rel: str,
+        thumb_rel_path: str,
+        blend_rel_path: str,
         object_count: int = 0,
         file_size: int = 0
 ) -> None:
-    """
-    Add a new version entry to the manifest and save it.
-    
-    Args:
-        manifest: The current manifest data.
-        version_id: The new version ID.
-        note: Commit note.
-        thumb_rel: Relative path to thumbnail.
-        blend_rel: Relative path to blend file.
-        object_count: Number of objects.
-        file_size: Size of the blend file in bytes.
-    """
-    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    """Add a new version entry to the manifest."""
+    versions = manifest.get("versions", [])
+
     new_version = {
         "id": version_id,
-        "timestamp": now_str,
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "note": note,
-        "thumbnail": to_posix_path(thumb_rel),
-        "blend": to_posix_path(blend_rel),
+        "thumbnail": to_posix_path(thumb_rel_path),
+        "blend": to_posix_path(blend_rel_path),
         "object_count": object_count,
         "file_size": file_size
     }
-    versions = manifest.get("versions", [])
-    versions.append(new_version)
+    versions.insert(0, new_version)
     manifest["versions"] = versions
     save_manifest(manifest)
 
 
 def delete_version_by_id(version_id: str) -> None:
-    """
-    Delete a version from the manifest and file system.
-    
-    Args:
-        version_id: The ID of the version to delete.
-    """
+    """Delete a version from disk and manifest."""
     manifest = load_manifest()
     versions = manifest.get("versions", [])
 
-    target_v = None
+    version_to_remove = None
     for v in versions:
         if v.get("id") == version_id:
-            target_v = v
+            version_to_remove = v
             break
 
-    if target_v:
-        history_dir = get_history_dir()
-        if target_v.get('blend'):
-            blend_rel = from_posix_path(target_v['blend'])
-            v_folder = os.path.dirname(os.path.join(history_dir, blend_rel)) if history_dir else None
-            # Security check: ensure we are deleting inside history dir
-            if history_dir and v_folder and os.path.abspath(history_dir) in os.path.abspath(v_folder):
-                shutil.rmtree(v_folder, ignore_errors=True)
-
-        versions.remove(target_v)
+    if version_to_remove:
+        versions.remove(version_to_remove)
         manifest["versions"] = versions
         save_manifest(manifest)
+
+        # Remove directory
+        history_dir_str = get_history_dir()
+        if history_dir_str:
+            version_dir = Path(history_dir_str) / version_id
+            if version_dir.exists():
+                try:
+                    shutil.rmtree(version_dir)
+                except Exception as e:
+                    print(f"Failed to remove directory {version_dir}: {e}")
