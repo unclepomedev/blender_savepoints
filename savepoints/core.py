@@ -209,7 +209,8 @@ def add_version_to_manifest(
         thumb_rel_path: str,
         blend_rel_path: str,
         object_count: int = 0,
-        file_size: int = 0
+        file_size: int = 0,
+        is_protected: bool = False
 ) -> None:
     """Add a new version entry to the manifest."""
     versions = manifest.get("versions", [])
@@ -221,11 +222,63 @@ def add_version_to_manifest(
         "thumbnail": to_posix_path(thumb_rel_path),
         "blend": to_posix_path(blend_rel_path),
         "object_count": object_count,
-        "file_size": file_size
+        "file_size": file_size,
+        "is_protected": is_protected,
     }
     versions.insert(0, new_version)
     manifest["versions"] = versions
     save_manifest(manifest)
+
+
+def set_version_protection(version_id: str, is_protected: bool) -> None:
+    """Set the protection status of a version."""
+    manifest = load_manifest()
+    changed = False
+    for v in manifest.get("versions", []):
+        if v.get("id") == version_id:
+            v["is_protected"] = is_protected
+            changed = True
+            break
+    if changed:
+        save_manifest(manifest)
+
+
+def prune_versions(max_keep: int) -> int:
+    """
+    Prune old versions to keep 'max_keep' manual versions.
+    Returns number of deleted versions.
+    """
+    if max_keep <= 0:
+        return 0
+
+    manifest = load_manifest()
+    versions = manifest.get("versions", [])
+
+    manual_versions = [v for v in versions if v.get("id") != "autosave"]
+
+    if len(manual_versions) <= max_keep:
+        return 0
+
+    excess = len(manual_versions) - max_keep
+    ids_to_delete = []
+
+    # Iterate from oldest (end of list) up to the second newest
+    # We exclude the newest version (index 0) from pruning candidates to ensure
+    # the version just created is never immediately deleted, even if limit is exceeded.
+    candidates = manual_versions[1:]
+
+    for v in reversed(candidates):
+        if excess <= 0:
+            break
+
+        if not v.get("is_protected", False):
+            ids_to_delete.append(v.get("id"))
+            excess -= 1
+
+    for vid in ids_to_delete:
+        delete_version_by_id(vid)
+
+    return len(ids_to_delete)
 
 
 def delete_version_by_id(version_id: str) -> None:

@@ -19,6 +19,10 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
         else:
             layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon='FILE_BACKUP')
 
+        lock_icon = 'LOCKED' if item.is_protected else 'UNLOCKED'
+        op = layout.operator("savepoints.toggle_protection", text="", icon=lock_icon, emboss=False)
+        op.version_id = item.version_id
+
     def filter_items(self, context, data, propname):
         items = getattr(data, propname)
         flt_flags = []
@@ -112,3 +116,10 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         box.prop(settings, "use_auto_save")
         if settings.use_auto_save:
             box.prop(settings, "auto_save_interval")
+
+        layout.separator()
+        box = layout.box()
+        box.label(text="Disk Management", icon='DISK_DRIVE')
+        box.prop(settings, "use_limit_versions")
+        if settings.use_limit_versions:
+            box.prop(settings, "max_versions_to_keep")
