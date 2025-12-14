@@ -96,6 +96,15 @@ sys.modules["gpu_extras"] = gpu_extras
 sys.modules["gpu_extras.batch"] = gpu_extras.batch
 gpu_extras.batch.batch_for_shader = mock.MagicMock()
 
+# Mock bpy_extras
+bpy_extras = types.ModuleType("bpy_extras")
+bpy_extras.io_utils = types.ModuleType("bpy_extras.io_utils")
+sys.modules["bpy_extras"] = bpy_extras
+sys.modules["bpy_extras.io_utils"] = bpy_extras.io_utils
+
+class MockImportHelper: pass
+bpy_extras.io_utils.ImportHelper = MockImportHelper
+
 # --- ROBUST MOCKING END ---
 
 from savepoints.core import get_parent_path_from_snapshot
