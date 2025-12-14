@@ -1,64 +1,79 @@
+import importlib
 import sys
 import unittest
-from unittest.mock import MagicMock
-
-# --- 1. Mock Blender API (Must be done before import) ---
-mock_bpy = MagicMock()
-
-# Define mock modules
-modules = {
-    "bpy": mock_bpy,
-    "bpy.app": mock_bpy.app,
-    "bpy.app.handlers": mock_bpy.app.handlers,
-    "bpy.types": mock_bpy.types,
-    "bpy.props": mock_bpy.props,
-    "bpy.utils": mock_bpy.utils,
-    "bpy.utils.previews": MagicMock(),
-    "bpy_extras": MagicMock(),
-    "bpy_extras.io_utils": MagicMock(),
-    "blf": MagicMock(),
-    "gpu": MagicMock(),
-    "gpu_extras": MagicMock(),
-    "gpu_extras.batch": MagicMock(),
-}
-sys.modules.update(modules)
+from unittest.mock import MagicMock, patch
 
 
-# Assign ImportHelper for inheritance
+# Define mock classes at module level (safe as they don't modify global state)
 class MockImportHelper: pass
-
-
-modules["bpy_extras.io_utils"].ImportHelper = MockImportHelper
 
 
 class MockExportHelper: pass
 
 
-modules["bpy_extras.io_utils"].ExportHelper = MockExportHelper
-
-
-# Fix for multiple inheritance (metaclass conflict) if operators are imported
 class MockOperator: pass
-
-
-modules["bpy"].types.Operator = MockOperator
-
-# --- 2. Import Addon Modules ---
-# Note: ui_utils imports core, so we need to handle that.
-# We will mock core AFTER import, or mock the function within ui_utils.
-import savepoints.ui_utils
 
 
 class TestUiSorting(unittest.TestCase):
     def setUp(self):
-        mock_bpy.reset_mock()
+        # --- 1. Mock Blender API ---
+        self.mock_bpy = MagicMock()
+
+        # Define mock modules
+        modules = {
+            "bpy": self.mock_bpy,
+            "bpy.app": self.mock_bpy.app,
+            "bpy.app.handlers": self.mock_bpy.app.handlers,
+            "bpy.types": self.mock_bpy.types,
+            "bpy.props": self.mock_bpy.props,
+            "bpy.utils": self.mock_bpy.utils,
+            "bpy.utils.previews": MagicMock(),
+            "bpy_extras": MagicMock(),
+            "bpy_extras.io_utils": MagicMock(),
+            "blf": MagicMock(),
+            "gpu": MagicMock(),
+            "gpu_extras": MagicMock(),
+            "gpu_extras.batch": MagicMock(),
+        }
+
+        # Configure Mocks for inheritance
+        modules["bpy_extras.io_utils"].ImportHelper = MockImportHelper
+        modules["bpy_extras.io_utils"].ExportHelper = MockExportHelper
+        modules["bpy"].types.Operator = MockOperator
+
+        # --- 2. Patch sys.modules ---
+        # Use patch.dict to scope changes to sys.modules
+        self.patcher = patch.dict(sys.modules, modules)
+        self.patcher.start()
+
+        # --- 3. Import/Reload Addon Modules ---
+        # We must import (or reload) the module under test *after* patching sys.modules
+        # so that it picks up the mock modules.
+        # importlib.reload is safer if the module was already imported by another test.
+        try:
+            import savepoints.ui_utils
+            importlib.reload(savepoints.ui_utils)
+            self.ui_utils = savepoints.ui_utils
+        except ImportError:
+            # Fallback or handle cases where dependencies might be missing if mocks aren't perfect
+            # But since we mocked everything savepoints.ui_utils needs (bpy, core), it should work.
+            # Note: savepoints.ui_utils imports core. If core isn't in sys.modules, it will be imported.
+            # core imports bpy (which is mocked).
+            # If savepoints.__init__ is triggered, it imports operators, etc.
+            # We need to ensure we mocked enough for the recursive imports.
+            # The list above covers most things.
+            raise
 
         # Mock core functions used in sync_history_to_props
+        # We act on the imported module object
         self.mock_core = MagicMock()
-        savepoints.ui_utils.core = self.mock_core
+        self.ui_utils.core = self.mock_core
 
         # Mock preview collection
-        savepoints.ui_utils.preview_collections = {"main": MagicMock()}
+        self.ui_utils.preview_collections = {"main": MagicMock()}
+
+    def tearDown(self):
+        self.patcher.stop()
 
     def test_sync_history_sorting(self):
         """Verify that versions are sorted by ID, with autosave last."""
@@ -92,18 +107,14 @@ class TestUiSorting(unittest.TestCase):
 
         mock_settings.versions.add.side_effect = add_version
 
-        # Need to simulate len() for 'if len(settings.versions) > 0' check at the end
-        # We can't easily mock len() on a PropertyMock return value if it's not a real list.
-        # But we can mock the list access or just ignore the index reset part if it doesn't crash.
-        # Let's make settings.versions a real list-like mock? No, PropertyGroup is complex.
-        # Just mocking __len__ on the versions object might work.
+        # Simulate len()
         mock_settings.versions.__len__.return_value = 4
 
         # Set active_version_index to a valid integer to avoid comparison error
         mock_settings.active_version_index = -1
 
         # Execute
-        savepoints.ui_utils.sync_history_to_props(mock_context)
+        self.ui_utils.sync_history_to_props(mock_context)
 
         # Verify Calls
         self.mock_core.load_manifest.assert_called_once()
