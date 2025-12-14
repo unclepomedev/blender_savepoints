@@ -3,6 +3,7 @@
 import datetime
 import json
 import shutil
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -11,10 +12,18 @@ import bpy
 HISTORY_SUFFIX = "_history"
 SNAPSHOT_EXT = ".blend_snapshot"
 MANIFEST_NAME = "manifest.json"
+SCHEMA_VERSION = 1
 
 
 def to_posix_path(path: str | None) -> str:
-    """Convert a path to POSIX style (forward slashes)."""
+    """
+    Return the given filesystem path using POSIX-style forward slashes.
+    
+    If `path` is falsy (`None` or empty), returns an empty string.
+    
+    Returns:
+        str: The path with forward slashes, or an empty string if input was falsy.
+    """
     if not path:
         return ""
     return Path(path).as_posix()
@@ -91,21 +100,72 @@ def get_manifest_path() -> str | None:
 
 
 def load_manifest() -> dict[str, Any]:
-    """Load the manifest file."""
+    """
+    Load and return the savepoints manifest for the current project.
+    
+    Reads manifest.json from the project's history directory, validates that the file contains a JSON object, and backfills missing fields: `schema_version`, `project_uuid`, `parent_file`, and `versions` (ensuring `versions` is a list). If any backfilled fields are added the manifest is persisted. If the manifest file is missing or cannot be read/parsed, a default manifest with `parent_file`, empty `versions`, `schema_version`, and a new `project_uuid` is returned. Errors encountered while loading are printed.
+    
+    Returns:
+        manifest (dict): Manifest object containing at least the keys:
+            - `parent_file` (str): path to the parent .blend file
+            - `versions` (list): list of version entries
+            - `schema_version` (str): manifest schema version
+            - `project_uuid` (str): stable UUID for the project
+    """
     path_str = get_manifest_path()
     if path_str:
         path = Path(path_str)
         if path.exists():
             try:
                 with path.open('r', encoding='utf-8') as f:
-                    return json.load(f)
+                    data = json.load(f)
+
+                    if not isinstance(data, dict):
+                        raise ValueError("Manifest JSON must be an object")
+
+                    # Backfill for older manifests
+                    mutated = False
+                    if "schema_version" not in data:
+                        data["schema_version"] = SCHEMA_VERSION
+                        mutated = True
+                    if "project_uuid" not in data:
+                        data["project_uuid"] = str(uuid.uuid4())
+                        mutated = True
+                    if "parent_file" not in data:
+                        data["parent_file"] = get_project_path()
+                        mutated = True
+                    if not isinstance(data.get("versions", []), list):
+                        data["versions"] = []
+                        mutated = True
+
+                    # Optional: persist backfilled fields so UUID stabilizes after first load
+                    if mutated:
+                        save_manifest(data)
+
+                    return data
             except Exception as e:
                 print(f"Error loading manifest: {e}")
-    return {"parent_file": get_project_path(), "versions": []}
+    default_manifest = {
+        "parent_file": get_project_path(),
+        "versions": [],
+        "schema_version": SCHEMA_VERSION,
+        "project_uuid": str(uuid.uuid4()),
+    }
+    save_manifest(default_manifest)
+    return default_manifest
 
 
 def save_manifest(data: dict[str, Any]) -> None:
-    """Save data to the manifest file."""
+    """
+    Write the given manifest dictionary to the project's manifest.json inside the history directory.
+    
+    Parameters:
+        data (dict[str, Any]): Manifest data to persist. Will be serialized as pretty-printed JSON with UTF-8 encoding.
+    
+    Notes:
+        - Creates parent directories for the manifest file if they do not exist.
+        - Errors encountered while writing are caught and printed; the function does not raise.
+    """
     path_str = get_manifest_path()
     if path_str:
         path = Path(path_str)
@@ -306,3 +366,67 @@ def delete_version_by_id(version_id: str) -> None:
                     shutil.rmtree(version_dir)
                 except Exception as e:
                     print(f"Failed to remove directory {version_dir}: {e}")
+
+def link_history(source_dir: str | Path, blend_filepath: str) -> str:
+    """
+    Link (move) an existing history folder to be the history for the current blend file.
+
+    Args:
+        source_dir: Path to the source directory.
+        blend_filepath: Path to the current .blend file.
+
+    Returns:
+        The path of the newly linked history directory.
+
+    Raises:
+        ValueError: If validation fails (missing manifest, target exists, etc.)
+        OSError: If file operations fail.
+    """
+    source_path = Path(source_dir)
+    manifest_file = source_path / MANIFEST_NAME
+
+    if not manifest_file.exists():
+        raise ValueError(f"Invalid folder: {MANIFEST_NAME} not found in {source_path.name}")
+
+    # Validate manifest content
+    try:
+        with manifest_file.open('r', encoding='utf-8') as f:
+            data = json.load(f)
+            if not isinstance(data, dict):
+                raise ValueError("Manifest root must be a dictionary")
+            if "versions" not in data:
+                raise ValueError("Manifest missing 'versions' key")
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid manifest file (JSON parse error): {e}")
+    except Exception as e:
+        raise ValueError(f"Invalid manifest file: {e}")
+
+    if not blend_filepath:
+        raise ValueError("Save the current file first.")
+
+    target_history = get_history_dir_for_path(blend_filepath)
+    if not target_history:
+        raise ValueError("Could not determine history path.")
+
+    target_path = Path(target_history)
+
+    if target_path.exists():
+        raise ValueError("History folder already exists for this file.")
+
+    shutil.move(str(source_path), str(target_path))
+
+    # Update manifest with new parent file
+    try:
+        manifest_path = target_path / MANIFEST_NAME
+        if manifest_path.exists():
+            with manifest_path.open('r', encoding='utf-8') as f:
+                manifest_data = json.load(f)
+
+            manifest_data["parent_file"] = to_posix_path(blend_filepath)
+
+            with manifest_path.open('w', encoding='utf-8') as f:
+                json.dump(manifest_data, f, indent=4, ensure_ascii=False)
+    except Exception as e:
+        print(f"Warning: Failed to update parent_file in linked manifest: {e}")
+
+    return str(target_path)
