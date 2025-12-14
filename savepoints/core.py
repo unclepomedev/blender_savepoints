@@ -304,6 +304,19 @@ def set_version_protection(version_id: str, is_protected: bool) -> None:
         save_manifest(manifest)
 
 
+def update_version_note(version_id: str, new_note: str) -> None:
+    """Update the note for a specific version."""
+    manifest = load_manifest()
+    changed = False
+    for v in manifest.get("versions", []):
+        if v.get("id") == version_id:
+            v["note"] = new_note
+            changed = True
+            break
+    if changed:
+        save_manifest(manifest)
+
+
 def prune_versions(max_keep: int, keep_daily_backups: bool = False) -> int:
     """
     Prune old versions to keep 'max_keep' manual versions.

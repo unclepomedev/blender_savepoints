@@ -16,6 +16,7 @@ classes = (
     properties.SavePointsSettings,
     operators.SAVEPOINTS_OT_commit,
     operators.SAVEPOINTS_OT_link_history,
+    operators.SAVEPOINTS_OT_edit_note,
     operators.SAVEPOINTS_OT_toggle_protection,
     operators.SAVEPOINTS_OT_checkout,
     operators.SAVEPOINTS_OT_restore,

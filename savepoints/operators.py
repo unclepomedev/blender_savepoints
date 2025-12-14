@@ -17,6 +17,7 @@ from .core import (
     get_parent_path_from_snapshot,
     prune_versions,
     set_version_protection,
+    update_version_note,
 )
 from .ui_utils import sync_history_to_props
 
@@ -207,6 +208,37 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
                 sync_history_to_props(context)
 
         self.report({'INFO'}, f"Version {new_id_str} saved.")
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
+    """Edit the note of an existing version"""
+    bl_idname = "savepoints.edit_note"
+    bl_label = "Edit Note"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    version_id: bpy.props.StringProperty(options={'HIDDEN'})
+    new_note: bpy.props.StringProperty(name="Note")
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(self, "new_note")
+
+    def execute(self, context):
+        if not self.version_id:
+            return {'CANCELLED'}
+
+        update_version_note(self.version_id, self.new_note)
+        sync_history_to_props(context)
+
+        # Force UI redraw to update the note in the list immediately
+        for area in context.window.screen.areas:
+            if area.type == 'VIEW_3D':
+                area.tag_redraw()
+
         return {'FINISHED'}
 
 
