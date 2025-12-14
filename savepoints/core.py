@@ -13,6 +13,7 @@ HISTORY_SUFFIX = "_history"
 SNAPSHOT_EXT = ".blend_snapshot"
 MANIFEST_NAME = "manifest.json"
 SCHEMA_VERSION = 1
+DAILY_BACKUP_DAYS = 14
 
 
 def to_posix_path(path: str | None) -> str:

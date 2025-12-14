@@ -123,6 +123,7 @@ def _draw_disk_management_settings(layout, settings):
     box.prop(settings, "use_limit_versions")
     if settings.use_limit_versions:
         box.prop(settings, "max_versions_to_keep")
+        box.prop(settings, "keep_daily_backups")
 
 
 class SAVEPOINTS_PT_main(bpy.types.Panel):
