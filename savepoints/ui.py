@@ -52,6 +52,7 @@ def _draw_snapshot_mode(layout, parent_filepath):
 
     col = box.column(align=True)
     col.operator("savepoints.restore", text="Save as Parent", icon='FILE_TICK')
+    col.operator("savepoints.fork_version", text="Fork (Save as New)", icon='DUPLICATE')
     col.operator("savepoints.open_parent", text="Return to Parent", icon='LOOP_BACK')
 
     layout.separator()
