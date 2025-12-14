@@ -263,6 +263,11 @@ class SAVEPOINTS_OT_delete(bpy.types.Operator):
             return {'CANCELLED'}
 
         item = settings.versions[idx]
+
+        if item.is_protected:
+            self.report({'WARNING'}, f"Cannot delete locked version: {item.version_id}")
+            return {'CANCELLED'}
+
         delete_version_by_id(item.version_id)
 
         sync_history_to_props(context)
