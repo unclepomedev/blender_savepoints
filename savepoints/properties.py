@@ -31,6 +31,12 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         min=1
     )
 
+    keep_daily_backups: bpy.props.BoolProperty(
+        name="Keep Daily Backups (Last 14 days)",
+        description="Keep the last snapshot of each day for the past 14 days, even if the Max Count is exceeded",
+        default=False
+    )
+
     # Auto Save Settings
     use_auto_save: bpy.props.BoolProperty(
         name="Auto Save",

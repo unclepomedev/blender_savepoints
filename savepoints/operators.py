@@ -202,7 +202,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         # Auto Pruning
         settings = context.scene.savepoints_settings
         if settings.use_limit_versions and settings.max_versions_to_keep > 0:
-            deleted = prune_versions(settings.max_versions_to_keep)
+            deleted = prune_versions(settings.max_versions_to_keep, settings.keep_daily_backups)
             if deleted > 0:
                 sync_history_to_props(context)
 

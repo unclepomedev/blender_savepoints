@@ -13,6 +13,7 @@ HISTORY_SUFFIX = "_history"
 SNAPSHOT_EXT = ".blend_snapshot"
 MANIFEST_NAME = "manifest.json"
 SCHEMA_VERSION = 1
+DAILY_BACKUP_DAYS = 14
 
 
 def to_posix_path(path: str | None) -> str:
@@ -303,9 +304,10 @@ def set_version_protection(version_id: str, is_protected: bool) -> None:
         save_manifest(manifest)
 
 
-def prune_versions(max_keep: int) -> int:
+def prune_versions(max_keep: int, keep_daily_backups: bool = False) -> int:
     """
     Prune old versions to keep 'max_keep' manual versions.
+    If 'keep_daily_backups' is True, keeps one version per day for the last 14 days.
     Returns number of deleted versions.
     """
     if max_keep <= 0:
@@ -314,26 +316,52 @@ def prune_versions(max_keep: int) -> int:
     manifest = load_manifest()
     versions = manifest.get("versions", [])
 
+    # Filter only manual versions (exclude autosave)
+    # List is ordered Newest -> Oldest
     manual_versions = [v for v in versions if v.get("id") != "autosave"]
 
-    if len(manual_versions) <= max_keep:
+    if not keep_daily_backups and len(manual_versions) <= max_keep:
         return 0
 
-    excess = len(manual_versions) - max_keep
+    # Identify Daily Keep Candidates
+    daily_keep_ids = set()
+    if keep_daily_backups:
+        now = datetime.datetime.now()
+        cutoff_date = now - datetime.timedelta(days=DAILY_BACKUP_DAYS)
+
+        # Group by Date
+        # Since list is Newest -> Oldest, the first version we encounter for a given date is the latest one.
+        seen_dates = set()
+
+        for v in manual_versions:
+            ts_str = v.get("timestamp", "")
+            try:
+                dt = datetime.datetime.strptime(ts_str, "%Y-%m-%d %H:%M:%S")
+                if dt < cutoff_date:
+                    continue
+
+                date_key = dt.date()
+                if date_key not in seen_dates:
+                    daily_keep_ids.add(v.get("id"))
+                    seen_dates.add(date_key)
+            except (ValueError, TypeError):
+                continue
+
     ids_to_delete = []
 
-    # Iterate from oldest (end of list) up to the second newest
-    # We exclude the newest version (index 0) from pruning candidates to ensure
-    # the version just created is never immediately deleted, even if limit is exceeded.
-    candidates = manual_versions[1:]
+    # Iterate all versions to determine fate
+    # We keep index < max_keep (Recent)
+    for i, v in enumerate(manual_versions):
+        vid = v.get("id")
 
-    for v in reversed(candidates):
-        if excess <= 0:
-            break
+        is_recent = i < max_keep
+        is_locked = v.get("is_protected", False)
+        is_daily = vid in daily_keep_ids
 
-        if not v.get("is_protected", False):
-            ids_to_delete.append(v.get("id"))
-            excess -= 1
+        if is_recent or is_locked or is_daily:
+            continue
+        else:
+            ids_to_delete.append(vid)
 
     for vid in ids_to_delete:
         delete_version_by_id(vid)
@@ -366,6 +394,7 @@ def delete_version_by_id(version_id: str) -> None:
                     shutil.rmtree(version_dir)
                 except Exception as e:
                     print(f"Failed to remove directory {version_dir}: {e}")
+
 
 def link_history(source_dir: str | Path, blend_filepath: str) -> str:
     """
