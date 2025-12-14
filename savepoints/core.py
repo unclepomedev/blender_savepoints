@@ -100,7 +100,31 @@ def load_manifest() -> dict[str, Any]:
         if path.exists():
             try:
                 with path.open('r', encoding='utf-8') as f:
-                    return json.load(f)
+                    data = json.load(f)
+
+                    if not isinstance(data, dict):
+                        raise ValueError("Manifest JSON must be an object")
+
+                    # Backfill for older manifests
+                    mutated = False
+                    if "schema_version" not in data:
+                        data["schema_version"] = SCHEMA_VERSION
+                        mutated = True
+                    if "project_uuid" not in data:
+                        data["project_uuid"] = str(uuid.uuid4())
+                        mutated = True
+                    if "parent_file" not in data:
+                        data["parent_file"] = get_project_path()
+                        mutated = True
+                    if not isinstance(data.get("versions", []), list):
+                        data["versions"] = []
+                        mutated = True
+
+                    # Optional: persist backfilled fields so UUID stabilizes after first load
+                    if mutated:
+                        save_manifest(data)
+
+                    return data
             except Exception as e:
                 print(f"Error loading manifest: {e}")
     return {
