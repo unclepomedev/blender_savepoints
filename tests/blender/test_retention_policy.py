@@ -300,6 +300,27 @@ def main():
 
         print("Test 6 Passed.")
 
+        print("\n--- Test 7: Autosave Lock Guard ---")
+        # Ensure autosave exists
+        from savepoints.operators import create_snapshot
+        create_snapshot(bpy.context, "autosave", "Auto Save", skip_thumbnail=True)
+
+        # Attempt to lock autosave
+        # Note: In background mode, operators return a set. EXEC_DEFAULT executes directly.
+        res = bpy.ops.savepoints.toggle_protection('EXEC_DEFAULT', version_id="autosave")
+
+        # Verify in manifest that it is NOT protected
+        manifest = core.load_manifest()
+        autosave_entry = next((v for v in manifest["versions"] if v["id"] == "autosave"), None)
+
+        if not autosave_entry:
+            raise RuntimeError("Autosave missing for Test 7")
+
+        if autosave_entry.get("is_protected", False):
+            raise RuntimeError("Autosave was successfully protected (should be forbidden)")
+
+        print("Test 7 Passed.")
+
         print("\nALL TESTS PASSED")
 
     except Exception:
