@@ -3,6 +3,7 @@
 import datetime
 import json
 import shutil
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +12,7 @@ import bpy
 HISTORY_SUFFIX = "_history"
 SNAPSHOT_EXT = ".blend_snapshot"
 MANIFEST_NAME = "manifest.json"
+SCHEMA_VERSION = 1
 
 
 def to_posix_path(path: str | None) -> str:
@@ -101,7 +103,12 @@ def load_manifest() -> dict[str, Any]:
                     return json.load(f)
             except Exception as e:
                 print(f"Error loading manifest: {e}")
-    return {"parent_file": get_project_path(), "versions": []}
+    return {
+        "parent_file": get_project_path(),
+        "versions": [],
+        "schema_version": SCHEMA_VERSION,
+        "project_uuid": str(uuid.uuid4()),
+    }
 
 
 def save_manifest(data: dict[str, Any]) -> None:
