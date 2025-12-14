@@ -58,6 +58,8 @@ def set_version_timestamp(version_id, days_ago, hour_offset=0):
 
     if found:
         core.save_manifest(manifest)
+    else:
+        raise ValueError(f"Version {version_id} not found in manifest")
 
 
 def main():
