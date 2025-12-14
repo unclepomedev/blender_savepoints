@@ -73,8 +73,24 @@ def test_link_history_validation():
     print("Testing Valid Manifest...")
     # This should succeed
     try:
-        core.link_history(valid_dir, str(project_path))
+        target_path_str = core.link_history(valid_dir, str(project_path))
         print("Valid manifest linked successfully.")
+
+        # Verification
+        target_path = Path(target_path_str)
+        if not target_path.exists():
+            raise RuntimeError(f"Target history directory not found at: {target_path}")
+        
+        if valid_dir.exists():
+            raise RuntimeError(f"Source directory still exists at: {valid_dir}")
+
+        if not (target_path / "manifest.json").exists():
+             raise RuntimeError("manifest.json not found in target directory")
+
+        expected_name = ".project_history"
+        if target_path.name != expected_name:
+             raise RuntimeError(f"Unexpected target directory name. Expected {expected_name}, got {target_path.name}")
+
     except Exception as e:
         raise RuntimeError(f"Valid manifest failed: {e}")
 
