@@ -19,8 +19,18 @@ modules = {
     "gpu": MagicMock(),
     "gpu_extras": MagicMock(),
     "gpu_extras.batch": MagicMock(),
+    "bpy_extras": MagicMock(),
+    "bpy_extras.io_utils": MagicMock(),
 }
 sys.modules.update(modules)
+
+# Assign ImportHelper for inheritance
+class MockImportHelper: pass
+modules["bpy_extras.io_utils"].ImportHelper = MockImportHelper
+
+# Fix for multiple inheritance (metaclass conflict)
+class MockOperator: pass
+modules["bpy"].types.Operator = MockOperator
 
 # Alias for convenience in tests
 mock_blf = modules["blf"]

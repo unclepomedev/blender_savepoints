@@ -5,6 +5,7 @@ import time
 from pathlib import Path
 
 import bpy
+from bpy_extras.io_utils import ImportHelper
 
 from .core import (
     get_history_dir,
@@ -122,6 +123,45 @@ def autosave_timer():
     except Exception as e:
         print(f"Auto Save failed: {e}")
         return check_interval
+
+
+class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
+    """Link an existing history folder to this file"""
+    bl_idname = "savepoints.link_history"
+    bl_label = "Link Existing History Folder"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # Explicitly define directory to ensure it exists and can be passed
+    directory: bpy.props.StringProperty(subtype='DIR_PATH', options={'HIDDEN'})
+    filter_folder: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
+
+    def execute(self, context):
+        from .core import link_history, MANIFEST_NAME
+
+        selected_path = Path(self.filepath)
+
+        # Robustness: If user selected the manifest.json file directly, handle it
+        if selected_path.name == MANIFEST_NAME:
+            selected_path = selected_path.parent
+
+        # If selected_path is not a dir (e.g. user selected some other file or just opened dir),
+        if not selected_path.is_dir():
+            if self.directory:
+                dir_path = Path(self.directory)
+                if (dir_path / MANIFEST_NAME).exists():
+                    selected_path = dir_path
+
+        try:
+            target_path_str = link_history(selected_path, bpy.data.filepath)
+            self.report({'INFO'}, f"History linked successfully: {Path(target_path_str).name}")
+        except Exception as e:
+            self.report({'ERROR'}, str(e))
+            return {'CANCELLED'}
+
+        # Refresh UI
+        sync_history_to_props(context)
+
+        return {'FINISHED'}
 
 
 class SAVEPOINTS_OT_commit(bpy.types.Operator):
