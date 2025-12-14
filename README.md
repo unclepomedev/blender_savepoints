@@ -48,6 +48,10 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 7. **Relinking History**:
    - If the history folder is missing (e.g., after moving the `.blend` file), a **Link Existing History Folder** button will appear.
    - Click it to select and reconnect an existing history folder.
+8. **Export Project**:
+   - Go to **File > Export > SavePoints Project (.zip)**.
+   - This creates a zip file containing your current `.blend` file and its entire history folder.
+   - Useful for backups or sharing the project with its version history.
 
 ## ⚠️ Note
 
