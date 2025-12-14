@@ -23,7 +23,9 @@ jobs:
         run: uv run ruff check savepoints
 
       - name: Run Unit Tests
-        run: uv run python tests/test_utils_paths.py
+        run: |
+          uv run python tests/test_utils_paths.py
+          uv run python tests/test_hud_mock.py
 
 #      - name: Build add-on zip
 #        run: uv run python tools/build_addon_zip.py
