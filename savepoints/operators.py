@@ -219,7 +219,7 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
     """Edit the note of an existing version"""
     bl_idname = "savepoints.edit_note"
     bl_label = "Edit Note"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {'REGISTER'}
 
     version_id: bpy.props.StringProperty(options={'HIDDEN'})
     new_note: bpy.props.StringProperty(name="Note")
@@ -235,13 +235,17 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         if not self.version_id:
             return {'CANCELLED'}
 
-        update_version_note(self.version_id, self.new_note)
+        try:
+            update_version_note(self.version_id, self.new_note)
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to update note: {e}")
+            return {'CANCELLED'}
+
         sync_history_to_props(context)
 
         # Force UI redraw to update the note in the list immediately
         for area in context.window.screen.areas:
-            if area.type == 'VIEW_3D':
-                area.tag_redraw()
+            area.tag_redraw()
 
         return {'FINISHED'}
 
