@@ -23,7 +23,7 @@ class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
             ('NONE', "None", 'NONE'),
             ('STABLE', "Stable", 'CHECKMARK'),
             ('MILESTONE', "Milestone", 'BOOKMARKS'),
-            ('EXPERIMENT', "Experiment", 'LAB'),
+            ('EXPERIMENT', "Experiment", 'EXPERIMENTAL'),
             ('BUG', "Bug", 'ERROR'),
         ]
 
@@ -53,12 +53,12 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             elif item.tag == 'MILESTONE':
                 tag_icon = 'BOOKMARKS'
             elif item.tag == 'EXPERIMENT':
-                tag_icon = 'LAB'
+                tag_icon = 'EXPERIMENTAL'
             elif item.tag == 'BUG':
                 tag_icon = 'ERROR'
 
             layout.context_pointer_set("savepoints_item", item)
-            layout.menu("SAVEPOINTS_MT_tag_menu", text="", icon=tag_icon, emboss=False)
+            layout.menu("SAVEPOINTS_MT_tag_menu", text="", icon=tag_icon)
 
             edit_op = layout.operator("savepoints.edit_note", text="", icon='GREASEPENCIL', emboss=False)
             edit_op.version_id = item.version_id

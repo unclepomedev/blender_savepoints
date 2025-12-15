@@ -18,7 +18,7 @@ class SavePointsVersion(bpy.types.PropertyGroup):
             ('NONE', "None", "", 'NONE', 0),
             ('STABLE', "Stable", "", 'CHECKMARK', 1),
             ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
-            ('EXPERIMENT', "Experiment", "", 'LAB', 3),
+            ('EXPERIMENT', "Experiment", "", 'EXPERIMENTAL', 3),
             ('BUG', "Bug", "", 'ERROR', 4),
         ],
         default='NONE'
@@ -35,7 +35,7 @@ class SavePointsSettings(bpy.types.PropertyGroup):
             ('ALL', "All", "", 'FILTER', 0),
             ('STABLE', "Stable", "", 'CHECKMARK', 1),
             ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
-            ('EXPERIMENT', "Experiment", "", 'LAB', 3),
+            ('EXPERIMENT', "Experiment", "", 'EXPERIMENTAL', 3),
             ('BUG', "Bug", "", 'ERROR', 4),
         ],
         default='ALL',
