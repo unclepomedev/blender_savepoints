@@ -34,19 +34,6 @@ def create_dummy_version(settings, note="Dummy"):
     return manifest["versions"][0]
 
 
-def set_version_timestamp(version_id, timestamp_dt):
-    """Directly modify manifest to set a specific timestamp for a version."""
-    manifest = core.load_manifest()
-    found = False
-    for v in manifest["versions"]:
-        if v["id"] == version_id:
-            v["timestamp"] = timestamp_dt.strftime("%Y-%m-%d %H:%M:%S")
-            found = True
-            break
-    if found:
-        core.save_manifest(manifest)
-
-
 def main():
     print("Starting Deletion Protection Test (Extended)...")
     test_dir = setup_test_env()
