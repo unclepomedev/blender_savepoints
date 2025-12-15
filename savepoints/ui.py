@@ -7,6 +7,32 @@ import bpy
 from . import core, ui_utils
 
 
+class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
+    bl_label = "Set Tag"
+    bl_idname = "SAVEPOINTS_MT_tag_menu"
+
+    def draw(self, context):
+        layout = self.layout
+        item = getattr(context, "savepoints_item", None)
+        if not item:
+            layout.label(text="No Item Selected")
+            return
+
+        # List of tags
+        tags = [
+            ('NONE', "None", 'NONE'),
+            ('STABLE', "Stable", 'CHECKMARK'),
+            ('MILESTONE', "Milestone", 'BOOKMARKS'),
+            ('EXPERIMENT', "Experiment", 'LAB'),
+            ('BUG', "Bug", 'ERROR'),
+        ]
+
+        for tag_id, tag_name, tag_icon in tags:
+            op = layout.operator("savepoints.set_tag", text=tag_name, icon=tag_icon)
+            op.version_id = item.version_id
+            op.tag = tag_id
+
+
 class SAVEPOINTS_UL_version_list(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
         pcoll = ui_utils.preview_collections.get("main")
@@ -20,6 +46,20 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon='FILE_BACKUP')
 
         if item.version_id != "autosave":
+            # Tag Menu Button
+            tag_icon = 'TAG'
+            if item.tag == 'STABLE':
+                tag_icon = 'CHECKMARK'
+            elif item.tag == 'MILESTONE':
+                tag_icon = 'BOOKMARKS'
+            elif item.tag == 'EXPERIMENT':
+                tag_icon = 'LAB'
+            elif item.tag == 'BUG':
+                tag_icon = 'ERROR'
+
+            layout.context_pointer_set("savepoints_item", item)
+            layout.menu("SAVEPOINTS_MT_tag_menu", text="", icon=tag_icon, emboss=False)
+
             edit_op = layout.operator("savepoints.edit_note", text="", icon='GREASEPENCIL', emboss=False)
             edit_op.version_id = item.version_id
             edit_op.new_note = item.note
@@ -44,11 +84,25 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
         flt_flags = []
         flt_neworder = []
 
-        if self.filter_name:
-            filter_text = self.filter_name.lower()
+        settings = context.scene.savepoints_settings
+        filter_tag = settings.filter_tag
+
+        if self.filter_name or filter_tag != 'ALL':
+            filter_text = self.filter_name.lower() if self.filter_name else ""
+
             for item in items:
-                if (filter_text in item.version_id.lower() or
-                        filter_text in item.note.lower()):
+                match_text = True
+                if filter_text:
+                    if not (filter_text in item.version_id.lower() or
+                            filter_text in item.note.lower()):
+                        match_text = False
+
+                match_tag = True
+                if filter_tag != 'ALL':
+                    if item.tag != filter_tag:
+                        match_tag = False
+
+                if match_text and match_tag:
                     flt_flags.append(self.bitflag_filter_item)
                 else:
                     flt_flags.append(0)
@@ -79,6 +133,10 @@ def _draw_history_list(layout, settings):
 
     layout.separator()
     layout.label(text="History:")
+
+    # Filter Tag
+    row = layout.row()
+    row.prop(settings, "filter_tag", text="Filter")
 
     row = layout.row()
     row.template_list("SAVEPOINTS_UL_version_list", "", settings, "versions", settings, "active_version_index")

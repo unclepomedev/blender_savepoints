@@ -29,6 +29,7 @@ classes = (
     operators.SAVEPOINTS_OT_fork_version,
     operators.SAVEPOINTS_OT_delete,
     operators.SAVEPOINTS_OT_refresh,
+    ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
 )
