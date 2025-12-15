@@ -349,13 +349,19 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             return {'CANCELLED'}
 
         history_dir = Path(history_dir_str)
-        snapshot_path = history_dir / self.version_id / "snapshot.blend_snapshot"
+        version_dir = history_dir / self.version_id
+        snapshot_path = version_dir / "snapshot.blend_snapshot"
 
         if not snapshot_path.exists():
-            self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
-            return {'CANCELLED'}
+            # Try legacy extension
+            legacy_path = version_dir / "snapshot.blend"
+            if legacy_path.exists():
+                snapshot_path = legacy_path
+            else:
+                self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
+                return {'CANCELLED'}
 
-        temp_blend_path = history_dir / self.version_id / "snapshot_rescue_temp.blend"
+        temp_blend_path = version_dir / "snapshot_rescue_temp.blend"
 
         try:
             shutil.copy2(str(snapshot_path), str(temp_blend_path))
