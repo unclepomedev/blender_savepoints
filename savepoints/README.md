@@ -18,6 +18,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Disk Management**: Automatically deletes oldest versions to keep the history size manageable (configurable).
 - **Daily Backups**: Automatically retains one snapshot per day for the last 14 days, even if the version limit is reached.
 - **Version Protection**: Lock specific versions to prevent them from being auto-deleted or accidentally removed.
+- **Version Tagging**: Assign tags (Stable, Milestone, Experiment, Bug) to versions and filter the history list to find important snapshots instantly.
 
 ## Usage
 
@@ -59,6 +60,9 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Go to **File > Export > SavePoints Project (.zip)**.
    - This creates a zip file containing your current `.blend` file and its entire history folder.
    - Useful for backups or sharing the project with its version history.
+9. **Tagging & Filtering**:
+   - Click the tag icon on any version row to assign a tag (Stable, Milestone, etc.).
+   - Use the filter dropdown at the top of the list to show only specific tags (e.g., only "Stable" versions).
 
 ## ⚠️ Note
 
