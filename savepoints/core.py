@@ -509,7 +509,9 @@ def remap_snapshot_paths(dummy: Any) -> None:
             if hasattr(item, "filepath"):
                 path = item.filepath
                 # Check for relative path (starts with //) and avoid double remapping
-                if path.startswith("//") and not path.startswith("//../../"):
+                # Normalize slashes to handle Windows paths (e.g. //..\..\)
+                path_normalized = path.replace("\\", "/")
+                if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
                     new_path = "//../../" + path[2:]
                     item.filepath = new_path
 
@@ -532,10 +534,12 @@ def remap_snapshot_paths(dummy: Any) -> None:
             # Check for filepath or directory property
             if hasattr(seq, "filepath"):
                 path = seq.filepath
-                if path.startswith("//") and not path.startswith("//../../"):
+                path_normalized = path.replace("\\", "/")
+                if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
                     seq.filepath = "//../../" + path[2:]
 
             if hasattr(seq, "directory"):
                 path = seq.directory
-                if path.startswith("//") and not path.startswith("//../../"):
+                path_normalized = path.replace("\\", "/")
+                if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
                     seq.directory = "//../../" + path[2:]
