@@ -1,15 +1,17 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import bpy
 import time
+
+import bpy
 from bpy.app.handlers import persistent
 
+from . import hud
 from . import operators
 from . import operators_io
 from . import properties
 from . import ui
 from . import ui_utils
-from . import hud
+from .core import remap_snapshot_paths
 
 classes = (
     properties.SavePointsVersion,
@@ -39,6 +41,15 @@ def load_handler(dummy):
             bpy.context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
 
 
+@persistent
+def auto_remap_paths_handler(dummy):
+    """Handler to automatically remap paths when opening a snapshot."""
+    try:
+        remap_snapshot_paths(dummy)
+    except Exception as e:
+        print(f"[SavePoints] Error remapping paths: {e}")
+
+
 def register():
     ui_utils.register_previews()
     hud.register()
@@ -48,6 +59,7 @@ def register():
 
     bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
     bpy.app.handlers.load_post.append(load_handler)
+    bpy.app.handlers.load_post.append(auto_remap_paths_handler)
 
     if not bpy.app.timers.is_registered(operators.autosave_timer):
         bpy.app.timers.register(operators.autosave_timer, first_interval=10.0, persistent=True)
@@ -59,6 +71,9 @@ def unregister():
 
     if load_handler in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(load_handler)
+
+    if auto_remap_paths_handler in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.remove(auto_remap_paths_handler)
 
     ui_utils.unregister_previews()
     hud.unregister()
