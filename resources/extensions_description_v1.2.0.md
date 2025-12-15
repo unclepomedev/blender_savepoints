@@ -13,6 +13,8 @@
 - **Snapshot Mode**: Preview old versions safely with a clear HUD overlay before overwriting.
 - **Auto-Save**: Dedicated background auto-save that doesn't clutter your history list (thumbnails skipped for stability).
 
+For detailed usage instructions, please check the links on the right (GitHub).
+
 ## ⚠️ Note
 
 - In environments without a GPU, thumbnails will not be generated. Core functionality remains unaffected.
