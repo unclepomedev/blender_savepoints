@@ -472,3 +472,68 @@ def link_history(source_dir: str | Path, blend_filepath: str) -> str:
         print(f"Warning: Failed to update parent_file in linked manifest: {e}")
 
     return str(target_path)
+
+
+def remap_snapshot_paths(dummy: Any) -> None:
+    """
+    Dynamically fix relative paths when opening a snapshot from the history folder.
+    This works in-memory and does not save changes to disk.
+
+    Args:
+        dummy: Argument required by the load_post handler (unused).
+    """
+    if not bpy.data.filepath:
+        return
+
+    filepath = bpy.data.filepath
+    # Proceed ONLY if the file extension is .blend_snapshot AND path contains _history
+    if not filepath.endswith(SNAPSHOT_EXT) or HISTORY_SUFFIX not in filepath:
+        return
+
+    print(f"[SavePoints] Detected snapshot load: {filepath}. Remapping relative paths...")
+
+    # Collections to iterate over
+    collections_to_remap = [
+        getattr(bpy.data, "images", []),
+        getattr(bpy.data, "libraries", []),
+        getattr(bpy.data, "sounds", []),
+        getattr(bpy.data, "fonts", []),
+        getattr(bpy.data, "cache_files", []),
+        getattr(bpy.data, "movieclips", [])
+    ]
+
+    for collection in collections_to_remap:
+        for item in collection:
+            if hasattr(item, "filepath"):
+                path = item.filepath
+                # Check for relative path (starts with //) and avoid double remapping
+                if path.startswith("//") and not path.startswith("//../../"):
+                    new_path = "//../../" + path[2:]
+                    item.filepath = new_path
+
+                    if hasattr(item, "reload"):
+                        try:
+                            item.reload()
+                        except RuntimeError:
+                            # Some libraries/images might fail to reload if the file is missing
+                            pass
+
+    # VSE Support
+    scene = getattr(bpy.context, "scene", None)
+    if scene and getattr(scene, "sequence_editor", None):
+        # Support for Blender < 4.0 (sequences_all) and >= 4.0 (strips_all)
+        sequences = getattr(scene.sequence_editor, "sequences_all", None)
+        if sequences is None:
+            sequences = getattr(scene.sequence_editor, "strips_all", [])
+
+        for seq in sequences:
+            # Check for filepath or directory property
+            if hasattr(seq, "filepath"):
+                path = seq.filepath
+                if path.startswith("//") and not path.startswith("//../../"):
+                    seq.filepath = "//../../" + path[2:]
+
+            if hasattr(seq, "directory"):
+                path = seq.directory
+                if path.startswith("//") and not path.startswith("//../../"):
+                    seq.directory = "//../../" + path[2:]
