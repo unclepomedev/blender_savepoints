@@ -115,49 +115,49 @@ def main():
         # Create v7, v8.
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v7")
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v8")
-        
+
         # Lock v8 (the most recent one)
         core.set_version_protection("v008", True)
-        
+
         # We have: v8(L), v7.
         # Max Keep = 2.
         settings.use_limit_versions = True
-        
+
         # Create v9.
         # List: v9, v8(L), v7.
         # Unlocked: v9, v7. (Count = 2).
         # Locked: v8.
         # Result should be: v9, v8(L), v7. (All kept).
         # Note: If v8 counted towards limit, then v7 would be the 3rd item and pruned.
-        
+
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v9")
-        
+
         ids = get_version_ids()
         print(f"IDs after v9: {ids}")
-        
+
         if "v007" not in ids:
             raise RuntimeError("v007 should be kept because v008(Locked) does not count towards quota.")
-            
+
         if len(ids) != 3:
             raise RuntimeError(f"Expected 3 versions (v9, v8L, v7), got {len(ids)}")
-            
+
         # Create v10.
         # List: v10, v9, v8(L), v7.
         # Unlocked: v10, v9, v7. (Count = 3).
         # Max = 2.
         # Oldest unlocked is v7. Should be pruned.
         # Result: v10, v9, v8(L).
-        
+
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v10")
-        
+
         ids = get_version_ids()
         print(f"IDs after v10: {ids}")
-        
+
         if "v007" in ids:
             raise RuntimeError("v007 should be pruned now.")
-        
+
         if len(ids) != 3:
-             raise RuntimeError(f"Expected 3 versions (v10, v9, v8L), got {len(ids)}")
+            raise RuntimeError(f"Expected 3 versions (v10, v9, v8L), got {len(ids)}")
 
         print("Test 4 Passed.")
 
@@ -165,12 +165,12 @@ def main():
         # Current State from Test 4: v10, v9, v8(L). Max=2.
         # Unlocked: v10, v9 (Count=2). Locked: v8.
         # All kept.
-        
+
         ids = get_version_ids()
         expected_ids = ["v010", "v009", "v008"]
         if ids != expected_ids:
-             # Just in case ordering is different or something failed before
-             print(f"Warning: Starting state for Test 5 unexpected: {ids}")
+            # Just in case ordering is different or something failed before
+            print(f"Warning: Starting state for Test 5 unexpected: {ids}")
 
         # Now unlock v8.
         # List: v10, v9, v8(Unlocked).
@@ -179,20 +179,20 @@ def main():
         # Note: Simply toggling protection does not trigger prune. We must trigger it via commit or something?
         # Actually, prune_versions is called after commit.
         # If we just change metadata, prune isn't called automatically unless we do it manually or commit again.
-        
+
         core.set_version_protection("v008", False)
-        
+
         # Manually trigger prune for test purpose, or commit new version.
         # Let's commit v11 to trigger prune.
         # If we didn't prune v8 yet, list is: v11, v10, v9, v8.
         # Unlocked count = 4. Max = 2.
         # Should keep v11, v10. Prune v9, v8.
-        
+
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v11")
-        
+
         ids = get_version_ids()
         print(f"IDs after v11: {ids}")
-        
+
         # Expected: v11, v10.
         if "v008" in ids:
             raise RuntimeError("v008 (Unlocked) should be pruned")
