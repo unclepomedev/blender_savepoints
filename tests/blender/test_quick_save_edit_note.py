@@ -70,7 +70,11 @@ def main():
         # If it didn't work, it would call invoke_props_dialog which returns RUNNING_MODAL (and might fail in bg).
 
         # Execute operator
-        res = bpy.ops.savepoints.commit('INVOKE_DEFAULT')
+        
+        # Override context to ensure active_object is passed correctly in background mode
+        # Using temp_override for Blender 3.2+
+        with bpy.context.temp_override(active_object=obj, object=obj, selected_objects=[obj], selected_editable_objects=[obj]):
+            res = bpy.ops.savepoints.commit('INVOKE_DEFAULT')
 
         if "FINISHED" not in res:
             raise RuntimeError(f"Quick Save failed: result={res}")
@@ -83,8 +87,12 @@ def main():
 
         v1 = versions[0]  # Newest
         print(f"Generated Note: '{v1['note']}'")
-        # Note: We don't assert specific note content here as headless environment context can be flaky.
-        # test_note_assignment.py handles the logic verification.
+
+        # Verify default note generation (Strict check restored after manual fix)
+        # The manual fix ensures invoke() sets the note before execution.
+        expected_note = "Object: QuickSaveCube"
+        if v1['note'] != expected_note:
+            raise RuntimeError(f"Note mismatch. Expected '{expected_note}', got '{v1['note']}'")
 
         print("Test 1 Passed.")
 

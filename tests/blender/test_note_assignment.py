@@ -21,9 +21,20 @@ class MockWindowManager:
 
 
 class MockContext:
-    def __init__(self, real_context):
+    def __init__(self, real_context, active_object_override=None, simulate_error=False, use_override=False):
         self._real_context = real_context
         self.window_manager = MockWindowManager()
+        self._active_object_override = active_object_override
+        self._simulate_error = simulate_error
+        self._use_override = use_override
+
+    @property
+    def active_object(self):
+        if self._simulate_error:
+            raise RuntimeError("Simulated Context Error")
+        if self._use_override:
+            return self._active_object_override
+        return getattr(self._real_context, "active_object", None)
 
     def __getattr__(self, name):
         return getattr(self._real_context, name)
@@ -146,6 +157,33 @@ class TestNoteAssignment(unittest.TestCase):
         res = op.invoke(mock_ctx, None)
 
         self.assertEqual(op.note, "Explicit Note")
+        self.assertEqual(res, {'FINISHED'})
+
+    def test_invoke_no_active_object(self):
+        """Test correct handling when no object is active (should get empty note)"""
+        bpy.context.scene.savepoints_settings.show_save_dialog = False
+        op = MockOperator()
+        op.force_quick = True
+
+        # active_object = None
+        mock_ctx = MockContext(bpy.context, active_object_override=None, use_override=True)
+        res = op.invoke(mock_ctx, None)
+
+        self.assertEqual(op.note, "")
+        self.assertEqual(res, {'FINISHED'})
+
+    def test_invoke_exception_handling(self):
+        """Test robustness when context access raises exception"""
+        bpy.context.scene.savepoints_settings.show_save_dialog = False
+        op = MockOperator()
+        op.force_quick = True
+
+        # Simulate exception
+        mock_ctx = MockContext(bpy.context, simulate_error=True)
+        res = op.invoke(mock_ctx, None)
+
+        # Should handle gracefully and set empty note
+        self.assertEqual(op.note, "")
         self.assertEqual(res, {'FINISHED'})
 
 
