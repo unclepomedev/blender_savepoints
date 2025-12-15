@@ -112,7 +112,9 @@ class TestGhostComplex(unittest.TestCase):
         print("4. Testing Missing Snapshot File...")
 
         # Manually delete the snapshot file for v3
+        # Manually delete the snapshot file for v3
         history_dir = core.get_history_dir()
+        self.assertIsNotNone(history_dir, "History directory should exist after commits")
         v3_path = Path(history_dir) / v3_id / "snapshot.blend_snapshot"
         if v3_path.exists():
             os.remove(v3_path)
