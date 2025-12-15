@@ -337,7 +337,8 @@ def update_version_tag(version_id: str, new_tag: str) -> None:
 
 def prune_versions(max_keep: int) -> int:
     """
-    Prune old versions to keep 'max_keep' manual versions.
+    Prune old versions to keep 'max_keep' unlocked manual versions.
+    Locked versions are ignored (kept automatically and don't count towards the limit).
     Returns number of deleted versions.
     """
     if max_keep <= 0:
@@ -350,22 +351,23 @@ def prune_versions(max_keep: int) -> int:
     # List is ordered Newest -> Oldest
     manual_versions = [v for v in versions if v.get("id") != "autosave"]
 
-    if len(manual_versions) <= max_keep:
-        return 0
-
     ids_to_delete = []
+    unlocked_count = 0
 
-    # Iterate all versions to determine fate
-    # We keep index < max_keep (Recent)
-    for i, v in enumerate(manual_versions):
+    for v in manual_versions:
         vid = v.get("id")
-
-        is_recent = i < max_keep
         is_locked = v.get("is_protected", False)
 
-        if is_recent or is_locked:
+        if is_locked:
+            # Locked versions are always kept and don't consume the quota
             continue
+
+        # Unlocked version
+        if unlocked_count < max_keep:
+            # Keep it
+            unlocked_count += 1
         else:
+            # Quota exceeded, delete
             ids_to_delete.append(vid)
 
     for vid in ids_to_delete:

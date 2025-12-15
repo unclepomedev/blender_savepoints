@@ -203,7 +203,7 @@ def _draw_disk_management_settings(layout, settings):
     box.label(text="Disk Management", icon='DISK_DRIVE')
     box.prop(settings, "use_limit_versions")
     if settings.use_limit_versions:
-        box.prop(settings, "max_versions_to_keep")
+        box.prop(settings, "max_versions_to_keep", text="Max Versions (Excl. Locked)")
 
 
 class SAVEPOINTS_PT_main(bpy.types.Panel):

@@ -107,89 +107,101 @@ def main():
 
         print("Test 3 Passed.")
 
-        print("\n--- Test 4: Protected Versions Ignored by Prune ---")
-        # Current: v6, v5.
-        # Protect v5
-        bpy.ops.savepoints.toggle_protection(version_id="v005")
+        print("\n--- Test 4: Protected Versions Ignored by Prune (Quota Exclusion) ---")
+        # Reset
+        settings.use_limit_versions = False
+        settings.max_versions_to_keep = 2
 
-        # Set Max 1
-        settings.max_versions_to_keep = 1
-
-        # Create v7.
+        # Create v7, v8.
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v7")
-
+        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v8")
+        
+        # Lock v8 (the most recent one)
+        core.set_version_protection("v008", True)
+        
+        # We have: v8(L), v7.
+        # Max Keep = 2.
+        settings.use_limit_versions = True
+        
+        # Create v9.
+        # List: v9, v8(L), v7.
+        # Unlocked: v9, v7. (Count = 2).
+        # Locked: v8.
+        # Result should be: v9, v8(L), v7. (All kept).
+        # Note: If v8 counted towards limit, then v7 would be the 3rd item and pruned.
+        
+        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v9")
+        
         ids = get_version_ids()
-        print(f"IDs: {ids}")
-
-        # Should have v7 (New), v5 (Protected)
-        # v6 should be gone.
-
-        if "v006" in ids:
-            raise RuntimeError("v006 should have been pruned")
-        if "v005" not in ids:
-            raise RuntimeError("v005 (Protected) should be kept")
+        print(f"IDs after v9: {ids}")
+        
         if "v007" not in ids:
-            raise RuntimeError("v007 (Newest) should be kept")
+            raise RuntimeError("v007 should be kept because v008(Locked) does not count towards quota.")
+            
+        if len(ids) != 3:
+            raise RuntimeError(f"Expected 3 versions (v9, v8L, v7), got {len(ids)}")
+            
+        # Create v10.
+        # List: v10, v9, v8(L), v7.
+        # Unlocked: v10, v9, v7. (Count = 3).
+        # Max = 2.
+        # Oldest unlocked is v7. Should be pruned.
+        # Result: v10, v9, v8(L).
+        
+        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v10")
+        
+        ids = get_version_ids()
+        print(f"IDs after v10: {ids}")
+        
+        if "v007" in ids:
+            raise RuntimeError("v007 should be pruned now.")
+        
+        if len(ids) != 3:
+             raise RuntimeError(f"Expected 3 versions (v10, v9, v8L), got {len(ids)}")
 
         print("Test 4 Passed.")
 
         print("\n--- Test 5: Unprotect to Prune ---")
-        # Current: v7, v5
-        # Set Max 1.
-        # Create v8 -> [v8, v7, v5]
-        # Keep 1 -> v8.
-        # v7 (Unprotected) -> Delete.
-        # v5 (Protected) -> Keep.
-
-        # Let's create v8 first to clear v7.
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v8")
-
+        # Current State from Test 4: v10, v9, v8(L). Max=2.
+        # Unlocked: v10, v9 (Count=2). Locked: v8.
+        # All kept.
+        
         ids = get_version_ids()
-        # Expect v8, v5
-        if "v007" in ids:
-            raise RuntimeError("v007 should be pruned")
+        expected_ids = ["v010", "v009", "v008"]
+        if ids != expected_ids:
+             # Just in case ordering is different or something failed before
+             print(f"Warning: Starting state for Test 5 unexpected: {ids}")
 
-        # Let's lock v8.
-        bpy.ops.savepoints.toggle_protection(version_id="v008")
-
-        # Current: v8(locked), v5(locked).
-        # Max 1.
-        # Create v9 -> [v9, v8, v5]
-        # v9 (Recent) -> Keep.
-        # v8 (Locked) -> Keep.
-        # v5 (Locked) -> Keep.
-
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v9")
+        # Now unlock v8.
+        # List: v10, v9, v8(Unlocked).
+        # Unlocked Count = 3. Max = 2.
+        # Should prune oldest unlocked -> v8.
+        # Note: Simply toggling protection does not trigger prune. We must trigger it via commit or something?
+        # Actually, prune_versions is called after commit.
+        # If we just change metadata, prune isn't called automatically unless we do it manually or commit again.
+        
+        core.set_version_protection("v008", False)
+        
+        # Manually trigger prune for test purpose, or commit new version.
+        # Let's commit v11 to trigger prune.
+        # If we didn't prune v8 yet, list is: v11, v10, v9, v8.
+        # Unlocked count = 4. Max = 2.
+        # Should keep v11, v10. Prune v9, v8.
+        
+        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v11")
+        
         ids = get_version_ids()
-        if len(ids) != 3:
-            raise RuntimeError(f"Expected 3 locked/recent versions, got {len(ids)}")
-
-        # Now unlock v5.
-        bpy.ops.savepoints.toggle_protection(version_id="v005")
-
-        # Create v10 -> [v10, v9, v8, v5]
-        # Max 1.
-        # v10 (Recent).
-        # v9 (Unprotected? No we didn't lock v9). v9 is previous recent. Now it is old.
-        # v8 (Locked).
-        # v5 (Unprotected).
-
-        # Result should be: v10, v8.
-        # v9 deleted. v5 deleted.
-
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v10")
-
-        ids = get_version_ids()
-        print(f"IDs: {ids}")
-
-        if "v005" in ids:
-            raise RuntimeError("v005 (Unlocked) should be pruned")
+        print(f"IDs after v11: {ids}")
+        
+        # Expected: v11, v10.
+        if "v008" in ids:
+            raise RuntimeError("v008 (Unlocked) should be pruned")
         if "v009" in ids:
-            raise RuntimeError("v009 (Old Unprotected) should be pruned")
-        if "v008" not in ids:
-            raise RuntimeError("v008 (Locked) should be kept")
+            raise RuntimeError("v009 (Old Unlocked) should be pruned")
+        if "v011" not in ids:
+            raise RuntimeError("v011 (Newest) should be kept")
         if "v010" not in ids:
-            raise RuntimeError("v010 (Newest) should be kept")
+            raise RuntimeError("v010 (2nd Newest) should be kept")
 
         print("Test 5 Passed.")
 
