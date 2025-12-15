@@ -172,6 +172,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     note: bpy.props.StringProperty(name="Commit Message", default="")
+    force_quick: bpy.props.BoolProperty(name="Force Quick Save", default=False, options={'SKIP_SAVE', 'HIDDEN'})
 
     @classmethod
     def poll(cls, context):
@@ -179,10 +180,11 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
     def invoke(self, context, event):
         settings = context.scene.savepoints_settings
-        if not settings.show_save_dialog:
-            self.note = ""  # Quick save, no note
-            return self.execute(context)
-        return context.window_manager.invoke_props_dialog(self)
+        if settings.show_save_dialog and not self.force_quick:
+            return context.window_manager.invoke_props_dialog(self)
+
+        self.note = ""  # Quick save, no note
+        return self.execute(context)
 
     def draw(self, context):
         layout = self.layout
