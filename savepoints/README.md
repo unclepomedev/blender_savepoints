@@ -11,6 +11,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Edit Notes**: Update notes for any version directly from the history list.
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
 - **Rescue Assets**: Easily append objects from a specific version without opening the full snapshot.
+- **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
 - **Quick Save**: Option to skip the note dialog for instant saving.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 - **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
@@ -35,6 +36,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - View the thumbnail, note, object count, and file size.
    - **Edit Note**: Click the pencil icon next to the note to update it.
    - **Rescue Assets**: Click the Import icon to browse and append objects from this version into your current scene.
+   - **Ghost Reference**: Click the Ghost icon to toggle a wireframe overlay of this version in the viewport. Useful for comparing changes.
    - Click **Checkout (Restore)** to open that version.
    - You are now in **Snapshot Mode** (indicated by a red border in the viewport).
       - To restore this version as the main file, click **Save as Parent**.
