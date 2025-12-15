@@ -21,6 +21,7 @@ classes = (
     operators.SAVEPOINTS_OT_edit_note,
     operators.SAVEPOINTS_OT_rescue_assets,
     operators.SAVEPOINTS_OT_toggle_protection,
+    operators.SAVEPOINTS_OT_toggle_ghost,
     operators.SAVEPOINTS_OT_checkout,
     operators.SAVEPOINTS_OT_restore,
     operators.SAVEPOINTS_OT_open_parent,

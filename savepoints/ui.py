@@ -27,6 +27,14 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             rescue_op = layout.operator("savepoints.rescue_assets", text="", icon='IMPORT', emboss=False)
             rescue_op.version_id = item.version_id
 
+            ghost_col_name = f"Ghost_Reference_{item.version_id}"
+            is_ghost_active = bool(bpy.data.collections.get(ghost_col_name))
+            ghost_icon = 'ONIONSKIN_ON' if is_ghost_active else 'ONIONSKIN_OFF'
+
+            ghost_op = layout.operator("savepoints.toggle_ghost", text="", icon=ghost_icon, emboss=False,
+                                       depress=is_ghost_active)
+            ghost_op.version_id = item.version_id
+
             lock_icon = 'LOCKED' if item.is_protected else 'UNLOCKED'
             op = layout.operator("savepoints.toggle_protection", text="", icon=lock_icon, emboss=False)
             op.version_id = item.version_id
