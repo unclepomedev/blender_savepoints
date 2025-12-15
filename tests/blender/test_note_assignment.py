@@ -90,7 +90,7 @@ class TestNoteAssignment(unittest.TestCase):
         mock_ctx = MockContext(bpy.context)
         res = op.invoke(mock_ctx, None)
 
-        self.assertEqual(op.note, "")
+        self.assertEqual(op.note, "Object: MyCube")
         self.assertEqual(res, {'FINISHED'})
 
     def test_invoke_dialog_on_force_quick(self):
