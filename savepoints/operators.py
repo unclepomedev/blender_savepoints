@@ -235,6 +235,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             self.report({'ERROR'}, "Save the project first!")
             return {'CANCELLED'}
 
+        # Ensure default note is set if empty (especially for non-interactive execution)
+        if not self.note:
+            self.note = self._get_default_note(context)
+
         manifest = load_manifest()
         new_id_str = get_next_version_id(manifest.get("versions", []))
         create_snapshot(context, new_id_str, self.note)
@@ -351,10 +355,19 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
             return {'CANCELLED'}
 
-        virtual_dir = snapshot_path / "Object"
-        append_dir = str(virtual_dir) + os.sep
-        bpy.ops.wm.append('INVOKE_DEFAULT', directory=append_dir, filename="")
+        temp_blend_path = history_dir / self.version_id / "snapshot_rescue_temp.blend"
 
+        try:
+            shutil.copy2(str(snapshot_path), str(temp_blend_path))
+            print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
+
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to create temp file: {e}")
+            return {'CANCELLED'}
+
+        virtual_dir = temp_blend_path / "Object"
+        append_dir = str(virtual_dir) + os.sep
+        bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
         return {'FINISHED'}
 
 
