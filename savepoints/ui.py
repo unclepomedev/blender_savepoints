@@ -24,6 +24,9 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             edit_op.version_id = item.version_id
             edit_op.new_note = item.note
 
+            rescue_op = layout.operator("savepoints.rescue_assets", text="", icon='IMPORT', emboss=False)
+            rescue_op.version_id = item.version_id
+
             lock_icon = 'LOCKED' if item.is_protected else 'UNLOCKED'
             op = layout.operator("savepoints.toggle_protection", text="", icon=lock_icon, emboss=False)
             op.version_id = item.version_id
