@@ -626,7 +626,7 @@ class SAVEPOINTS_OT_confirm_disable_daily_backups(bpy.types.Operator):
 
     def draw(self, context):
         layout = self.layout
-        layout.label(text="If version limit is exceeded, unlocked daily backups may be deleted.", icon='WARNING')
+        layout.label(text="If version limit is exceeded, unlocked daily backups may be deleted.", icon='ERROR')
 
     def execute(self, context):
         context.window_manager["savepoints_daily_backup_confirmed"] = True
