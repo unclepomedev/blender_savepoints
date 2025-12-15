@@ -246,7 +246,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         # Auto Pruning
         settings = context.scene.savepoints_settings
         if settings.use_limit_versions and settings.max_versions_to_keep > 0:
-            deleted = prune_versions(settings.max_versions_to_keep, settings.keep_daily_backups)
+            deleted = prune_versions(settings.max_versions_to_keep)
             if deleted > 0:
                 sync_history_to_props(context)
 
@@ -612,25 +612,6 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
 
     def execute(self, context):
         sync_history_to_props(context)
-        return {'FINISHED'}
-
-
-class SAVEPOINTS_OT_confirm_disable_daily_backups(bpy.types.Operator):
-    """Disable Keep Daily Backups"""
-    bl_idname = "savepoints.confirm_disable_daily_backups"
-    bl_label = "Disable Daily Backups?"
-    bl_options = {'REGISTER', 'INTERNAL'}
-
-    def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self, width=400)
-
-    def draw(self, context):
-        layout = self.layout
-        layout.label(text="If version limit is exceeded, unlocked daily backups may be deleted.", icon='ERROR')
-
-    def execute(self, context):
-        context.window_manager["savepoints_daily_backup_confirmed"] = True
-        context.scene.savepoints_settings.keep_daily_backups = False
         return {'FINISHED'}
 
 
