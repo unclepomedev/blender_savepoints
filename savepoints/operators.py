@@ -173,7 +173,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     bl_label = "Save Version"
     bl_options = {'REGISTER', 'UNDO'}
 
-    note: bpy.props.StringProperty(name="Commit Message", default="")
+    note: bpy.props.StringProperty(name="Commit Message", default="", options={'SKIP_SAVE'})
     force_quick: bpy.props.BoolProperty(name="Force Quick Save", default=False, options={'SKIP_SAVE', 'HIDDEN'})
 
     @classmethod
