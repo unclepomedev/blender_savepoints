@@ -1,4 +1,5 @@
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -15,7 +16,9 @@ class TestDailyBackupConfirmation(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Create a dummy file to ensure context is valid
-        bpy.ops.wm.save_as_mainfile(filepath=str(ROOT / "test_daily_backup.blend"))
+        cls.test_dir = tempfile.mkdtemp()
+        cls.test_file = Path(cls.test_dir) / "test_daily_backup.blend"
+        bpy.ops.wm.save_as_mainfile(filepath=str(cls.test_file))
         savepoints.register()
 
     @classmethod
