@@ -2,6 +2,7 @@
 
 import shutil
 import time
+import os
 from pathlib import Path
 
 import bpy
@@ -282,6 +283,34 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         # Force UI redraw to update the note in the list immediately
         for area in context.window.screen.areas:
             area.tag_redraw()
+
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
+    """Rescue Assets: Append objects from this version"""
+    bl_idname = "savepoints.rescue_assets"
+    bl_label = "Rescue Assets"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    version_id: bpy.props.StringProperty()
+
+    def execute(self, context):
+        history_dir_str = get_history_dir()
+        if not history_dir_str:
+            self.report({'ERROR'}, "History directory not found")
+            return {'CANCELLED'}
+
+        history_dir = Path(history_dir_str)
+        snapshot_path = history_dir / self.version_id / "snapshot.blend_snapshot"
+
+        if not snapshot_path.exists():
+            self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
+            return {'CANCELLED'}
+
+        virtual_dir = snapshot_path / "Object"
+        append_dir = str(virtual_dir) + os.sep
+        bpy.ops.wm.append('INVOKE_DEFAULT', directory=append_dir, filename="")
 
         return {'FINISHED'}
 
