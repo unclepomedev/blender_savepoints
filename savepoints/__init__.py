@@ -30,6 +30,8 @@ classes = (
     ui.SAVEPOINTS_PT_main,
 )
 
+addon_keymaps = []
+
 
 @persistent
 def load_handler(dummy):
@@ -64,8 +66,29 @@ def register():
     if not bpy.app.timers.is_registered(operators.autosave_timer):
         bpy.app.timers.register(operators.autosave_timer, first_interval=10.0, persistent=True)
 
+    # Register Keymaps
+    wm = bpy.context.window_manager
+    kc = wm.keyconfigs.addon
+    if kc:
+        km = kc.keymaps.new(name='Window', space_type='EMPTY')
+
+        # Standard: Ctrl+Alt+S
+        kmi1 = km.keymap_items.new("savepoints.commit", 'S', 'PRESS', ctrl=True, alt=True)
+        kmi1.properties.force_quick = False
+        addon_keymaps.append((km, kmi1))
+
+        # Forced Quick: Ctrl+Alt+Shift+S
+        kmi2 = km.keymap_items.new("savepoints.commit", 'S', 'PRESS', ctrl=True, alt=True, shift=True)
+        kmi2.properties.force_quick = True
+        addon_keymaps.append((km, kmi2))
+
 
 def unregister():
+    # Unregister Keymaps
+    for km, kmi in addon_keymaps:
+        km.keymap_items.remove(kmi)
+    addon_keymaps.clear()
+
     if bpy.app.timers.is_registered(operators.autosave_timer):
         bpy.app.timers.unregister(operators.autosave_timer)
 
