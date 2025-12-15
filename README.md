@@ -42,7 +42,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Select a version from the history list.
    - View the thumbnail, note, object count, and file size.
    - **Edit Note**: Click the pencil icon next to the note to update it.
-   - **Rescue Assets**: Click the Import icon to browse and append objects from this version into your current scene.
+   - **Rescue Assets** (This feature may be performance-intensive.): Click the Import icon to browse and append objects from this version into your current scene.
    - **Ghost Reference**: Click the Ghost icon to toggle a wireframe overlay of this version in the viewport. Useful for comparing changes.
    - Click **Checkout (Restore)** to open that version.
    - You are now in **Snapshot Mode** (indicated by a red border in the viewport).
