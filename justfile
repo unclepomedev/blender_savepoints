@@ -23,3 +23,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost_reference.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost_complex.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_tagging.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_deletion_protection.py

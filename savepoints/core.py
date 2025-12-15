@@ -409,6 +409,11 @@ def delete_version_by_id(version_id: str) -> None:
             break
 
     if version_to_remove:
+        # Check protection
+        if version_to_remove.get("is_protected", False):
+            print(f"Skipping deletion of protected version: {version_id}")
+            return
+
         versions.remove(version_to_remove)
         manifest["versions"] = versions
         save_manifest(manifest)
