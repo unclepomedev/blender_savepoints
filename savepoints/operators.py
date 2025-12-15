@@ -423,7 +423,8 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
                 libs_to_process = []
                 for lib in bpy.data.libraries:
                     path_norm = lib.filepath.replace("\\", "/")
-                    if f"/{version_id}/snapshot.blend_snapshot" in path_norm:
+                    if (f"/{version_id}/snapshot.blend_snapshot" in path_norm or
+                            f"/{version_id}/snapshot.blend" in path_norm):
                         libs_to_process.append(lib)
 
                 # Collections to check for linked data
@@ -461,10 +462,17 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
                 self.report({'ERROR'}, "History directory not found")
                 return {'CANCELLED'}
 
-            snapshot_path = Path(history_dir_str) / version_id / "snapshot.blend_snapshot"
+            version_dir = Path(history_dir_str) / version_id
+            snapshot_path = version_dir / "snapshot.blend_snapshot"
+
             if not snapshot_path.exists():
-                self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
-                return {'CANCELLED'}
+                # Check for legacy snapshot file (.blend)
+                legacy_snapshot_path = version_dir / "snapshot.blend"
+                if legacy_snapshot_path.exists():
+                    snapshot_path = legacy_snapshot_path
+                else:
+                    self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
+                    return {'CANCELLED'}
 
             try:
                 # Load Objects
