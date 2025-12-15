@@ -69,6 +69,12 @@ class MockPanel: pass
 bpy.types.Panel = MockPanel
 
 
+class MockMenu: pass
+
+
+bpy.types.Menu = MockMenu
+
+
 class MockContext: pass
 
 

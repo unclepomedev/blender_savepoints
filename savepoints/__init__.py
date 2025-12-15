@@ -1,30 +1,40 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import bpy
 import time
+
+import bpy
 from bpy.app.handlers import persistent
 
+from . import hud
 from . import operators
 from . import operators_io
 from . import properties
 from . import ui
 from . import ui_utils
-from . import hud
+from .core import remap_snapshot_paths
 
 classes = (
     properties.SavePointsVersion,
     properties.SavePointsSettings,
     operators.SAVEPOINTS_OT_commit,
     operators.SAVEPOINTS_OT_link_history,
+    operators.SAVEPOINTS_OT_edit_note,
+    operators.SAVEPOINTS_OT_set_tag,
+    operators.SAVEPOINTS_OT_rescue_assets,
     operators.SAVEPOINTS_OT_toggle_protection,
+    operators.SAVEPOINTS_OT_toggle_ghost,
     operators.SAVEPOINTS_OT_checkout,
     operators.SAVEPOINTS_OT_restore,
     operators.SAVEPOINTS_OT_open_parent,
+    operators.SAVEPOINTS_OT_fork_version,
     operators.SAVEPOINTS_OT_delete,
     operators.SAVEPOINTS_OT_refresh,
+    ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
 )
+
+addon_keymaps = []
 
 
 @persistent
@@ -37,6 +47,15 @@ def load_handler(dummy):
             bpy.context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
 
 
+@persistent
+def auto_remap_paths_handler(dummy):
+    """Handler to automatically remap paths when opening a snapshot."""
+    try:
+        remap_snapshot_paths(dummy)
+    except Exception as e:
+        print(f"[SavePoints] Error remapping paths: {e}")
+
+
 def register():
     ui_utils.register_previews()
     hud.register()
@@ -46,17 +65,42 @@ def register():
 
     bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
     bpy.app.handlers.load_post.append(load_handler)
+    bpy.app.handlers.load_post.append(auto_remap_paths_handler)
 
     if not bpy.app.timers.is_registered(operators.autosave_timer):
         bpy.app.timers.register(operators.autosave_timer, first_interval=10.0, persistent=True)
 
+    # Register Keymaps
+    wm = bpy.context.window_manager
+    kc = wm.keyconfigs.addon
+    if kc:
+        km = kc.keymaps.new(name='Window', space_type='EMPTY')
+
+        # Standard: Ctrl+Alt+S
+        kmi1 = km.keymap_items.new("savepoints.commit", 'S', 'PRESS', ctrl=True, alt=True)
+        kmi1.properties.force_quick = False
+        addon_keymaps.append((km, kmi1))
+
+        # Forced Quick: Ctrl+Alt+Shift+S
+        kmi2 = km.keymap_items.new("savepoints.commit", 'S', 'PRESS', ctrl=True, alt=True, shift=True)
+        kmi2.properties.force_quick = True
+        addon_keymaps.append((km, kmi2))
+
 
 def unregister():
+    # Unregister Keymaps
+    for km, kmi in addon_keymaps:
+        km.keymap_items.remove(kmi)
+    addon_keymaps.clear()
+
     if bpy.app.timers.is_registered(operators.autosave_timer):
         bpy.app.timers.unregister(operators.autosave_timer)
 
     if load_handler in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(load_handler)
+
+    if auto_remap_paths_handler in bpy.app.handlers.load_post:
+        bpy.app.handlers.load_post.remove(auto_remap_paths_handler)
 
     ui_utils.unregister_previews()
     hud.unregister()

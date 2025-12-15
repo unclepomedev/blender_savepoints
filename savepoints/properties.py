@@ -12,11 +12,41 @@ class SavePointsVersion(bpy.types.PropertyGroup):
     object_count: bpy.props.IntProperty(name="Object Count", default=0)
     file_size_display: bpy.props.StringProperty(name="File Size", default="")
     is_protected: bpy.props.BoolProperty(name="Protected", default=False)
+    tag: bpy.props.EnumProperty(
+        name="Tag",
+        items=[
+            ('NONE', "None", "", 'NONE', 0),
+            ('STABLE', "Stable", "", 'CHECKMARK', 1),
+            ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
+            ('EXPERIMENT', "Experiment", "", 'EXPERIMENTAL', 3),
+            ('BUG', "Bug", "", 'ERROR', 4),
+        ],
+        default='NONE'
+    )
 
 
 class SavePointsSettings(bpy.types.PropertyGroup):
     versions: bpy.props.CollectionProperty(type=SavePointsVersion)
     active_version_index: bpy.props.IntProperty(name="Active Version Index", default=-1)
+
+    filter_tag: bpy.props.EnumProperty(
+        name="Filter Tag",
+        items=[
+            ('ALL', "All", "", 'FILTER', 0),
+            ('STABLE', "Stable", "", 'CHECKMARK', 1),
+            ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
+            ('EXPERIMENT', "Experiment", "", 'EXPERIMENTAL', 3),
+            ('BUG', "Bug", "", 'ERROR', 4),
+        ],
+        default='ALL',
+        update=lambda self, context: context.area.tag_redraw() if context.area else None
+    )
+
+    show_save_dialog: bpy.props.BoolProperty(
+        name="Show Save Dialog",
+        description="Show the note input dialog when saving a version. Disable for instant 'Quick Save'",
+        default=True
+    )
 
     use_limit_versions: bpy.props.BoolProperty(
         name="Limit Versions",
@@ -29,6 +59,12 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         description="Number of versions to keep (when enabled)",
         default=50,
         min=1
+    )
+
+    keep_daily_backups: bpy.props.BoolProperty(
+        name="Keep Daily Backups (Last 14 days)",
+        description="Keep the last snapshot of each day for the past 14 days, even if the Max Count is exceeded",
+        default=False
     )
 
     # Auto Save Settings

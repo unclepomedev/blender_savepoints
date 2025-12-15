@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import os
 import shutil
 import time
 from pathlib import Path
@@ -17,6 +18,8 @@ from .core import (
     get_parent_path_from_snapshot,
     prune_versions,
     set_version_protection,
+    update_version_note,
+    update_version_tag,
 )
 from .ui_utils import sync_history_to_props
 
@@ -170,14 +173,51 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     bl_label = "Save Version"
     bl_options = {'REGISTER', 'UNDO'}
 
-    note: bpy.props.StringProperty(name="Commit Message", default="")
+    note: bpy.props.StringProperty(name="Commit Message", default="", options={'SKIP_SAVE'})
+    force_quick: bpy.props.BoolProperty(name="Force Quick Save", default=False, options={'SKIP_SAVE', 'HIDDEN'})
 
     @classmethod
     def poll(cls, context):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
+    def _get_default_note(self, context):
+        try:
+            obj = context.active_object
+            if not obj:
+                return ""
+
+            mode = obj.mode
+
+            if mode == 'EDIT':
+                friendly_mode = f"Edit {obj.type.title()}"
+            else:
+                mode_map = {
+                    'OBJECT': 'Object',
+                    'POSE': 'Pose',
+                    'SCULPT': 'Sculpt',
+                    'VERTEX_PAINT': 'Vertex Paint',
+                    'WEIGHT_PAINT': 'Weight Paint',
+                    'TEXTURE_PAINT': 'Texture Paint',
+                    'PARTICLE_EDIT': 'Particle Edit',
+                }
+                friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
+
+            return f"{friendly_mode}: {obj.name}"
+        except Exception:
+            return ""
+
     def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self)
+        settings = context.scene.savepoints_settings
+
+        default_note = self._get_default_note(context)
+
+        if not self.note:
+            self.note = default_note
+
+        if settings.show_save_dialog and not self.force_quick:
+            return context.window_manager.invoke_props_dialog(self)
+
+        return self.execute(context)
 
     def draw(self, context):
         layout = self.layout
@@ -195,6 +235,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             self.report({'ERROR'}, "Save the project first!")
             return {'CANCELLED'}
 
+        # Ensure default note is set if empty (especially for non-interactive execution)
+        if not self.note:
+            self.note = self._get_default_note(context)
+
         manifest = load_manifest()
         new_id_str = get_next_version_id(manifest.get("versions", []))
         create_snapshot(context, new_id_str, self.note)
@@ -202,11 +246,134 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         # Auto Pruning
         settings = context.scene.savepoints_settings
         if settings.use_limit_versions and settings.max_versions_to_keep > 0:
-            deleted = prune_versions(settings.max_versions_to_keep)
+            deleted = prune_versions(settings.max_versions_to_keep, settings.keep_daily_backups)
             if deleted > 0:
                 sync_history_to_props(context)
 
         self.report({'INFO'}, f"Version {new_id_str} saved.")
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
+    """Edit the note of an existing version"""
+    bl_idname = "savepoints.edit_note"
+    bl_label = "Edit Note"
+    bl_options = {'REGISTER'}
+
+    version_id: bpy.props.StringProperty(options={'HIDDEN'})
+    new_note: bpy.props.StringProperty(name="Note")
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(self, "new_note")
+
+    def execute(self, context):
+        if not self.version_id:
+            return {'CANCELLED'}
+
+        try:
+            update_version_note(self.version_id, self.new_note)
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to update note: {e}")
+            return {'CANCELLED'}
+
+        sync_history_to_props(context)
+
+        # Force UI redraw to update the note in the list immediately
+        for area in context.window.screen.areas:
+            area.tag_redraw()
+
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
+    """Set tag for a version"""
+    bl_idname = "savepoints.set_tag"
+    bl_label = "Set Tag"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    version_id: bpy.props.StringProperty(options={'HIDDEN'})
+    tag: bpy.props.EnumProperty(
+        items=[
+            ('NONE', "None", "", 'NONE', 0),
+            ('STABLE', "Stable", "", 'CHECKMARK', 1),
+            ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
+            ('EXPERIMENT', "Experiment", "", 'LAB', 3),
+            ('BUG', "Bug", "", 'ERROR', 4),
+        ]
+    )
+
+    def execute(self, context):
+        if not self.version_id:
+            return {'CANCELLED'}
+
+        try:
+            update_version_tag(self.version_id, self.tag)
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to set tag: {e}")
+            return {'CANCELLED'}
+
+        # Update UI property directly instead of full sync
+        settings = context.scene.savepoints_settings
+        found = False
+        for item in settings.versions:
+            if item.version_id == self.version_id:
+                item.tag = self.tag
+                found = True
+                break
+        if not found:
+            sync_history_to_props(context)
+
+        # Force UI redraw
+        for area in context.window.screen.areas:
+            area.tag_redraw()
+
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
+    """Rescue Assets: Append objects from this version"""
+    bl_idname = "savepoints.rescue_assets"
+    bl_label = "Rescue Assets"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    version_id: bpy.props.StringProperty()
+
+    def execute(self, context):
+        history_dir_str = get_history_dir()
+        if not history_dir_str:
+            self.report({'ERROR'}, "History directory not found")
+            return {'CANCELLED'}
+
+        history_dir = Path(history_dir_str)
+        version_dir = history_dir / self.version_id
+        snapshot_path = version_dir / "snapshot.blend_snapshot"
+
+        if not snapshot_path.exists():
+            # Try legacy extension
+            legacy_path = version_dir / "snapshot.blend"
+            if legacy_path.exists():
+                snapshot_path = legacy_path
+            else:
+                self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
+                return {'CANCELLED'}
+
+        temp_blend_path = version_dir / "snapshot_rescue_temp.blend"
+
+        try:
+            shutil.copy2(str(snapshot_path), str(temp_blend_path))
+            print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
+
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to create temp file: {e}")
+            return {'CANCELLED'}
+
+        virtual_dir = temp_blend_path / "Object"
+        append_dir = str(virtual_dir) + os.sep
+        bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
         return {'FINISHED'}
 
 
@@ -219,6 +386,9 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
     version_id: bpy.props.StringProperty()
 
     def execute(self, context):
+        if self.version_id == "autosave":
+            return {'CANCELLED'}
+
         settings = context.scene.savepoints_settings
 
         target_item = None
@@ -234,6 +404,127 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
         set_version_protection(self.version_id, new_state)
         target_item.is_protected = new_state
         return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
+    """Toggle Ghost Reference: Overlay this version as wireframe"""
+    bl_idname = "savepoints.toggle_ghost"
+    bl_label = "Toggle Ghost Reference"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    version_id: bpy.props.StringProperty()
+
+    def execute(self, context):
+        version_id = self.version_id
+        collection_name = f"Ghost_Reference_{version_id}"
+
+        # Check if exists
+        existing_col = bpy.data.collections.get(collection_name)
+
+        if existing_col:
+            # --- Toggle OFF (Cleanup) ---
+
+            # 1. Identify objects to remove
+            objects_to_remove = [obj for obj in existing_col.objects]
+
+            # 2. Unlink collection from scene
+            if context.scene.collection.children.get(collection_name):
+                context.scene.collection.children.unlink(existing_col)
+
+            # 3. Remove collection data
+            bpy.data.collections.remove(existing_col)
+
+            # 4. Remove objects
+            for obj in objects_to_remove:
+                try:
+                    bpy.data.objects.remove(obj, do_unlink=True)
+                except Exception:
+                    pass
+
+            # 5. Cleanup unused libraries
+            history_dir_str = get_history_dir()
+            if history_dir_str:
+                # Look for libraries that seem to be from this snapshot
+                libs_to_process = []
+                for lib in bpy.data.libraries:
+                    path_norm = lib.filepath.replace("\\", "/")
+                    if (f"/{version_id}/snapshot.blend_snapshot" in path_norm or
+                            f"/{version_id}/snapshot.blend" in path_norm):
+                        libs_to_process.append(lib)
+
+                # Collections to check for linked data
+                data_collections = [
+                    bpy.data.objects, bpy.data.meshes, bpy.data.materials,
+                    bpy.data.textures, bpy.data.images, bpy.data.armatures,
+                    bpy.data.actions, bpy.data.curves, bpy.data.lights,
+                    bpy.data.cameras, bpy.data.node_groups, bpy.data.fonts,
+                    bpy.data.cache_files, bpy.data.movieclips
+                ]
+
+                for lib in libs_to_process:
+                    # Force remove all data blocks linked from this library
+                    for col in data_collections:
+                        items = [item for item in col if getattr(item, "library", None) == lib]
+                        for item in items:
+                            try:
+                                col.remove(item, do_unlink=True)
+                            except Exception:
+                                pass
+
+                    # Now remove the library itself
+                    try:
+                        bpy.data.libraries.remove(lib)
+                    except Exception:
+                        pass
+
+            self.report({'INFO'}, f"Ghost Reference {version_id} removed.")
+            return {'FINISHED'}
+
+        else:
+            # --- Toggle ON (Load) ---
+            history_dir_str = get_history_dir()
+            if not history_dir_str:
+                self.report({'ERROR'}, "History directory not found")
+                return {'CANCELLED'}
+
+            version_dir = Path(history_dir_str) / version_id
+            snapshot_path = version_dir / "snapshot.blend_snapshot"
+
+            if not snapshot_path.exists():
+                # Check for legacy snapshot file (.blend)
+                legacy_snapshot_path = version_dir / "snapshot.blend"
+                if legacy_snapshot_path.exists():
+                    snapshot_path = legacy_snapshot_path
+                else:
+                    self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
+                    return {'CANCELLED'}
+
+            try:
+                # Load Objects
+                with bpy.data.libraries.load(str(snapshot_path), link=True) as (data_from, data_to):
+                    # Link all objects
+                    data_to.objects = data_from.objects
+
+                # Create Collection
+                new_col = bpy.data.collections.new(collection_name)
+                context.scene.collection.children.link(new_col)
+
+                # Link objects and setup viz
+                count = 0
+                for obj in data_to.objects:
+                    if obj:
+                        new_col.objects.link(obj)
+                        obj.display_type = 'WIRE'
+                        obj.hide_select = True
+                        obj.show_in_front = False
+                        count += 1
+
+                self.report({'INFO'}, f"Ghost Reference {version_id} loaded ({count} objects).")
+                return {'FINISHED'}
+
+            except Exception as e:
+                self.report({'ERROR'}, f"Failed to load ghost: {e}")
+                return {'CANCELLED'}
 
 
 class SAVEPOINTS_OT_checkout(bpy.types.Operator):
@@ -400,4 +691,67 @@ class SAVEPOINTS_OT_open_parent(bpy.types.Operator):
         # Open the parent file
         # Note: In UI, this might prompt to save changes if modified.
         bpy.ops.wm.open_mainfile(filepath=str(parent_path))
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
+    """Save the current snapshot as a new project file"""
+    bl_idname = "savepoints.fork_version"
+    bl_label = "Fork (Save as New)"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        if not bpy.data.filepath:
+            return {'CANCELLED'}
+
+        source_path = Path(bpy.data.filepath)
+
+        # Determine the project root (parent of the history folder)
+        try:
+            # source_path is .../history_dir/version_id/snapshot.blend
+            # parent is .../history_dir/version_id
+            # grandparent is .../history_dir
+            # great-grandparent is project root
+            version_dir = source_path.parent
+            version_id = version_dir.name
+
+            history_dir = version_dir.parent
+            history_dirname = history_dir.name
+
+            project_root = history_dir.parent
+
+            if not project_root.exists():
+                raise FileNotFoundError(f"Project root not found: {project_root}")
+
+            # Calculate filename
+            stem = "project"
+            if history_dirname.startswith(".") and history_dirname.endswith("_history"):
+                # Extract original stem
+                stem = history_dirname[1:-8]  # remove '.' and '_history'
+
+            filename = f"{stem}_{version_id}.blend"
+
+        except Exception as e:
+            self.report({'ERROR'}, f"Could not determine paths: {e}")
+            return {'CANCELLED'}
+
+        target_path = project_root / filename
+
+        if source_path == target_path:
+            self.report({'ERROR'}, "Source and target paths are identical.")
+            return {'CANCELLED'}
+
+        try:
+            shutil.copy2(source_path, target_path)
+        except PermissionError:
+            self.report({'ERROR'}, "Permission denied when saving file.")
+            return {'CANCELLED'}
+        except OSError as e:
+            self.report({'ERROR'}, f"Failed to save file: {e}")
+            return {'CANCELLED'}
+
+        # Open the new file
+        bpy.ops.wm.open_mainfile(filepath=str(target_path))
+
+        self.report({'INFO'}, f"Forked to {target_path.name}")
         return {'FINISHED'}

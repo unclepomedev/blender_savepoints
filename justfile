@@ -14,3 +14,13 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_link_history_validation.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_link_history_parent_update.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_export_zip.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_fork_version.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_quick_save_edit_note.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_remap_snapshot_paths.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_dual_shortcuts.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_context_aware_notes.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_rescue_assets.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost_reference.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost_complex.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_tagging.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_deletion_protection.py
