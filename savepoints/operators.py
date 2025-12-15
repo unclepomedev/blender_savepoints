@@ -663,6 +663,12 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
             self.report({'ERROR'}, f"Failed to save: {e}")
             return {'CANCELLED'}
 
+        # Force redraw to remove HUD
+        for window in context.window_manager.windows:
+            for area in window.screen.areas:
+                if area.type == 'VIEW_3D':
+                    area.tag_redraw()
+
         return {'FINISHED'}
 
 
