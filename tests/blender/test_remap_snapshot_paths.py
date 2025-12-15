@@ -122,18 +122,22 @@ def main():
         # ASSERT
         expected_prefix = "//../../"
 
-        if not img.filepath.startswith(expected_prefix):
+        img_path_normalized = img.filepath.replace("\\", "/")
+        if not img_path_normalized.startswith(expected_prefix):
             raise RuntimeError(f"Image path not remapped! Got: {img.filepath}")
 
-        if not lib.filepath.startswith(expected_prefix):
+        lib_path_normalized = lib.filepath.replace("\\", "/")
+        if not lib_path_normalized.startswith(expected_prefix):
             raise RuntimeError(f"Library path not remapped! Got: {lib.filepath}")
 
         if seq:
             if seq_has_filepath:
-                if not seq.filepath.startswith(expected_prefix):
+                seq_path_normalized = seq.filepath.replace("\\", "/")
+                if not seq_path_normalized.startswith(expected_prefix):
                     raise RuntimeError(f"Sequence filepath not remapped! Got: {seq.filepath}")
             elif seq_has_directory:
-                if not seq.directory.startswith(expected_prefix):
+                seq_dir_normalized = seq.directory.replace("\\", "/")
+                if not seq_dir_normalized.startswith(expected_prefix):
                     raise RuntimeError(f"Sequence directory not remapped! Got: {seq.directory}")
 
         print("Test 1 Passed: All paths remapped correctly.")
@@ -143,7 +147,8 @@ def main():
         # Run remap again
         core.remap_snapshot_paths(None)
 
-        if img.filepath.startswith("//../../../../"):
+        img_path_normalized = img.filepath.replace("\\", "/")
+        if img_path_normalized.startswith("//../../../../"):
             raise RuntimeError(f"Double remapping detected! Got: {img.filepath}")
 
         print("Test 2 Passed: Paths remained stable.")
