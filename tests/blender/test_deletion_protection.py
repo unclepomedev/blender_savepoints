@@ -126,8 +126,9 @@ def main():
         set_version_timestamp(v_ancient_unprot["id"], ancient_date)
 
         # Scenario B: Recent History (Yesterday) - Crowded Day
-        # 1 day ago
-        yesterday = now - datetime.timedelta(days=1)
+        # Use yesterday midnight to avoid rolling over to today when adding hours
+        yesterday_date = now.date() - datetime.timedelta(days=1)
+        yesterday = datetime.datetime.combine(yesterday_date, datetime.time(0, 0))
 
         # We need to add them so that they appear in correct order in manifest (Newest -> Oldest)
         # create_dummy_version appends to top (Newest).
