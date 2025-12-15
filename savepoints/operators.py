@@ -211,15 +211,13 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
         default_note = self._get_default_note(context)
 
+        if not self.note:
+            self.note = default_note
+
         if settings.show_save_dialog and not self.force_quick:
-            # Generate default note if empty
-            if not self.note:
-                self.note = default_note
             return context.window_manager.invoke_props_dialog(self)
-        else:
-            if not self.note:
-                self.note = default_note
-            return self.execute(context)
+
+        return self.execute(context)
 
     def draw(self, context):
         layout = self.layout
