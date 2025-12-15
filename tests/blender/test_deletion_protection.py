@@ -284,8 +284,24 @@ def main():
         print("Test 4 Passed: Daily Backup + Protection interaction verified.")
 
         print("\n--- Test 5: Unprotect and Delete ---")
-        core.set_version_protection(v1_id, False)
-        core.delete_version_by_id(v1_id)
+        # Create a fresh version for this test since previous tests might have cleared the manifest
+        v5 = create_dummy_version(settings, "Version to Unprotect")
+        v5_id = v5["id"]
+
+        # Ensure it starts protected
+        core.set_version_protection(v5_id, True)
+
+        # Unprotect
+        core.set_version_protection(v5_id, False)
+
+        # Delete
+        core.delete_version_by_id(v5_id)
+
+        # Verify deletion
+        manifest = core.load_manifest()
+        remaining_ids = [v["id"] for v in manifest["versions"]]
+        if v5_id in remaining_ids:
+            raise RuntimeError("Unprotected version was NOT deleted!")
         print("Test 5 Passed.")
 
         print("\nALL TESTS PASSED")
