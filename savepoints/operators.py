@@ -615,6 +615,25 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class SAVEPOINTS_OT_confirm_disable_daily_backups(bpy.types.Operator):
+    """Disable Keep Daily Backups"""
+    bl_idname = "savepoints.confirm_disable_daily_backups"
+    bl_label = "Disable Daily Backups?"
+    bl_options = {'REGISTER', 'INTERNAL'}
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self, width=400)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text="If max_versions_to_keep is exceeded, unlocked versions will be deleted.", icon='WARNING')
+
+    def execute(self, context):
+        context.window_manager["savepoints_daily_backup_confirmed"] = True
+        context.scene.savepoints_settings.keep_daily_backups = False
+        return {'FINISHED'}
+
+
 class SAVEPOINTS_OT_restore(bpy.types.Operator):
     """Restore this snapshot to the parent file, overwriting it."""
     bl_idname = "savepoints.restore"
