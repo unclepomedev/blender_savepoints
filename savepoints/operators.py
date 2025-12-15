@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 
 import bpy
-from bpy_extras.io_utils import ImportHelper, ExportHelper
+from bpy_extras.io_utils import ImportHelper
 
 from .core import (
     get_history_dir,
@@ -678,56 +678,48 @@ class SAVEPOINTS_OT_open_parent(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class SAVEPOINTS_OT_fork_version(bpy.types.Operator, ExportHelper):
+class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
     """Save the current snapshot as a new project file"""
     bl_idname = "savepoints.fork_version"
     bl_label = "Fork (Save as New)"
     bl_options = {'REGISTER', 'UNDO'}
 
-    filename_ext = ".blend"
-
-    check_existing: bpy.props.BoolProperty(
-        default=True,
-        options={'HIDDEN'},
-    )
-
-    filter_glob: bpy.props.StringProperty(
-        default="*.blend",
-        options={'HIDDEN'},
-        maxlen=255,
-    )
-
-    def invoke(self, context, event):
+    def execute(self, context):
         if not bpy.data.filepath:
             return {'CANCELLED'}
 
-        # Calculate default filename
-        try:
-            current_path = Path(bpy.data.filepath)
-            # Structure: .../.{stem}_history/{version_id}/snapshot.blend_snapshot
+        source_path = Path(bpy.data.filepath)
 
-            # version_dir is the parent of the snapshot file
-            version_dir = current_path.parent
+        # Determine the project root (parent of the history folder)
+        try:
+            # source_path is .../history_dir/version_id/snapshot.blend
+            # parent is .../history_dir/version_id
+            # grandparent is .../history_dir
+            # great-grandparent is project root
+            version_dir = source_path.parent
             version_id = version_dir.name
 
-            # history_dir is the parent of the version_dir
             history_dir = version_dir.parent
             history_dirname = history_dir.name
 
+            project_root = history_dir.parent
+
+            if not project_root.exists():
+                 raise FileNotFoundError(f"Project root not found: {project_root}")
+
+            # Calculate filename
             stem = "project"
             if history_dirname.startswith(".") and history_dirname.endswith("_history"):
                 # Extract original stem
                 stem = history_dirname[1:-8]  # remove '.' and '_history'
 
-            self.filepath = f"{stem}_{version_id}.blend"
-        except Exception:
-            self.filepath = "forked_project.blend"
+            filename = f"{stem}_{version_id}.blend"
 
-        return super().invoke(context, event)
+        except Exception as e:
+            self.report({'ERROR'}, f"Could not determine paths: {e}")
+            return {'CANCELLED'}
 
-    def execute(self, context):
-        source_path = Path(bpy.data.filepath)
-        target_path = Path(self.filepath)
+        target_path = project_root / filename
 
         if source_path == target_path:
             self.report({'ERROR'}, "Source and target paths are identical.")
