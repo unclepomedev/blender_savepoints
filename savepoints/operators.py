@@ -773,7 +773,7 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
                     with manifest_path.open('w', encoding='utf-8') as f:
                         json.dump(default_manifest, f, indent=4, ensure_ascii=False)
         except Exception as e:
-            print(f"[SavePoints] Failed to create history for forked file: {e}")
+            self.report({'WARNING'}, f"History creation failed: {e}")
 
         # Open the new file
         bpy.ops.wm.open_mainfile(filepath=str(target_path))
