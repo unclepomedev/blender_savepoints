@@ -271,7 +271,8 @@ def add_version_to_manifest(
         blend_rel_path: str,
         object_count: int = 0,
         file_size: int = 0,
-        is_protected: bool = False
+        is_protected: bool = False,
+        tag: str = "NONE"
 ) -> None:
     """Add a new version entry to the manifest."""
     versions = manifest.get("versions", [])
@@ -285,6 +286,7 @@ def add_version_to_manifest(
         "object_count": object_count,
         "file_size": file_size,
         "is_protected": is_protected,
+        "tag": tag,
     }
     versions.insert(0, new_version)
     manifest["versions"] = versions
@@ -311,6 +313,19 @@ def update_version_note(version_id: str, new_note: str) -> None:
     for v in manifest.get("versions", []):
         if v.get("id") == version_id:
             v["note"] = new_note
+            changed = True
+            break
+    if changed:
+        save_manifest(manifest)
+
+
+def update_version_tag(version_id: str, new_tag: str) -> None:
+    """Update the tag for a specific version."""
+    manifest = load_manifest()
+    changed = False
+    for v in manifest.get("versions", []):
+        if v.get("id") == version_id:
+            v["tag"] = new_tag
             changed = True
             break
     if changed:
