@@ -181,37 +181,47 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
     def _get_default_note(self, context):
-        obj = context.active_object
-        if not obj:
+        try:
+            obj = context.active_object
+            if not obj:
+                return ""
+
+            mode = obj.mode
+
+            if mode == 'EDIT':
+                friendly_mode = f"Edit {obj.type.title()}"
+            else:
+                mode_map = {
+                    'OBJECT': 'Object',
+                    'POSE': 'Pose',
+                    'SCULPT': 'Sculpt',
+                    'VERTEX_PAINT': 'Vertex Paint',
+                    'WEIGHT_PAINT': 'Weight Paint',
+                    'TEXTURE_PAINT': 'Texture Paint',
+                    'PARTICLE_EDIT': 'Particle Edit',
+                }
+                friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
+
+            return f"{friendly_mode}: {obj.name}"
+        except Exception:
             return ""
-
-        mode = obj.mode
-
-        if mode == 'EDIT':
-            friendly_mode = f"Edit {obj.type.title()}"
-        else:
-            mode_map = {
-                'OBJECT': 'Object',
-                'POSE': 'Pose',
-                'SCULPT': 'Sculpt',
-                'VERTEX_PAINT': 'Vertex Paint',
-                'WEIGHT_PAINT': 'Weight Paint',
-                'TEXTURE_PAINT': 'Texture Paint',
-                'PARTICLE_EDIT': 'Particle Edit',
-            }
-            friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
-
-        return f"{friendly_mode}: {obj.name}"
 
     def invoke(self, context, event):
         settings = context.scene.savepoints_settings
+
+        default_note = self._get_default_note(context)
+
         if settings.show_save_dialog and not self.force_quick:
             # Generate default note if empty
             if not self.note:
-                self.note = self._get_default_note(context)
+                self.note = default_note
             return context.window_manager.invoke_props_dialog(self)
 
-        self.note = ""  # Quick save, no note
+        if self.force_quick or settings.show_save_dialog:
+            self.note = default_note
+        else:
+            self.note = ""  # Quick save, no note
+
         return self.execute(context)
 
     def draw(self, context):
