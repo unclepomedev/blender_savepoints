@@ -11,6 +11,24 @@ sys.path.append(str(ROOT))
 import savepoints.operators
 
 
+class MockWindowManager:
+    def __init__(self):
+        self.invoke_props_dialog_called = False
+
+    def invoke_props_dialog(self, operator, width=300):
+        self.invoke_props_dialog_called = True
+        return {'RUNNING_MODAL'}
+
+
+class MockContext:
+    def __init__(self, real_context):
+        self._real_context = real_context
+        self.window_manager = MockWindowManager()
+
+    def __getattr__(self, name):
+        return getattr(self._real_context, name)
+
+
 class MockOperator:
     def __init__(self):
         self.note = ""
