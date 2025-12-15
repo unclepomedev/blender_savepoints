@@ -615,6 +615,25 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class SAVEPOINTS_OT_confirm_disable_daily_backups(bpy.types.Operator):
+    """Disable Keep Daily Backups"""
+    bl_idname = "savepoints.confirm_disable_daily_backups"
+    bl_label = "Disable Daily Backups?"
+    bl_options = {'REGISTER', 'INTERNAL'}
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self, width=400)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text="If version limit is exceeded, unlocked daily backups may be deleted.", icon='WARNING')
+
+    def execute(self, context):
+        context.window_manager["savepoints_daily_backup_confirmed"] = True
+        context.scene.savepoints_settings.keep_daily_backups = False
+        return {'FINISHED'}
+
+
 class SAVEPOINTS_OT_restore(bpy.types.Operator):
     """Restore this snapshot to the parent file, overwriting it."""
     bl_idname = "savepoints.restore"
@@ -625,8 +644,6 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         return context.window_manager.invoke_confirm(self, event)
 
     def execute(self, context):
-        from .core import get_parent_path_from_snapshot
-
         original_path_str = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if not original_path_str:
@@ -656,6 +673,8 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
                 except Exception as e:
                     self.report({'ERROR'}, f"Backup failed: {e}")
                     return {'CANCELLED'}
+            else:
+                self.report({'WARNING'}, "Could not create backup: history directory unavailable.")
         else:
             self.report({'WARNING'}, "Original file not found. Creating new one.")
 

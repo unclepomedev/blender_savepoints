@@ -25,6 +25,20 @@ class SavePointsVersion(bpy.types.PropertyGroup):
     )
 
 
+def update_keep_daily_backups(self, context):
+    if not self.keep_daily_backups:
+        if context.window_manager.get("savepoints_daily_backup_confirmed"):
+            context.window_manager["savepoints_daily_backup_confirmed"] = False
+        else:
+            self.keep_daily_backups = True
+
+            def open_confirm():
+                bpy.ops.savepoints.confirm_disable_daily_backups('INVOKE_DEFAULT')
+                return None
+
+            bpy.app.timers.register(open_confirm, first_interval=0.01)
+
+
 class SavePointsSettings(bpy.types.PropertyGroup):
     versions: bpy.props.CollectionProperty(type=SavePointsVersion)
     active_version_index: bpy.props.IntProperty(name="Active Version Index", default=-1)
@@ -64,7 +78,8 @@ class SavePointsSettings(bpy.types.PropertyGroup):
     keep_daily_backups: bpy.props.BoolProperty(
         name="Keep Daily Backups (Last 14 days)",
         description="Keep the last snapshot of each day for the past 14 days, even if the Max Count is exceeded",
-        default=False
+        default=False,
+        update=update_keep_daily_backups
     )
 
     # Auto Save Settings
