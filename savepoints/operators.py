@@ -24,6 +24,7 @@ from .core import (
     update_version_tag,
     get_history_dir_for_path,
     SCHEMA_VERSION,
+    unmap_snapshot_paths,
 )
 from .ui_utils import sync_history_to_props
 
@@ -370,6 +371,20 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
 
         virtual_dir = temp_blend_path / "Object"
         append_dir = str(virtual_dir) + os.sep
+
+        # Register handler to fix paths after append (when depsgraph updates)
+        # This handles the case where assets with broken relative paths (//../../) are imported.
+        def fix_paths_handler(scene):
+            if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
+                bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
+
+            try:
+                unmap_snapshot_paths()
+            except Exception as e:
+                print(f"[SavePoints] Error fixing paths after rescue: {e}")
+
+        bpy.app.handlers.depsgraph_update_post.append(fix_paths_handler)
+
         bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
         return {'FINISHED'}
 
@@ -744,15 +759,6 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             self.report({'ERROR'}, "Source and target paths are identical.")
             return {'CANCELLED'}
 
-        try:
-            shutil.copy2(source_path, target_path)
-        except PermissionError:
-            self.report({'ERROR'}, "Permission denied when saving file.")
-            return {'CANCELLED'}
-        except OSError as e:
-            self.report({'ERROR'}, f"Failed to save file: {e}")
-            return {'CANCELLED'}
-
         # Ensure history directory is created for the new file (so link_history is suppressed)
         try:
             new_history_dir_str = get_history_dir_for_path(str(target_path))
@@ -774,8 +780,13 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
         except Exception as e:
             self.report({'WARNING'}, f"History creation failed: {e}")
 
-        # Open the new file
-        bpy.ops.wm.open_mainfile(filepath=str(target_path))
+        try:
+            # Save the current snapshot (with remapped paths in memory) to the new location.
+            # Blender automatically fixes relative paths when saving to a new location.
+            bpy.ops.wm.save_as_mainfile(filepath=str(target_path))
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to fork file: {e}")
+            return {'CANCELLED'}
 
         self.report({'INFO'}, f"Forked to {target_path.name}")
         return {'FINISHED'}
