@@ -32,36 +32,6 @@ def get_version_ids():
     return [v["id"] for v in manifest.get("versions", [])]
 
 
-def reset_history():
-    # Helper to clear versions for isolation
-    manifest = core.load_manifest()
-    manifest["versions"] = []
-    core.save_manifest(manifest)
-
-
-def set_version_timestamp(version_id, days_ago, hour_offset=0):
-    """
-    Directly modify manifest to set a specific timestamp for a version.
-    """
-    manifest = core.load_manifest()
-
-    # Calculate target time
-    now = datetime.datetime.now()
-    target_date = now - datetime.timedelta(days=days_ago)
-    # Set to noon + offset
-    target_dt = datetime.datetime(target_date.year, target_date.month, target_date.day, 12, 0, 0)
-    target_dt += datetime.timedelta(hours=hour_offset)
-
-    found = False
-    for v in manifest["versions"]:
-        if v["id"] == version_id:
-            v["timestamp"] = target_dt.strftime("%Y-%m-%d %H:%M:%S")
-            found = True
-            break
-    if found:
-        core.save_manifest(manifest)
-
-
 def main():
     print("Starting Retention Policy Test...")
     test_dir = setup_test_env()
