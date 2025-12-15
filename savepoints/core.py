@@ -542,3 +542,54 @@ def remap_snapshot_paths(dummy: Any) -> None:
                 path_normalized = path.replace("\\", "/")
                 if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
                     seq.directory = "//../../" + path[2:]
+
+
+def unmap_snapshot_paths() -> None:
+    """
+    Dynamically revert relative paths (remove //../../ prefix) for objects/assets.
+    This is used when restoring assets to the project root (e.g. Rescue or Fork fixup).
+    """
+    # Collections to iterate over
+    collections_to_remap = [
+        getattr(bpy.data, "images", []),
+        getattr(bpy.data, "libraries", []),
+        getattr(bpy.data, "sounds", []),
+        getattr(bpy.data, "fonts", []),
+        getattr(bpy.data, "cache_files", []),
+        getattr(bpy.data, "movieclips", []),
+        getattr(bpy.data, "volumes", []),
+        getattr(bpy.data, "texts", []),
+    ]
+
+    for collection in collections_to_remap:
+        for item in collection:
+            if hasattr(item, "filepath"):
+                path = item.filepath
+                # Normalize slashes
+                path_normalized = path.replace("\\", "/")
+                # Check for //../../
+                if path_normalized.startswith("//../../"):
+                    # Remove ../../ (keep //)
+                    # //../../path -> //path
+                    new_path = "//" + path_normalized[8:]
+                    item.filepath = new_path
+
+    # VSE Support
+    scene = getattr(bpy.context, "scene", None)
+    if scene and getattr(scene, "sequence_editor", None):
+        sequences = getattr(scene.sequence_editor, "sequences_all", None)
+        if sequences is None:
+            sequences = getattr(scene.sequence_editor, "strips_all", [])
+
+        for seq in sequences:
+            if hasattr(seq, "filepath"):
+                path = seq.filepath
+                path_normalized = path.replace("\\", "/")
+                if path_normalized.startswith("//../../"):
+                    seq.filepath = "//" + path_normalized[8:]
+
+            if hasattr(seq, "directory"):
+                path = seq.directory
+                path_normalized = path.replace("\\", "/")
+                if path_normalized.startswith("//../../"):
+                    seq.directory = "//" + path_normalized[8:]
