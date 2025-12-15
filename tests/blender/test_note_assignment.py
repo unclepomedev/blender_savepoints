@@ -75,7 +75,9 @@ class TestNoteAssignment(unittest.TestCase):
         op = MockOperator()
         op.force_quick = True
 
-        res = op.invoke(bpy.context, None)
+        # Use MockContext even here to be safe, though not strictly needed for this path
+        mock_ctx = MockContext(bpy.context)
+        res = op.invoke(mock_ctx, None)
 
         self.assertEqual(op.note, "Object: MyCube")
         self.assertEqual(res, {'FINISHED'})
@@ -85,7 +87,8 @@ class TestNoteAssignment(unittest.TestCase):
         op = MockOperator()
         op.force_quick = False
 
-        res = op.invoke(bpy.context, None)
+        mock_ctx = MockContext(bpy.context)
+        res = op.invoke(mock_ctx, None)
 
         self.assertEqual(op.note, "")
         self.assertEqual(res, {'FINISHED'})
@@ -95,9 +98,54 @@ class TestNoteAssignment(unittest.TestCase):
         op = MockOperator()
         op.force_quick = True
 
-        res = op.invoke(bpy.context, None)
+        mock_ctx = MockContext(bpy.context)
+        res = op.invoke(mock_ctx, None)
 
         self.assertEqual(op.note, "Object: MyCube")
+        self.assertEqual(res, {'FINISHED'})
+
+    def test_invoke_dialog_path(self):
+        """Test the path where dialog is shown (show_save_dialog=True, force_quick=False)"""
+        bpy.context.scene.savepoints_settings.show_save_dialog = True
+        op = MockOperator()
+        op.force_quick = False
+
+        mock_ctx = MockContext(bpy.context)
+        res = op.invoke(mock_ctx, None)
+
+        # 1. Note should be pre-populated
+        self.assertEqual(op.note, "Object: MyCube")
+
+        # 2. Should return RUNNING_MODAL from invoke_props_dialog
+        self.assertEqual(res, {'RUNNING_MODAL'})
+
+        # 3. Verify invoke_props_dialog was called
+        self.assertTrue(mock_ctx.window_manager.invoke_props_dialog_called)
+
+    def test_invoke_force_quick_with_explicit_note(self):
+        """Test that explicit note is preserved in force_quick mode"""
+        bpy.context.scene.savepoints_settings.show_save_dialog = False
+        op = MockOperator()
+        op.force_quick = True
+        op.note = "Explicit Note"
+
+        mock_ctx = MockContext(bpy.context)
+        res = op.invoke(mock_ctx, None)
+
+        self.assertEqual(op.note, "Explicit Note")
+        self.assertEqual(res, {'FINISHED'})
+
+    def test_invoke_standard_quick_with_explicit_note(self):
+        """Test that explicit note is preserved in standard quick mode"""
+        bpy.context.scene.savepoints_settings.show_save_dialog = False
+        op = MockOperator()
+        op.force_quick = False
+        op.note = "Explicit Note"
+
+        mock_ctx = MockContext(bpy.context)
+        res = op.invoke(mock_ctx, None)
+
+        self.assertEqual(op.note, "Explicit Note")
         self.assertEqual(res, {'FINISHED'})
 
 
