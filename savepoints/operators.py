@@ -644,8 +644,6 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         return context.window_manager.invoke_confirm(self, event)
 
     def execute(self, context):
-        from .core import get_parent_path_from_snapshot
-
         original_path_str = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if not original_path_str:
