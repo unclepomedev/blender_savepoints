@@ -19,6 +19,9 @@ class TestGhostReference(unittest.TestCase):
             shutil.rmtree(self.test_dir)
         self.test_dir.mkdir()
 
+        # Start with empty scene before saving
+        bpy.ops.wm.read_homefile(use_empty=True)
+
         # Save current blend file
         self.blend_path = self.test_dir / "test.blend"
         bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
@@ -37,9 +40,6 @@ class TestGhostReference(unittest.TestCase):
         print("\n--- Test Ghost Reference Toggle ---")
 
         # 1. Create content for snapshot
-        # Clear existing objects
-        bpy.ops.wm.read_homefile(use_empty=True)
-        bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
 
         bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
         cube = bpy.context.active_object
