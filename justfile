@@ -18,3 +18,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_quick_save_edit_note.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_remap_snapshot_paths.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_dual_shortcuts.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_context_aware_notes.py

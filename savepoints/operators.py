@@ -178,9 +178,43 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     def poll(cls, context):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
+    def _get_default_note(self, context):
+        """Generate a default note based on context."""
+        obj = context.active_object
+        mode = context.mode
+
+        if not obj:
+            return ""
+
+        # Map internal mode names to user-friendly names
+        mode_map = {
+            'OBJECT': 'Object',
+            'EDIT_MESH': 'Edit',
+            'EDIT_CURVE': 'Edit',
+            'EDIT_SURFACE': 'Edit',
+            'EDIT_TEXT': 'Edit',
+            'EDIT_METABALL': 'Edit',
+            'EDIT_LATTICE': 'Edit',
+            'EDIT_ARMATURE': 'Edit',
+            'POSE': 'Pose',
+            'SCULPT': 'Sculpt',
+            'PAINT_VERTEX': 'Vertex Paint',
+            'PAINT_WEIGHT': 'Weight Paint',
+            'PAINT_TEXTURE': 'Texture Paint',
+            'PARTICLE': 'Particle Edit',
+        }
+
+        # Fallback for other modes: "EDIT_GPENCIL" -> "Edit Gpencil"
+        friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
+
+        return f"{friendly_mode}: {obj.name}"
+
     def invoke(self, context, event):
         settings = context.scene.savepoints_settings
         if settings.show_save_dialog and not self.force_quick:
+            # Generate default note if empty
+            if not self.note:
+                self.note = self._get_default_note(context)
             return context.window_manager.invoke_props_dialog(self)
 
         self.note = ""  # Quick save, no note
