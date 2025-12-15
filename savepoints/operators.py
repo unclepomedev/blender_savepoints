@@ -697,7 +697,7 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             project_root = history_dir.parent
 
             if not project_root.exists():
-                 raise FileNotFoundError(f"Project root not found: {project_root}")
+                raise FileNotFoundError(f"Project root not found: {project_root}")
 
             # Calculate filename
             stem = "project"
