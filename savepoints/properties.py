@@ -12,11 +12,35 @@ class SavePointsVersion(bpy.types.PropertyGroup):
     object_count: bpy.props.IntProperty(name="Object Count", default=0)
     file_size_display: bpy.props.StringProperty(name="File Size", default="")
     is_protected: bpy.props.BoolProperty(name="Protected", default=False)
+    tag: bpy.props.EnumProperty(
+        name="Tag",
+        items=[
+            ('NONE', "None", "", 'NONE', 0),
+            ('STABLE', "Stable", "", 'CHECKMARK', 1),
+            ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
+            ('EXPERIMENT', "Experiment", "", 'LAB', 3),
+            ('BUG', "Bug", "", 'ERROR', 4),
+        ],
+        default='NONE'
+    )
 
 
 class SavePointsSettings(bpy.types.PropertyGroup):
     versions: bpy.props.CollectionProperty(type=SavePointsVersion)
     active_version_index: bpy.props.IntProperty(name="Active Version Index", default=-1)
+
+    filter_tag: bpy.props.EnumProperty(
+        name="Filter Tag",
+        items=[
+            ('ALL', "All", "", 'FILTER', 0),
+            ('STABLE', "Stable", "", 'CHECKMARK', 1),
+            ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
+            ('EXPERIMENT', "Experiment", "", 'LAB', 3),
+            ('BUG', "Bug", "", 'ERROR', 4),
+        ],
+        default='ALL',
+        update=lambda self, context: context.area.tag_redraw() if context.area else None
+    )
 
     show_save_dialog: bpy.props.BoolProperty(
         name="Show Save Dialog",

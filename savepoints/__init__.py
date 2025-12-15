@@ -19,6 +19,7 @@ classes = (
     operators.SAVEPOINTS_OT_commit,
     operators.SAVEPOINTS_OT_link_history,
     operators.SAVEPOINTS_OT_edit_note,
+    operators.SAVEPOINTS_OT_set_tag,
     operators.SAVEPOINTS_OT_rescue_assets,
     operators.SAVEPOINTS_OT_toggle_protection,
     operators.SAVEPOINTS_OT_toggle_ghost,
@@ -28,6 +29,7 @@ classes = (
     operators.SAVEPOINTS_OT_fork_version,
     operators.SAVEPOINTS_OT_delete,
     operators.SAVEPOINTS_OT_refresh,
+    ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
 )

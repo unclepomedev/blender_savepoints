@@ -19,6 +19,7 @@ from .core import (
     prune_versions,
     set_version_protection,
     update_version_note,
+    update_version_tag,
 )
 from .ui_utils import sync_history_to_props
 
@@ -281,6 +282,42 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         sync_history_to_props(context)
 
         # Force UI redraw to update the note in the list immediately
+        for area in context.window.screen.areas:
+            area.tag_redraw()
+
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
+    """Set tag for a version"""
+    bl_idname = "savepoints.set_tag"
+    bl_label = "Set Tag"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    version_id: bpy.props.StringProperty(options={'HIDDEN'})
+    tag: bpy.props.EnumProperty(
+        items=[
+            ('NONE', "None", "", 'NONE', 0),
+            ('STABLE', "Stable", "", 'CHECKMARK', 1),
+            ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
+            ('EXPERIMENT', "Experiment", "", 'LAB', 3),
+            ('BUG', "Bug", "", 'ERROR', 4),
+        ]
+    )
+
+    def execute(self, context):
+        if not self.version_id:
+            return {'CANCELLED'}
+
+        try:
+            update_version_tag(self.version_id, self.tag)
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to set tag: {e}")
+            return {'CANCELLED'}
+
+        sync_history_to_props(context)
+
+        # Force UI redraw
         for area in context.window.screen.areas:
             area.tag_redraw()
 
