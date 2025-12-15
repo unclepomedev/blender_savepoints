@@ -227,13 +227,6 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         layout = self.layout
         layout.prop(self, "note")
 
-        settings = context.scene.savepoints_settings
-        if settings.use_limit_versions:
-            protected_count = sum(1 for v in settings.versions if v.version_id != "autosave" and v.is_protected)
-            if protected_count >= settings.max_versions_to_keep:
-                layout.label(text="Warning: Locked versions limit reached.", icon='ERROR')
-                layout.label(text="Auto-deletion will be skipped.", icon='INFO')
-
     def execute(self, context):
         if not bpy.data.filepath:
             self.report({'ERROR'}, "Save the project first!")
