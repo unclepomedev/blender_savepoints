@@ -72,13 +72,30 @@ class TestRescueAssets(unittest.TestCase):
                  print("Operator finished successfully.")
                  
         except RuntimeError as e:
-            # If the error comes from wm.append complaining about context, it's a success for us (we reached that line).
-            # If it says "Snapshot file not found", it's a fail.
+            # Check if the error is the expected one for headless environment
             err_str = str(e)
+            
+            # Normalize path separators for cross-platform check
+            err_str_norm = err_str.replace("\\", "/")
+            expected_path_part = f"{version_id}/snapshot.blend_snapshot/Object"
+            
             if "Snapshot file not found" in err_str:
                 self.fail(f"Snapshot not found: {e}")
+                
+            elif "nothing indicated" in err_str and expected_path_part in err_str_norm:
+                # SUCCESS: This error confirms that the operator constructed the correct path
+                # and attempted to open it via wm.append.
+                # The "nothing indicated" error is expected because we are in background mode (no UI).
+                print(f"Test Passed: Verified correct append path attempt:\n  -> .../{expected_path_part}")
+                
             else:
-                print(f"Caught runtime error (likely UI context): {e}")
+                # Unexpected error
+                print(f"Caught unexpected runtime error: {e}")
+                # We interpret this as a pass if it's just a UI context error, but warn the user
+                if "context" in err_str.lower():
+                     print("Pass (UI Context Error)")
+                else:
+                     raise e
 
         # Note: We can't verify the exact directory string passed to append without mocking, 
         # but passing this test ensures the file was found and logic proceeded to append call.
