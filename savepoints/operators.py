@@ -315,7 +315,12 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
             self.report({'ERROR'}, f"Failed to set tag: {e}")
             return {'CANCELLED'}
 
-        sync_history_to_props(context)
+        # Update UI property directly instead of full sync
+        settings = context.scene.savepoints_settings
+        for item in settings.versions:
+            if item.version_id == self.version_id:
+                item.tag = self.tag
+                break
 
         # Force UI redraw
         for area in context.window.screen.areas:
