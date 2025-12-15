@@ -499,7 +499,9 @@ def remap_snapshot_paths(dummy: Any) -> None:
         getattr(bpy.data, "sounds", []),
         getattr(bpy.data, "fonts", []),
         getattr(bpy.data, "cache_files", []),
-        getattr(bpy.data, "movieclips", [])
+        getattr(bpy.data, "movieclips", []),
+        getattr(bpy.data, "volumes", []),
+        getattr(bpy.data, "texts", []),
     ]
 
     for collection in collections_to_remap:
@@ -521,7 +523,7 @@ def remap_snapshot_paths(dummy: Any) -> None:
     # VSE Support
     scene = getattr(bpy.context, "scene", None)
     if scene and getattr(scene, "sequence_editor", None):
-        # Support for Blender < 4.0 (sequences_all) and >= 4.0 (strips_all)
+        # Support for Blender < 4.4 (sequences_all) and >= 4.4 (strips_all)
         sequences = getattr(scene.sequence_editor, "sequences_all", None)
         if sequences is None:
             sequences = getattr(scene.sequence_editor, "strips_all", [])
