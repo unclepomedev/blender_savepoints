@@ -173,7 +173,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     bl_label = "Save Version"
     bl_options = {'REGISTER', 'UNDO'}
 
-    note: bpy.props.StringProperty(name="Commit Message", default="")
+    note: bpy.props.StringProperty(name="Commit Message", default="", options={'SKIP_SAVE'})
     force_quick: bpy.props.BoolProperty(name="Force Quick Save", default=False, options={'SKIP_SAVE', 'HIDDEN'})
 
     @classmethod
@@ -181,45 +181,42 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
     def _get_default_note(self, context):
-        """Generate a default note based on context."""
-        obj = context.active_object
-        mode = context.mode
+        try:
+            obj = context.active_object
+            if not obj:
+                return ""
 
-        if not obj:
+            mode = obj.mode
+
+            if mode == 'EDIT':
+                friendly_mode = f"Edit {obj.type.title()}"
+            else:
+                mode_map = {
+                    'OBJECT': 'Object',
+                    'POSE': 'Pose',
+                    'SCULPT': 'Sculpt',
+                    'VERTEX_PAINT': 'Vertex Paint',
+                    'WEIGHT_PAINT': 'Weight Paint',
+                    'TEXTURE_PAINT': 'Texture Paint',
+                    'PARTICLE_EDIT': 'Particle Edit',
+                }
+                friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
+
+            return f"{friendly_mode}: {obj.name}"
+        except Exception:
             return ""
-
-        # Map internal mode names to user-friendly names
-        mode_map = {
-            'OBJECT': 'Object',
-            'EDIT_MESH': 'Edit',
-            'EDIT_CURVE': 'Edit',
-            'EDIT_SURFACE': 'Edit',
-            'EDIT_TEXT': 'Edit',
-            'EDIT_METABALL': 'Edit',
-            'EDIT_LATTICE': 'Edit',
-            'EDIT_ARMATURE': 'Edit',
-            'POSE': 'Pose',
-            'SCULPT': 'Sculpt',
-            'PAINT_VERTEX': 'Vertex Paint',
-            'PAINT_WEIGHT': 'Weight Paint',
-            'PAINT_TEXTURE': 'Texture Paint',
-            'PARTICLE': 'Particle Edit',
-        }
-
-        # Fallback for other modes: "EDIT_GPENCIL" -> "Edit Gpencil"
-        friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
-
-        return f"{friendly_mode}: {obj.name}"
 
     def invoke(self, context, event):
         settings = context.scene.savepoints_settings
+
+        default_note = self._get_default_note(context)
+
+        if not self.note:
+            self.note = default_note
+
         if settings.show_save_dialog and not self.force_quick:
-            # Generate default note if empty
-            if not self.note:
-                self.note = self._get_default_note(context)
             return context.window_manager.invoke_props_dialog(self)
 
-        self.note = ""  # Quick save, no note
         return self.execute(context)
 
     def draw(self, context):
@@ -705,7 +702,7 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             project_root = history_dir.parent
 
             if not project_root.exists():
-                 raise FileNotFoundError(f"Project root not found: {project_root}")
+                raise FileNotFoundError(f"Project root not found: {project_root}")
 
             # Calculate filename
             stem = "project"
