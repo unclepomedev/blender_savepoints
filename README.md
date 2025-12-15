@@ -29,9 +29,11 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    It has been released on Blender Extensions, so you can get it from [there](https://extensions.blender.org/add-ons/savepoints/).
 2. **Locate the Panel**: Open the 3D Viewport and find the **SavePoints** tab in the N-Panel.
 3. **Save a Version**:
-   - Click **Save Version**.
+   - Click **Save Version** or use shortcuts:
+     - `Ctrl + Alt + S`: Standard Save (respects "Show Save Dialog" setting).
+     - `Ctrl + Alt + Shift + S`: Forced Quick Save (always skips dialog).
    - Enter a note (optional) and confirm.
-   - *Tip*: Disable **"Show Save Dialog"** in settings for one-click saving.
+   - *Tip*: Disable **"Show Save Dialog"** in settings for one-click saving with the standard shortcut.
    - A new version is created inside a hidden history folder next to your `.blend` file.
 4. **Restore a Version**:
    - Select a version from the history list.
