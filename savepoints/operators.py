@@ -235,6 +235,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             self.report({'ERROR'}, "Save the project first!")
             return {'CANCELLED'}
 
+        # Ensure default note is set if empty (especially for non-interactive execution)
+        if not self.note:
+            self.note = self._get_default_note(context)
+
         manifest = load_manifest()
         new_id_str = get_next_version_id(manifest.get("versions", []))
         create_snapshot(context, new_id_str, self.note)
