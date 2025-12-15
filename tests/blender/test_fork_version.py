@@ -92,7 +92,7 @@ def main() -> None:
             raise RuntimeError("Forked file missing objects from snapshot")
 
         # D. Fresh History Verification
-        # The new file will have a history folder created automatically by load_handler -> load_manifest
+        # The new file will have a history folder created (by the fork operator).
         # But it should be EMPTY (no versions from the original project)
         history_dir = core.get_history_dir()
         if not history_dir or not Path(history_dir).exists():

@@ -25,3 +25,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_tagging.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_deletion_protection.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_note_assignment.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_no_automatic_history.py

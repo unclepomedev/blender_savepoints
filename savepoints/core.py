@@ -99,11 +99,14 @@ def get_manifest_path() -> str | None:
     return None
 
 
-def load_manifest() -> dict[str, Any]:
+def load_manifest(create_if_missing: bool = True) -> dict[str, Any]:
     """
     Load and return the savepoints manifest for the current project.
     
     Reads manifest.json from the project's history directory, validates that the file contains a JSON object, and backfills missing fields: `schema_version`, `project_uuid`, `parent_file`, and `versions` (ensuring `versions` is a list). If any backfilled fields are added the manifest is persisted. If the manifest file is missing or cannot be read/parsed, a default manifest with `parent_file`, empty `versions`, `schema_version`, and a new `project_uuid` is returned. Errors encountered while loading are printed.
+
+    Args:
+        create_if_missing (bool): If True, creates the default manifest on disk if it is missing.
     
     Returns:
         manifest (dict): Manifest object containing at least the keys:
@@ -151,7 +154,8 @@ def load_manifest() -> dict[str, Any]:
         "schema_version": SCHEMA_VERSION,
         "project_uuid": str(uuid.uuid4()),
     }
-    save_manifest(default_manifest)
+    if create_if_missing:
+        save_manifest(default_manifest)
     return default_manifest
 
 

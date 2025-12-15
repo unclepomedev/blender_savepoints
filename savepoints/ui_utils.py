@@ -41,7 +41,7 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
     Args:
         context: Blender context.
     """
-    data = core.load_manifest()
+    data = core.load_manifest(create_if_missing=False)
     settings = context.scene.savepoints_settings
     settings.versions.clear()
 

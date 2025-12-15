@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import json
 import os
 import shutil
 import time
+import uuid
 from pathlib import Path
 
 import bpy
@@ -20,6 +22,8 @@ from .core import (
     set_version_protection,
     update_version_note,
     update_version_tag,
+    get_history_dir_for_path,
+    SCHEMA_VERSION,
 )
 from .ui_utils import sync_history_to_props
 
@@ -749,6 +753,27 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
         except OSError as e:
             self.report({'ERROR'}, f"Failed to save file: {e}")
             return {'CANCELLED'}
+
+        # Ensure history directory is created for the new file (so link_history is suppressed)
+        try:
+            new_history_dir_str = get_history_dir_for_path(str(target_path))
+            if new_history_dir_str:
+                new_history_dir = Path(new_history_dir_str)
+                new_history_dir.mkdir(parents=True, exist_ok=True)
+
+                # Create default manifest
+                manifest_path = new_history_dir / "manifest.json"
+                if not manifest_path.exists():
+                    default_manifest = {
+                        "parent_file": str(target_path),
+                        "versions": [],
+                        "schema_version": SCHEMA_VERSION,
+                        "project_uuid": str(uuid.uuid4()),
+                    }
+                    with manifest_path.open('w', encoding='utf-8') as f:
+                        json.dump(default_manifest, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"[SavePoints] Failed to create history for forked file: {e}")
 
         # Open the new file
         bpy.ops.wm.open_mainfile(filepath=str(target_path))
