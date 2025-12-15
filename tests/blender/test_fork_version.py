@@ -33,7 +33,7 @@ def main() -> None:
 
     # Paths
     original_blend_path = test_dir / "original_project.blend"
-    forked_blend_path = test_dir / "forked_project.blend"
+    forked_blend_path = test_dir / "original_project_v001.blend"
 
     try:
         # 1. Setup Initial Project
@@ -68,8 +68,8 @@ def main() -> None:
         # 4. Execute Fork
         print(f"Forking to {forked_blend_path}...")
 
-        # In background mode, we must pass the filepath explicitly to ExportHelper
-        res = bpy.ops.savepoints.fork_version('EXEC_DEFAULT', filepath=str(forked_blend_path))
+        # No arguments needed, it should auto-detect everything
+        res = bpy.ops.savepoints.fork_version('EXEC_DEFAULT')
 
         if "FINISHED" not in res:
             raise RuntimeError(f"Fork failed: {res}")
