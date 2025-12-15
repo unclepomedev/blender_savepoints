@@ -673,6 +673,8 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
                 except Exception as e:
                     self.report({'ERROR'}, f"Backup failed: {e}")
                     return {'CANCELLED'}
+            else:
+                self.report({'WARNING'}, "Could not create backup: history directory unavailable.")
         else:
             self.report({'WARNING'}, "Original file not found. Creating new one.")
 
