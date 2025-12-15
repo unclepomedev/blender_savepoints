@@ -181,33 +181,25 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
     def _get_default_note(self, context):
-        """Generate a default note based on context."""
         obj = context.active_object
-        mode = context.mode
-
         if not obj:
             return ""
 
-        # Map internal mode names to user-friendly names
-        mode_map = {
-            'OBJECT': 'Object',
-            'EDIT_MESH': 'Edit',
-            'EDIT_CURVE': 'Edit',
-            'EDIT_SURFACE': 'Edit',
-            'EDIT_TEXT': 'Edit',
-            'EDIT_METABALL': 'Edit',
-            'EDIT_LATTICE': 'Edit',
-            'EDIT_ARMATURE': 'Edit',
-            'POSE': 'Pose',
-            'SCULPT': 'Sculpt',
-            'PAINT_VERTEX': 'Vertex Paint',
-            'PAINT_WEIGHT': 'Weight Paint',
-            'PAINT_TEXTURE': 'Texture Paint',
-            'PARTICLE': 'Particle Edit',
-        }
+        mode = obj.mode
 
-        # Fallback for other modes: "EDIT_GPENCIL" -> "Edit Gpencil"
-        friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
+        if mode == 'EDIT':
+            friendly_mode = f"Edit {obj.type.title()}"
+        else:
+            mode_map = {
+                'OBJECT': 'Object',
+                'POSE': 'Pose',
+                'SCULPT': 'Sculpt',
+                'VERTEX_PAINT': 'Vertex Paint',
+                'WEIGHT_PAINT': 'Weight Paint',
+                'TEXTURE_PAINT': 'Texture Paint',
+                'PARTICLE_EDIT': 'Particle Edit',
+            }
+            friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
 
         return f"{friendly_mode}: {obj.name}"
 
