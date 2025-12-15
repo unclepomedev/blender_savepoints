@@ -65,15 +65,6 @@ class TestContextAwareNotes(unittest.TestCase):
 
         self.assertEqual(note, "")
 
-    def test_invoke_prefills_note(self):
-        """Test that invoke actually sets self.note (simulated)."""
-        # We can't easily call invoke because of the dialog, 
-        # but we can verify the logic if we could mock window_manager.
-        # Instead, let's just trust the unit tests above for logic 
-        # and manually check the code structure. 
-        # But we can try to subclass and override invoke_props_dialog?
-        pass
-
 
 if __name__ == '__main__':
     # Running unittest inside Blender
