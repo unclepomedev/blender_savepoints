@@ -8,6 +8,22 @@ from gpu_extras.batch import batch_for_shader
 from . import core
 
 _draw_handler = None
+_shader = None
+
+
+def get_shader():
+    global _shader
+    if _shader:
+        return _shader
+
+    try:
+        _shader = gpu.shader.from_builtin("2D_UNIFORM_COLOR")
+    except Exception:
+        try:
+            _shader = gpu.shader.from_builtin("UNIFORM_COLOR")
+        except Exception:
+            pass
+    return _shader
 
 
 def draw_hud():
@@ -36,36 +52,34 @@ def draw_hud():
     font_size = int(20 * ui_scale)
     padding = int(20 * ui_scale)
 
-    blf.size(font_id, font_size)
-    blf.color(font_id, 1.0, 0.3, 0.3, 1.0)  # red
+    try:
+        blf.size(font_id, font_size)
+        blf.color(font_id, 1.0, 0.3, 0.3, 1.0)  # red
 
-    blf.enable(font_id, blf.SHADOW)
-    blf.shadow(font_id, 3, 0.0, 0.0, 0.0, 1.0)
+        blf.enable(font_id, blf.SHADOW)
+        blf.shadow(font_id, 3, 0.0, 0.0, 0.0, 1.0)
 
-    text = "SNAPSHOT MODE (READ ONLY)"
-    text_width, text_height = blf.dimensions(font_id, text)
+        text = "SNAPSHOT MODE (READ ONLY)"
+        text_width, text_height = blf.dimensions(font_id, text)
 
-    positions = [
-        (padding, padding),  # Bottom Left
-        (padding, height - padding - text_height),  # Top Left
-        (width - padding - text_width, height - padding - text_height),  # Top Right
-        (width - padding - text_width, padding)  # Bottom Right
-    ]
+        positions = [
+            (padding, padding),  # Bottom Left
+            (padding, height - padding - text_height),  # Top Left
+            (width - padding - text_width, height - padding - text_height),  # Top Right
+            (width - padding - text_width, padding)  # Bottom Right
+        ]
 
-    for x, y in positions:
-        blf.position(font_id, x, y, 0)
-        blf.draw(font_id, text)
+        for x, y in positions:
+            blf.position(font_id, x, y, 0)
+            blf.draw(font_id, text)
 
-    blf.disable(font_id, blf.SHADOW)
+        blf.disable(font_id, blf.SHADOW)
+    except Exception:
+        pass
 
     # --- Draw Red Border ---
-    try:
-        try:
-            shader = gpu.shader.from_builtin("2D_UNIFORM_COLOR")
-        except Exception:
-            shader = gpu.shader.from_builtin("UNIFORM_COLOR")
-    except Exception:
-        # Fallback or skip if shaders are not available
+    shader = get_shader()
+    if not shader:
         return
 
     coords = [
@@ -75,7 +89,10 @@ def draw_hud():
         (0, height), (0, 0)
     ]
 
-    batch = batch_for_shader(shader, "LINES", {"pos": coords})
+    try:
+        batch = batch_for_shader(shader, "LINES", {"pos": coords})
+    except Exception:
+        return
 
     try:
         gpu.state.blend_set("ALPHA")
@@ -83,11 +100,15 @@ def draw_hud():
         shader.bind()
         shader.uniform_float("color", (1.0, 0.0, 0.0, 0.5))
         batch.draw(shader)
-        gpu.state.line_width_set(1.0)
-        gpu.state.blend_set("NONE")
     except Exception:
-        # gpu.state might not exist or fail
         pass
+    finally:
+        # Restore state
+        try:
+            gpu.state.line_width_set(1.0)
+            gpu.state.blend_set("NONE")
+        except Exception:
+            pass
 
 
 def register():
