@@ -544,11 +544,15 @@ def remap_snapshot_paths(dummy: Any) -> None:
                     seq.directory = "//../../" + path[2:]
 
 
-def unmap_snapshot_paths() -> None:
+def unmap_snapshot_paths() -> bool:
     """
     Dynamically revert relative paths (remove //../../ prefix) for objects/assets.
     This is used when restoring assets to the project root (e.g. Rescue or Fork fixup).
+
+    Returns:
+        bool: True if any path was modified, False otherwise.
     """
+    changed = False
     # Collections to iterate over
     collections_to_remap = [
         getattr(bpy.data, "images", []),
@@ -573,6 +577,7 @@ def unmap_snapshot_paths() -> None:
                     # //../../path -> //path
                     new_path = "//" + path_normalized[8:]
                     item.filepath = new_path
+                    changed = True
 
     # VSE Support
     scene = getattr(bpy.context, "scene", None)
@@ -587,9 +592,13 @@ def unmap_snapshot_paths() -> None:
                 path_normalized = path.replace("\\", "/")
                 if path_normalized.startswith("//../../"):
                     seq.filepath = "//" + path_normalized[8:]
+                    changed = True
 
             if hasattr(seq, "directory"):
                 path = seq.directory
                 path_normalized = path.replace("\\", "/")
                 if path_normalized.startswith("//../../"):
                     seq.directory = "//" + path_normalized[8:]
+                    changed = True
+
+    return changed

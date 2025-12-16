@@ -21,6 +21,7 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_context_aware_notes.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_rescue_assets.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_rescue_assets_unit.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_rescue_smart_cleanup.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost_reference.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost_complex.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_tagging.py

@@ -378,15 +378,33 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         virtual_dir = temp_blend_path / "Object"
         append_dir = str(virtual_dir) + os.sep
 
+        # Capture initial state to detect changes
+        initial_obj_count = len(bpy.data.objects)
+
         # Register handler to fix paths after append (when depsgraph updates)
         def fix_paths_handler(scene):
-            if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
-                bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
-
+            # Check if append actually happened (objects added or paths fixed)
+            current_obj_count = len(bpy.data.objects)
+            paths_fixed = False
             try:
-                unmap_snapshot_paths()
+                paths_fixed = unmap_snapshot_paths()
             except Exception as e:
                 print(f"[SavePoints] Error fixing paths after rescue: {e}")
+
+            # If objects were added OR paths were modified, we assume the user is done with the file
+            has_changes = (current_obj_count != initial_obj_count) or paths_fixed
+
+            if has_changes:
+                if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
+                    bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
+
+                # Cleanup temp file
+                if temp_blend_path.exists():
+                    try:
+                        os.remove(temp_blend_path)
+                        print(f"[SavePoints] Removed temp file for rescue: {temp_blend_path}")
+                    except Exception as e:
+                        print(f"[SavePoints] Error removing temp file: {e}")
 
         bpy.app.handlers.depsgraph_update_post.append(fix_paths_handler)
 
@@ -421,9 +439,25 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
                     bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
             except Exception as e:
                 print(f"[SavePoints] Append Error: {e}")
+                # Cleanup on error (handler won't fire effectively if append fails)
+                if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
+                    bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
+                if temp_blend_path.exists():
+                    try:
+                        os.remove(temp_blend_path)
+                    except:
+                        pass
                 self.report({'ERROR'}, f"Rescue failed due to context error: {e}")
                 return {'CANCELLED'}
         else:
+            # Cleanup if no context found
+            if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
+                bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
+            if temp_blend_path.exists():
+                try:
+                    os.remove(temp_blend_path)
+                except:
+                    pass
             self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
             return {'CANCELLED'}
 
