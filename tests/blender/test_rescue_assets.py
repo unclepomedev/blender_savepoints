@@ -79,6 +79,11 @@ class TestRescueAssets(unittest.TestCase):
             # Normalize path separators for cross-platform check
             err_str_norm = err_str.replace("\\", "/")
             expected_path_part = f"{version_id}/snapshot_rescue_temp.blend/Object"
+            
+            # Check cleanup
+            temp_blend_path = version_dir / "snapshot_rescue_temp.blend"
+            if temp_blend_path.exists():
+                self.fail(f"Cleanup failed! Temp file still exists: {temp_blend_path}")
 
             if "Snapshot file not found" in err_str:
                 self.fail(f"Snapshot not found: {e}")
@@ -126,16 +131,19 @@ class TestRescueAssets(unittest.TestCase):
 
             # The operator creates a temp file from the source
             temp_blend_path = version_dir / "snapshot_rescue_temp.blend"
-
+            
+            # Check cleanup
             if temp_blend_path.exists():
-                print("Temp file created, meaning source file was found.")
+                 self.fail(f"Cleanup failed! Temp file still exists: {temp_blend_path}")
+
+            if "Snapshot file not found" in err_str:
+                self.fail(f"Legacy snapshot not detected: {e}")
+            elif "nothing indicated" in err_str:
+                 # Success path in headless
+                 print("Legacy snapshot detected and processed (stopped at append as expected).")
             else:
-                if "Snapshot file not found" in err_str:
-                    self.fail(f"Legacy snapshot not detected: {e}")
-                else:
-                    # Some other error, but maybe file was found?
-                    # If temp file doesn't exist, it likely failed before copy or copy failed.
-                    print(f"Caught error without temp file: {err_str}")
+                # Some other error, but maybe file was found?
+                print(f"Caught error: {err_str}")
 
 
 if __name__ == '__main__':
