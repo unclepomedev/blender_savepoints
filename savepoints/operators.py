@@ -447,7 +447,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
                 if temp_blend_path.exists():
                     try:
                         os.remove(temp_blend_path)
-                    except:
+                    except Exception:
                         pass
                 self.report({'ERROR'}, f"Rescue failed due to context error: {e}")
                 return {'CANCELLED'}
@@ -458,7 +458,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             if temp_blend_path.exists():
                 try:
                     os.remove(temp_blend_path)
-                except:
+                except Exception:
                     pass
             self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
             return {'CANCELLED'}
