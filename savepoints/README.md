@@ -8,9 +8,16 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Visual Previews**: Captures a thumbnail of your viewport for every save point.
 - **Detailed Info**: Displays object count and file size for each version.
 - **Notes**: Add custom notes to remember what changed in each version.
+- **Edit Notes**: Update notes for any version directly from the history list.
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
+- **Rescue Assets**: Easily append objects from a specific version without opening the full snapshot.
+- **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
+- **Quick Save**: Option to skip the note dialog for instant saving.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 - **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
+- **Disk Management & Protection**: Automatically deletes the oldest versions to maintain a manageable history size, while preserving locked versions.
+- **Version Protection**: Lock specific versions to prevent them from being auto-deleted or accidentally removed.
+- **Version Tagging**: Assign tags (Stable, Milestone, Experiment, Bug) to versions and filter the history list to find important snapshots instantly.
 
 ## Usage
 
@@ -18,15 +25,22 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
   It has been released on Blender Extensions, so you can get it from [there](https://extensions.blender.org/add-ons/savepoints/).
 2. **Locate the Panel**: Open the 3D Viewport and find the **SavePoints** tab in the N-Panel.
 3. **Save a Version**:
-   - Click **Save Version**.
+   - Click **Save Version** or use shortcuts:
+     - `Ctrl + Alt + S`: Standard Save (respects "Show Save Dialog" setting).
+     - `Ctrl + Alt + Shift + S`: Forced Quick Save (always skips dialog).
    - Enter a note (optional) and confirm.
+   - *Tip*: Disable **"Show Save Dialog"** in settings for one-click saving with the standard shortcut.
    - A new version is created inside a hidden history folder next to your `.blend` file.
 4. **Restore a Version**:
    - Select a version from the history list.
    - View the thumbnail, note, object count, and file size.
+   - **Edit Note**: Click the pencil icon next to the note to update it.
+   - **Rescue Assets** (This feature may be performance-intensive.): Click the Import icon to browse and append objects from this version into your current scene.
+   - **Ghost Reference**: Click the Ghost icon to toggle a wireframe overlay of this version in the viewport. Useful for comparing changes.
    - Click **Checkout (Restore)** to open that version.
-   - You are now in **Snapshot Mode**.
+   - You are now in **Snapshot Mode** (indicated by a red border in the viewport).
       - To restore this version as the main file, click **Save as Parent**.
+      - To save this snapshot as an entirely separate project, click **Fork (Save as New)**.
       - To return to your original file without saving changes, click **Return to Parent**.
       - A backup of the previous main file will be saved in the history folder (e.g., `.{YourFileName}_history/{YourFileName}.blend.123456.bak`).
 5. **Auto Save**:
@@ -34,19 +48,23 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
    - **Note**: Auto-save does not generate thumbnails to avoid rendering interruptions.
+6. **Disk Management & Protection**:
+   - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50).
+   - **Lock Versions**: Click the Lock icon next to a version to protect it. Locked versions are never auto-deleted and cannot be manually deleted unless unlocked.
+7. **Relinking History**:
+   - If the history folder is missing (e.g., after moving the `.blend` file), a **Link Existing History Folder** button will appear.
+   - Click it to select and reconnect an existing history folder.
+8. **Export Project**:
+   - Go to **File > Export > SavePoints Project (.zip)**.
+   - This creates a zip file containing your current `.blend` file and its entire history folder.
+   - Useful for backups or sharing the project with its version history.
+9. **Tagging & Filtering**:
+   - Click the tag icon on any version row to assign a tag (Stable, Milestone, etc.).
+   - Use the filter dropdown at the top of the list to show only specific tags (e.g., only "Stable" versions).
 
 ## ⚠️ Note
 
 Thumbnails are skipped in no-GPU environments, but versioning remains fully functional. (Compatible with headless mode for automation and CI/CD workflows.)
-
-### Known Limitations: Relative Paths
-
-Because snapshots are saved in a subdirectory (`.{YourFileName}_history/vXXX/snapshot.blend_snapshot`), **external files linked with Relative Paths (e.g., `//Textures/image.png`) will appear as broken links** when you open a snapshot.
-
-**Recommended Workflows:**
-To avoid this issue, please use one of the following methods before saving versions:
-1.  **Pack Resources (Recommended):** Go to `File > External Data > Pack Resources`. This embeds textures into the `.blend` file.
-2.  **Use Absolute Paths:** Ensure your external links use absolute paths.
 
 ### ℹ️ Note regarding Asset Browser
 
