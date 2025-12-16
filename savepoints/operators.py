@@ -410,8 +410,10 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
                                 "scene": window.scene,
                             }
                             break
-                if found_context: break
-            if found_context: break
+                if found_context:
+                    break
+            if found_context:
+                break
 
         if found_context:
             try:
