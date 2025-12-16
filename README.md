@@ -108,4 +108,4 @@ This script verifies typical use cases and ensures the add-on fails safely (at l
 
 ### CI Environment
 
-These E2E tests are automatically executed on **Blender 4.2**, **Blender 4.5**, and **Blender 5.0** via GitHub Actions during the release process.
+Complementing local macOS verification, these E2E tests are automatically executed on Windows and Linux (Blender 4.2, 4.5, and 5.0) via GitHub Actions.
