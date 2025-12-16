@@ -25,6 +25,8 @@ from .core import (
     get_history_dir_for_path,
     SCHEMA_VERSION,
     unmap_snapshot_paths,
+    RESCUE_TEMP_FILENAME,
+    cleanup_rescue_temp_files,
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas
 
@@ -365,7 +367,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
                 self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
                 return {'CANCELLED'}
 
-        temp_blend_path = version_dir / "snapshot_rescue_temp.blend"
+        temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
 
         try:
             shutil.copy2(str(snapshot_path), str(temp_blend_path))
@@ -698,6 +700,7 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
     bl_label = "Refresh"
 
     def execute(self, context):
+        cleanup_rescue_temp_files()
         sync_history_to_props(context)
         return {'FINISHED'}
 
