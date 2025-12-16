@@ -104,10 +104,7 @@ just test-blender
 > - Check and configure the `blender_exe` path in `justfile` to match your environment.
 > - [Just](https://github.com/casey/just) is required to run the command.
 
-This script tests:
-- Committing a new version.
-- Checking out a version.
-- Restoring a snapshot to the parent file (with backup).
+This script verifies typical use cases and ensures the add-on fails safely (at least to the best of the developer's knowledge).
 
 ### CI Environment
 
