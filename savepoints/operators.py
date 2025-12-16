@@ -340,7 +340,13 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
 
     version_id: bpy.props.StringProperty()
 
+    def invoke(self, context, event):
+        return self._run(context)
+
     def execute(self, context):
+        return self._run(context)
+
+    def _run(self, context):
         history_dir_str = get_history_dir()
         if not history_dir_str:
             self.report({'ERROR'}, "History directory not found")
@@ -373,7 +379,6 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         append_dir = str(virtual_dir) + os.sep
 
         # Register handler to fix paths after append (when depsgraph updates)
-        # This handles the case where assets with broken relative paths (//../../) are imported.
         def fix_paths_handler(scene):
             if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
                 bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
@@ -385,7 +390,43 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
 
         bpy.app.handlers.depsgraph_update_post.append(fix_paths_handler)
 
-        bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
+        if bpy.ops.object.mode_set.poll():
+            bpy.ops.object.mode_set(mode='OBJECT')
+
+        found_context = None
+
+        for window in context.window_manager.windows:
+            screen = window.screen
+            for area in screen.areas:
+                if area.type == 'VIEW_3D':
+                    for region in area.regions:
+                        if region.type == 'WINDOW':
+                            found_context = {
+                                "window": window,
+                                "screen": screen,
+                                "area": area,
+                                "region": region,
+                                "workspace": window.workspace,
+                                "scene": window.scene,
+                            }
+                            break
+                if found_context:
+                    break
+            if found_context:
+                break
+
+        if found_context:
+            try:
+                with context.temp_override(**found_context):
+                    bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
+            except Exception as e:
+                print(f"[SavePoints] Append Error: {e}")
+                self.report({'ERROR'}, f"Rescue failed due to context error: {e}")
+                return {'CANCELLED'}
+        else:
+            self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
+            return {'CANCELLED'}
+
         return {'FINISHED'}
 
 
