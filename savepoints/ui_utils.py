@@ -75,3 +75,23 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
     # If we have versions and no active index, set to 0
     if len(settings.versions) > 0 and settings.active_version_index < 0:
         settings.active_version_index = 0
+
+
+def force_redraw_areas(context: bpy.types.Context, area_types: set[str] = None) -> None:
+    """
+    Force redraw of specific area types to update UI/HUD.
+    
+    Args:
+        context: Blender context.
+        area_types: Set of area types to redraw (e.g. {'VIEW_3D'}). Defaults to {'VIEW_3D'}.
+    """
+    if area_types is None:
+        area_types = {'VIEW_3D'}
+
+    if not hasattr(context, "window_manager"):
+        return
+
+    for window in context.window_manager.windows:
+        for area in window.screen.areas:
+            if area.type in area_types:
+                area.tag_redraw()
