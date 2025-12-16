@@ -451,7 +451,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         with context.temp_override(**found_context):
             bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
 
-    def _cleanup_resources(self, handler, temp_blend_path: Path):
+    def _cleanup_resources(self, handler, temp_blend_path: Path) -> None:
         """Cleanup handler and temp file manually on error."""
         if handler in bpy.app.handlers.depsgraph_update_post:
             bpy.app.handlers.depsgraph_update_post.remove(handler)
@@ -462,8 +462,6 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
                 print(f"[SavePoints] Removed temp file for rescue (error cleanup): {temp_blend_path}")
             except Exception as e:
                 print(f"[SavePoints] Error removing temp file: {e}")
-
-        return {'FINISHED'}
 
 
 class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
