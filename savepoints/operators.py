@@ -26,7 +26,7 @@ from .core import (
     SCHEMA_VERSION,
     unmap_snapshot_paths,
 )
-from .ui_utils import sync_history_to_props
+from .ui_utils import sync_history_to_props, force_redraw_areas
 
 
 def create_snapshot(context, version_id, note, skip_thumbnail=False):
@@ -679,10 +679,7 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
             return {'CANCELLED'}
 
         # Force redraw to remove HUD
-        for window in context.window_manager.windows:
-            for area in window.screen.areas:
-                if area.type == 'VIEW_3D':
-                    area.tag_redraw()
+        force_redraw_areas(context)
 
         return {'FINISHED'}
 
@@ -789,4 +786,8 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             return {'CANCELLED'}
 
         self.report({'INFO'}, f"Forked to {target_path.name}")
+
+        # Force redraw to remove HUD (no longer in snapshot mode)
+        force_redraw_areas(context)
+
         return {'FINISHED'}
