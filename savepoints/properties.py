@@ -48,6 +48,12 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         default=True
     )
 
+    show_preview: bpy.props.BoolProperty(
+        name="Show Preview",
+        description="Show thumbnail preview in the version details panel",
+        default=True
+    )
+
     use_limit_versions: bpy.props.BoolProperty(
         name="Limit Versions",
         description="Enable automatic deletion of old versions to save disk space",

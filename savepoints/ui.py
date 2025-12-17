@@ -152,22 +152,23 @@ def _draw_version_details(layout, settings, context):
 
         box = layout.box()
 
-        pcoll = ui_utils.preview_collections.get("main")
-        has_preview = False
-        if pcoll and item.version_id in pcoll:
-            has_preview = True
+        if settings.show_preview:
+            pcoll = ui_utils.preview_collections.get("main")
+            has_preview = False
+            if pcoll and item.version_id in pcoll:
+                has_preview = True
 
-        if has_preview:
-            width = context.region.width
-            dynamic_scale = (width - 50) / 20.0
-            dynamic_scale = min(max(dynamic_scale, 4.0), 15.0)
-            row = box.row()
-            row.alignment = 'CENTER'
-            row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=dynamic_scale)
-        else:
-            row = box.row()
-            row.alignment = 'CENTER'
-            row.label(text="No Preview", icon='IMAGE_DATA')
+            if has_preview:
+                width = context.region.width
+                dynamic_scale = (width - 50) / 20.0
+                dynamic_scale = min(max(dynamic_scale, 4.0), 15.0)
+                row = box.row()
+                row.alignment = 'CENTER'
+                row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=dynamic_scale)
+            else:
+                row = box.row()
+                row.alignment = 'CENTER'
+                row.label(text="No Preview", icon='IMAGE_DATA')
 
         box.label(text=f"ID: {item.version_id}")
         box.label(text=f"Date: {item.timestamp}")
@@ -191,6 +192,7 @@ def _draw_general_settings(layout, settings):
     box = layout.box()
     box.label(text="General", icon='PREFERENCES')
     box.prop(settings, "show_save_dialog")
+    box.prop(settings, "show_preview")
 
 
 def _draw_auto_save_settings(layout, settings):
