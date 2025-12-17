@@ -146,7 +146,7 @@ def _draw_history_list(layout, settings):
     col.operator("savepoints.delete", text="", icon='TRASH')
 
 
-def _draw_version_details(layout, settings):
+def _draw_version_details(layout, settings, context):
     if settings.active_version_index >= 0 and len(settings.versions) > settings.active_version_index:
         item = settings.versions[settings.active_version_index]
 
@@ -158,9 +158,12 @@ def _draw_version_details(layout, settings):
             has_preview = True
 
         if has_preview:
+            width = context.region.width
+            dynamic_scale = (width - 50) / 20.0
+            dynamic_scale = max(dynamic_scale, 4.0)
             row = box.row()
             row.alignment = 'CENTER'
-            row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=8)
+            row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=dynamic_scale)
         else:
             row = box.row()
             row.alignment = 'CENTER'
@@ -234,7 +237,7 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
 
         if has_history:
             _draw_history_list(layout, settings)
-            _draw_version_details(layout, settings)
+            _draw_version_details(layout, settings, context)
         else:
             _draw_empty_state(layout)
 
