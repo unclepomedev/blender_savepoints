@@ -8,12 +8,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
-from savepoints import core
+from savepoints.services.asset_path import unmap_snapshot_paths
 
 class TestUnmapSnapshotPaths(unittest.TestCase):
     def test_unmap_returns_false_if_no_changes(self):
         # Ensure no existing weird paths
-        changed = core.unmap_snapshot_paths()
+        changed = unmap_snapshot_paths()
         self.assertFalse(changed, "Should return False when no paths need fixing")
 
     def test_unmap_returns_true_if_changes_made(self):
@@ -26,7 +26,7 @@ class TestUnmapSnapshotPaths(unittest.TestCase):
         self.assertEqual(img.filepath, original_path)
         
         # Run unmap
-        changed = core.unmap_snapshot_paths()
+        changed = unmap_snapshot_paths()
         
         # Verify
         self.assertTrue(changed, "Should return True when path fixed")

@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints  # noqa: E402
-from savepoints.core import get_parent_path_from_snapshot
+from savepoints.services.storage import get_parent_path_from_snapshot
 
 
 def setup_test_env():

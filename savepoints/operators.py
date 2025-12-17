@@ -13,10 +13,10 @@ from bpy_extras.io_utils import ImportHelper
 from .core import (
     get_history_dir,
     get_history_dir_for_path,
-    unmap_snapshot_paths,
     RESCUE_TEMP_FILENAME,
     cleanup_rescue_temp_files,
 )
+from .services.asset_path import unmap_snapshot_paths
 from .services.storage import SCHEMA_VERSION, get_parent_path_from_snapshot, load_manifest
 from .services.thumbnail import capture_thumbnail
 from .services.versioning import (
