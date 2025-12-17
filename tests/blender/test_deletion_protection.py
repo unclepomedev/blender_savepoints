@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints  # noqa: E402
-from savepoints import core
+from savepoints.services.storage import load_manifest
+from savepoints.services.versioning import set_version_protection, delete_version_by_id, prune_versions
 
 
 def setup_test_env():
@@ -30,7 +31,7 @@ def cleanup_test_env(test_dir):
 def create_dummy_version(settings, note="Dummy"):
     # Create a version via operator
     bpy.ops.savepoints.commit('EXEC_DEFAULT', note=note)
-    manifest = core.load_manifest()
+    manifest = load_manifest()
     return manifest["versions"][0]
 
 
@@ -52,22 +53,22 @@ def main():
         v1_id = v1["id"]
 
         # Enable protection
-        core.set_version_protection(v1_id, True)
+        set_version_protection(v1_id, True)
 
         # Try to delete via operator
         settings.active_version_index = 0
         bpy.ops.savepoints.delete('EXEC_DEFAULT')
 
         # Check manifest
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         found = any(v["id"] == v1_id for v in manifest["versions"])
         if not found:
             raise RuntimeError("Protected version was deleted by Operator!")
         print("Test 1 Passed.")
 
         print("\n--- Test 2: Internal API Protection ---")
-        core.delete_version_by_id(v1_id)
-        manifest = core.load_manifest()
+        delete_version_by_id(v1_id)
+        manifest = load_manifest()
         found = any(v["id"] == v1_id for v in manifest["versions"])
         if not found:
             raise RuntimeError("Protected version was deleted by internal API!")
@@ -81,9 +82,9 @@ def main():
 
         # v1 (Protected) is now index 3 (Oldest)
         # Prune max_keep=1
-        core.prune_versions(max_keep=1)
+        prune_versions(max_keep=1)
 
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         remaining_ids = [v["id"] for v in manifest["versions"]]
         if v1_id not in remaining_ids:
             raise RuntimeError("Protected version was deleted by Prune!")
@@ -95,16 +96,16 @@ def main():
         v5_id = v5["id"]
 
         # Ensure it starts protected
-        core.set_version_protection(v5_id, True)
+        set_version_protection(v5_id, True)
 
         # Unprotect
-        core.set_version_protection(v5_id, False)
+        set_version_protection(v5_id, False)
 
         # Delete
-        core.delete_version_by_id(v5_id)
+        delete_version_by_id(v5_id)
 
         # Verify deletion
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         remaining_ids = [v["id"] for v in manifest["versions"]]
         if v5_id in remaining_ids:
             raise RuntimeError("Unprotected version was NOT deleted!")

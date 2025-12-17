@@ -11,7 +11,7 @@ sys.path.append(str(ROOT))
 
 import savepoints  # noqa: E402
 from savepoints import core
-
+from savepoints.services.storage import load_manifest
 
 def setup_test_env():
     test_dir = ROOT / "test_quick_save_run"
@@ -80,7 +80,7 @@ def main():
             raise RuntimeError(f"Quick Save failed: result={res}")
 
         # Verify version created
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         versions = manifest.get("versions", [])
         if not versions:
             raise RuntimeError("Version not created")
@@ -109,7 +109,7 @@ def main():
             raise RuntimeError(f"Edit Note failed: result={res}")
 
         # Verify manifest
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         v1_updated = manifest["versions"][0]
 
         if v1_updated["id"] != v1_id:

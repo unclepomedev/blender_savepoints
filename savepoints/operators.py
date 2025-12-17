@@ -12,22 +12,24 @@ from bpy_extras.io_utils import ImportHelper
 
 from .core import (
     get_history_dir,
-    load_manifest,
-    get_next_version_id,
-    add_version_to_manifest,
-    delete_version_by_id,
-    prune_versions,
-    set_version_protection,
-    update_version_note,
-    update_version_tag,
     get_history_dir_for_path,
     unmap_snapshot_paths,
     RESCUE_TEMP_FILENAME,
     cleanup_rescue_temp_files,
-    is_safe_filename,
 )
 from .services.storage import SCHEMA_VERSION, get_parent_path_from_snapshot
 from .services.thumbnail import capture_thumbnail
+from .services.versioning import (
+    get_next_version_id,
+    add_version_to_manifest,
+    delete_version_by_id,
+    set_version_protection,
+    update_version_note,
+    update_version_tag,
+    load_manifest,
+    is_safe_filename,
+    prune_versions
+)
 from .ui_utils import sync_history_to_props, force_redraw_areas
 
 
