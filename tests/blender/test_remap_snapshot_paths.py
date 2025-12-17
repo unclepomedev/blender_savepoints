@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 from savepoints import core
-
+from savepoints.services.asset_path import remap_snapshot_paths
 
 def setup_test_env():
     test_dir = ROOT / "test_remap_env"
@@ -117,7 +117,7 @@ def main():
         print(f"Current Filepath: {bpy.data.filepath}")
 
         # RUN REMAP
-        core.remap_snapshot_paths(None)
+        remap_snapshot_paths(None)
 
         # ASSERT
         expected_prefix = "//../../"
@@ -145,7 +145,7 @@ def main():
         print("\n--- Test 2: Double Remapping Prevention ---")
         # Paths are now //../../...
         # Run remap again
-        core.remap_snapshot_paths(None)
+        remap_snapshot_paths(None)
 
         img_path_normalized = img.filepath.replace("\\", "/")
         if img_path_normalized.startswith("//../../../../"):
@@ -161,7 +161,7 @@ def main():
         # Reset paths
         img.filepath = "//Textures/image.png"
 
-        core.remap_snapshot_paths(None)
+        remap_snapshot_paths(None)
 
         if img.filepath != "//Textures/image.png":
             raise RuntimeError(f"Remapped unexpectedly in normal file! Got: {img.filepath}")
@@ -176,7 +176,7 @@ def main():
         # Reset paths
         img.filepath = "//Textures/image.png"
 
-        core.remap_snapshot_paths(None)
+        remap_snapshot_paths(None)
 
         if img.filepath != "//Textures/image.png":
             raise RuntimeError(f"Remapped unexpectedly outside history! Got: {img.filepath}")
@@ -191,7 +191,7 @@ def main():
         abs_path = str(img_path)
         img.filepath = abs_path
 
-        core.remap_snapshot_paths(None)
+        remap_snapshot_paths(None)
 
         # On Windows/some setups, abs_path format might vary slightly, but checking if it was NOT remapped to relative is key.
         if img.filepath.startswith("//"):

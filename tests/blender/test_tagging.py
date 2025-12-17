@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints
-from savepoints import core
+from savepoints.services.storage import load_manifest
 
 
 class TestTagging(unittest.TestCase):
@@ -62,7 +62,7 @@ class TestTagging(unittest.TestCase):
         self.assertEqual(v1_updated.tag, 'STABLE', "Tag property should be STABLE")
 
         # 4. Verify in Manifest (Persistence)
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         v_data = manifest["versions"][0]
         self.assertEqual(v_data["tag"], 'STABLE', "Manifest tag should be STABLE")
 
@@ -73,7 +73,7 @@ class TestTagging(unittest.TestCase):
         v1_updated = settings.versions[0]
         self.assertEqual(v1_updated.tag, 'BUG', "Tag property should be BUG")
 
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         v_data = manifest["versions"][0]
         self.assertEqual(v_data["tag"], 'BUG', "Manifest tag should be BUG")
 

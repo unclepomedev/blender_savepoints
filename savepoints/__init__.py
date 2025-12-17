@@ -11,7 +11,7 @@ from . import operators_io
 from . import properties
 from . import ui
 from . import ui_utils
-from .core import remap_snapshot_paths
+from .services.asset_path import remap_snapshot_paths
 
 classes = (
     properties.SavePointsVersion,

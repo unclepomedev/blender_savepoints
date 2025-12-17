@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints
-from savepoints import core
+from savepoints.services.asset_path import unmap_snapshot_paths
 
 class TestRelativePaths(unittest.TestCase):
     def setUp(self):
@@ -180,7 +180,7 @@ class TestRelativePaths(unittest.TestCase):
                 path_norm = img.filepath
 
             # 4. Run the fix
-            core.unmap_snapshot_paths()
+            unmap_snapshot_paths()
                 
             # 5. Verify Path is Fixed
             path_fixed_norm = img.filepath.replace("\\", "/")
