@@ -160,7 +160,7 @@ def _draw_version_details(layout, settings, context):
         if has_preview:
             width = context.region.width
             dynamic_scale = (width - 50) / 20.0
-            dynamic_scale = max(dynamic_scale, 4.0)
+            dynamic_scale = min(max(dynamic_scale, 4.0), 15.0)
             row = box.row()
             row.alignment = 'CENTER'
             row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=dynamic_scale)
