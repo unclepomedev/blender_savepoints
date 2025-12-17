@@ -1,4 +1,3 @@
-import datetime
 import shutil
 import sys
 import traceback
@@ -13,6 +12,8 @@ sys.path.append(str(ROOT))
 import savepoints  # noqa: E402
 from savepoints import core
 
+from savepoints.services.storage import load_manifest
+from savepoints.services.versioning import set_version_protection
 
 def setup_test_env():
     test_dir = ROOT / "test_retention_policy_run"
@@ -28,7 +29,7 @@ def cleanup_test_env(test_dir):
 
 
 def get_version_ids():
-    manifest = core.load_manifest()
+    manifest = load_manifest()
     return [v["id"] for v in manifest.get("versions", [])]
 
 
@@ -117,7 +118,7 @@ def main():
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v8")
 
         # Lock v8 (the most recent one)
-        core.set_version_protection("v008", True)
+        set_version_protection("v008", True)
 
         # We have: v8(L), v7.
         # Max Keep = 2.
@@ -180,7 +181,7 @@ def main():
         # Actually, prune_versions is called after commit.
         # If we just change metadata, prune isn't called automatically unless we do it manually or commit again.
 
-        core.set_version_protection("v008", False)
+        set_version_protection("v008", False)
 
         # Manually trigger prune for test purpose, or commit new version.
         # Let's commit v11 to trigger prune.
@@ -214,7 +215,7 @@ def main():
         res = bpy.ops.savepoints.toggle_protection('EXEC_DEFAULT', version_id="autosave")
 
         # Verify in manifest that it is NOT protected
-        manifest = core.load_manifest()
+        manifest = load_manifest()
         autosave_entry = next((v for v in manifest["versions"] if v["id"] == "autosave"), None)
 
         if not autosave_entry:

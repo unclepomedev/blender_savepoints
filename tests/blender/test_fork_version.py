@@ -11,7 +11,7 @@ sys.path.append(str(ROOT))
 
 import savepoints  # noqa: E402
 from savepoints import core
-from savepoints.services.storage import get_parent_path_from_snapshot
+from savepoints.services.storage import get_parent_path_from_snapshot, load_manifest
 
 def setup_test_env():
     # Create a temporary directory for testing
@@ -100,7 +100,7 @@ def main() -> None:
             pass
         else:
             # If it exists, check manifest
-            manifest = core.load_manifest()
+            manifest = load_manifest()
             versions = manifest.get("versions", [])
             if len(versions) > 0:
                 raise RuntimeError(

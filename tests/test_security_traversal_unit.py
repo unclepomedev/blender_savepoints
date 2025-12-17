@@ -113,14 +113,14 @@ bpy_extras.io_utils.ExportHelper = MockExportHelper
 
 # --- ROBUST MOCKING END ---
 
-from savepoints.core import delete_version_by_id
+from savepoints.services.versioning import delete_version_by_id
 
 
 class TestSecurityTraversal(unittest.TestCase):
-    @mock.patch("savepoints.core.shutil.rmtree")
-    @mock.patch("savepoints.core.get_history_dir")
-    @mock.patch("savepoints.core.load_manifest")
-    @mock.patch("savepoints.core.save_manifest")
+    @mock.patch("savepoints.services.versioning.shutil.rmtree")
+    @mock.patch("savepoints.services.versioning.get_history_dir")
+    @mock.patch("savepoints.services.versioning.load_manifest")
+    @mock.patch("savepoints.services.versioning.save_manifest")
     def test_delete_version_path_traversal_prevention(self, mock_save, mock_load, mock_get_history, mock_rmtree):
         # Setup temporary directories
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -148,10 +148,10 @@ class TestSecurityTraversal(unittest.TestCase):
             # Verification: rmtree should NOT be called
             self.assertFalse(mock_rmtree.called, "shutil.rmtree should NOT be called for path traversal attempt")
 
-    @mock.patch("savepoints.core.shutil.rmtree")
-    @mock.patch("savepoints.core.get_history_dir")
-    @mock.patch("savepoints.core.load_manifest")
-    @mock.patch("savepoints.core.save_manifest")
+    @mock.patch("savepoints.services.versioning.shutil.rmtree")
+    @mock.patch("savepoints.services.versioning.get_history_dir")
+    @mock.patch("savepoints.services.versioning.load_manifest")
+    @mock.patch("savepoints.services.versioning.save_manifest")
     def test_delete_version_rejects_multiple_traversal_patterns(self, mock_save, mock_load, mock_get_history,
                                                                 mock_rmtree):
         malicious_ids = [
