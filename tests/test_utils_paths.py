@@ -108,15 +108,21 @@ bpy_extras.io_utils = types.ModuleType("bpy_extras.io_utils")
 sys.modules["bpy_extras"] = bpy_extras
 sys.modules["bpy_extras.io_utils"] = bpy_extras.io_utils
 
+
 class MockImportHelper: pass
+
+
 bpy_extras.io_utils.ImportHelper = MockImportHelper
 
+
 class MockExportHelper: pass
+
+
 bpy_extras.io_utils.ExportHelper = MockExportHelper
 
 # --- ROBUST MOCKING END ---
 
-from savepoints.core import get_parent_path_from_snapshot
+from savepoints.services.storage import get_parent_path_from_snapshot
 
 
 class TestPathUtils(unittest.TestCase):
@@ -137,7 +143,7 @@ class TestPathUtils(unittest.TestCase):
         # Case 1b: Old snapshot extension (.blend)
         snapshot_old = "snapshot.blend"
         full_path_old = os.path.join(base, history_dir, version, snapshot_old)
-        
+
         result_old = get_parent_path_from_snapshot(full_path_old)
         self.assertEqual(result_old, expected_parent)
 
@@ -182,7 +188,7 @@ class TestPathUtils(unittest.TestCase):
 
     def test_safe_path_resolution_with_fix(self):
         # Test the fix using from_posix_path
-        from savepoints.core import from_posix_path
+        from savepoints.services.storage import from_posix_path
 
         if os.name == 'nt':
             # On Windows, both are separators or handled, but let's test logic explicitly

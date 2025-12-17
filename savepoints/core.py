@@ -9,7 +9,8 @@ from typing import Any
 import bpy
 
 from .services.storage import (
-    HISTORY_SUFFIX, SNAPSHOT_EXT, RESCUE_TEMP_FILENAME, MANIFEST_NAME, to_posix_path, is_safe_filename,
+    HISTORY_SUFFIX, SNAPSHOT_EXT, RESCUE_TEMP_FILENAME, MANIFEST_NAME,
+    to_posix_path, is_safe_filename,
     get_history_dir_for_path, get_history_dir,
     load_manifest, save_manifest
 )

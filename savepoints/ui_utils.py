@@ -6,7 +6,7 @@ from typing import Any
 import bpy
 import bpy.utils.previews
 
-from . import core
+from .services.storage import from_posix_path, format_file_size, load_manifest, get_history_dir
 
 preview_collections: dict = {}
 
@@ -41,7 +41,7 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
     Args:
         context: Blender context.
     """
-    data = core.load_manifest(create_if_missing=False)
+    data = load_manifest(create_if_missing=False)
     settings = context.scene.savepoints_settings
     settings.versions.clear()
 
@@ -50,7 +50,7 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
     if pcoll is not None:
         pcoll.clear()
 
-    history_dir = core.get_history_dir()
+    history_dir = get_history_dir()
 
     versions = data.get("versions", [])
     # Sort: Normal versions first (by ID), autosave last
@@ -61,14 +61,14 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         item.version_id = v_data.get("id", "")
         item.timestamp = v_data.get("timestamp", "")
         item.note = v_data.get("note", "")
-        item.thumbnail_rel_path = core.from_posix_path(v_data.get("thumbnail", ""))
-        item.blend_rel_path = core.from_posix_path(v_data.get("blend", ""))
+        item.thumbnail_rel_path = from_posix_path(v_data.get("thumbnail", ""))
+        item.blend_rel_path = from_posix_path(v_data.get("blend", ""))
         item.object_count = v_data.get("object_count", 0)
         item.is_protected = v_data.get("is_protected", False)
         item.tag = v_data.get("tag", "NONE")
 
         fsize = v_data.get("file_size", 0)
-        item.file_size_display = core.format_file_size(fsize)
+        item.file_size_display = format_file_size(fsize)
 
         _load_item_preview(pcoll, history_dir, item)
 
