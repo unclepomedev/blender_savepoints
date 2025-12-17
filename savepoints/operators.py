@@ -17,7 +17,7 @@ from .core import (
     RESCUE_TEMP_FILENAME,
     cleanup_rescue_temp_files,
 )
-from .services.storage import SCHEMA_VERSION, get_parent_path_from_snapshot
+from .services.storage import SCHEMA_VERSION, get_parent_path_from_snapshot, load_manifest
 from .services.thumbnail import capture_thumbnail
 from .services.versioning import (
     get_next_version_id,
@@ -26,7 +26,6 @@ from .services.versioning import (
     set_version_protection,
     update_version_note,
     update_version_tag,
-    load_manifest,
     is_safe_filename,
     prune_versions
 )
