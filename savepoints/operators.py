@@ -637,8 +637,6 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         # Backup first
         if original_path.exists():
             timestamp = int(time.time())
-
-            from .core import get_history_dir_for_path
             history_dir_str = get_history_dir_for_path(str(original_path))
             if history_dir_str:
                 history_dir = Path(history_dir_str)
