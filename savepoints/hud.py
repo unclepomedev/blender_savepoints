@@ -5,7 +5,7 @@ import bpy
 import gpu
 from gpu_extras.batch import batch_for_shader
 
-from . import core
+from .services.storage import get_parent_path_from_snapshot
 
 _draw_handler = None
 _shader = None
@@ -34,7 +34,7 @@ def draw_hud():
     if not context.blend_data or not context.blend_data.filepath:
         return
 
-    parent_path = core.get_parent_path_from_snapshot(context.blend_data.filepath)
+    parent_path = get_parent_path_from_snapshot(context.blend_data.filepath)
     if not parent_path:
         return
 
