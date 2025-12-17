@@ -148,6 +148,30 @@ class TestSecurityTraversal(unittest.TestCase):
             # Verification: rmtree should NOT be called
             self.assertFalse(mock_rmtree.called, "shutil.rmtree should NOT be called for path traversal attempt")
 
+    @mock.patch("savepoints.core.shutil.rmtree")
+    @mock.patch("savepoints.core.get_history_dir")
+    @mock.patch("savepoints.core.load_manifest")
+    @mock.patch("savepoints.core.save_manifest")
+    def test_delete_version_rejects_multiple_traversal_patterns(self, mock_save, mock_load, mock_get_history,
+                                                                mock_rmtree):
+        malicious_ids = [
+            "../../system",
+            "../../../etc",
+            "version/../../../system",
+            "/absolute/path",
+            "..\\..\\system",  # Windows-style
+            "path/with/slash",
+            "",  # empty string
+        ]
+
+        mock_get_history.return_value = "/tmp/history"
+        mock_load.return_value = {"versions": []}
+
+        for malicious_id in malicious_ids:
+            mock_rmtree.reset_mock()
+            delete_version_by_id(malicious_id)
+            self.assertFalse(mock_rmtree.called, f"rmtree should not be called for: {malicious_id}")
+
 
 if __name__ == '__main__':
     unittest.main()
