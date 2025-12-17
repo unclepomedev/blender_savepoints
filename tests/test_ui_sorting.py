@@ -64,10 +64,19 @@ class TestUiSorting(unittest.TestCase):
             # The list above covers most things.
             raise
 
-        # Mock core functions used in sync_history_to_props
-        # We act on the imported module object
-        self.mock_core = MagicMock()
-        self.ui_utils.core = self.mock_core
+        # Mock functions imported into ui_utils
+        # We act on the imported module object to replace the functions
+        self.mock_load_manifest = MagicMock()
+        self.ui_utils.load_manifest = self.mock_load_manifest
+
+        self.mock_get_history_dir = MagicMock()
+        self.ui_utils.get_history_dir = self.mock_get_history_dir
+
+        self.mock_from_posix_path = MagicMock(side_effect=lambda x: x)
+        self.ui_utils.from_posix_path = self.mock_from_posix_path
+
+        self.mock_format_file_size = MagicMock()
+        self.ui_utils.format_file_size = self.mock_format_file_size
 
         # Mock preview collection
         self.ui_utils.preview_collections = {"main": MagicMock()}
@@ -87,10 +96,9 @@ class TestUiSorting(unittest.TestCase):
                 {"id": "v002"},
             ]
         }
-        self.mock_core.load_manifest.return_value = manifest_data
-        self.mock_core.get_history_dir.return_value = "/tmp/history"
-        self.mock_core.from_posix_path = lambda x: x  # Pass through
-        self.mock_core.format_file_size.return_value = "10 MB"
+        self.mock_load_manifest.return_value = manifest_data
+        self.mock_get_history_dir.return_value = "/tmp/history"
+        self.mock_format_file_size.return_value = "10 MB"
 
         # Setup Mock Context
         mock_context = MagicMock()
@@ -117,7 +125,7 @@ class TestUiSorting(unittest.TestCase):
         self.ui_utils.sync_history_to_props(mock_context)
 
         # Verify Calls
-        self.mock_core.load_manifest.assert_called_once()
+        self.mock_load_manifest.assert_called_once()
         self.assertEqual(mock_settings.versions.clear.call_count, 1)
         self.assertEqual(mock_settings.versions.add.call_count, 4)
 

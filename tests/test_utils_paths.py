@@ -214,6 +214,9 @@ class TestPathUtils(unittest.TestCase):
     def test_commit_poll_guard(self):
         # Test that SAVEPOINTS_OT_commit.poll returns False when in snapshot mode
         # We need to import operators here so it uses the mocked bpy
+        import importlib
+        import savepoints.operators
+        importlib.reload(savepoints.operators)
         from savepoints.operators import SAVEPOINTS_OT_commit
 
         mock_context = mock.MagicMock()
