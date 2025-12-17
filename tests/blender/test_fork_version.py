@@ -11,7 +11,7 @@ sys.path.append(str(ROOT))
 
 import savepoints  # noqa: E402
 from savepoints import core
-
+from savepoints.services.storage import get_parent_path_from_snapshot
 
 def setup_test_env():
     # Create a temporary directory for testing
@@ -114,7 +114,7 @@ def main() -> None:
                     f"New manifest parent_file mismatch. Expected {forked_blend_path}, got {manifest_parent}")
 
         # E. Verify we are NOT in snapshot mode anymore
-        parent_path = core.get_parent_path_from_snapshot(bpy.data.filepath)
+        parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
         if parent_path:
             raise RuntimeError("Forked project should be a normal file, not in snapshot mode")
 

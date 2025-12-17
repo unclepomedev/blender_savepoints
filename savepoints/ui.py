@@ -5,6 +5,7 @@ import os
 import bpy
 
 from . import core, ui_utils
+from .services.storage import get_parent_path_from_snapshot
 
 
 class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
@@ -231,7 +232,7 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             return
 
         # Dynamic check for Snapshot Mode
-        parent_filepath = core.get_parent_path_from_snapshot(bpy.data.filepath)
+        parent_filepath = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if parent_filepath:
             _draw_snapshot_mode(layout, parent_filepath)

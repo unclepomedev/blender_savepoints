@@ -10,12 +10,10 @@ from pathlib import Path
 import bpy
 from bpy_extras.io_utils import ImportHelper
 
-from .services.storage import SCHEMA_VERSION, get_parent_path_from_snapshot
 from .core import (
     get_history_dir,
     load_manifest,
     get_next_version_id,
-    capture_thumbnail,
     add_version_to_manifest,
     delete_version_by_id,
     prune_versions,
@@ -28,6 +26,8 @@ from .core import (
     cleanup_rescue_temp_files,
     is_safe_filename,
 )
+from .services.storage import SCHEMA_VERSION, get_parent_path_from_snapshot
+from .services.thumbnail import capture_thumbnail
 from .ui_utils import sync_history_to_props, force_redraw_areas
 
 
