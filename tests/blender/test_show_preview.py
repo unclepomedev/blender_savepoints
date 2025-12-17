@@ -104,5 +104,28 @@ class TestShowPreview(unittest.TestCase):
             self.fail(f"_draw_version_details failed with show_preview=True: {e}")
 
 
+def test_draw_version_details_with_preview_and_no_region(self):
+    # Populate preview collection to make has_preview=True
+    from savepoints import ui_utils
+    pcoll = ui_utils.preview_collections.setdefault("main", bpy.utils.previews.new())
+    # Mock preview for v001
+    # pcoll["v001"] = ... (you'd need to create a mock preview)
+
+    self.settings.show_preview = True
+
+    layout = MagicMock()
+    box = MagicMock()
+    layout.box.return_value = box
+
+    MockContext = MagicMock()
+    MockContext.region = None  # Simulate headless mode
+
+    # Should not raise AttributeError
+    try:
+        ui._draw_version_details(layout, self.settings, MockContext)
+    except AttributeError as e:
+        self.fail(f"Should handle region=None gracefully: {e}")
+
+
 if __name__ == '__main__':
     unittest.main(argv=[''], exit=False)

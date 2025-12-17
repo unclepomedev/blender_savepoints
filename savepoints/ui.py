@@ -159,8 +159,11 @@ def _draw_version_details(layout, settings, context):
                 has_preview = True
 
             if has_preview:
-                width = context.region.width
-                dynamic_scale = (width - 50) / 20.0
+                if context.region:
+                    width = context.region.width
+                    dynamic_scale = (width - 50) / 20.0
+                else:
+                    dynamic_scale = 8.0
                 dynamic_scale = min(max(dynamic_scale, 4.0), 15.0)
                 row = box.row()
                 row.alignment = 'CENTER'
