@@ -26,6 +26,8 @@ jobs:
         run: |
           uv run python tests/test_utils_paths.py
           uv run python tests/test_hud_mock.py
+          uv run python tests/test_ui_sorting.py
+          uv run python tests/test_security_traversal_unit.py
 
 #      - name: Build add-on zip
 #        run: uv run python tools/build_addon_zip.py

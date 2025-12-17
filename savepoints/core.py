@@ -37,6 +37,16 @@ def from_posix_path(path: str | None) -> str:
     return str(Path(path.replace("\\", "/")))
 
 
+def is_safe_filename(name: str) -> bool:
+    """Check if the filename is safe (no path traversal)."""
+    if not name:
+        return False
+    # Explicitly check for traversal attempts
+    if ".." in name or "/" in name or "\\" in name:
+        return False
+    return True
+
+
 def get_project_path() -> str:
     """Return the current Blender project filepath."""
     return bpy.data.filepath
@@ -379,6 +389,11 @@ def prune_versions(max_keep: int) -> int:
 
 def delete_version_by_id(version_id: str) -> None:
     """Delete a version from disk and manifest."""
+    # Validate version_id to prevent path traversal
+    if not is_safe_filename(version_id):
+        print(f"Error: Invalid version ID '{version_id}'. Path traversal detected.")
+        return
+
     manifest = load_manifest()
     versions = manifest.get("versions", [])
 

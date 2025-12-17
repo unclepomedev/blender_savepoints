@@ -27,6 +27,7 @@ from .core import (
     unmap_snapshot_paths,
     RESCUE_TEMP_FILENAME,
     cleanup_rescue_temp_files,
+    is_safe_filename,
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas
 
@@ -349,6 +350,10 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         return self._run(context)
 
     def _run(self, context):
+        if not is_safe_filename(self.version_id):
+            self.report({'ERROR'}, "Invalid version ID")
+            return {'CANCELLED'}
+
         history_dir_str = get_history_dir()
         if not history_dir_str:
             self.report({'ERROR'}, "History directory not found")
