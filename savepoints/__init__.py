@@ -12,6 +12,7 @@ from . import properties
 from . import ui
 from . import ui_utils
 from .services.asset_path import remap_snapshot_paths
+from .services.autosave import autosave_timer
 
 classes = (
     properties.SavePointsVersion,
@@ -67,8 +68,8 @@ def register():
     bpy.app.handlers.load_post.append(load_handler)
     bpy.app.handlers.load_post.append(auto_remap_paths_handler)
 
-    if not bpy.app.timers.is_registered(operators.autosave_timer):
-        bpy.app.timers.register(operators.autosave_timer, first_interval=10.0, persistent=True)
+    if not bpy.app.timers.is_registered(autosave_timer):
+        bpy.app.timers.register(autosave_timer, first_interval=10.0, persistent=True)
 
     # Register Keymaps
     wm = bpy.context.window_manager
@@ -93,8 +94,8 @@ def unregister():
         km.keymap_items.remove(kmi)
     addon_keymaps.clear()
 
-    if bpy.app.timers.is_registered(operators.autosave_timer):
-        bpy.app.timers.unregister(operators.autosave_timer)
+    if bpy.app.timers.is_registered(autosave_timer):
+        bpy.app.timers.unregister(autosave_timer)
 
     if load_handler in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(load_handler)
