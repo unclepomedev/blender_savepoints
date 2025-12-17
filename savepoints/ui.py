@@ -146,25 +146,32 @@ def _draw_history_list(layout, settings):
     col.operator("savepoints.delete", text="", icon='TRASH')
 
 
-def _draw_version_details(layout, settings):
+def _draw_version_details(layout, settings, context):
     if settings.active_version_index >= 0 and len(settings.versions) > settings.active_version_index:
         item = settings.versions[settings.active_version_index]
 
         box = layout.box()
 
-        pcoll = ui_utils.preview_collections.get("main")
-        has_preview = False
-        if pcoll and item.version_id in pcoll:
-            has_preview = True
+        if settings.show_preview:
+            pcoll = ui_utils.preview_collections.get("main")
+            has_preview = False
+            if pcoll and item.version_id in pcoll:
+                has_preview = True
 
-        if has_preview:
-            row = box.row()
-            row.alignment = 'CENTER'
-            row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=8)
-        else:
-            row = box.row()
-            row.alignment = 'CENTER'
-            row.label(text="No Preview", icon='IMAGE_DATA')
+            if has_preview:
+                if context.region:
+                    width = context.region.width
+                    dynamic_scale = (width - 50) / 20.0
+                else:
+                    dynamic_scale = 8.0
+                dynamic_scale = min(max(dynamic_scale, 4.0), 15.0)
+                row = box.row()
+                row.alignment = 'CENTER'
+                row.template_icon(icon_value=pcoll[item.version_id].icon_id, scale=dynamic_scale)
+            else:
+                row = box.row()
+                row.alignment = 'CENTER'
+                row.label(text="No Preview", icon='IMAGE_DATA')
 
         box.label(text=f"ID: {item.version_id}")
         box.label(text=f"Date: {item.timestamp}")
@@ -188,6 +195,7 @@ def _draw_general_settings(layout, settings):
     box = layout.box()
     box.label(text="General", icon='PREFERENCES')
     box.prop(settings, "show_save_dialog")
+    box.prop(settings, "show_preview")
 
 
 def _draw_auto_save_settings(layout, settings):
@@ -234,7 +242,7 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
 
         if has_history:
             _draw_history_list(layout, settings)
-            _draw_version_details(layout, settings)
+            _draw_version_details(layout, settings, context)
         else:
             _draw_empty_state(layout)
 

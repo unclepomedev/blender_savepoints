@@ -30,3 +30,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_note_assignment.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_no_automatic_history.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_relative_paths.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_show_preview.py

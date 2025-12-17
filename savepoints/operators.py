@@ -629,6 +629,12 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
         options={'SKIP_SAVE'}
     )
 
+    def draw(self, context):
+        layout = self.layout
+        row = layout.row()
+        row.alignment = 'LEFT'
+        row.prop(self, "confirm_save")
+
     def invoke(self, context, event):
         if bpy.data.is_dirty:
             return context.window_manager.invoke_props_dialog(self)
