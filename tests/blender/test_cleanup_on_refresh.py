@@ -1,42 +1,27 @@
-import shutil
 import sys
 import unittest
 from pathlib import Path
 
 import bpy
 
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+
 from savepoints.services.storage import RESCUE_TEMP_FILENAME
-
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
-
-import savepoints
+from savepoints_test_case import SavePointsTestCase
 
 
-class TestCleanupOnRefresh(unittest.TestCase):
-    def setUp(self):
-        self.test_dir = ROOT / "test_cleanup_refresh_env"
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
-        self.test_dir.mkdir()
-
-        # Save current blend file there
-        self.blend_path = self.test_dir / "test.blend"
-        bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
-
-        savepoints.register()
-
-    def tearDown(self):
-        savepoints.unregister()
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
-
+class TestCleanupOnRefresh(SavePointsTestCase):
     def test_cleanup_on_refresh(self):
         print("\n--- Test Cleanup on Refresh ---")
 
         # 1. Setup History and Version
-        history_dir = self.test_dir / ".test_history"
+        # SavePointsTestCase creates test_project.blend, so history dir is .test_project_history
+        history_dir = self.test_dir / ".test_project_history"
         version_id = "v001"
         version_dir = history_dir / version_id
         version_dir.mkdir(parents=True)

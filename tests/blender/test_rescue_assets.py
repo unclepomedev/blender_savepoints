@@ -1,41 +1,27 @@
-import shutil
 import sys
 import unittest
 from pathlib import Path
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
 from savepoints.services.storage import get_history_dir
-import savepoints
+from savepoints_test_case import SavePointsTestCase
 
 
-class TestRescueAssets(unittest.TestCase):
-    def setUp(self):
-        self.test_dir = ROOT / "test_rescue_assets_env"
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
-        self.test_dir.mkdir()
-
-        # Save current blend file there
-        self.blend_path = self.test_dir / "test.blend"
-        bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
-
-        savepoints.register()
-
-    def tearDown(self):
-        savepoints.unregister()
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
-
+class TestRescueAssets(SavePointsTestCase):
     def test_rescue_assets_execution(self):
         print("\n--- Test Rescue Assets ---")
         # 1. Create a dummy snapshot
         version_id = "v001"
-        history_dir = self.test_dir / f".test_history"
+        # The history dir is derived from the blend file name set in setUp (test_project.blend)
+        history_dir = self.test_dir / ".test_project_history"
         version_dir = history_dir / version_id
         version_dir.mkdir(parents=True)
 
@@ -104,8 +90,8 @@ class TestRescueAssets(unittest.TestCase):
     def test_rescue_assets_legacy(self):
         print("\n--- Test Rescue Assets (Legacy .blend) ---")
         version_id = "v002"
-        # The history dir is determined by the blend file name ("test.blend")
-        history_dir = self.test_dir / ".test_history"
+        # The history dir is determined by the blend file name ("test_project.blend")
+        history_dir = self.test_dir / ".test_project_history"
         version_dir = history_dir / version_id
         version_dir.mkdir(parents=True, exist_ok=True)
 

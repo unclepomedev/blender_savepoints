@@ -1,56 +1,47 @@
-import shutil
 import sys
-import traceback
+import unittest
 from pathlib import Path
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
 from savepoints.services.asset_path import remap_snapshot_paths
-
-def setup_test_env():
-    test_dir = ROOT / "test_remap_env"
-    if test_dir.exists():
-        shutil.rmtree(test_dir)
-    test_dir.mkdir()
-    return test_dir
+from savepoints_test_case import SavePointsTestCase
 
 
-def cleanup_test_env(test_dir):
-    if test_dir.exists():
-        shutil.rmtree(test_dir)
+class TestRemapSnapshotPaths(SavePointsTestCase):
+    def test_remap_snapshot_paths(self):
+        print("Starting Remap Snapshot Paths Test...")
+        # test_dir is provided by SavePointsTestCase
+        project_dir = self.test_dir
 
+        # Paths setup
+        history_dir = project_dir / ".project_history"
+        version_dir = history_dir / "v001"
+        version_dir.mkdir(parents=True)
 
-def main():
-    print("Starting Remap Snapshot Paths Test...")
-    test_dir = setup_test_env()
+        # Create a dummy library file to link against
+        lib_dir = project_dir / "Lib"
+        lib_dir.mkdir()
+        lib_path = lib_dir / "library.blend"
 
-    # Paths setup
-    project_dir = test_dir
-    history_dir = project_dir / ".project_history"
-    version_dir = history_dir / "v001"
-    version_dir.mkdir(parents=True)
+        # Create dummy image file location (file doesn't need to exist for logic test, but path does)
+        tex_dir = project_dir / "Textures"
+        tex_dir.mkdir()
+        img_path = tex_dir / "image.png"
 
-    # Create a dummy library file to link against
-    lib_dir = project_dir / "Lib"
-    lib_dir.mkdir()
-    lib_path = lib_dir / "library.blend"
+        # Create dummy object to link and save lib
+        bpy.ops.wm.read_factory_settings(use_empty=True)
+        ob = bpy.data.objects.new("DummyObj", None)
+        ob.use_fake_user = True
+        bpy.ops.wm.save_as_mainfile(filepath=str(lib_path))
 
-    # Create dummy image file location (file doesn't need to exist for logic test, but path does)
-    tex_dir = project_dir / "Textures"
-    tex_dir.mkdir()
-    img_path = tex_dir / "image.png"
-
-    # Create dummy object to link and save lib
-    bpy.ops.wm.read_factory_settings(use_empty=True)
-    ob = bpy.data.objects.new("DummyObj", None)
-    ob.use_fake_user = True
-    bpy.ops.wm.save_as_mainfile(filepath=str(lib_path))
-
-    try:
         # --- Setup Data Blocks ---
         # Start with a clean slate
         bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -64,7 +55,7 @@ def main():
                 data_to.objects = ["DummyObj"]
 
         if not bpy.data.libraries:
-            raise RuntimeError(f"Failed to load library. Libs: {list(bpy.data.libraries)}")
+            self.fail(f"Failed to load library. Libs: {list(bpy.data.libraries)}")
 
         lib = bpy.data.libraries[0]
 
@@ -74,12 +65,6 @@ def main():
             scene.sequence_editor_create()
 
         # Add an image strip
-        # Note: new_image requires a file, but we can fake it or use the one we have?
-        # Actually it doesn't check existence strictly on creation sometimes, 
-        # but let's just make sure we are safe.
-        # We'll rely on property setting anyway.
-        # We need a valid path for creation usually? 
-        # Let's create a dummy file for the strip to be happy.
         with open(img_path, 'wb') as f:
             f.write(b'fake png')
 
@@ -90,7 +75,6 @@ def main():
         elif hasattr(scene.sequence_editor, "strips"):
             seq = scene.sequence_editor.strips.new_image("TestSeq", str(img_path), channel=1, frame_start=1)
         else:
-            # Fallback for newer API?
             print("WARNING: 'sequences' and 'strips' not found in SequenceEditor.")
             seq = None
 
@@ -122,22 +106,22 @@ def main():
         expected_prefix = "//../../"
 
         img_path_normalized = img.filepath.replace("\\", "/")
-        if not img_path_normalized.startswith(expected_prefix):
-            raise RuntimeError(f"Image path not remapped! Got: {img.filepath}")
+        self.assertTrue(img_path_normalized.startswith(expected_prefix),
+                        f"Image path not remapped! Got: {img.filepath}")
 
         lib_path_normalized = lib.filepath.replace("\\", "/")
-        if not lib_path_normalized.startswith(expected_prefix):
-            raise RuntimeError(f"Library path not remapped! Got: {lib.filepath}")
+        self.assertTrue(lib_path_normalized.startswith(expected_prefix),
+                        f"Library path not remapped! Got: {lib.filepath}")
 
         if seq:
             if seq_has_filepath:
                 seq_path_normalized = seq.filepath.replace("\\", "/")
-                if not seq_path_normalized.startswith(expected_prefix):
-                    raise RuntimeError(f"Sequence filepath not remapped! Got: {seq.filepath}")
+                self.assertTrue(seq_path_normalized.startswith(expected_prefix),
+                                f"Sequence filepath not remapped! Got: {seq.filepath}")
             elif seq_has_directory:
                 seq_dir_normalized = seq.directory.replace("\\", "/")
-                if not seq_dir_normalized.startswith(expected_prefix):
-                    raise RuntimeError(f"Sequence directory not remapped! Got: {seq.directory}")
+                self.assertTrue(seq_dir_normalized.startswith(expected_prefix),
+                                f"Sequence directory not remapped! Got: {seq.directory}")
 
         print("Test 1 Passed: All paths remapped correctly.")
 
@@ -147,8 +131,8 @@ def main():
         remap_snapshot_paths(None)
 
         img_path_normalized = img.filepath.replace("\\", "/")
-        if img_path_normalized.startswith("//../../../../"):
-            raise RuntimeError(f"Double remapping detected! Got: {img.filepath}")
+        self.assertFalse(img_path_normalized.startswith("//../../../../"),
+                         f"Double remapping detected! Got: {img.filepath}")
 
         print("Test 2 Passed: Paths remained stable.")
 
@@ -162,8 +146,8 @@ def main():
 
         remap_snapshot_paths(None)
 
-        if img.filepath != "//Textures/image.png":
-            raise RuntimeError(f"Remapped unexpectedly in normal file! Got: {img.filepath}")
+        self.assertEqual(img.filepath, "//Textures/image.png",
+                         f"Remapped unexpectedly in normal file! Got: {img.filepath}")
 
         print("Test 3 Passed: Normal file ignored.")
 
@@ -177,8 +161,8 @@ def main():
 
         remap_snapshot_paths(None)
 
-        if img.filepath != "//Textures/image.png":
-            raise RuntimeError(f"Remapped unexpectedly outside history! Got: {img.filepath}")
+        self.assertEqual(img.filepath, "//Textures/image.png",
+                         f"Remapped unexpectedly outside history! Got: {img.filepath}")
 
         print("Test 4 Passed: Snapshot outside history ignored.")
 
@@ -193,19 +177,10 @@ def main():
         remap_snapshot_paths(None)
 
         # On Windows/some setups, abs_path format might vary slightly, but checking if it was NOT remapped to relative is key.
-        if img.filepath.startswith("//"):
-            raise RuntimeError(f"Absolute path was remapped to relative! Got: {img.filepath}")
+        self.assertFalse(img.filepath.startswith("//"), f"Absolute path was remapped to relative! Got: {img.filepath}")
 
         print("Test 5 Passed: Absolute path ignored.")
 
-        print("\nALL TESTS PASSED")
-
-    except Exception:
-        traceback.print_exc()
-        sys.exit(1)
-    finally:
-        cleanup_test_env(test_dir)
-
 
 if __name__ == "__main__":
-    main()
+    unittest.main(argv=[''], exit=False)

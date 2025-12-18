@@ -1,47 +1,30 @@
-import shutil
 import sys
-import traceback
+import unittest
 from pathlib import Path
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
-
-import savepoints  # noqa: E402
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
 from savepoints.services.storage import load_manifest
 from savepoints.services.versioning import set_version_protection
+from savepoints_test_case import SavePointsTestCase
 
 
-def setup_test_env():
-    test_dir = ROOT / "test_retention_policy_run"
-    if test_dir.exists():
-        shutil.rmtree(test_dir)
-    test_dir.mkdir()
-    return test_dir
+class TestRetentionPolicy(SavePointsTestCase):
+    def get_version_ids(self):
+        manifest = load_manifest()
+        return [v["id"] for v in manifest.get("versions", [])]
 
+    def test_retention_policy_flow(self):
+        print("Starting Retention Policy Test...")
+        # SavePointsTestCase creates test_dir and setups blend_path
 
-def cleanup_test_env(test_dir):
-    if test_dir.exists():
-        shutil.rmtree(test_dir)
-
-
-def get_version_ids():
-    manifest = load_manifest()
-    return [v["id"] for v in manifest.get("versions", [])]
-
-
-def main():
-    print("Starting Retention Policy Test...")
-    test_dir = setup_test_env()
-    blend_file_path = test_dir / "test_retention.blend"
-
-    try:
-        # 1. Setup
-        bpy.ops.wm.save_as_mainfile(filepath=str(blend_file_path))
-        savepoints.register()
         settings = bpy.context.scene.savepoints_settings
 
         print("\n--- Test 1: Basic Limit (Max 3) ---")
@@ -52,23 +35,19 @@ def main():
         for i in range(3):
             bpy.ops.savepoints.commit('EXEC_DEFAULT', note=f"v{i + 1}")
 
-        ids = get_version_ids()
-        if len(ids) != 3:
-            raise RuntimeError(f"Expected 3 versions, got {len(ids)}")
+        ids = self.get_version_ids()
+        self.assertEqual(len(ids), 3, f"Expected 3 versions, got {len(ids)}")
 
         # Create 4th -> Should delete v001 (Oldest)
         # Note: In our list, v003 is Newest (index 0), v001 is Oldest (index 2)
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v4")
 
-        ids = get_version_ids()
+        ids = self.get_version_ids()
         print(f"IDs: {ids}")
-        if len(ids) != 3:
-            raise RuntimeError(f"Expected 3 versions after pruning, got {len(ids)}")
+        self.assertEqual(len(ids), 3, f"Expected 3 versions after pruning, got {len(ids)}")
 
-        if "v001" in ids:
-            raise RuntimeError("v001 should have been pruned")
-        if "v004" not in ids:
-            raise RuntimeError("v004 should be present")
+        self.assertNotIn("v001", ids, "v001 should have been pruned")
+        self.assertIn("v004", ids, "v004 should be present")
 
         print("Test 1 Passed.")
 
@@ -78,9 +57,8 @@ def main():
         # Create 5th -> Should keep all (3 + 1 = 4)
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v5")
 
-        ids = get_version_ids()
-        if len(ids) != 4:
-            raise RuntimeError(f"Expected 4 versions, got {len(ids)}")
+        ids = self.get_version_ids()
+        self.assertEqual(len(ids), 4, f"Expected 4 versions, got {len(ids)}")
 
         print("Test 2 Passed.")
 
@@ -97,14 +75,12 @@ def main():
 
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v6")
 
-        ids = get_version_ids()
+        ids = self.get_version_ids()
         print(f"IDs: {ids}")
-        if len(ids) != 2:
-            raise RuntimeError(f"Expected 2 versions, got {len(ids)}")
+        self.assertEqual(len(ids), 2, f"Expected 2 versions, got {len(ids)}")
 
         expected = ["v006", "v005"]
-        if ids != expected:
-            raise RuntimeError(f"Mismatch. Expected {expected}, got {ids}")
+        self.assertEqual(ids, expected, f"Mismatch. Expected {expected}, got {ids}")
 
         print("Test 3 Passed.")
 
@@ -133,14 +109,11 @@ def main():
 
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v9")
 
-        ids = get_version_ids()
+        ids = self.get_version_ids()
         print(f"IDs after v9: {ids}")
 
-        if "v007" not in ids:
-            raise RuntimeError("v007 should be kept because v008(Locked) does not count towards quota.")
-
-        if len(ids) != 3:
-            raise RuntimeError(f"Expected 3 versions (v9, v8L, v7), got {len(ids)}")
+        self.assertIn("v007", ids, "v007 should be kept because v008(Locked) does not count towards quota.")
+        self.assertEqual(len(ids), 3, f"Expected 3 versions (v9, v8L, v7), got {len(ids)}")
 
         # Create v10.
         # List: v10, v9, v8(L), v7.
@@ -151,14 +124,11 @@ def main():
 
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v10")
 
-        ids = get_version_ids()
+        ids = self.get_version_ids()
         print(f"IDs after v10: {ids}")
 
-        if "v007" in ids:
-            raise RuntimeError("v007 should be pruned now.")
-
-        if len(ids) != 3:
-            raise RuntimeError(f"Expected 3 versions (v10, v9, v8L), got {len(ids)}")
+        self.assertNotIn("v007", ids, "v007 should be pruned now.")
+        self.assertEqual(len(ids), 3, f"Expected 3 versions (v10, v9, v8L), got {len(ids)}")
 
         print("Test 4 Passed.")
 
@@ -167,7 +137,7 @@ def main():
         # Unlocked: v10, v9 (Count=2). Locked: v8.
         # All kept.
 
-        ids = get_version_ids()
+        ids = self.get_version_ids()
         expected_ids = ["v010", "v009", "v008"]
         if ids != expected_ids:
             # Just in case ordering is different or something failed before
@@ -191,18 +161,14 @@ def main():
 
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v11")
 
-        ids = get_version_ids()
+        ids = self.get_version_ids()
         print(f"IDs after v11: {ids}")
 
         # Expected: v11, v10.
-        if "v008" in ids:
-            raise RuntimeError("v008 (Unlocked) should be pruned")
-        if "v009" in ids:
-            raise RuntimeError("v009 (Old Unlocked) should be pruned")
-        if "v011" not in ids:
-            raise RuntimeError("v011 (Newest) should be kept")
-        if "v010" not in ids:
-            raise RuntimeError("v010 (2nd Newest) should be kept")
+        self.assertNotIn("v008", ids, "v008 (Unlocked) should be pruned")
+        self.assertNotIn("v009", ids, "v009 (Old Unlocked) should be pruned")
+        self.assertIn("v011", ids, "v011 (Newest) should be kept")
+        self.assertIn("v010", ids, "v010 (2nd Newest) should be kept")
 
         print("Test 5 Passed.")
 
@@ -218,26 +184,11 @@ def main():
         manifest = load_manifest()
         autosave_entry = next((v for v in manifest["versions"] if v["id"] == "autosave"), None)
 
-        if not autosave_entry:
-            raise RuntimeError("Autosave missing for Test 6")
-
-        if autosave_entry.get("is_protected", False):
-            raise RuntimeError("Autosave was successfully protected (should be forbidden)")
+        self.assertIsNotNone(autosave_entry, "Autosave entry missing")
+        self.assertFalse(autosave_entry.get("is_protected", False), "Autosave should NOT be protectable")
 
         print("Test 6 Passed.")
 
-        print("\nALL TESTS PASSED")
-
-    except Exception:
-        traceback.print_exc()
-        sys.exit(1)
-    finally:
-        try:
-            savepoints.unregister()
-        except Exception:
-            pass
-        cleanup_test_env(test_dir)
-
 
 if __name__ == "__main__":
-    main()
+    unittest.main(argv=[''], exit=False)

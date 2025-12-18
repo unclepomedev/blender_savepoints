@@ -4,17 +4,18 @@ from pathlib import Path
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
-
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 import savepoints.operators
+from savepoints_test_case import SavePointsTestCase
 
 
-class TestContextAwareNotes(unittest.TestCase):
-    def setUp(self):
-        # Reset scene
-        bpy.ops.wm.read_homefile(use_empty=True)
+class TestContextAwareNotes(SavePointsTestCase):
+    # SavePointsTestCase setUp handles blender initialization
 
     def test_get_default_note_object_mode(self):
         bpy.ops.mesh.primitive_cube_add()

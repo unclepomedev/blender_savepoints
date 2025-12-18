@@ -1,38 +1,22 @@
-import shutil
 import sys
 import unittest
 from pathlib import Path
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
-import savepoints
 from savepoints.services.storage import load_manifest
+from savepoints_test_case import SavePointsTestCase
 
 
-class TestTagging(unittest.TestCase):
-    def setUp(self):
-        self.test_dir = ROOT / "test_tagging_env"
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
-        self.test_dir.mkdir()
-
-        # Save current blend file
-        self.blend_path = self.test_dir / "test.blend"
-        bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
-
-        savepoints.register()
-
-    def tearDown(self):
-        try:
-            savepoints.unregister()
-        except Exception:
-            pass
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
+class TestTagging(SavePointsTestCase):
+    # setup and teardown handled by SavePointsTestCase
 
     def test_set_tag(self):
         print("\n--- Test Set Tag ---")
