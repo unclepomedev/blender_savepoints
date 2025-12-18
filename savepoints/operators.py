@@ -19,7 +19,6 @@ from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     get_parent_path_from_snapshot,
     load_manifest,
-    get_history_dir,
     get_fork_target_path,
     initialize_history_for_path
 )
@@ -377,16 +376,10 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
             return {'CANCELLED'}
 
         item = settings.versions[settings.active_version_index]
-        history_dir_str = get_history_dir()
-        if not history_dir_str:
-            self.report({'ERROR'}, "History directory not found")
-            return {'CANCELLED'}
+        blend_path = find_snapshot_path(item.version_id)
 
-        history_dir = Path(history_dir_str)
-        blend_path = history_dir / item.blend_rel_path
-
-        if not blend_path.exists():
-            self.report({'ERROR'}, f"File not found: {blend_path}")
+        if not blend_path:
+            self.report({'ERROR'}, f"Snapshot file not found for version: {item.version_id}")
             return {'CANCELLED'}
 
         # Handle unsaved changes (Interactive only)

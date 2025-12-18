@@ -32,7 +32,8 @@ class TestRescueAssetsLogic(SavePointsTestCase):
     @patch("savepoints.operators.get_history_dir")
     @patch("shutil.copy2")
     @patch("pathlib.Path.exists")
-    def test_run_no_view3d(self, mock_exists, mock_copy, mock_get_hist):
+    @patch("bpy.ops.wm.append")
+    def test_run_no_view3d(self, mock_append, mock_exists, mock_copy, mock_get_hist):
         """Test that _run fails gracefully when no 3D Viewport is found."""
         print("\n--- Test Rescue Logic: No 3D Viewport ---")
 
