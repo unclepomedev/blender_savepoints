@@ -12,7 +12,11 @@ from bpy_extras.io_utils import ImportHelper
 
 from .services.asset_path import unmap_snapshot_paths
 from .services.linking import link_history
-from .services.rescue import cleanup_rescue_temp_files
+from .services.rescue import (
+    cleanup_rescue_temp_files,
+    create_rescue_temp_file,
+    delete_rescue_temp_file
+)
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     SCHEMA_VERSION,
@@ -256,13 +260,8 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             self.report({'ERROR'}, f"Snapshot file not found for version: {self.version_id}")
             return {'CANCELLED'}
 
-        version_dir = snapshot_path.parent
-        temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
-
         try:
-            shutil.copy2(str(snapshot_path), str(temp_blend_path))
-            print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
-
+            temp_blend_path = create_rescue_temp_file(snapshot_path)
         except Exception as e:
             self.report({'ERROR'}, f"Failed to create temp file: {e}")
             return {'CANCELLED'}
@@ -291,12 +290,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
                     bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
 
                 # Cleanup temp file
-                if temp_blend_path.exists():
-                    try:
-                        os.remove(temp_blend_path)
-                        print(f"[SavePoints] Removed temp file for rescue: {temp_blend_path}")
-                    except Exception as e:
-                        print(f"[SavePoints] Error removing temp file: {e}")
+                delete_rescue_temp_file(temp_blend_path)
 
         bpy.app.handlers.depsgraph_update_post.append(fix_paths_handler)
 
@@ -314,22 +308,14 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
                 # Cleanup on error (handler won't fire effectively if append fails)
                 if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
                     bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
-                if temp_blend_path.exists():
-                    try:
-                        os.remove(temp_blend_path)
-                    except Exception:
-                        pass
+                delete_rescue_temp_file(temp_blend_path)
                 self.report({'ERROR'}, f"Rescue failed due to context error: {e}")
                 return {'CANCELLED'}
         else:
             # Cleanup if no context found
             if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
                 bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
-            if temp_blend_path.exists():
-                try:
-                    os.remove(temp_blend_path)
-                except Exception:
-                    pass
+            delete_rescue_temp_file(temp_blend_path)
             self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
             return {'CANCELLED'}
 
