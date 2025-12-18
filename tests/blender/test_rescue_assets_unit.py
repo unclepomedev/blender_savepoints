@@ -23,6 +23,9 @@ class TestRescueAssetsLogic(SavePointsTestCase):
         # Mock report to capture errors
         self.op.report = MagicMock()
 
+        # Attach real method
+        self.op._open_append_dialog = SAVEPOINTS_OT_rescue_assets._open_append_dialog.__get__(self.op, SAVEPOINTS_OT_rescue_assets)
+
         # Base mock context
         self.mock_context = MagicMock()
 

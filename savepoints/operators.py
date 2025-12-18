@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
 from pathlib import Path
 
 import bpy
@@ -13,7 +12,8 @@ from .services.linking import link_history, resolve_history_path_from_selection
 from .services.rescue import (
     cleanup_rescue_temp_files,
     create_rescue_temp_file,
-    delete_rescue_temp_file
+    delete_rescue_temp_file,
+    get_rescue_append_dir
 )
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
@@ -251,8 +251,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             self.report({'ERROR'}, f"Failed to create temp file: {e}")
             return {'CANCELLED'}
 
-        virtual_dir = temp_blend_path / "Object"
-        append_dir = str(virtual_dir) + os.sep
+        append_dir = get_rescue_append_dir(temp_blend_path)
 
         # Capture initial state to detect changes
         initial_obj_count = len(bpy.data.objects)
