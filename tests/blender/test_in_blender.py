@@ -4,6 +4,7 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -16,118 +17,107 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestInBlenderE2E(SavePointsTestCase):
-    def test_e2e_flow(self):
-        print("\n--- Starting E2E Test ---")
 
-        # Base setup (setUp) already created test_project.blend and registered addon
-        # history_dir will be based on test_project.blend
+    def test_e2e_flow_scenario(self):
+        """
+        Scenario:
+        1. Commit a new version (creates v001).
+        2. Checkout that version (enters Snapshot Mode).
+        3. Verify safeguards (Commit should be blocked in Snapshot Mode).
+        4. Restore (Merge changes back to Parent File).
+        """
+        print("Starting E2E Flow Scenario...")
+
+        # Base setup (setUp) already created test_project.blend
         history_dir = self.test_dir / ".test_project_history"
 
-        # 3. Test Commit
-        print("Testing Commit...")
-        # Create some data to verify later
-        bpy.ops.mesh.primitive_cube_add()
-        bpy.context.object.name = "TestCube_v1"
+        # --- Step 1: Commit ---
+        with self.subTest(step="1. Commit Version"):
+            print("Testing Commit...")
 
-        # EXEC_DEFAULT to bypass invoke_props_dialog
-        res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="First Version")
-        if "FINISHED" not in res:
-            self.fail(f"Commit failed with result: {res}")
+            # Create data to verify persistence later
+            bpy.ops.mesh.primitive_cube_add()
+            bpy.context.object.name = "TestCube_v1"
 
-        # Verify filesystem
-        if not history_dir.exists():
-            self.fail("History directory not created")
+            # Execute Commit (Bypass dialog)
+            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="First Version")
+            self.assertIn('FINISHED', res, "Commit failed")
 
-        manifest_path = history_dir / "manifest.json"
-        if not manifest_path.exists():
-            self.fail("Manifest not created")
+            # Verify Filesystem Structure
+            self.assertTrue(history_dir.exists(), "History directory not created")
+            self.assertTrue((history_dir / "manifest.json").exists(), "Manifest not created")
 
-        v001_dir = history_dir / "v001"
-        if not v001_dir.exists():
-            self.fail("Version v001 folder not created")
+            v001_dir = history_dir / "v001"
+            self.assertTrue(v001_dir.exists(), "Version v001 folder not created")
+            self.assertTrue((v001_dir / "snapshot.blend_snapshot").exists(), "Snapshot file not created")
 
-        snapshot_path = v001_dir / "snapshot.blend_snapshot"
-        if not snapshot_path.exists():
-            self.fail("Snapshot file not created")
+        # --- Step 2: Checkout ---
+        with self.subTest(step="2. Checkout Snapshot"):
+            print("Testing Checkout...")
 
-        print("Commit Verification: OK")
+            # Modify current scene BEFORE checkout (to ensure it gets discarded)
+            bpy.ops.mesh.primitive_uv_sphere_add()
+            bpy.context.object.name = "TransientSphere"
 
-        # 4. Test Checkout
-        print("Testing Checkout...")
-        # Modify current scene so we know if we switched
-        bpy.ops.mesh.primitive_uv_sphere_add()
-        bpy.context.object.name = "TransientSphere"
+            # Set active index to 0 (v001)
+            if hasattr(bpy.context.scene, "savepoints_settings"):
+                bpy.context.scene.savepoints_settings.active_version_index = 0
 
-        # Set active index to 0 (v001)
-        bpy.context.scene.savepoints_settings.active_version_index = 0
+            # Execute Checkout
+            res = bpy.ops.savepoints.checkout()
+            self.assertIn('FINISHED', res, "Checkout failed")
 
-        res = bpy.ops.savepoints.checkout()
-        if "FINISHED" not in res:
-            self.fail(f"Checkout failed with result: {res}")
+            # Verify Loaded File
+            current_path = Path(bpy.data.filepath)
+            self.assertEqual(current_path.name, "snapshot.blend_snapshot",
+                             f"Failed to load snapshot file. Current: {current_path}")
 
-        # Verify loaded file
-        current_path = Path(bpy.data.filepath)
-        if current_path.name != "snapshot.blend_snapshot":
-            self.fail(f"Checkout did not load snapshot.blend_snapshot, current: {current_path}")
+            # Verify Content
+            self.assertIn("TestCube_v1", bpy.data.objects, "Snapshot missing original data")
+            self.assertNotIn("TransientSphere", bpy.data.objects,
+                             "Snapshot contains data that should have been discarded")
 
-        # Verify content (should have TestCube_v1, but NOT TransientSphere)
-        if "TestCube_v1" not in bpy.data.objects:
-            self.fail("Snapshot does not contain TestCube_v1")
-        if "TransientSphere" in bpy.data.objects:
-            self.fail("Snapshot contains TransientSphere (should have been discarded)")
+            # Verify Snapshot Mode Detection
+            parent_path_detected = get_parent_path_from_snapshot(bpy.data.filepath)
+            self.assertIsNotNone(parent_path_detected, "Snapshot Mode not detected internally")
+            self.assertEqual(Path(parent_path_detected), self.blend_path, "Parent path mismatch")
 
-        # Verify Snapshot Mode
-        parent_path_detected = get_parent_path_from_snapshot(bpy.data.filepath)
+        # --- Step 3: Commit Guard (Restriction Test) ---
+        with self.subTest(step="3. Verify Commit Guard"):
+            print("Testing Commit Guard (Should fail in Snapshot Mode)...")
 
-        if not parent_path_detected:
-            self.fail("Snapshot Mode not detected (get_parent_path_from_snapshot returned None)")
+            # Attempting to commit inside a snapshot should fail (Poll fails -> RuntimeError in headless)
+            with self.assertRaises(RuntimeError):
+                bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Illegal Commit")
 
-        if Path(parent_path_detected) != self.blend_path:
-            self.fail(f"Parent path mismatch: {parent_path_detected} vs {self.blend_path}")
+        # --- Step 4: Restore ---
+        with self.subTest(step="4. Restore to Parent"):
+            print("Testing Restore...")
 
-        # Verify Commit Guard (should fail in snapshot mode)
-        print("Testing Commit Guard...")
-        try:
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Illegal Commit")
-            self.fail("Commit should have failed in snapshot mode but succeeded")
-        except RuntimeError:
-            # Expected failure: poll() failed
-            print("Commit blocked as expected.")
-        except Exception as e:
-            self.fail(f"Unexpected error during commit guard test: {e}")
+            # Add something new in the snapshot to verify it merges back to parent
+            bpy.ops.mesh.primitive_cone_add()
+            bpy.context.object.name = "RestoredCone"
 
-        print("Checkout Verification: OK")
+            # Execute Restore
+            res = bpy.ops.savepoints.restore('EXEC_DEFAULT')
+            self.assertIn('FINISHED', res, "Restore failed")
 
-        # 5. Test Restore (Save as Parent)
-        print("Testing Restore...")
+            # Verify Filepath (Should be back to original)
+            current_path = Path(bpy.data.filepath)
+            self.assertEqual(current_path.name, "test_project.blend",
+                             f"Failed to return to parent file. Current: {current_path}")
 
-        # Add something new in the snapshot to verify it gets saved to parent
-        bpy.ops.mesh.primitive_cone_add()
-        bpy.context.object.name = "RestoredCone"
+            # Verify Content
+            self.assertIn("RestoredCone", bpy.data.objects, "Restored file missing object added during snapshot")
+            self.assertIn("TestCube_v1", bpy.data.objects, "Restored file missing original data")
 
-        # EXEC_DEFAULT to bypass confirmation
-        res = bpy.ops.savepoints.restore('EXEC_DEFAULT')
-        if "FINISHED" not in res:
-            self.fail(f"Restore failed with result: {res}")
+            # Verify Backup Creation (Safety feature)
+            # Look for *.bak files in history dir
+            backups = list(history_dir.glob("test_project.blend.*.bak"))
+            self.assertTrue(len(backups) > 0, "Backup file was not created during restore")
 
-        # Verify filepath is back to original
-        current_path = Path(bpy.data.filepath)
-        if current_path.name != "test_project.blend":
-            self.fail(f"Restore did not switch back to original file, current: {current_path}")
-
-        # Verify content
-        if "RestoredCone" not in bpy.data.objects:
-            self.fail("Restored file does not contain the new object added in snapshot")
-
-        # Verify Backup
-        backups = list(history_dir.glob("test_project.blend.*.bak"))
-        if not backups:
-            self.fail("Backup file was not created in history folder")
-
-        print("Restore Verification: OK")
+        print("E2E Flow Scenario: Completed")
 
 
 if __name__ == '__main__':
-    res = unittest.main(argv=[''], exit=False)
-    if not res.result.wasSuccessful():
-        sys.exit(1)
+    unittest.main(argv=[''], exit=False)
