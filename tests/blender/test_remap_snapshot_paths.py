@@ -9,7 +9,6 @@ import bpy
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
-from savepoints import core
 from savepoints.services.asset_path import remap_snapshot_paths
 
 def setup_test_env():

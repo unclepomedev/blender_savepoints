@@ -10,10 +10,9 @@ from pathlib import Path
 import bpy
 from bpy_extras.io_utils import ImportHelper
 
-from .core import (
-    cleanup_rescue_temp_files,
-)
 from .services.asset_path import unmap_snapshot_paths
+from .services.linking import link_history
+from .services.rescue import cleanup_rescue_temp_files
 from .services.snapshot import create_snapshot
 from .services.storage import (
     SCHEMA_VERSION,
@@ -21,7 +20,8 @@ from .services.storage import (
     load_manifest,
     get_history_dir,
     get_history_dir_for_path,
-    RESCUE_TEMP_FILENAME
+    RESCUE_TEMP_FILENAME,
+    MANIFEST_NAME
 )
 from .services.versioning import (
     get_next_version_id,
@@ -46,8 +46,6 @@ class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
     filter_folder: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
 
     def execute(self, context):
-        from .core import link_history, MANIFEST_NAME
-
         selected_path = Path(self.filepath)
 
         # Robustness: If user selected the manifest.json file directly, handle it

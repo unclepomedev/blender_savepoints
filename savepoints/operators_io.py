@@ -6,7 +6,7 @@ from pathlib import Path
 import bpy
 from bpy_extras.io_utils import ExportHelper
 
-from . import core
+from .services.storage import get_history_dir_for_path
 
 
 class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
@@ -43,7 +43,7 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
         project_path = Path(bpy.data.filepath)
         # Get history directory using core utility
-        history_dir_str = core.get_history_dir_for_path(str(project_path))
+        history_dir_str = get_history_dir_for_path(str(project_path))
         history_dir = Path(history_dir_str) if history_dir_str else None
 
         output_zip_path = Path(self.filepath)

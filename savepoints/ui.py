@@ -4,8 +4,8 @@ import os
 
 import bpy
 
-from . import core, ui_utils
-from .services.storage import get_parent_path_from_snapshot
+from . import ui_utils
+from .services.storage import get_parent_path_from_snapshot, get_history_dir
 
 
 class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
@@ -238,7 +238,7 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             _draw_snapshot_mode(layout, parent_filepath)
             return
 
-        history_dir = core.get_history_dir()
+        history_dir = get_history_dir()
         has_history = history_dir and os.path.exists(history_dir)
 
         if has_history:

@@ -3,11 +3,11 @@ import shutil
 import sys
 from pathlib import Path
 
+from savepoints.services.linking import link_history
+
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
-
-import savepoints.core as core
 
 
 def setup_test_env():
@@ -50,7 +50,7 @@ def test_link_history_parent_update():
     # 2. Execute Link History
     print("Executing link_history...")
     try:
-        new_history_path_str = core.link_history(source_history_dir, str(new_blend_path))
+        new_history_path_str = link_history(source_history_dir, str(new_blend_path))
     except Exception as e:
         raise RuntimeError(f"link_history failed: {e}")
 
