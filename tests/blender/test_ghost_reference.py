@@ -61,8 +61,6 @@ class TestGhostReference(SavePointsTestCase):
             # Move the live cube so it visually differs from where the ghost will appear
             cube = bpy.data.objects.get("OriginalCube")
             self.assertIsNotNone(cube, "OriginalCube should still exist after commit")
-
-            # Move the live cube so it visually differs from where the ghost will appear
             cube.location.x += 5.0
 
         # --- Step 3: Toggle Ghost ON ---
