@@ -10,7 +10,7 @@ import bpy
 HISTORY_SUFFIX = "_history"
 SNAPSHOT_EXT = ".blend_snapshot"
 SNAPSHOT_FILENAME = "snapshot.blend_snapshot"
-LEGACY_SNAPSHOT_FILENAME = "snapshot.blend_snapshot"
+LEGACY_SNAPSHOT_FILENAME = "snapshot.blend"
 THUMBNAIL_FILENAME = "thumbnail.png"
 RESCUE_TEMP_FILENAME = "snapshot_rescue_temp.blend"
 MANIFEST_NAME = "manifest.json"
