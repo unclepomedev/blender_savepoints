@@ -77,3 +77,17 @@ def cleanup_rescue_temp_files() -> int:
         print(f"[SavePoints] Cleaned up {count} rescue temporary file(s).")
 
     return count
+
+
+def get_rescue_append_dir(temp_blend_path: Path) -> str:
+    """
+    Get the directory path for appending objects from the rescue temp file.
+
+    Args:
+        temp_blend_path (Path): Path to the temporary blend file.
+
+    Returns:
+        str: The directory path string formatted for Blender's append operator (ending with separator).
+    """
+    virtual_dir = temp_blend_path / "Object"
+    return str(virtual_dir) + os.sep

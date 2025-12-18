@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
 from pathlib import Path
 
 import bpy
@@ -13,13 +12,13 @@ from .services.linking import link_history, resolve_history_path_from_selection
 from .services.rescue import (
     cleanup_rescue_temp_files,
     create_rescue_temp_file,
-    delete_rescue_temp_file
+    delete_rescue_temp_file,
+    get_rescue_append_dir
 )
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     get_parent_path_from_snapshot,
     load_manifest,
-    get_history_dir,
     get_fork_target_path,
     initialize_history_for_path
 )
@@ -30,7 +29,8 @@ from .services.versioning import (
     update_version_note,
     update_version_tag,
     is_safe_filename,
-    prune_versions
+    prune_versions,
+    generate_default_note
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas, find_3d_view_override
 
@@ -74,36 +74,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     def poll(cls, context):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
-    def _get_default_note(self, context):
-        try:
-            obj = context.active_object
-            if not obj:
-                return ""
-
-            mode = obj.mode
-
-            if mode == 'EDIT':
-                friendly_mode = f"Edit {obj.type.title()}"
-            else:
-                mode_map = {
-                    'OBJECT': 'Object',
-                    'POSE': 'Pose',
-                    'SCULPT': 'Sculpt',
-                    'VERTEX_PAINT': 'Vertex Paint',
-                    'WEIGHT_PAINT': 'Weight Paint',
-                    'TEXTURE_PAINT': 'Texture Paint',
-                    'PARTICLE_EDIT': 'Particle Edit',
-                }
-                friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
-
-            return f"{friendly_mode}: {obj.name}"
-        except Exception:
-            return ""
-
     def invoke(self, context, event):
         settings = context.scene.savepoints_settings
 
-        default_note = self._get_default_note(context)
+        default_note = generate_default_note(context)
 
         if not self.note:
             self.note = default_note
@@ -124,7 +98,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
         # Ensure default note is set if empty (especially for non-interactive execution)
         if not self.note:
-            self.note = self._get_default_note(context)
+            self.note = generate_default_note(context)
 
         manifest = load_manifest()
         new_id_str = get_next_version_id(manifest.get("versions", []))
@@ -251,8 +225,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             self.report({'ERROR'}, f"Failed to create temp file: {e}")
             return {'CANCELLED'}
 
-        virtual_dir = temp_blend_path / "Object"
-        append_dir = str(virtual_dir) + os.sep
+        append_dir = get_rescue_append_dir(temp_blend_path)
 
         # Capture initial state to detect changes
         initial_obj_count = len(bpy.data.objects)
@@ -378,16 +351,10 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
             return {'CANCELLED'}
 
         item = settings.versions[settings.active_version_index]
-        history_dir_str = get_history_dir()
-        if not history_dir_str:
-            self.report({'ERROR'}, "History directory not found")
-            return {'CANCELLED'}
+        blend_path = find_snapshot_path(item.version_id)
 
-        history_dir = Path(history_dir_str)
-        blend_path = history_dir / item.blend_rel_path
-
-        if not blend_path.exists():
-            self.report({'ERROR'}, f"File not found: {blend_path}")
+        if not blend_path:
+            self.report({'ERROR'}, f"Snapshot file not found for version: {item.version_id}")
             return {'CANCELLED'}
 
         # Handle unsaved changes (Interactive only)
