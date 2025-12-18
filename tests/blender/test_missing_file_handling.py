@@ -22,7 +22,7 @@ class TestMissingFileHandling(SavePointsTestCase):
         Scenario:
         1. Create a valid version (v001).
         2. Sabotage: Manually delete the snapshot file from the disk.
-        3. Attempt Checkout: Verify that the operator fails gracefully (raises RuntimeError).
+        3. Attempt Checkout: Verify that the operator fails gracefully (returns CANCELLED and removes the broken version).
         4. Safety Check: Verify that the current file path has NOT changed (Blender didn't crash or load an empty state).
         """
         print("Starting Missing File Handling Scenario...")
