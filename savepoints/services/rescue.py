@@ -6,6 +6,8 @@ from pathlib import Path
 import bpy
 
 from .asset_path import unmap_snapshot_paths
+from .path_utils import get_safe_version_dir
+from .snapshot import get_snapshot_file_path
 from .storage import (
     RESCUE_TEMP_FILENAME, get_history_dir
 )
@@ -45,24 +47,20 @@ def cleanup_rescue_temp_files() -> int:
 
 
 def prepare_rescue_file(version_id: str) -> Path:
-    history_dir_str = get_history_dir()
-    if not history_dir_str:
-        raise FileNotFoundError("History directory not found")
-
-    history_dir = Path(history_dir_str)
-    version_dir = history_dir / version_id
-
-    snapshot_path = version_dir / "snapshot.blend_snapshot"
-    if not snapshot_path.exists():
-        snapshot_path = version_dir / "snapshot.blend"
-
-    if not snapshot_path.exists():
-        raise FileNotFoundError(f"Snapshot file not found: {version_id}")
-
+    version_dir = get_safe_version_dir(version_id, must_exist=True)
+    snapshot_path = get_snapshot_file_path(version_dir)
     temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
 
-    shutil.copy2(str(snapshot_path), str(temp_blend_path))
-    print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
+    try:
+        shutil.copy2(str(snapshot_path), str(temp_blend_path))
+        print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
+    except Exception as e:
+        if temp_blend_path.exists():
+            try:
+                os.remove(temp_blend_path)
+            except OSError:
+                pass
+        raise IOError(f"Failed to create temp file: {e}") from e
 
     return temp_blend_path
 

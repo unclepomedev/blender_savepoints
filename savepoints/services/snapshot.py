@@ -2,7 +2,7 @@ from pathlib import Path
 
 import bpy
 
-from .storage import get_history_dir, load_manifest, SNAPSHOT_FILENAME, THUMBNAIL_FILENAME
+from .storage import get_history_dir, load_manifest, SNAPSHOT_FILENAME, THUMBNAIL_FILENAME, LEGACY_SNAPSHOT_FILENAME
 from .thumbnail import capture_thumbnail
 from .versioning import add_version_to_manifest
 from ..ui_utils import sync_history_to_props
@@ -51,3 +51,15 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
 
     # Update UI
     sync_history_to_props(context)
+
+
+def get_snapshot_file_path(version_dir: Path) -> Path:
+    current_path = version_dir / SNAPSHOT_FILENAME
+    if current_path.exists():
+        return current_path
+
+    legacy_path = version_dir / LEGACY_SNAPSHOT_FILENAME
+    if legacy_path.exists():
+        return legacy_path
+
+    raise FileNotFoundError(f"Snapshot file not found in directory: {version_dir}")

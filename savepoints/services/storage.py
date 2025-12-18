@@ -38,16 +38,6 @@ def from_posix_path(path: str | None) -> str:
     return str(Path(path.replace("\\", "/")))
 
 
-def is_safe_filename(name: str) -> bool:
-    """Check if the filename is safe (no path traversal)."""
-    if not name:
-        return False
-    # Explicitly check for traversal attempts
-    if ".." in name or "/" in name or "\\" in name:
-        return False
-    return True
-
-
 def get_project_path() -> str:
     """Return the current Blender project filepath."""
     return bpy.data.filepath

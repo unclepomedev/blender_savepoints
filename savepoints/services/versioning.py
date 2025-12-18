@@ -5,8 +5,9 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from .path_utils import validate_filename
 from .storage import (
-    to_posix_path, is_safe_filename,
+    to_posix_path,
     get_history_dir,
     load_manifest, save_manifest
 )
@@ -99,7 +100,9 @@ def update_version_tag(version_id: str, new_tag: str) -> None:
 def delete_version_by_id(version_id: str) -> None:
     """Delete a version from disk and manifest."""
     # Validate version_id to prevent path traversal
-    if not is_safe_filename(version_id):
+    try:
+        validate_filename(version_id)
+    except Exception:
         print(f"Error: Invalid version ID '{version_id}'. Path traversal detected.")
         return
 

@@ -12,6 +12,7 @@ from bpy_extras.io_utils import ImportHelper
 
 from .services import rescue
 from .services.linking import link_history
+from .services.path_utils import validate_filename
 from .services.rescue import cleanup_rescue_temp_files
 from .services.snapshot import create_snapshot
 from .services.storage import (
@@ -28,7 +29,6 @@ from .services.versioning import (
     set_version_protection,
     update_version_note,
     update_version_tag,
-    is_safe_filename,
     prune_versions
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas, find_3d_view_override
@@ -244,7 +244,9 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
 
     def execute(self, context):
         # 1. Validation
-        if not is_safe_filename(self.version_id):
+        try:
+            validate_filename(self.version_id)
+        except Exception:
             self.report({'ERROR'}, "Invalid version ID")
             return {'CANCELLED'}
 
