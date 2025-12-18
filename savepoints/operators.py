@@ -13,7 +13,7 @@ from bpy_extras.io_utils import ImportHelper
 from .services.asset_path import unmap_snapshot_paths
 from .services.linking import link_history
 from .services.rescue import cleanup_rescue_temp_files
-from .services.snapshot import create_snapshot
+from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     SCHEMA_VERSION,
     get_parent_path_from_snapshot,
@@ -251,24 +251,12 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             self.report({'ERROR'}, "Invalid version ID")
             return {'CANCELLED'}
 
-        history_dir_str = get_history_dir()
-        if not history_dir_str:
-            self.report({'ERROR'}, "History directory not found")
+        snapshot_path = find_snapshot_path(self.version_id)
+        if not snapshot_path:
+            self.report({'ERROR'}, f"Snapshot file not found for version: {self.version_id}")
             return {'CANCELLED'}
 
-        history_dir = Path(history_dir_str)
-        version_dir = history_dir / self.version_id
-        snapshot_path = version_dir / "snapshot.blend_snapshot"
-
-        if not snapshot_path.exists():
-            # Try legacy extension
-            legacy_path = version_dir / "snapshot.blend"
-            if legacy_path.exists():
-                snapshot_path = legacy_path
-            else:
-                self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
-                return {'CANCELLED'}
-
+        version_dir = snapshot_path.parent
         temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
 
         try:

@@ -5,12 +5,11 @@ from pathlib import Path
 
 import bpy
 
-from savepoints.services.storage import get_history_dir
-
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
+from savepoints.services.storage import get_history_dir
 import savepoints
 
 
