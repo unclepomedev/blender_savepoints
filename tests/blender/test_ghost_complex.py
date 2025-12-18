@@ -5,114 +5,127 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
     sys.path.append(str(CURRENT_DIR))
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
+
 from savepoints.services.storage import get_history_dir
 from savepoints_test_case import SavePointsTestCase
 
 
 class TestGhostComplex(SavePointsTestCase):
-    # SavePointsTestCase setUp handles blender initialization and save as test_project.blend
 
-    def test_multiple_ghosts_and_missing_file(self):
-        print("\n--- Test: Multiple Ghosts & Missing File ---")
+    def test_ghost_complex_scenario(self):
+        """
+        Scenario:
+        1. Prepare history with 3 versions (v1, v2, v3).
+        2. Activate Multiple Ghosts (v1 and v2) simultaneously and verify independence.
+        3. Selectively remove one Ghost (v1) while keeping the other (v2).
+        4. Test error handling when attempting to load a Ghost for a deleted snapshot (v3).
+        """
+        print("Starting Complex Ghost Scenario...")
 
-        # --- PREPARATION ---
-        # Create v001 with Cube at (0,0,0)
-        bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
-        cube = bpy.context.active_object
-        cube.name = "Cube_V1"
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v1")
+        # Variables to store IDs across sub-tests
         v1_id = "v001"
-
-        # Create v002 with Cube at (5,0,0)
-        # Move cube
-        cube.location.x = 5.0
-        cube.name = "Cube_V2"  # Rename to distinguish easily
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v2")
         v2_id = "v002"
-
-        # Create v003 then delete it for missing file test
-        cube.location.x = 10.0
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v3")
         v3_id = "v003"
 
-        # --- SCENARIO 1: Multiple Ghosts ---
-        print("1. Activating Ghost v1...")
-        bpy.ops.savepoints.toggle_ghost(version_id=v1_id)
+        col_name_v1 = f"Ghost_Reference_{v1_id}"
+        col_name_v2 = f"Ghost_Reference_{v2_id}"
+        col_name_v3 = f"Ghost_Reference_{v3_id}"
 
-        print("2. Activating Ghost v2...")
-        bpy.ops.savepoints.toggle_ghost(version_id=v2_id)
+        # --- Step 1: Preparation ---
+        with self.subTest(step="1. Preparation"):
+            print("Creating versions...")
 
-        # Verify both collections exist
-        col_v1 = bpy.data.collections.get(f"Ghost_Reference_{v1_id}")
-        col_v2 = bpy.data.collections.get(f"Ghost_Reference_{v2_id}")
+            # Create v1 (Cube at 0,0,0)
+            bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
+            cube = bpy.context.active_object
+            cube.name = "Cube_V1"
+            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v1")
 
-        self.assertIsNotNone(col_v1, "Ghost v1 collection should exist")
-        self.assertIsNotNone(col_v2, "Ghost v2 collection should exist")
+            # Create v2 (Cube moved to 5,0,0)
+            cube.location.x = 5.0
+            cube.name = "Cube_V2"
+            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v2")
 
-        # Verify libraries loaded
-        # We expect at least 2 libraries (one for each snapshot)
-        # Filter libraries that point to our snapshots
-        snapshot_libs = [
-            lib for lib in bpy.data.libraries
-            if "snapshot.blend_snapshot" in lib.filepath
-        ]
-        self.assertGreaterEqual(len(snapshot_libs), 2, "Should have at least 2 snapshot libraries loaded")
+            # Create v3 (Cube moved to 10,0,0)
+            cube.location.x = 10.0
+            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v3")
 
-        print(f"Loaded snapshot libraries: {[l.filepath for l in snapshot_libs]}")
+            # Verify history created
+            history_dir = get_history_dir()
+            self.assertIsNotNone(history_dir, "History directory missing")
 
-        # --- SCENARIO 2: Selective Removal ---
-        print("3. Removing Ghost v1...")
-        bpy.ops.savepoints.toggle_ghost(version_id=v1_id)
+        # --- Step 2: Multiple Ghosts Activation ---
+        with self.subTest(step="2. Multiple Ghosts"):
+            print("Activating Ghosts v1 and v2...")
 
-        # Verify v1 gone
-        self.assertIsNone(bpy.data.collections.get(f"Ghost_Reference_{v1_id}"), "Ghost v1 should be gone")
+            bpy.ops.savepoints.toggle_ghost(version_id=v1_id)
+            bpy.ops.savepoints.toggle_ghost(version_id=v2_id)
 
-        # Verify v2 STILL exists
-        self.assertIsNotNone(bpy.data.collections.get(f"Ghost_Reference_{v2_id}"), "Ghost v2 should still exist")
+            # Verify Collections
+            self.assertIn(col_name_v1, bpy.data.collections, "Ghost v1 collection missing")
+            self.assertIn(col_name_v2, bpy.data.collections, "Ghost v2 collection missing")
 
-        # Verify v1 library is cleaned up, v2 library remains
-        libs_v1 = [l for l in bpy.data.libraries if f"/{v1_id}/" in l.filepath.replace("\\", "/")]
-        libs_v2 = [l for l in bpy.data.libraries if f"/{v2_id}/" in l.filepath.replace("\\", "/")]
+            # Verify Libraries
+            # We filter libraries to find those pointing to our snapshots
+            snapshot_libs = [
+                lib for lib in bpy.data.libraries
+                if "snapshot.blend_snapshot" in lib.filepath
+            ]
+            self.assertGreaterEqual(len(snapshot_libs), 2, "Should have at least 2 snapshot libraries loaded")
 
-        self.assertEqual(len(libs_v1), 0, "Ghost v1 library should be cleaned up")
-        self.assertGreater(len(libs_v2), 0, "Ghost v2 library should remain")
+        # --- Step 3: Selective Removal ---
+        with self.subTest(step="3. Selective Removal"):
+            print("Removing Ghost v1...")
 
-        print("Selective removal passed.")
+            # Toggle off v1
+            bpy.ops.savepoints.toggle_ghost(version_id=v1_id)
 
-        # Cleanup v2
-        bpy.ops.savepoints.toggle_ghost(version_id=v2_id)
-        self.assertIsNone(bpy.data.collections.get(f"Ghost_Reference_{v2_id}"))
+            # Verify v1 is gone
+            self.assertNotIn(col_name_v1, bpy.data.collections, "Ghost v1 collection should be gone")
 
-        # --- SCENARIO 3: Missing Snapshot File ---
-        print("4. Testing Missing Snapshot File...")
+            # Verify v2 is STILL there
+            self.assertIn(col_name_v2, bpy.data.collections, "Ghost v2 collection should still exist")
 
-        # Manually delete the snapshot file for v3
-        history_dir = get_history_dir()
-        self.assertIsNotNone(history_dir, "History directory should exist after commits")
-        v3_path = Path(history_dir) / v3_id / "snapshot.blend_snapshot"
-        if v3_path.exists():
-            os.remove(v3_path)
+            # Verify Library Cleanup
+            libs_v1 = [l for l in bpy.data.libraries if f"/{v1_id}/" in l.filepath.replace("\\", "/")]
+            libs_v2 = [l for l in bpy.data.libraries if f"/{v2_id}/" in l.filepath.replace("\\", "/")]
 
-        # Try to toggle ghost
-        try:
-            bpy.ops.savepoints.toggle_ghost(version_id=v3_id)
-            self.fail("Operator should have failed (CANCELLED) due to missing file")
-        except RuntimeError as e:
-            print(f"Caught expected error: {e}")
-            # In headless, CANCELLED raises RuntimeError.
-            pass
+            self.assertEqual(len(libs_v1), 0, "Ghost v1 library should be cleaned up")
+            self.assertGreater(len(libs_v2), 0, "Ghost v2 library should remain")
 
-        # Ensure no garbage collection created
-        self.assertIsNone(bpy.data.collections.get(f"Ghost_Reference_{v3_id}"),
-                          "No collection should be created for missing file")
+            # Cleanup v2 for next step
+            bpy.ops.savepoints.toggle_ghost(version_id=v2_id)
+            self.assertNotIn(col_name_v2, bpy.data.collections)
 
-        print("Complex Ghost Test Passed.")
+        # --- Step 4: Missing File Handling ---
+        with self.subTest(step="4. Missing Snapshot File"):
+            print("Testing Missing Snapshot File...")
+
+            # Manually delete v3 file
+            history_dir = get_history_dir()
+            v3_path = Path(history_dir) / v3_id / "snapshot.blend_snapshot"
+
+            if v3_path.exists():
+                os.remove(v3_path)
+            else:
+                self.fail("Test setup failed: v3 snapshot file missing before deletion")
+
+            # Attempt to toggle ghost for missing file
+            # In headless mode, operator failure raises RuntimeError
+            with self.assertRaises(RuntimeError):
+                bpy.ops.savepoints.toggle_ghost(version_id=v3_id)
+
+            # Ensure no garbage collection was created
+            self.assertNotIn(col_name_v3, bpy.data.collections, "No collection should be created for missing file")
+
+        print("Complex Ghost Scenario: Completed")
 
 
 if __name__ == '__main__':

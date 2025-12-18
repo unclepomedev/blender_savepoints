@@ -4,107 +4,110 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
     sys.path.append(str(CURRENT_DIR))
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
+
 from savepoints.services.storage import get_parent_path_from_snapshot, load_manifest, get_history_dir
 from savepoints_test_case import SavePointsTestCase
 
 
 class TestForkVersion(SavePointsTestCase):
-    def test_fork_version(self):
-        print("Starting Fork Feature Test...")
-        # SavePointsTestCase setup provides self.test_dir and self.blend_path (test_project.blend)
 
-        # Expected forked path (assuming auto-naming appends _v001 or similar if logic dictates)
-        # Actually, let's see what happens. The test originally expected original_project_v001.blend
-        # If the operator logic appends version suffix, for test_project.blend it should be test_project_v001.blend
-        # BUT, if fork_version opens a file dialog in UI, EXEC_DEFAULT might fail or use default.
-        # If the previous test worked without passing filepath, it means the operator handles it.
-        # Let's assume the operator figures out a name or we might need to pass filepath if it supports it.
-        # But the original test didn't pass filepath. So let's stick to no args.
+    def test_fork_version_scenario(self):
+        """
+        Scenario:
+        1. Create a version with specific content (Cube).
+        2. Checkout that version (enter Snapshot Mode).
+        3. Execute 'Fork Version' to branch off into a new separate project file.
+        4. Verify the new file exists, contains the content, and has a fresh (empty) history.
+        """
+        print("Starting Fork Version Scenario...")
 
-        # 2. Create a Version (Commit)
-        print("Creating v001...")
-        # Add an object to verify content later
-        bpy.ops.mesh.primitive_cube_add()
-        bpy.context.object.name = "OriginalCube"
+        # --- Step 1: Create Base Version ---
+        with self.subTest(step="1. Create Base Version"):
+            print("Creating v001 with content...")
 
-        res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Base Version")
-        if "FINISHED" not in res:
-            self.fail(f"Commit failed: {res}")
+            # Add content to verify persistence later
+            bpy.ops.mesh.primitive_cube_add()
+            bpy.context.object.name = "OriginalCube"
 
-        # 3. Checkout (Enter Snapshot Mode)
-        print("Checking out v001...")
-        bpy.context.scene.savepoints_settings.active_version_index = 0
-        res = bpy.ops.savepoints.checkout()
-        if "FINISHED" not in res:
-            self.fail(f"Checkout failed: {res}")
+            # Commit
+            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Base Version")
+            self.assertIn('FINISHED', res, "Commit failed")
 
-        # Verify we are in snapshot mode
-        current_path = Path(bpy.data.filepath)
-        self.assertEqual(current_path.name, "snapshot.blend_snapshot", f"Not in snapshot mode: {current_path}")
+        # --- Step 2: Checkout (Enter Snapshot Mode) ---
+        with self.subTest(step="2. Checkout Snapshot"):
+            print("Checking out v001...")
 
-        # 4. Execute Fork
-        print("Forking...")
+            # Set active index to 0 (v001)
+            bpy.context.scene.savepoints_settings.active_version_index = 0
 
-        # No arguments needed, it should auto-detect everything
-        res = bpy.ops.savepoints.fork_version('EXEC_DEFAULT')
+            res = bpy.ops.savepoints.checkout()
+            self.assertIn('FINISHED', res, "Checkout failed")
 
-        if "FINISHED" not in res:
-            self.fail(f"Fork failed: {res}")
+            # Verify we are physically in the snapshot file
+            current_path = Path(bpy.data.filepath)
+            self.assertEqual(current_path.name, "snapshot.blend_snapshot", f"Not in snapshot mode: {current_path}")
 
-        # 5. Verification
-        print("Verifying Fork results...")
+        # --- Step 3: Execute Fork ---
+        with self.subTest(step="3. Execute Fork"):
+            print("Executing Fork...")
 
-        # Determine expected fork path.
-        # The operator likely appends _v001 to the original project name.
-        forked_blend_path = self.test_dir / "test_project_v001.blend"
+            # Fork operator should handle file naming automatically (e.g., test_project_v001.blend)
+            res = bpy.ops.savepoints.fork_version('EXEC_DEFAULT')
+            self.assertIn('FINISHED', res, "Fork operator failed")
 
-        # Check if it switched to the expected file
-        current_loaded_path = Path(bpy.data.filepath)
+        # --- Step 4: Verification (File & Content) ---
+        with self.subTest(step="4. Verify Forked File"):
+            print("Verifying Fork results...")
 
-        # If the name is different, maybe logic is different.
-        print(f"Current loaded path: {current_loaded_path}")
+            current_loaded_path = Path(bpy.data.filepath)
+            print(f"Current loaded path: {current_loaded_path}")
 
-        # A. File Existence
-        if not current_loaded_path.exists():
-            self.fail(f"Forked file {current_loaded_path} does not exist on disk")
+            # A. File Existence & Context Switch
+            self.assertTrue(current_loaded_path.exists(), "Forked file does not exist on disk")
+            self.assertNotEqual(current_loaded_path.name, "snapshot.blend_snapshot",
+                                "Blender is still opening the snapshot file!")
 
-        # B. Context Switch
-        # It should NOT be the snapshot file
-        self.assertNotEqual(current_loaded_path.name, "snapshot.blend_snapshot", "Still in snapshot file!")
+            # The operator typically appends suffix like '_v001' to the original name
+            self.assertIn("test_project", current_loaded_path.name, "Filename seems unrelated to original project")
 
-        # C. Content Verification
-        if "OriginalCube" not in bpy.data.objects:
-            self.fail("Forked file missing objects from snapshot")
+            # B. Content Verification (Did the Cube survive?)
+            self.assertIn("OriginalCube", bpy.data.objects, "Forked file missing objects from snapshot")
 
-        # D. Fresh History Verification
-        # The new file will have a history folder created (by the fork operator).
-        # But it should be EMPTY (no versions from the original project)
-        history_dir = get_history_dir()
-        if history_dir and Path(history_dir).exists():
-            # If it exists, check manifest
-            manifest = load_manifest()
-            versions = manifest.get("versions", [])
-            if len(versions) > 0:
-                self.fail(f"Forked project history should be empty, but has {len(versions)} versions: {versions}")
+            # C. Snapshot Mode Check (Should be FALSE)
+            parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
+            self.assertIsNone(parent_path, "Forked project should be a normal file, but is detected as Snapshot Mode")
 
-            # Also verify parent_file in manifest matches current file
-            manifest_parent = manifest.get("parent_file")
-            # Normalize paths for comparison
-            if Path(manifest_parent).resolve() != current_loaded_path.resolve():
-                self.fail(f"New manifest parent_file mismatch. Expected {current_loaded_path}, got {manifest_parent}")
+        # --- Step 5: Verification (History Reset) ---
+        with self.subTest(step="5. Verify Fresh History"):
+            print("Verifying History is Clean...")
 
-        # E. Verify we are NOT in snapshot mode anymore
-        parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
-        if parent_path:
-            self.fail("Forked project should be a normal file, not in snapshot mode")
+            history_dir = get_history_dir()
 
-        print("Fork Test Passed!")
+            # If history dir exists, verify it's valid and clean for the new file
+            if history_dir and Path(history_dir).exists():
+                manifest = load_manifest()
+
+                # A. History should be empty (New project starts fresh)
+                versions = manifest.get("versions", [])
+                self.assertEqual(len(versions), 0,
+                                 f"Forked project history should be empty, but has {len(versions)} versions")
+
+                # B. Parent pointer should point to ITSELF (Current file)
+                manifest_parent = manifest.get("parent_file")
+                self.assertEqual(
+                    Path(manifest_parent).resolve(),
+                    current_loaded_path.resolve(),
+                    "New manifest 'parent_file' mismatch"
+                )
+
+        print("Fork Version Scenario: Completed")
 
 
 if __name__ == "__main__":

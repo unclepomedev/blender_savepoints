@@ -1,7 +1,8 @@
 import sys
 import unittest
-import bpy
 from pathlib import Path
+
+import bpy
 
 # Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
@@ -16,63 +17,83 @@ from savepoints.services.ghost import load_ghost, unload_ghost, get_ghost_collec
 
 
 class TestGhost(SavePointsTestCase):
-    def test_ghost_lifecycle(self):
-        print("Starting Ghost Lifecycle Test...")
 
-        # 1. Setup: Create a simple object and a version
-        bpy.ops.mesh.primitive_cube_add()
-        cube = bpy.context.object
-        cube.name = "GhostCube"
+    def test_ghost_lifecycle_scenario(self):
+        """
+        Scenario:
+        1. Create a version containing a specific object ("GhostCube").
+        2. Delete the object from the current scene (to make the ghost useful).
+        3. Load the Ghost (Link from snapshot) and verify its properties (Wireframe, Unselectable).
+        4. Unload the Ghost and verify cleanup (Collections and Libraries removed).
+        """
+        print("Starting Ghost Lifecycle Scenario...")
 
-        # Move cube so we can distinguish it
-        cube.location = (2, 0, 0)
+        # Variable to hold the version ID we create
+        version_id = "v001"
 
-        # Save changes to main file first (required before commit usually)
-        bpy.ops.wm.save_mainfile()
+        # --- Step 1: Create Base Version ---
+        with self.subTest(step="1. Create Base Version"):
+            print("Creating version with GhostCube...")
 
-        # Create version v001
-        res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Version with Cube")
-        self.assertIn('FINISHED', res)
+            # Create a simple object
+            bpy.ops.mesh.primitive_cube_add()
+            cube = bpy.context.object
+            cube.name = "GhostCube"
+            # Move cube so we can distinguish it from origin
+            cube.location = (2, 0, 0)
 
-        version_id = "v001"  # Assuming first version is v001
+            # Save changes to main file first
+            bpy.ops.wm.save_mainfile()
 
-        # 2. Modify current scene (delete cube) so ghost is meaningful
-        bpy.data.objects.remove(cube)
+            # Create version
+            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Version with Cube")
+            self.assertIn('FINISHED', res, "Commit failed")
 
-        # 3. Load Ghost
-        print(f"Loading ghost for {version_id}...")
-        count = load_ghost(version_id, bpy.context)
-        self.assertGreater(count, 0, "Ghost should load at least one object")
+        # --- Step 2: Modify Current Scene ---
+        with self.subTest(step="2. Modify Current Scene"):
+            # Delete the cube so the ghost is meaningful (showing past state)
+            cube = bpy.data.objects.get("GhostCube")
+            if cube:
+                bpy.data.objects.remove(cube)
 
-        col_name = get_ghost_collection_name(version_id)
-        self.assertIn(col_name, bpy.data.collections, "Ghost collection should exist")
+            self.assertNotIn("GhostCube", bpy.data.objects, "Cube should be deleted from current scene")
 
-        ghost_col = bpy.data.collections[col_name]
-        self.assertTrue(len(ghost_col.objects) > 0, "Ghost collection should have objects")
+        # --- Step 3: Load Ghost & Verify Properties ---
+        with self.subTest(step="3. Load Ghost"):
+            print(f"Loading ghost for {version_id}...")
 
-        # Verify object properties
-        ghost_obj = ghost_col.objects[0]
-        self.assertEqual(ghost_obj.display_type, 'WIRE')
-        self.assertTrue(ghost_obj.hide_select)
+            count = load_ghost(version_id, bpy.context)
+            self.assertGreater(count, 0, "Ghost should load at least one object")
 
-        # 4. Unload Ghost
-        print(f"Unloading ghost for {version_id}...")
-        unload_ghost(version_id, bpy.context)
+            col_name = get_ghost_collection_name(version_id)
+            self.assertIn(col_name, bpy.data.collections, "Ghost collection should exist")
 
-        # 5. Verify Cleanup
-        self.assertNotIn(col_name, bpy.data.collections, "Ghost collection should be gone")
+            ghost_col = bpy.data.collections[col_name]
+            self.assertTrue(len(ghost_col.objects) > 0, "Ghost collection should contain objects")
 
-        # Verify no linked libraries left (simple check)
-        # Note: Depending on how Blender handles library cleanup, it might take a moment or need explicit gc, 
-        # but our unload_ghost forces removal.
-        for lib in bpy.data.libraries:
-            # Check if any library points to our snapshot
-            if version_id in lib.filepath:
-                self.fail(f"Library {lib.filepath} was not cleaned up")
+            # Verify visualization properties (Ghosts should be non-intrusive)
+            ghost_obj = ghost_col.objects[0]
+            self.assertEqual(ghost_obj.display_type, 'WIRE', "Ghost object should be displayed as WIRE")
+            self.assertTrue(ghost_obj.hide_select, "Ghost object should be non-selectable")
 
-        print("Ghost Lifecycle Test Passed!")
+        # --- Step 4: Unload Ghost ---
+        with self.subTest(step="4. Unload Ghost"):
+            print(f"Unloading ghost for {version_id}...")
+            unload_ghost(version_id, bpy.context)
+
+        # --- Step 5: Verify Cleanup ---
+        with self.subTest(step="5. Verify Cleanup"):
+            col_name = get_ghost_collection_name(version_id)
+            self.assertNotIn(col_name, bpy.data.collections, "Ghost collection should be gone")
+
+            # Verify no linked libraries left
+            # We check if any library path contains our version ID, implying a leak
+            for lib in bpy.data.libraries:
+                if lib.filepath and version_id in lib.filepath:
+                    self.fail(f"Library {lib.filepath} was not cleaned up after unloading ghost")
+
+        print("Ghost Lifecycle Scenario: Completed")
 
 
 if __name__ == "__main__":
-    res = unittest.main(argv=[''], exit=False)
-    sys.exit(not res.result.wasSuccessful())
+    unittest.main(argv=[''], exit=False)
