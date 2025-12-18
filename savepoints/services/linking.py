@@ -10,6 +10,33 @@ from .storage import (
 )
 
 
+def resolve_history_path_from_selection(filepath: str | Path, directory: str | Path | None = None) -> Path:
+    """
+    Resolve the history directory path from the user's file selection.
+
+    Args:
+        filepath: The filepath selected by the user (can be a file or directory).
+        directory: The directory path (optional context).
+
+    Returns:
+        Path: The resolved directory path that is a candidate for a history folder.
+    """
+    selected_path = Path(filepath)
+
+    # Robustness: If user selected the manifest.json file directly, handle it
+    if selected_path.name == MANIFEST_NAME:
+        return selected_path.parent
+
+    # If selected_path is not a dir (e.g. user selected some other file or just opened dir),
+    if not selected_path.is_dir():
+        if directory:
+            dir_path = Path(directory)
+            if (dir_path / MANIFEST_NAME).exists():
+                return dir_path
+
+    return selected_path
+
+
 def link_history(source_dir: str | Path, blend_filepath: str) -> str:
     """
     Link (move) an existing history folder to be the history for the current blend file.

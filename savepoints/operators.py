@@ -9,7 +9,7 @@ from bpy_extras.io_utils import ImportHelper
 from .handler_manager import RescuePostLoadHandler
 from .services.backup import create_backup, HistoryDirectoryUnavailableError
 from .services.ghost import get_ghost_collection_name, load_ghost, unload_ghost
-from .services.linking import link_history
+from .services.linking import link_history, resolve_history_path_from_selection
 from .services.rescue import (
     cleanup_rescue_temp_files,
     create_rescue_temp_file,
@@ -20,7 +20,6 @@ from .services.storage import (
     get_parent_path_from_snapshot,
     load_manifest,
     get_history_dir,
-    MANIFEST_NAME,
     get_fork_target_path,
     initialize_history_for_path
 )
@@ -47,18 +46,7 @@ class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
     filter_folder: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
 
     def execute(self, context):
-        selected_path = Path(self.filepath)
-
-        # Robustness: If user selected the manifest.json file directly, handle it
-        if selected_path.name == MANIFEST_NAME:
-            selected_path = selected_path.parent
-
-        # If selected_path is not a dir (e.g. user selected some other file or just opened dir),
-        if not selected_path.is_dir():
-            if self.directory:
-                dir_path = Path(self.directory)
-                if (dir_path / MANIFEST_NAME).exists():
-                    selected_path = dir_path
+        selected_path = resolve_history_path_from_selection(self.filepath, self.directory)
 
         try:
             target_path_str = link_history(selected_path, bpy.data.filepath)
