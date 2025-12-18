@@ -1,9 +1,9 @@
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
-# Add project root to path so we can import the addon modules
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -19,21 +19,14 @@ class TestDualShortcuts(SavePointsTestCase):
 
     def setUp(self):
         super().setUp()
-        # Target the specific operator class and its invoke method directly
         self.OpClass = savepoints.operators.SAVEPOINTS_OT_commit
         self.invoke_func = self.OpClass.invoke
 
     def _create_mock_context(self, show_dialog=True):
         """Helper to simulate Blender's Context behavior using MagicMock."""
         context = MagicMock()
-
-        # Mock access to savepoints_settings
         context.scene.savepoints_settings.show_save_dialog = show_dialog
-
-        # Set the return value for the window manager dialog method
-        # logic: if a dialog opens, it returns {'RUNNING_MODAL'}
         context.window_manager.invoke_props_dialog.return_value = {'RUNNING_MODAL'}
-
         return context
 
     def _create_mock_op(self, force_quick=False, note=""):
@@ -41,66 +34,81 @@ class TestDualShortcuts(SavePointsTestCase):
         op = MagicMock()
         op.force_quick = force_quick
         op.note = note
-
-        # If execute is called, it should return {'FINISHED'}
         op.execute.return_value = {'FINISHED'}
-
         return op
 
     def test_dual_shortcuts_logic(self):
         """
         Unit Test:
         Validates the branching logic inside the Operator's invoke method.
-        Uses MagicMock to simulate Blender's context and UI manager interactions
-        without needing a full UI environment.
+        Mocks 'generate_default_note' to ensure predictable behavior regardless of
+        actual Blender context.
         """
         print("Starting Dual Shortcuts Logic Test...")
 
-        # --- Case 1: Dialog should behave normally (Show Dialog) ---
-        with self.subTest(case="1. Dialog Enabled (force_quick=False)"):
-            context = self._create_mock_context(show_dialog=True)
-            op = self._create_mock_op(force_quick=False, note="Original")
+        # Mock 'generate_default_note' within savepoints.operators module
+        # We force it to return "Fixed Auto Note" so we can verify the assignment logic.
+        with patch('savepoints.operators.generate_default_note') as mock_gen_note:
+            mock_gen_note.return_value = "Fixed Auto Note"
 
-            # Execute invoke
-            res = self.invoke_func(op, context, None)
+            # --- Case 1: Dialog Enabled (force_quick=False) ---
+            with self.subTest(case="1. Dialog Enabled"):
+                context = self._create_mock_context(show_dialog=True)
+                # Pass an empty note so the logic triggers default generation
+                op = self._create_mock_op(force_quick=False, note="")
 
-            # Verification:
-            # It should attempt to open a dialog (RUNNING_MODAL)
-            # execute() should NOT be called yet.
-            self.assertEqual(res, {'RUNNING_MODAL'})
-            context.window_manager.invoke_props_dialog.assert_called_once_with(op)
-            op.execute.assert_not_called()
+                res = self.invoke_func(op, context, None)
 
-        # --- Case 2: Force Quick (Skip Dialog) ---
-        with self.subTest(case="2. Force Quick (force_quick=True)"):
-            context = self._create_mock_context(show_dialog=True)
-            op = self._create_mock_op(force_quick=True, note="Should Be Cleared")
+                # Verification:
+                # 1. Logic should assign default note.
+                # 2. Logic should open dialog.
+                self.assertEqual(res, {'RUNNING_MODAL'})
+                self.assertEqual(op.note, "Fixed Auto Note")
+                context.window_manager.invoke_props_dialog.assert_called_once_with(op)
+                op.execute.assert_not_called()
 
-            # Execute invoke
-            res = self.invoke_func(op, context, None)
+            # --- Case 2: Force Quick (force_quick=True) ---
+            with self.subTest(case="2. Force Quick"):
+                context = self._create_mock_context(show_dialog=True)
+                op = self._create_mock_op(force_quick=True, note="")
 
-            # Verification:
-            # It should bypass the dialog, clear the note, and call execute immediately.
-            self.assertEqual(res, {'FINISHED'})
-            self.assertEqual(op.note, "")  # Note should be cleared for quick save
-            op.execute.assert_called_once_with(context)
-            context.window_manager.invoke_props_dialog.assert_not_called()
+                res = self.invoke_func(op, context, None)
 
-        # --- Case 3: Dialog Disabled in Settings (Skip Dialog) ---
-        with self.subTest(case="3. Dialog Disabled Setting"):
-            context = self._create_mock_context(show_dialog=False)
-            op = self._create_mock_op(force_quick=False, note="Should Be Cleared")
+                # Verification:
+                # 1. Logic should assign default note (even for quick save).
+                # 2. Logic should SKIP dialog and execute immediately.
+                self.assertEqual(res, {'FINISHED'})
+                self.assertEqual(op.note, "Fixed Auto Note")
+                op.execute.assert_called_once_with(context)
+                context.window_manager.invoke_props_dialog.assert_not_called()
 
-            # Execute invoke
-            res = self.invoke_func(op, context, None)
+            # --- Case 3: Dialog Disabled Setting ---
+            with self.subTest(case="3. Dialog Disabled Setting"):
+                context = self._create_mock_context(show_dialog=False)
+                op = self._create_mock_op(force_quick=False, note="")
 
-            # Verification:
-            # Even if force_quick is False, if the global setting disables the dialog,
-            # it should behave like a quick save.
-            self.assertEqual(res, {'FINISHED'})
-            self.assertEqual(op.note, "")
-            op.execute.assert_called_once_with(context)
-            context.window_manager.invoke_props_dialog.assert_not_called()
+                res = self.invoke_func(op, context, None)
+
+                # Verification:
+                # 1. Logic should assign default note.
+                # 2. Logic should SKIP dialog because setting is False.
+                self.assertEqual(res, {'FINISHED'})
+                self.assertEqual(op.note, "Fixed Auto Note")
+                op.execute.assert_called_once_with(context)
+                context.window_manager.invoke_props_dialog.assert_not_called()
+
+            # --- Case 4: Manual Note Provided (Should NOT Overwrite) ---
+            with self.subTest(case="4. Manual Note Exists"):
+                context = self._create_mock_context(show_dialog=True)
+                # If operator already has a note (e.g. passed from redo panel or script)
+                op = self._create_mock_op(force_quick=False, note="User Input")
+
+                res = self.invoke_func(op, context, None)
+
+                # Verification:
+                # The existing note "User Input" should NOT be replaced by "Fixed Auto Note"
+                self.assertEqual(res, {'RUNNING_MODAL'})
+                self.assertEqual(op.note, "User Input")
 
         print("Dual Shortcuts Logic Test: Completed")
 
