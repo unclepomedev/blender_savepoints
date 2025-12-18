@@ -53,7 +53,8 @@ class TestGhostReference(SavePointsTestCase):
         # --- Step 2: Modify Scene ---
         with self.subTest(step="2. Modify Scene"):
             # Move the live cube so it visually differs from where the ghost will appear
-            cube = bpy.context.active_object
+            cube = bpy.data.objects.get("OriginalCube")
+            self.assertIsNotNone(cube, "OriginalCube should exist")
             cube.location.x += 5.0
 
         # --- Step 3: Toggle Ghost ON ---
