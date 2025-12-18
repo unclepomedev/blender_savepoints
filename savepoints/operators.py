@@ -10,7 +10,7 @@ from pathlib import Path
 import bpy
 from bpy_extras.io_utils import ImportHelper
 
-from .services.asset_path import unmap_snapshot_paths
+from .services import rescue
 from .services.linking import link_history
 from .services.rescue import cleanup_rescue_temp_files
 from .services.snapshot import create_snapshot
@@ -20,7 +20,6 @@ from .services.storage import (
     load_manifest,
     get_history_dir,
     get_history_dir_for_path,
-    RESCUE_TEMP_FILENAME,
     MANIFEST_NAME
 )
 from .services.versioning import (
@@ -241,108 +240,46 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
     version_id: bpy.props.StringProperty()
 
     def invoke(self, context, event):
-        return self._run(context)
+        return self.execute(context)
 
     def execute(self, context):
-        return self._run(context)
-
-    def _run(self, context):
+        # 1. Validation
         if not is_safe_filename(self.version_id):
             self.report({'ERROR'}, "Invalid version ID")
             return {'CANCELLED'}
 
-        history_dir_str = get_history_dir()
-        if not history_dir_str:
-            self.report({'ERROR'}, "History directory not found")
+        # 2. Prepare Context
+        override = find_3d_view_override(context)
+        if not override:
+            self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
             return {'CANCELLED'}
 
-        history_dir = Path(history_dir_str)
-        version_dir = history_dir / self.version_id
-        snapshot_path = version_dir / "snapshot.blend_snapshot"
-
-        if not snapshot_path.exists():
-            # Try legacy extension
-            legacy_path = version_dir / "snapshot.blend"
-            if legacy_path.exists():
-                snapshot_path = legacy_path
-            else:
-                self.report({'ERROR'}, f"Snapshot file not found: {snapshot_path}")
-                return {'CANCELLED'}
-
-        temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
-
+        # 3. Prepare Temp File
         try:
-            shutil.copy2(str(snapshot_path), str(temp_blend_path))
-            print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
+            temp_blend_path = rescue.prepare_rescue_file(self.version_id)
+        except Exception as e:
+            self.report({'ERROR'}, str(e))
+            return {'CANCELLED'}
+
+        # 4. Register Handler
+        initial_count = len(bpy.data.objects)
+        handler = rescue.RescuePostHandler(temp_blend_path, initial_count)
+        bpy.app.handlers.depsgraph_update_post.append(handler)
+
+        # 5. Execute Append Operator
+        try:
+            if bpy.ops.object.mode_set.poll():
+                bpy.ops.object.mode_set(mode='OBJECT')
+
+            virtual_dir = temp_blend_path / "Object"
+            append_dir = str(virtual_dir) + os.sep
+
+            with context.temp_override(**override):
+                bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
 
         except Exception as e:
-            self.report({'ERROR'}, f"Failed to create temp file: {e}")
-            return {'CANCELLED'}
-
-        virtual_dir = temp_blend_path / "Object"
-        append_dir = str(virtual_dir) + os.sep
-
-        # Capture initial state to detect changes
-        initial_obj_count = len(bpy.data.objects)
-
-        # Register handler to fix paths after append (when depsgraph updates)
-        def fix_paths_handler(scene):
-            # Check if append actually happened (objects added or paths fixed)
-            current_obj_count = len(bpy.data.objects)
-            paths_fixed = False
-            try:
-                paths_fixed = unmap_snapshot_paths()
-            except Exception as e:
-                print(f"[SavePoints] Error fixing paths after rescue: {e}")
-
-            # If objects were added OR paths were modified, we assume the user is done with the file
-            has_changes = (current_obj_count != initial_obj_count) or paths_fixed
-
-            if has_changes:
-                if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
-                    bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
-
-                # Cleanup temp file
-                if temp_blend_path.exists():
-                    try:
-                        os.remove(temp_blend_path)
-                        print(f"[SavePoints] Removed temp file for rescue: {temp_blend_path}")
-                    except Exception as e:
-                        print(f"[SavePoints] Error removing temp file: {e}")
-
-        bpy.app.handlers.depsgraph_update_post.append(fix_paths_handler)
-
-        if bpy.ops.object.mode_set.poll():
-            bpy.ops.object.mode_set(mode='OBJECT')
-
-        found_context = find_3d_view_override(context)
-
-        if found_context:
-            try:
-                with context.temp_override(**found_context):
-                    bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
-            except Exception as e:
-                print(f"[SavePoints] Append Error: {e}")
-                # Cleanup on error (handler won't fire effectively if append fails)
-                if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
-                    bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
-                if temp_blend_path.exists():
-                    try:
-                        os.remove(temp_blend_path)
-                    except Exception:
-                        pass
-                self.report({'ERROR'}, f"Rescue failed due to context error: {e}")
-                return {'CANCELLED'}
-        else:
-            # Cleanup if no context found
-            if fix_paths_handler in bpy.app.handlers.depsgraph_update_post:
-                bpy.app.handlers.depsgraph_update_post.remove(fix_paths_handler)
-            if temp_blend_path.exists():
-                try:
-                    os.remove(temp_blend_path)
-                except Exception:
-                    pass
-            self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
+            handler._cleanup()
+            self.report({'ERROR'}, f"Rescue failed: {e}")
             return {'CANCELLED'}
 
         return {'FINISHED'}

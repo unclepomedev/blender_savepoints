@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-
+import os
+import shutil
 from pathlib import Path
 
+import bpy
+
+from .asset_path import unmap_snapshot_paths
 from .storage import (
     RESCUE_TEMP_FILENAME, get_history_dir
 )
@@ -38,3 +42,62 @@ def cleanup_rescue_temp_files() -> int:
         print(f"[SavePoints] Cleaned up {count} rescue temporary file(s).")
 
     return count
+
+
+def prepare_rescue_file(version_id: str) -> Path:
+    history_dir_str = get_history_dir()
+    if not history_dir_str:
+        raise FileNotFoundError("History directory not found")
+
+    history_dir = Path(history_dir_str)
+    version_dir = history_dir / version_id
+
+    snapshot_path = version_dir / "snapshot.blend_snapshot"
+    if not snapshot_path.exists():
+        snapshot_path = version_dir / "snapshot.blend"
+
+    if not snapshot_path.exists():
+        raise FileNotFoundError(f"Snapshot file not found: {version_id}")
+
+    temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
+
+    shutil.copy2(str(snapshot_path), str(temp_blend_path))
+    print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
+
+    return temp_blend_path
+
+
+class RescuePostHandler:
+    def __init__(self, temp_path: Path, initial_obj_count: int):
+        self.temp_path = temp_path
+        self.initial_obj_count = initial_obj_count
+
+    def __call__(self, scene):
+        try:
+            current_obj_count = len(bpy.data.objects)
+            paths_fixed = False
+
+            try:
+                paths_fixed = unmap_snapshot_paths()
+            except Exception as e:
+                print(f"[SavePoints] Error fixing paths after rescue: {e}")
+
+            has_changes = (current_obj_count != self.initial_obj_count) or paths_fixed
+
+            if has_changes:
+                self._cleanup()
+
+        except Exception as e:
+            print(f"[SavePoints] Handler Error: {e}")
+            self._cleanup()
+
+    def _cleanup(self):
+        if self in bpy.app.handlers.depsgraph_update_post:
+            bpy.app.handlers.depsgraph_update_post.remove(self)
+
+        if self.temp_path.exists():
+            try:
+                os.remove(self.temp_path)
+                print(f"[SavePoints] Removed temp file: {self.temp_path}")
+            except Exception as e:
+                print(f"[SavePoints] Error removing temp file: {e}")
