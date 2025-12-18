@@ -1,45 +1,21 @@
-import shutil
 import sys
-import traceback
+import unittest
 from pathlib import Path
 
 import bpy
 
+from savepoints.services.storage import get_parent_path_from_snapshot
 # Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
-
-import savepoints  # noqa: E402
+from savepoints_test_case import SavePointsTestCase
 
 
-def setup_test_env():
-    # Create a temporary directory for testing
-    test_dir = ROOT / "test_e2e_run"
-    if test_dir.exists():
-        shutil.rmtree(test_dir)
-    test_dir.mkdir()
+class TestInBlenderE2E(SavePointsTestCase):
+    def test_e2e_flow(self):
+        print("\n--- Starting E2E Test ---")
 
-    return test_dir
-
-
-def cleanup_test_env(test_dir):
-    if test_dir.exists():
-        shutil.rmtree(test_dir)
-
-
-def main() -> None:
-    print("Starting E2E Test...")
-    test_dir = setup_test_env()
-    blend_file_path = test_dir / "test_project.blend"
-
-    try:
-        # 1. Save initial project file
-        print(f"Saving initial project to {blend_file_path}")
-        bpy.ops.wm.save_as_mainfile(filepath=str(blend_file_path))
-
-        # 2. Register Addon
-        print("Registering savepoints addon...")
-        savepoints.register()
+        # Base setup (setUp) already created test_project.blend and registered addon
+        # history_dir will be based on test_project.blend
+        history_dir = self.test_dir / ".test_project_history"
 
         # 3. Test Commit
         print("Testing Commit...")
@@ -50,24 +26,23 @@ def main() -> None:
         # EXEC_DEFAULT to bypass invoke_props_dialog
         res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="First Version")
         if "FINISHED" not in res:
-            raise RuntimeError(f"Commit failed with result: {res}")
+            self.fail(f"Commit failed with result: {res}")
 
         # Verify filesystem
-        history_dir = test_dir / ".test_project_history"
         if not history_dir.exists():
-            raise RuntimeError("History directory not created")
+            self.fail("History directory not created")
 
         manifest_path = history_dir / "manifest.json"
         if not manifest_path.exists():
-            raise RuntimeError("Manifest not created")
+            self.fail("Manifest not created")
 
         v001_dir = history_dir / "v001"
         if not v001_dir.exists():
-            raise RuntimeError("Version v001 folder not created")
+            self.fail("Version v001 folder not created")
 
         snapshot_path = v001_dir / "snapshot.blend_snapshot"
         if not snapshot_path.exists():
-            raise RuntimeError("Snapshot file not created")
+            self.fail("Snapshot file not created")
 
         print("Commit Verification: OK")
 
@@ -82,39 +57,38 @@ def main() -> None:
 
         res = bpy.ops.savepoints.checkout()
         if "FINISHED" not in res:
-            raise RuntimeError(f"Checkout failed with result: {res}")
+            self.fail(f"Checkout failed with result: {res}")
 
         # Verify loaded file
         current_path = Path(bpy.data.filepath)
         if current_path.name != "snapshot.blend_snapshot":
-            raise RuntimeError(f"Checkout did not load snapshot.blend_snapshot, current: {current_path}")
+            self.fail(f"Checkout did not load snapshot.blend_snapshot, current: {current_path}")
 
         # Verify content (should have TestCube_v1, but NOT TransientSphere)
         if "TestCube_v1" not in bpy.data.objects:
-            raise RuntimeError("Snapshot does not contain TestCube_v1")
+            self.fail("Snapshot does not contain TestCube_v1")
         if "TransientSphere" in bpy.data.objects:
-            raise RuntimeError("Snapshot contains TransientSphere (should have been discarded)")
+            self.fail("Snapshot contains TransientSphere (should have been discarded)")
 
         # Verify Snapshot Mode
-        from savepoints.services.storage import get_parent_path_from_snapshot
         parent_path_detected = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if not parent_path_detected:
-            raise RuntimeError("Snapshot Mode not detected (get_parent_path_from_snapshot returned None)")
+            self.fail("Snapshot Mode not detected (get_parent_path_from_snapshot returned None)")
 
-        if Path(parent_path_detected) != blend_file_path:
-            raise RuntimeError(f"Parent path mismatch: {parent_path_detected} vs {blend_file_path}")
+        if Path(parent_path_detected) != self.blend_path:
+            self.fail(f"Parent path mismatch: {parent_path_detected} vs {self.blend_path}")
 
         # Verify Commit Guard (should fail in snapshot mode)
         print("Testing Commit Guard...")
         try:
             bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Illegal Commit")
-            raise RuntimeError("Commit should have failed in snapshot mode but succeeded")
+            self.fail("Commit should have failed in snapshot mode but succeeded")
         except RuntimeError:
             # Expected failure: poll() failed
             print("Commit blocked as expected.")
         except Exception as e:
-            raise RuntimeError(f"Unexpected error during commit guard test: {e}")
+            self.fail(f"Unexpected error during commit guard test: {e}")
 
         print("Checkout Verification: OK")
 
@@ -128,38 +102,26 @@ def main() -> None:
         # EXEC_DEFAULT to bypass confirmation
         res = bpy.ops.savepoints.restore('EXEC_DEFAULT')
         if "FINISHED" not in res:
-            raise RuntimeError(f"Restore failed with result: {res}")
+            self.fail(f"Restore failed with result: {res}")
 
         # Verify filepath is back to original
         current_path = Path(bpy.data.filepath)
         if current_path.name != "test_project.blend":
-            raise RuntimeError(f"Restore did not switch back to original file, current: {current_path}")
+            self.fail(f"Restore did not switch back to original file, current: {current_path}")
 
         # Verify content
         if "RestoredCone" not in bpy.data.objects:
-            raise RuntimeError("Restored file does not contain the new object added in snapshot")
+            self.fail("Restored file does not contain the new object added in snapshot")
 
         # Verify Backup
         backups = list(history_dir.glob("test_project.blend.*.bak"))
         if not backups:
-            raise RuntimeError("Backup file was not created in history folder")
+            self.fail("Backup file was not created in history folder")
 
         print("Restore Verification: OK")
 
-        print("ALL TESTS PASSED")
 
-    except Exception:
-        traceback.print_exc()
+if __name__ == '__main__':
+    res = unittest.main(argv=[''], exit=False)
+    if not res.result.wasSuccessful():
         sys.exit(1)
-    finally:
-        print("Cleaning up...")
-        # Unregister might fail if register failed half-way, but try anyway
-        try:
-            savepoints.unregister()
-        except Exception:
-            pass
-        cleanup_test_env(test_dir)
-
-
-if __name__ == "__main__":
-    main()

@@ -3,12 +3,12 @@ import shutil
 import sys
 from pathlib import Path
 
-from savepoints.services.linking import link_history
 
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
+from savepoints.services.linking import link_history
 
 def setup_test_env():
     test_dir = ROOT / "test_link_parent_run"

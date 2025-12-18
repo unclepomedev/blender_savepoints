@@ -5,13 +5,13 @@ from pathlib import Path
 
 import bpy
 
-from savepoints.services.storage import RESCUE_TEMP_FILENAME
 
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints
+from savepoints.services.storage import RESCUE_TEMP_FILENAME
 
 
 class TestCleanupOnRefresh(unittest.TestCase):
