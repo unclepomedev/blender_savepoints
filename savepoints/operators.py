@@ -24,7 +24,6 @@ from .services.storage import (
     load_manifest,
     get_history_dir,
     get_history_dir_for_path,
-    RESCUE_TEMP_FILENAME,
     MANIFEST_NAME
 )
 from .services.versioning import (
