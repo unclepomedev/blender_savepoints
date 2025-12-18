@@ -3,11 +3,11 @@ import shutil
 import sys
 from pathlib import Path
 
+from savepoints.services.linking import link_history
+
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
-
-import savepoints.core as core
 
 
 def setup_test_env():
@@ -42,7 +42,7 @@ def test_link_history_validation():
 
     print("Testing Malformed JSON...")
     try:
-        core.link_history(bad_json_dir, str(project_path))
+        link_history(bad_json_dir, str(project_path))
         raise RuntimeError("Malformed JSON should have raised ValueError")
     except ValueError as e:
         print(f"Caught expected error: {e}")
@@ -56,7 +56,7 @@ def test_link_history_validation():
 
     print("Testing Missing Keys...")
     try:
-        core.link_history(missing_keys_dir, str(project_path))
+        link_history(missing_keys_dir, str(project_path))
         raise RuntimeError("Empty JSON should have raised ValueError")
     except ValueError as e:
         print(f"Caught expected error: {e}")
@@ -73,7 +73,7 @@ def test_link_history_validation():
     print("Testing Valid Manifest...")
     # This should succeed
     try:
-        target_path_str = core.link_history(valid_dir, str(project_path))
+        target_path_str = link_history(valid_dir, str(project_path))
         print("Valid manifest linked successfully.")
 
         # Verification

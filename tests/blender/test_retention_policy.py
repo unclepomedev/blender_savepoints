@@ -10,10 +10,10 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints  # noqa: E402
-from savepoints import core
 
 from savepoints.services.storage import load_manifest
 from savepoints.services.versioning import set_version_protection
+
 
 def setup_test_env():
     test_dir = ROOT / "test_retention_policy_run"

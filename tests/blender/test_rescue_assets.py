@@ -5,12 +5,13 @@ from pathlib import Path
 
 import bpy
 
+from savepoints.services.storage import get_history_dir
+
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints
-from savepoints import core
 
 
 class TestRescueAssets(unittest.TestCase):
@@ -44,7 +45,7 @@ class TestRescueAssets(unittest.TestCase):
         bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), copy=True)
 
         # Verify history dir matches
-        computed_history_dir = core.get_history_dir()
+        computed_history_dir = get_history_dir()
         self.assertEqual(str(computed_history_dir), str(history_dir))
 
         # 2. Run Operator with INVALID version

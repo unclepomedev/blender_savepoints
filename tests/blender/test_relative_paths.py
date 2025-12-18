@@ -49,7 +49,7 @@ class TestRelativePaths(unittest.TestCase):
 
         # Create Material
         mat = bpy.data.materials.new(name="TexturedMat")
-        mat.use_nodes = True
+        mat.use_nodes = True  # TODO deprecated
         self.obj.data.materials.append(mat)
         
         # Add Image Texture Node

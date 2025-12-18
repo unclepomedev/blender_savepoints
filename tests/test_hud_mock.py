@@ -43,7 +43,6 @@ mock_gpu_batch = modules["gpu_extras.batch"]
 # --- 2. Import Addon Modules ---
 import savepoints.hud
 # core is imported to leverage real path parsing logic (unless mocked later)
-import savepoints.core
 
 
 class TestHud(unittest.TestCase):

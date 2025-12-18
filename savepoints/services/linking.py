@@ -4,9 +4,9 @@ import json
 import shutil
 from pathlib import Path
 
-from .services.storage import (
-    RESCUE_TEMP_FILENAME, MANIFEST_NAME,
-    to_posix_path, get_history_dir_for_path, get_history_dir
+from .storage import (
+    MANIFEST_NAME,
+    to_posix_path, get_history_dir_for_path
 )
 
 
@@ -73,36 +73,3 @@ def link_history(source_dir: str | Path, blend_filepath: str) -> str:
         print(f"Warning: Failed to update parent_file in linked manifest: {e}")
 
     return str(target_path)
-
-
-def cleanup_rescue_temp_files() -> int:
-    """
-    Remove any lingering rescue temporary files from all version directories.
-
-    Returns:
-        int: The number of files removed.
-    """
-    history_dir_str = get_history_dir()
-    if not history_dir_str:
-        return 0
-
-    history_dir = Path(history_dir_str)
-    if not history_dir.exists():
-        return 0
-
-    count = 0
-    # Iterate over all subdirectories (versions)
-    for version_dir in history_dir.iterdir():
-        if version_dir.is_dir():
-            temp_file = version_dir / RESCUE_TEMP_FILENAME
-            if temp_file.exists():
-                try:
-                    temp_file.unlink()
-                    count += 1
-                except Exception as e:
-                    print(f"[SavePoints] Failed to remove temp file {temp_file}: {e}")
-
-    if count > 0:
-        print(f"[SavePoints] Cleaned up {count} rescue temporary file(s).")
-
-    return count

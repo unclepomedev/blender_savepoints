@@ -6,12 +6,13 @@ from pathlib import Path
 
 import bpy
 
+from savepoints.services.storage import get_history_dir
+
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints
-from savepoints import core
 
 
 class TestGhostComplex(unittest.TestCase):
@@ -113,7 +114,7 @@ class TestGhostComplex(unittest.TestCase):
 
         # Manually delete the snapshot file for v3
         # Manually delete the snapshot file for v3
-        history_dir = core.get_history_dir()
+        history_dir = get_history_dir()
         self.assertIsNotNone(history_dir, "History directory should exist after commits")
         v3_path = Path(history_dir) / v3_id / "snapshot.blend_snapshot"
         if v3_path.exists():

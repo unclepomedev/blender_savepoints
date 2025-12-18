@@ -5,12 +5,13 @@ from pathlib import Path
 
 import bpy
 
+from savepoints.services.storage import RESCUE_TEMP_FILENAME
+
 # Add project root to sys.path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints
-from savepoints import core
 
 
 class TestCleanupOnRefresh(unittest.TestCase):
@@ -42,7 +43,7 @@ class TestCleanupOnRefresh(unittest.TestCase):
 
         # 2. Create the temp file (simulating a leftover)
         # Using the constant from core to ensure we are testing the right filename
-        temp_file_name = core.RESCUE_TEMP_FILENAME
+        temp_file_name = RESCUE_TEMP_FILENAME
         temp_file_path = version_dir / temp_file_name
 
         # Just create an empty file

@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT))
 
 import savepoints  # noqa: E402
-from savepoints import core
-from savepoints.services.storage import get_parent_path_from_snapshot, load_manifest
+from savepoints.services.storage import get_parent_path_from_snapshot, load_manifest, get_history_dir
+
 
 def setup_test_env():
     # Create a temporary directory for testing
@@ -94,7 +94,7 @@ def main() -> None:
         # D. Fresh History Verification
         # The new file will have a history folder created (by the fork operator).
         # But it should be EMPTY (no versions from the original project)
-        history_dir = core.get_history_dir()
+        history_dir = get_history_dir()
         if not history_dir or not Path(history_dir).exists():
             # If it doesn't exist yet, that's fine too, but usually it's created on load.
             pass
