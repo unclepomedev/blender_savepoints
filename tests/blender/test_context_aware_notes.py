@@ -4,112 +4,112 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
     sys.path.append(str(CURRENT_DIR))
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
+
 from savepoints.services.versioning import generate_default_note
 from savepoints_test_case import SavePointsTestCase
 
 
 class TestContextAwareNotes(SavePointsTestCase):
-    # SavePointsTestCase setUp handles blender initialization
 
-    def test_get_default_note_object_mode(self):
-        bpy.ops.mesh.primitive_cube_add()
+    def _create_dummy_object(self, obj_type, name):
+        """Helper to create and activate an object for testing."""
+        # Ensure we are in object mode before adding new objects
+        if bpy.context.object and bpy.context.object.mode != 'OBJECT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+
+        bpy.ops.object.select_all(action='DESELECT')
+
+        if obj_type == 'MESH':
+            bpy.ops.mesh.primitive_cube_add()
+        elif obj_type == 'ARMATURE':
+            bpy.ops.object.armature_add()
+        else:
+            self.fail(f"Unknown object type: {obj_type}")
+
         obj = bpy.context.active_object
-        obj.name = "MyCube"
-        bpy.ops.object.mode_set(mode='OBJECT')
+        obj.name = name
+        return obj
 
-        note = generate_default_note(bpy.context)
-        self.assertEqual(note, "Object: MyCube")
+    def test_mesh_modes(self):
+        """Test default notes for various Mesh modes using subTest."""
+        print("Testing Mesh Modes...")
 
-    def test_get_default_note_edit_mode_mesh(self):
-        bpy.ops.mesh.primitive_cube_add()
-        obj = bpy.context.active_object
-        obj.name = "EditMesh"
-        bpy.ops.object.mode_set(mode='EDIT')
+        # Define test cases: (Mode, Object Name, Expected Note)
+        # Note: TEXTURE_PAINT works on Meshes
+        cases = [
+            ('OBJECT', "MyCube", "Object: MyCube"),
+            ('EDIT', "EditMesh", "Edit Mesh: EditMesh"),
+            ('SCULPT', "SculptMesh", "Sculpt: SculptMesh"),
+            ('VERTEX_PAINT', "VPMesh", "Vertex Paint: VPMesh"),
+            ('WEIGHT_PAINT', "WPMesh", "Weight Paint: WPMesh"),
+            ('TEXTURE_PAINT', "TPMesh", "Texture Paint: TPMesh"),
+        ]
 
-        note = generate_default_note(bpy.context)
-        # Expected: "Edit {obj.type.title()}: {obj.name}"
-        self.assertEqual(note, "Edit Mesh: EditMesh")
+        for mode, name, expected in cases:
+            with self.subTest(mode=mode):
+                self._create_dummy_object('MESH', name)
 
-    def test_get_default_note_edit_mode_armature(self):
-        bpy.ops.object.armature_add()
-        obj = bpy.context.active_object
-        obj.name = "EditArmature"
-        bpy.ops.object.mode_set(mode='EDIT')
+                # Switch mode
+                try:
+                    bpy.ops.object.mode_set(mode=mode)
+                except RuntimeError as e:
+                    # If headless execution fails for specific paint modes, fail explicitly
+                    # or use self.skipTest("...") if it's a known limitation.
+                    self.fail(f"Failed to enter {mode}: {e}")
 
-        note = generate_default_note(bpy.context)
-        self.assertEqual(note, "Edit Armature: EditArmature")
-
-    def test_get_default_note_pose_mode(self):
-        bpy.ops.object.armature_add()
-        obj = bpy.context.active_object
-        obj.name = "PoseArmature"
-        bpy.ops.object.mode_set(mode='POSE')
-
-        note = generate_default_note(bpy.context)
-        self.assertEqual(note, "Pose: PoseArmature")
-
-    def test_get_default_note_sculpt_mode(self):
-        bpy.ops.mesh.primitive_cube_add()
-        obj = bpy.context.active_object
-        obj.name = "SculptMesh"
-        bpy.ops.object.mode_set(mode='SCULPT')
-
-        note = generate_default_note(bpy.context)
-        self.assertEqual(note, "Sculpt: SculptMesh")
-
-    def test_get_default_note_vertex_paint(self):
-        bpy.ops.mesh.primitive_cube_add()
-        obj = bpy.context.active_object
-        obj.name = "VPMesh"
-        bpy.ops.object.mode_set(mode='VERTEX_PAINT')
-
-        note = generate_default_note(bpy.context)
-        self.assertEqual(note, "Vertex Paint: VPMesh")
-
-    def test_get_default_note_weight_paint(self):
-        bpy.ops.mesh.primitive_cube_add()
-        obj = bpy.context.active_object
-        obj.name = "WPMesh"
-        bpy.ops.object.mode_set(mode='WEIGHT_PAINT')
-
-        note = generate_default_note(bpy.context)
-        self.assertEqual(note, "Weight Paint: WPMesh")
-
-    def test_get_default_note_texture_paint(self):
-        bpy.ops.mesh.primitive_cube_add()
-        obj = bpy.context.active_object
-        obj.name = "TPMesh"
-        # Texture paint works on meshes
-        try:
-            bpy.ops.object.mode_set(mode='TEXTURE_PAINT')
-            if bpy.context.active_object.mode == 'TEXTURE_PAINT':
+                # Verify
                 note = generate_default_note(bpy.context)
-                self.assertEqual(note, "Texture Paint: TPMesh")
-        except RuntimeError:
-            pass
+                self.assertEqual(note, expected)
 
-    def test_get_default_note_particle_edit(self):
-        bpy.ops.mesh.primitive_cube_add()
-        obj = bpy.context.active_object
-        obj.name = "PartMesh"
-        # Need a particle system to enter Particle Edit
+    def test_armature_modes(self):
+        """Test default notes for Armature modes."""
+        print("Testing Armature Modes...")
+
+        cases = [
+            ('EDIT', "EditArmature", "Edit Armature: EditArmature"),
+            ('POSE', "PoseArmature", "Pose: PoseArmature"),
+        ]
+
+        for mode, name, expected in cases:
+            with self.subTest(mode=mode):
+                self._create_dummy_object('ARMATURE', name)
+
+                bpy.ops.object.mode_set(mode=mode)
+
+                note = generate_default_note(bpy.context)
+                self.assertEqual(note, expected)
+
+    def test_particle_edit_mode(self):
+        """Test Particle Edit mode (Requires specific setup)."""
+        print("Testing Particle Edit Mode...")
+
+        obj = self._create_dummy_object('MESH', "PartMesh")
+
+        # Setup: Need a particle system to enter Particle Edit
         obj.modifiers.new(name="Particles", type='PARTICLE_SYSTEM')
 
         try:
             bpy.ops.object.mode_set(mode='PARTICLE_EDIT')
-            if bpy.context.active_object.mode == 'PARTICLE_EDIT':
-                note = generate_default_note(bpy.context)
-                self.assertEqual(note, "Particle Edit: PartMesh")
-        except RuntimeError:
-            pass
+        except RuntimeError as e:
+            self.fail(f"Failed to enter PARTICLE_EDIT: {e}")
 
-    def test_get_default_note_no_active_object(self):
+        note = generate_default_note(bpy.context)
+        self.assertEqual(note, "Particle Edit: PartMesh")
+
+    def test_no_active_object(self):
+        """Test behavior when no object is active."""
+        print("Testing No Active Object...")
+
+        if bpy.context.object and bpy.context.object.mode != 'OBJECT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+
         bpy.ops.object.select_all(action='DESELECT')
         bpy.context.view_layer.objects.active = None
 
