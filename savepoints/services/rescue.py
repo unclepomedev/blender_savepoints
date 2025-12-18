@@ -85,10 +85,13 @@ class RescuePostHandler:
             has_changes = (current_obj_count != self.initial_obj_count) or paths_fixed
 
             if has_changes:
-                self._cleanup()
+                print("[SavePoints] Rescue successful: Changes detected.")
+            else:
+                pass
 
         except Exception as e:
             print(f"[SavePoints] Handler Error: {e}")
+        finally:
             self._cleanup()
 
     def _cleanup(self):
