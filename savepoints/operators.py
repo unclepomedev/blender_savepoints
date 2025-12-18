@@ -29,7 +29,8 @@ from .services.versioning import (
     update_version_note,
     update_version_tag,
     is_safe_filename,
-    prune_versions
+    prune_versions,
+    generate_default_note
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas, find_3d_view_override
 
@@ -73,36 +74,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     def poll(cls, context):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
-    def _get_default_note(self, context):
-        try:
-            obj = context.active_object
-            if not obj:
-                return ""
-
-            mode = obj.mode
-
-            if mode == 'EDIT':
-                friendly_mode = f"Edit {obj.type.title()}"
-            else:
-                mode_map = {
-                    'OBJECT': 'Object',
-                    'POSE': 'Pose',
-                    'SCULPT': 'Sculpt',
-                    'VERTEX_PAINT': 'Vertex Paint',
-                    'WEIGHT_PAINT': 'Weight Paint',
-                    'TEXTURE_PAINT': 'Texture Paint',
-                    'PARTICLE_EDIT': 'Particle Edit',
-                }
-                friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
-
-            return f"{friendly_mode}: {obj.name}"
-        except Exception:
-            return ""
-
     def invoke(self, context, event):
         settings = context.scene.savepoints_settings
 
-        default_note = self._get_default_note(context)
+        default_note = generate_default_note(context)
 
         if not self.note:
             self.note = default_note
@@ -123,7 +98,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
         # Ensure default note is set if empty (especially for non-interactive execution)
         if not self.note:
-            self.note = self._get_default_note(context)
+            self.note = generate_default_note(context)
 
         manifest = load_manifest()
         new_id_str = get_next_version_id(manifest.get("versions", []))

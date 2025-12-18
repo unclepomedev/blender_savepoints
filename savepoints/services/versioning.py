@@ -172,3 +172,31 @@ def prune_versions(max_keep: int) -> int:
         delete_version_by_id(vid)
 
     return len(ids_to_delete)
+
+
+def generate_default_note(context) -> str:
+    """Generate a default note based on the current context (active object, mode)."""
+    try:
+        obj = context.active_object
+        if not obj:
+            return ""
+
+        mode = obj.mode
+
+        if mode == 'EDIT':
+            friendly_mode = f"Edit {obj.type.title()}"
+        else:
+            mode_map = {
+                'OBJECT': 'Object',
+                'POSE': 'Pose',
+                'SCULPT': 'Sculpt',
+                'VERTEX_PAINT': 'Vertex Paint',
+                'WEIGHT_PAINT': 'Weight Paint',
+                'TEXTURE_PAINT': 'Texture Paint',
+                'PARTICLE_EDIT': 'Particle Edit',
+            }
+            friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
+
+        return f"{friendly_mode}: {obj.name}"
+    except Exception:
+        return ""
