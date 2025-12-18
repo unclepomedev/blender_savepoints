@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import json
 import os
 import shutil
 import time
-import uuid
 from pathlib import Path
 
 import bpy
@@ -20,12 +18,13 @@ from .services.rescue import (
 )
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
-    SCHEMA_VERSION,
     get_parent_path_from_snapshot,
     load_manifest,
     get_history_dir,
     get_history_dir_for_path,
-    MANIFEST_NAME
+    MANIFEST_NAME,
+    get_fork_target_path,
+    initialize_history_for_path
 )
 from .services.versioning import (
     get_next_version_id,
@@ -549,36 +548,12 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
 
         source_path = Path(bpy.data.filepath)
 
-        # Determine the project root (parent of the history folder)
+        # Determine the target path
         try:
-            # source_path is .../history_dir/version_id/snapshot.blend
-            # parent is .../history_dir/version_id
-            # grandparent is .../history_dir
-            # great-grandparent is project root
-            version_dir = source_path.parent
-            version_id = version_dir.name
-
-            history_dir = version_dir.parent
-            history_dirname = history_dir.name
-
-            project_root = history_dir.parent
-
-            if not project_root.exists():
-                raise FileNotFoundError(f"Project root not found: {project_root}")
-
-            # Calculate filename
-            stem = "project"
-            if history_dirname.startswith(".") and history_dirname.endswith("_history"):
-                # Extract original stem
-                stem = history_dirname[1:-8]  # remove '.' and '_history'
-
-            filename = f"{stem}_{version_id}.blend"
-
+            target_path = get_fork_target_path(source_path)
         except Exception as e:
             self.report({'ERROR'}, f"Could not determine paths: {e}")
             return {'CANCELLED'}
-
-        target_path = project_root / filename
 
         if source_path == target_path:
             self.report({'ERROR'}, "Source and target paths are identical.")
@@ -586,22 +561,7 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
 
         # Ensure history directory is created for the new file (so link_history is suppressed)
         try:
-            new_history_dir_str = get_history_dir_for_path(str(target_path))
-            if new_history_dir_str:
-                new_history_dir = Path(new_history_dir_str)
-                new_history_dir.mkdir(parents=True, exist_ok=True)
-
-                # Create default manifest
-                manifest_path = new_history_dir / "manifest.json"
-                if not manifest_path.exists():
-                    default_manifest = {
-                        "parent_file": str(target_path),
-                        "versions": [],
-                        "schema_version": SCHEMA_VERSION,
-                        "project_uuid": str(uuid.uuid4()),
-                    }
-                    with manifest_path.open('w', encoding='utf-8') as f:
-                        json.dump(default_manifest, f, indent=4, ensure_ascii=False)
+            initialize_history_for_path(target_path)
         except Exception as e:
             self.report({'WARNING'}, f"History creation failed: {e}")
 

@@ -3,6 +3,7 @@
 # or passing it as an argument: just test-blender blender_exe=...
 blender_exe := env_var_or_default('BLENDER_EXE', '/Applications/Blender.app/Contents/MacOS/Blender')
 
+# TODO refactor / fix
 # Run E2E tests in Blender
 test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_in_blender.py
@@ -31,3 +32,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_no_automatic_history.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_relative_paths.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_show_preview.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost.py
