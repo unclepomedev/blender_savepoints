@@ -4,11 +4,15 @@ from pathlib import Path
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
 import savepoints.operators
+from savepoints_test_case import SavePointsTestCase
 
 
 class MockWindowManager:
@@ -56,24 +60,10 @@ class MockOperator:
     invoke = savepoints.operators.SAVEPOINTS_OT_commit.invoke
 
 
-class TestNoteAssignment(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        try:
-            savepoints.register()
-        except Exception:
-            pass
-
-    @classmethod
-    def tearDownClass(cls):
-        try:
-            savepoints.unregister()
-        except Exception:
-            pass
-
+class TestNoteAssignment(SavePointsTestCase):
     def setUp(self):
-        # Reset scene
-        bpy.ops.wm.read_homefile(use_empty=True)
+        super().setUp()
+        # Reset scene (SavePointsTestCase does read_homefile(use_empty=True) but let's just add the cube)
         bpy.ops.mesh.primitive_cube_add()
         bpy.context.object.name = "MyCube"
 

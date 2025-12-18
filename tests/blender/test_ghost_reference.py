@@ -1,40 +1,20 @@
-import shutil
 import sys
 import unittest
 from pathlib import Path
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
+from savepoints_test_case import SavePointsTestCase
 
-import savepoints
 
-
-class TestGhostReference(unittest.TestCase):
-    def setUp(self):
-        self.test_dir = ROOT / "test_ghost_env"
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
-        self.test_dir.mkdir()
-
-        # Start with empty scene before saving
-        bpy.ops.wm.read_homefile(use_empty=True)
-
-        # Save current blend file
-        self.blend_path = self.test_dir / "test.blend"
-        bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
-
-        savepoints.register()
-
-    def tearDown(self):
-        try:
-            savepoints.unregister()
-        except Exception:
-            pass
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
+class TestGhostReference(SavePointsTestCase):
+    # SavePointsTestCase setUp handles initialization
 
     def test_ghost_reference_toggle(self):
         print("\n--- Test Ghost Reference Toggle ---")

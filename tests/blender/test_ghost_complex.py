@@ -1,42 +1,22 @@
 import os
-import shutil
 import sys
 import unittest
 from pathlib import Path
 
 import bpy
 
-
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
-
-import savepoints
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 from savepoints.services.storage import get_history_dir
+from savepoints_test_case import SavePointsTestCase
 
 
-class TestGhostComplex(unittest.TestCase):
-    def setUp(self):
-        self.test_dir = ROOT / "test_ghost_complex_env"
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
-        self.test_dir.mkdir()
-
-        # Save current blend file
-        self.blend_path = self.test_dir / "test_complex.blend"
-        # Reset Blender to clean state
-        bpy.ops.wm.read_homefile(use_empty=True)
-        bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
-
-        savepoints.register()
-
-    def tearDown(self):
-        try:
-            savepoints.unregister()
-        except Exception:
-            pass
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
+class TestGhostComplex(SavePointsTestCase):
+    # SavePointsTestCase setUp handles blender initialization and save as test_project.blend
 
     def test_multiple_ghosts_and_missing_file(self):
         print("\n--- Test: Multiple Ghosts & Missing File ---")
@@ -113,7 +93,6 @@ class TestGhostComplex(unittest.TestCase):
         print("4. Testing Missing Snapshot File...")
 
         # Manually delete the snapshot file for v3
-        # Manually delete the snapshot file for v3
         history_dir = get_history_dir()
         self.assertIsNotNone(history_dir, "History directory should exist after commits")
         v3_path = Path(history_dir) / v3_id / "snapshot.blend_snapshot"
@@ -127,7 +106,6 @@ class TestGhostComplex(unittest.TestCase):
         except RuntimeError as e:
             print(f"Caught expected error: {e}")
             # In headless, CANCELLED raises RuntimeError.
-            # Ideally we check the message if possible, but RuntimeError usually just says "Operator failed..."
             pass
 
         # Ensure no garbage collection created

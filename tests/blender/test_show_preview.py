@@ -5,17 +5,23 @@ from unittest.mock import MagicMock
 
 import bpy
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
-import savepoints
 from savepoints import ui
+from savepoints_test_case import SavePointsTestCase
 
 
-class TestShowPreview(unittest.TestCase):
+class TestShowPreview(SavePointsTestCase):
     def setUp(self):
-        savepoints.register()
+        super().setUp()
+        # savepoints.register() is called in super().setUp()
+
+        # We need settings. SavePointsTestCase creates a clean session, so settings are reset.
         self.settings = bpy.context.scene.savepoints_settings
 
         # Create a dummy version to ensure we have an active item
@@ -25,7 +31,8 @@ class TestShowPreview(unittest.TestCase):
         self.settings.active_version_index = 0
 
     def tearDown(self):
-        savepoints.unregister()
+        super().tearDown()
+        # savepoints.unregister() is called in super().tearDown()
 
     def test_show_preview_property_default(self):
         # Default should be True
@@ -53,9 +60,6 @@ class TestShowPreview(unittest.TestCase):
 
     def test_draw_version_details_logic(self):
         # Test that _draw_version_details respects the flag
-        # We can't easily check what was drawn, but we can ensure it runs without error
-        # and potentially mock objects to see which path was taken.
-
         layout = MagicMock()
         box = MagicMock()
         layout.box.return_value = box
@@ -63,11 +67,6 @@ class TestShowPreview(unittest.TestCase):
         # Case 1: Show Preview = False
         self.settings.show_preview = False
 
-        # In headless mode context.region is usually None.
-        # If the code tries to access context.region.width, it would fail if we don't mock context.
-        # But if show_preview is False, it should NOT access it (or even check previews).
-
-        # We pass a dummy context where region is explicitly None to prove it doesn't access it
         MockContext = MagicMock()
         MockContext.region = None
 
@@ -76,55 +75,36 @@ class TestShowPreview(unittest.TestCase):
         except AttributeError as e:
             self.fail(f"_draw_version_details raised AttributeError with show_preview=False: {e}")
 
-        # Verify that box.row() was NOT called (because row is used for preview or "No Preview")
-        # Actually, wait. 
-        # If show_preview is False:
-        #   It skips the whole block.
-        #   It draws ID, Date, Note...
-        # So box.row() should NOT be called for the image.
-        # However, checking call counts on mocks is fragile if other UI elements use rows.
-        # Let's look at the code:
-        # if settings.show_preview: ...
-        # box.label(text=f"ID: ...") 
-
-        # So if show_preview is False, we just check that it runs safely.
-
         # Case 2: Show Preview = True
         self.settings.show_preview = True
-
-        # If we run this now with region=None, does it fail?
-        # It only fails if has_preview is True. 
-        # In this test environment, pcoll is likely empty or None, so has_preview = False.
-        # Then it goes to `else: row.label(text="No Preview"...)`.
-        # So it should still run safely even with region=None.
 
         try:
             ui._draw_version_details(layout, self.settings, MockContext)
         except Exception as e:
             self.fail(f"_draw_version_details failed with show_preview=True: {e}")
 
+    def test_draw_version_details_with_preview_and_no_region(self):
+        # Populate preview collection to make has_preview=True
+        from savepoints import ui_utils
+        pcoll = ui_utils.preview_collections.setdefault("main", bpy.utils.previews.new())
 
-def test_draw_version_details_with_preview_and_no_region(self):
-    # Populate preview collection to make has_preview=True
-    from savepoints import ui_utils
-    pcoll = ui_utils.preview_collections.setdefault("main", bpy.utils.previews.new())
-    # Mock preview for v001
-    # pcoll["v001"] = ... (you'd need to create a mock preview)
+        # Mock preview for v001
+        # pcoll["v001"] = ... (you'd need to create a mock preview)
 
-    self.settings.show_preview = True
+        self.settings.show_preview = True
 
-    layout = MagicMock()
-    box = MagicMock()
-    layout.box.return_value = box
+        layout = MagicMock()
+        box = MagicMock()
+        layout.box.return_value = box
 
-    MockContext = MagicMock()
-    MockContext.region = None  # Simulate headless mode
+        MockContext = MagicMock()
+        MockContext.region = None  # Simulate headless mode
 
-    # Should not raise AttributeError
-    try:
-        ui._draw_version_details(layout, self.settings, MockContext)
-    except AttributeError as e:
-        self.fail(f"Should handle region=None gracefully: {e}")
+        # Should not raise AttributeError
+        try:
+            ui._draw_version_details(layout, self.settings, MockContext)
+        except AttributeError as e:
+            self.fail(f"Should handle region=None gracefully: {e}")
 
 
 if __name__ == '__main__':

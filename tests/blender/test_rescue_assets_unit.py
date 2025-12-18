@@ -3,15 +3,20 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-# Add project root to sys.path
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT))
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
 from savepoints.operators import SAVEPOINTS_OT_rescue_assets
+from savepoints_test_case import SavePointsTestCase
 
 
-class TestRescueAssetsLogic(unittest.TestCase):
+class TestRescueAssetsLogic(SavePointsTestCase):
     def setUp(self):
+        super().setUp()
         # Create a mock self for the operator
         self.op = MagicMock()
         self.op.version_id = "v001"

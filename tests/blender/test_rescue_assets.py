@@ -1,6 +1,15 @@
+import sys
 import unittest
+from pathlib import Path
 
 import bpy
+
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+if str(CURRENT_DIR) not in sys.path:
+    sys.path.append(str(CURRENT_DIR))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.append(str(PROJECT_ROOT))
 
 from savepoints.services.storage import get_history_dir
 from savepoints_test_case import SavePointsTestCase
