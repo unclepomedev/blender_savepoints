@@ -29,17 +29,21 @@ class TestRescueAssetsLogic(SavePointsTestCase):
         # Base mock context
         self.mock_context = MagicMock()
 
-    @patch("savepoints.operators.get_history_dir")
-    @patch("shutil.copy2")
-    @patch("pathlib.Path.exists")
-    @patch("bpy.ops.wm.append")
-    def test_run_no_view3d(self, mock_append, mock_exists, mock_copy, mock_get_hist):
+    @patch("savepoints.operators.RescuePostLoadHandler")
+    @patch("savepoints.operators.delete_rescue_temp_file")
+    @patch("savepoints.operators.get_rescue_append_dir")
+    @patch("savepoints.operators.create_rescue_temp_file")
+    @patch("savepoints.operators.find_snapshot_path")
+    @patch("savepoints.operators.is_safe_filename")
+    def test_run_no_view3d(self, mock_is_safe, mock_find_snapshot, mock_create_temp, mock_get_append_dir, mock_delete_temp, mock_handler_cls):
         """Test that _run fails gracefully when no 3D Viewport is found."""
         print("\n--- Test Rescue Logic: No 3D Viewport ---")
 
         # Setup mocks
-        mock_get_hist.return_value = "/tmp/history"
-        mock_exists.return_value = True  # Snapshot exists
+        mock_is_safe.return_value = True
+        mock_find_snapshot.return_value = Path("/tmp/history/v001/snapshot.blend")
+        mock_create_temp.return_value = Path("/tmp/history/v001/rescue_temp.blend")
+        mock_get_append_dir.return_value = "/tmp/history/v001/rescue_temp.blend/Object/"
 
         # Setup context window manager with windows but NO VIEW_3D
         mock_window = MagicMock()
@@ -57,18 +61,28 @@ class TestRescueAssetsLogic(SavePointsTestCase):
         # Assertions
         self.assertEqual(res, {'CANCELLED'})
         self.op.report.assert_called_with({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
+        
+        # Verify cleanups were called
+        mock_handler_cls.return_value.unregister.assert_called_once()
+        mock_delete_temp.assert_called_once()
+        
         print("Confirmed: Returns CANCELLED and reports error when no VIEW_3D found.")
 
-    @patch("savepoints.operators.get_history_dir")
-    @patch("shutil.copy2")
-    @patch("pathlib.Path.exists")
-    def test_run_with_view3d(self, mock_exists, mock_copy, mock_get_hist):
+    @patch("savepoints.operators.RescuePostLoadHandler")
+    @patch("savepoints.operators.delete_rescue_temp_file")
+    @patch("savepoints.operators.get_rescue_append_dir")
+    @patch("savepoints.operators.create_rescue_temp_file")
+    @patch("savepoints.operators.find_snapshot_path")
+    @patch("savepoints.operators.is_safe_filename")
+    def test_run_with_view3d(self, mock_is_safe, mock_find_snapshot, mock_create_temp, mock_get_append_dir, mock_delete_temp, mock_handler_cls):
         """Test that _run succeeds and calls append when 3D Viewport IS found."""
         print("\n--- Test Rescue Logic: With 3D Viewport ---")
 
         # Setup mocks
-        mock_get_hist.return_value = "/tmp/history"
-        mock_exists.return_value = True
+        mock_is_safe.return_value = True
+        mock_find_snapshot.return_value = Path("/tmp/history/v001/snapshot.blend")
+        mock_create_temp.return_value = Path("/tmp/history/v001/rescue_temp.blend")
+        mock_get_append_dir.return_value = "/tmp/history/v001/rescue_temp.blend/Object/"
 
         # Setup context WITH VIEW_3D
         mock_window = MagicMock()
@@ -117,7 +131,7 @@ class TestRescueAssetsLogic(SavePointsTestCase):
 
         print(f"Captured error: {error_msg}")
 
-        if "nothing indicated" in error_msg:
+        if "nothing indicated" in error_msg or "Cannot find file" in error_msg or "File not found" in error_msg:
             print("Success: wm.append executed (poll passed).")
         elif "context is incorrect" in error_msg:
             self.fail("Failure: wm.append failed poll check (context override didn't work).")
