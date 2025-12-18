@@ -1,9 +1,17 @@
 import bpy
-from pathlib import Path
-from .storage import get_history_dir
+
+from .snapshot import find_snapshot_path
+from .storage import (
+    get_history_dir,
+    to_posix_path,
+    SNAPSHOT_FILENAME,
+    LEGACY_SNAPSHOT_FILENAME
+)
+
 
 def get_ghost_collection_name(version_id: str) -> str:
     return f"Ghost_Reference_{version_id}"
+
 
 def unload_ghost(version_id: str, context: bpy.types.Context) -> None:
     collection_name = get_ghost_collection_name(version_id)
@@ -35,9 +43,9 @@ def unload_ghost(version_id: str, context: bpy.types.Context) -> None:
         # Look for libraries that seem to be from this snapshot
         libs_to_process = []
         for lib in bpy.data.libraries:
-            path_norm = lib.filepath.replace("\\", "/")
-            if (f"/{version_id}/snapshot.blend_snapshot" in path_norm or
-                    f"/{version_id}/snapshot.blend" in path_norm):
+            path_norm = to_posix_path(lib.filepath)
+            if (f"/{version_id}/{SNAPSHOT_FILENAME}" in path_norm or
+                    f"/{version_id}/{LEGACY_SNAPSHOT_FILENAME}" in path_norm):
                 libs_to_process.append(lib)
 
         # Collections to check for linked data
@@ -65,26 +73,20 @@ def unload_ghost(version_id: str, context: bpy.types.Context) -> None:
             except Exception:
                 pass
 
+
 def load_ghost(version_id: str, context: bpy.types.Context) -> int:
     collection_name = get_ghost_collection_name(version_id)
-    history_dir_str = get_history_dir()
-    if not history_dir_str:
-        raise FileNotFoundError("History directory not found")
 
-    version_dir = Path(history_dir_str) / version_id
-    snapshot_path = version_dir / "snapshot.blend_snapshot"
+    snapshot_path = find_snapshot_path(version_id)
 
-    if not snapshot_path.exists():
-        # Check for legacy snapshot file (.blend)
-        legacy_snapshot_path = version_dir / "snapshot.blend"
-        if legacy_snapshot_path.exists():
-            snapshot_path = legacy_snapshot_path
-        else:
-            raise FileNotFoundError(f"Snapshot file not found: {snapshot_path}")
+    if not snapshot_path:
+        # Try to construct path manually if find_snapshot_path fails (e.g. if history dir is weird),
+        # but find_snapshot_path handles checking existence.
+        # If it returned None, it means it really wasn't found.
+        raise FileNotFoundError(f"Snapshot file not found for version: {version_id}")
 
     # Load Objects
     with bpy.data.libraries.load(str(snapshot_path), link=True) as (data_from, data_to):
-        # Link all objects
         data_to.objects = data_from.objects
 
     # Create Collection
@@ -100,5 +102,5 @@ def load_ghost(version_id: str, context: bpy.types.Context) -> int:
             obj.hide_select = True
             obj.show_in_front = False
             count += 1
-            
+
     return count
