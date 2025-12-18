@@ -1,14 +1,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
-import shutil
-import time
 from pathlib import Path
 
 import bpy
 from bpy_extras.io_utils import ImportHelper
 
 from .handler_manager import RescuePostLoadHandler
+from .services.backup import create_backup, HistoryDirectoryUnavailableError
 from .services.ghost import get_ghost_collection_name, load_ghost, unload_ghost
 from .services.linking import link_history
 from .services.rescue import (
@@ -21,7 +20,6 @@ from .services.storage import (
     get_parent_path_from_snapshot,
     load_manifest,
     get_history_dir,
-    get_history_dir_for_path,
     MANIFEST_NAME,
     get_fork_target_path,
     initialize_history_for_path
@@ -477,24 +475,14 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         # Verify if we can write to original path
         # Backup first
         if original_path.exists():
-            timestamp = int(time.time())
-            history_dir_str = get_history_dir_for_path(str(original_path))
-            if history_dir_str:
-                history_dir = Path(history_dir_str)
-                history_dir.mkdir(parents=True, exist_ok=True)
-
-                filename = original_path.name
-                backup_filename = f"{filename}.{timestamp}.bak"
-                backup_path = history_dir / backup_filename
-
-                try:
-                    shutil.copy2(original_path, backup_path)
-                    self.report({'INFO'}, f"Backup created: {backup_filename}")
-                except Exception as e:
-                    self.report({'ERROR'}, f"Backup failed: {e}")
-                    return {'CANCELLED'}
-            else:
+            try:
+                backup_path = create_backup(original_path)
+                self.report({'INFO'}, f"Backup created: {backup_path.name}")
+            except HistoryDirectoryUnavailableError:
                 self.report({'WARNING'}, "Could not create backup: history directory unavailable.")
+            except Exception as e:
+                self.report({'ERROR'}, f"Backup failed: {e}")
+                return {'CANCELLED'}
         else:
             self.report({'WARNING'}, "Original file not found. Creating new one.")
 

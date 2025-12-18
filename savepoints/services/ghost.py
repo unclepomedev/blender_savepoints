@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import bpy
 
 from .snapshot import find_snapshot_path
