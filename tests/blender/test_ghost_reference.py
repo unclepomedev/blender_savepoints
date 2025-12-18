@@ -22,13 +22,14 @@ class TestGhostReference(SavePointsTestCase):
         Scenario:
         1. Create a version with initial content (OriginalCube).
         2. Modify the scene (move the cube) to diverge from the saved state.
-        3. Toggle Ghost ON: Verify the ghost collection appears with correct visual properties (Wireframe, Unselectable).
+        3. Toggle Ghost ON: Verify the ghost collection appears with correct visual properties.
         4. Toggle Ghost OFF: Verify the ghost collection is cleanly removed.
         """
         print("Starting Ghost Reference Scenario...")
 
         # Variable to store the target version ID
         version_id = None
+        target_note = "Initial"
 
         # --- Step 1: Create Content & Commit ---
         with self.subTest(step="1. Create Content & Commit"):
@@ -38,23 +39,30 @@ class TestGhostReference(SavePointsTestCase):
             cube = bpy.context.active_object
             cube.name = "OriginalCube"
 
-            # Save Snapshot (bypass dialog)
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Initial")
+            # Save Snapshot
+            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note=target_note)
             self.assertIn('FINISHED', res, "Commit failed")
 
-            # Retrieve the ID of the created version
+            # Explicitly find the version by Note, instead of assuming index 0
             settings = bpy.context.scene.savepoints_settings
-            self.assertTrue(len(settings.versions) > 0, "Version should be created")
+            found_version = None
 
-            # Note: We established in previous turns that the property is 'version_id'
-            version_id = settings.versions[0].version_id
+            for v in settings.versions:
+                if v.note == target_note:
+                    found_version = v
+                    break
+
+            self.assertIsNotNone(found_version, f"Version with note '{target_note}' was not found")
+            version_id = found_version.version_id
             print(f"Created version ID: {version_id}")
 
         # --- Step 2: Modify Scene ---
         with self.subTest(step="2. Modify Scene"):
             # Move the live cube so it visually differs from where the ghost will appear
             cube = bpy.data.objects.get("OriginalCube")
-            self.assertIsNotNone(cube, "OriginalCube should exist")
+            self.assertIsNotNone(cube, "OriginalCube should still exist after commit")
+
+            # Move the live cube so it visually differs from where the ghost will appear
             cube.location.x += 5.0
 
         # --- Step 3: Toggle Ghost ON ---
