@@ -95,3 +95,21 @@ def force_redraw_areas(context: bpy.types.Context, area_types: set[str] = None) 
         for area in window.screen.areas:
             if area.type in area_types:
                 area.tag_redraw()
+
+
+def find_3d_view_override(context):
+    for window in context.window_manager.windows:
+        screen = window.screen
+        for area in screen.areas:
+            if area.type == 'VIEW_3D':
+                for region in area.regions:
+                    if region.type == 'WINDOW':
+                        return {
+                            "window": window,
+                            "screen": screen,
+                            "area": area,
+                            "region": region,
+                            "workspace": window.workspace,
+                            "scene": window.scene,
+                        }
+    return None

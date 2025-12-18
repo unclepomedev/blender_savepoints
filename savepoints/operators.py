@@ -32,7 +32,7 @@ from .services.versioning import (
     is_safe_filename,
     prune_versions
 )
-from .ui_utils import sync_history_to_props, force_redraw_areas
+from .ui_utils import sync_history_to_props, force_redraw_areas, find_3d_view_override
 
 
 class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
@@ -315,27 +315,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         if bpy.ops.object.mode_set.poll():
             bpy.ops.object.mode_set(mode='OBJECT')
 
-        found_context = None
-
-        for window in context.window_manager.windows:
-            screen = window.screen
-            for area in screen.areas:
-                if area.type == 'VIEW_3D':
-                    for region in area.regions:
-                        if region.type == 'WINDOW':
-                            found_context = {
-                                "window": window,
-                                "screen": screen,
-                                "area": area,
-                                "region": region,
-                                "workspace": window.workspace,
-                                "scene": window.scene,
-                            }
-                            break
-                if found_context:
-                    break
-            if found_context:
-                break
+        found_context = find_3d_view_override(context)
 
         if found_context:
             try:
