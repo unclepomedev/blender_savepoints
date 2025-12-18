@@ -33,3 +33,5 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_relative_paths.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_show_preview.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_commit_selection_persistence.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_commit_selection_persistence_extended.py
