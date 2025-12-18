@@ -11,17 +11,20 @@ import bpy
 from bpy_extras.io_utils import ImportHelper
 
 from .core import (
-    get_history_dir,
-    get_history_dir_for_path,
-    RESCUE_TEMP_FILENAME,
     cleanup_rescue_temp_files,
 )
 from .services.asset_path import unmap_snapshot_paths
-from .services.storage import SCHEMA_VERSION, get_parent_path_from_snapshot, load_manifest
-from .services.thumbnail import capture_thumbnail
+from .services.snapshot import create_snapshot
+from .services.storage import (
+    SCHEMA_VERSION,
+    get_parent_path_from_snapshot,
+    load_manifest,
+    get_history_dir,
+    get_history_dir_for_path,
+    RESCUE_TEMP_FILENAME
+)
 from .services.versioning import (
     get_next_version_id,
-    add_version_to_manifest,
     delete_version_by_id,
     set_version_protection,
     update_version_note,
@@ -30,110 +33,6 @@ from .services.versioning import (
     prune_versions
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas
-
-
-def create_snapshot(context, version_id, note, skip_thumbnail=False):
-    """Helper to create a snapshot."""
-    history_dir_str = get_history_dir()
-    if not history_dir_str:
-        return
-
-    history_dir = Path(history_dir_str)
-    manifest = load_manifest()
-
-    folder_name = version_id
-    version_dir = history_dir / folder_name
-    version_dir.mkdir(parents=True, exist_ok=True)
-
-    obj_count = len(bpy.data.objects)
-
-    # Thumbnail
-    thumb_filename = "thumbnail.png"
-    thumb_path = version_dir / thumb_filename
-    if not skip_thumbnail:
-        capture_thumbnail(context, str(thumb_path))
-
-    # Save Snapshot
-    blend_filename = "snapshot.blend_snapshot"
-    snapshot_path = version_dir / blend_filename
-
-    bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path))
-
-    # Capture file size
-    file_size = 0
-    if snapshot_path.exists():
-        file_size = snapshot_path.stat().st_size
-
-    # Update Manifest
-    add_version_to_manifest(
-        manifest,
-        version_id,
-        note,
-        str(Path(folder_name) / thumb_filename),
-        str(Path(folder_name) / blend_filename),
-        object_count=obj_count,
-        file_size=file_size
-    )
-
-    # Update UI
-    sync_history_to_props(context)
-
-
-def autosave_timer():
-    """Timer function for auto-save."""
-    # Check every 5 seconds for responsiveness
-    check_interval = 5.0
-
-    try:
-        context = bpy.context
-        scene = getattr(context, "scene", None)
-        if not scene:
-            return check_interval
-
-        settings = getattr(scene, "savepoints_settings", None)
-        if not settings:
-            return check_interval
-
-        if not settings.use_auto_save:
-            return check_interval
-
-        interval_min = settings.auto_save_interval
-        if interval_min < 1:
-            interval_min = 1
-
-        interval_sec = interval_min * 60.0
-
-        now = time.time()
-        try:
-            last_save = float(settings.last_autosave_timestamp)
-        except ValueError:
-            last_save = 0.0
-
-        # If last_save is 0 (initial), set it to now so we don't save immediately
-        if last_save == 0.0:
-            settings.last_autosave_timestamp = str(now)
-            return check_interval
-
-        if (now - last_save) < interval_sec:
-            return check_interval
-
-        # Check if we can save
-        if not bpy.data.filepath:
-            return check_interval
-
-        if get_parent_path_from_snapshot(bpy.data.filepath):
-            return check_interval
-
-        # Execute save
-        delete_version_by_id("autosave")
-        create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)
-        settings.last_autosave_timestamp = str(time.time())
-
-        return check_interval
-
-    except Exception as e:
-        print(f"Auto Save failed: {e}")
-        return check_interval
 
 
 class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
@@ -738,8 +637,6 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
         # Backup first
         if original_path.exists():
             timestamp = int(time.time())
-
-            from .core import get_history_dir_for_path
             history_dir_str = get_history_dir_for_path(str(original_path))
             if history_dir_str:
                 history_dir = Path(history_dir_str)
