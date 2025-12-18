@@ -4,6 +4,7 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -15,51 +16,65 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestMissingFileHandling(SavePointsTestCase):
-    def test_missing_file_handling(self):
-        print("Starting Missing File Handling Test...")
-        # SavePointsTestCase setup provides self.test_dir and self.blend_path (test_project.blend)
 
-        # 3. Create a version
-        print("Creating version v001...")
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="To be broken")
+    def test_missing_file_handling_scenario(self):
+        """
+        Scenario:
+        1. Create a valid version (v001).
+        2. Sabotage: Manually delete the snapshot file from the disk.
+        3. Attempt Checkout: Verify that the operator fails gracefully (raises RuntimeError).
+        4. Safety Check: Verify that the current file path has NOT changed (Blender didn't crash or load an empty state).
+        """
+        print("Starting Missing File Handling Scenario...")
 
-        # 4. Verify creation
+        # Setup expected paths
         history_dir = self.test_dir / ".test_project_history"
+        # Assuming v001 is the first version created
         snapshot_path = history_dir / "v001" / "snapshot.blend_snapshot"
-        self.assertTrue(snapshot_path.exists(), "Setup failed: Snapshot file was not created.")
 
-        # 5. Sabotage: Delete the snapshot file
-        print("Sabotaging: Deleting snapshot file...")
-        snapshot_path.unlink()
+        # --- Step 1: Create Version ---
+        with self.subTest(step="1. Create Version"):
+            print("Creating version v001...")
 
-        # 6. Attempt Checkout
-        print("Attempting Checkout on missing file...")
-        bpy.context.scene.savepoints_settings.active_version_index = 0
+            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="To be broken")
+            self.assertIn('FINISHED', res, "Commit failed")
 
-        # We expect this operator to report an ERROR and return CANCELLED.
-        # In scripting, this often raises a RuntimeError.
-        try:
-            res = bpy.ops.savepoints.checkout('EXEC_DEFAULT')
-            # If it didn't raise, check if it returned CANCELLED (though usually it raises)
-            if 'CANCELLED' in res:
-                print("Checkout was correctly CANCELLED (via return value).")
-            else:
-                self.fail(f"Checkout should have been CANCELLED but returned: {res}")
-        except RuntimeError as e:
-            # Check if the error message is what we expect
-            if "File not found" in str(e):
-                print("Checkout was correctly CANCELLED (via RuntimeError).")
-            else:
-                raise e
+            # Verify snapshot file exists
+            self.assertTrue(snapshot_path.exists(), "Setup failed: Snapshot file was not created.")
 
-        # 7. Verify we are NOT in snapshot mode (file path should still be original or safe)
-        # Because the open_mainfile failed, we should still be at test_project.blend
-        current_path = Path(bpy.data.filepath)
-        print(f"Current filepath after failure: {current_path}")
+        # --- Step 2: Sabotage (Delete File) ---
+        with self.subTest(step="2. Sabotage"):
+            print("Deleting snapshot file...")
 
-        self.assertEqual(current_path, self.blend_path, f"Safety check failed: Filepath changed to {current_path}")
+            snapshot_path.unlink()
+            self.assertFalse(snapshot_path.exists(), "Failed to delete snapshot file for test")
 
-        print("Missing File Handling Test: PASSED")
+        # --- Step 3: Attempt Checkout (Expect Failure) ---
+        with self.subTest(step="3. Attempt Checkout"):
+            print("Attempting Checkout on missing file...")
+
+            # Set target to the broken version
+            bpy.context.scene.savepoints_settings.active_version_index = 0
+
+            # In headless mode, operators that report {'ERROR'} raise a RuntimeError.
+            # We assert that this error IS raised.
+            with self.assertRaises(RuntimeError, msg="Checkout should raise RuntimeError when file is missing"):
+                bpy.ops.savepoints.checkout('EXEC_DEFAULT')
+
+        # --- Step 4: Verify Safety State ---
+        with self.subTest(step="4. Verify Safety"):
+            print("Verifying fail-safe state...")
+
+            # The operator should abort loading and leave us in the original file.
+            current_path = Path(bpy.data.filepath)
+
+            self.assertEqual(
+                current_path,
+                self.blend_path,
+                f"Safety check failed: Filepath changed to {current_path} despite error"
+            )
+
+        print("Missing File Handling Scenario: Completed")
 
 
 if __name__ == "__main__":
