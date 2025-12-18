@@ -4,6 +4,7 @@ from pathlib import Path
 
 import bpy
 
+from .selection import preserve_selection
 from .storage import (
     get_history_dir,
     load_manifest,
@@ -23,42 +24,46 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
         return
 
     history_dir = Path(history_dir_str)
-    manifest = load_manifest()
 
-    folder_name = version_id
-    version_dir = history_dir / folder_name
-    version_dir.mkdir(parents=True, exist_ok=True)
+    # Wrap the operation to ensure selection/mode is restored
+    # (Important if capture_thumbnail changes modes or selection)
+    with preserve_selection():
+        manifest = load_manifest()
 
-    obj_count = len(bpy.data.objects)
+        folder_name = version_id
+        version_dir = history_dir / folder_name
+        version_dir.mkdir(parents=True, exist_ok=True)
 
-    # Thumbnail
-    thumb_filename = THUMBNAIL_FILENAME
-    thumb_path = version_dir / thumb_filename
-    if not skip_thumbnail:
-        capture_thumbnail(context, str(thumb_path))
+        obj_count = len(bpy.data.objects)
 
-    # Save Snapshot
-    snapshot_path = version_dir / SNAPSHOT_FILENAME
-    bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path))
+        # Thumbnail
+        thumb_filename = THUMBNAIL_FILENAME
+        thumb_path = version_dir / thumb_filename
+        if not skip_thumbnail:
+            capture_thumbnail(context, str(thumb_path))
 
-    # Capture file size
-    file_size = 0
-    if snapshot_path.exists():
-        file_size = snapshot_path.stat().st_size
+        # Save Snapshot
+        snapshot_path = version_dir / SNAPSHOT_FILENAME
+        bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path))
 
-    # Update Manifest
-    add_version_to_manifest(
-        manifest,
-        version_id,
-        note,
-        str(Path(folder_name) / thumb_filename),
-        str(Path(folder_name) / SNAPSHOT_FILENAME),
-        object_count=obj_count,
-        file_size=file_size
-    )
+        # Capture file size
+        file_size = 0
+        if snapshot_path.exists():
+            file_size = snapshot_path.stat().st_size
 
-    # Update UI
-    sync_history_to_props(context)
+        # Update Manifest
+        add_version_to_manifest(
+            manifest,
+            version_id,
+            note,
+            str(Path(folder_name) / thumb_filename),
+            str(Path(folder_name) / SNAPSHOT_FILENAME),
+            object_count=obj_count,
+            file_size=file_size
+        )
+
+        # Update UI
+        sync_history_to_props(context)
 
 
 def find_snapshot_path(version_id: str) -> Path | None:
