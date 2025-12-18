@@ -278,27 +278,28 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         if bpy.ops.object.mode_set.poll():
             bpy.ops.object.mode_set(mode='OBJECT')
 
+        if not self._open_append_dialog(context, append_dir):
+            handler.unregister()
+            delete_rescue_temp_file(temp_blend_path)
+            return {'CANCELLED'}
+
+        return {'FINISHED'}
+
+    def _open_append_dialog(self, context, append_dir):
         found_context = find_3d_view_override(context)
 
         if found_context:
             try:
                 with context.temp_override(**found_context):
                     bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
+                return True
             except Exception as e:
                 print(f"[SavePoints] Append Error: {e}")
-                # Cleanup on error
-                handler.unregister()
-                delete_rescue_temp_file(temp_blend_path)
                 self.report({'ERROR'}, f"Rescue failed due to context error: {e}")
-                return {'CANCELLED'}
+                return False
         else:
-            # Cleanup if no context found
-            handler.unregister()
-            delete_rescue_temp_file(temp_blend_path)
             self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
-            return {'CANCELLED'}
-
-        return {'FINISHED'}
+            return False
 
 
 class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
