@@ -49,17 +49,22 @@ class TestMissingFileHandling(SavePointsTestCase):
             snapshot_path.unlink()
             self.assertFalse(snapshot_path.exists(), "Failed to delete snapshot file for test")
 
-        # --- Step 3: Attempt Checkout (Expect Failure) ---
+        # --- Step 3: Attempt Checkout (Expect Graceful Cleanup) ---
         with self.subTest(step="3. Attempt Checkout"):
             print("Attempting Checkout on missing file...")
 
             # Set target to the broken version
             bpy.context.scene.savepoints_settings.active_version_index = 0
 
-            # In headless mode, operators that report {'ERROR'} raise a RuntimeError.
-            # We assert that this error IS raised.
-            with self.assertRaises(RuntimeError, msg="Checkout should raise RuntimeError when file is missing"):
-                bpy.ops.savepoints.checkout('EXEC_DEFAULT')
+            # New behavior: Should NOT raise RuntimeError.
+            # Should report WARNING and remove the item.
+            # We expect 'CANCELLED' because the checkout didn't happen, but no crash.
+            res = bpy.ops.savepoints.checkout('EXEC_DEFAULT')
+            self.assertIn('CANCELLED', res, "Operator should return CANCELLED for missing file")
+
+            # Verify cleanup: The broken version should be removed from the list
+            settings = bpy.context.scene.savepoints_settings
+            self.assertEqual(len(settings.versions), 0, "Broken version was not removed from the list")
 
         # --- Step 4: Verify Safety State ---
         with self.subTest(step="4. Verify Safety"):
