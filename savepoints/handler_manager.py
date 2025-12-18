@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import bpy
 from .services.asset_path import unmap_snapshot_paths
 from .services.rescue import delete_rescue_temp_file
