@@ -5,6 +5,7 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -18,85 +19,104 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestDeletionProtection(SavePointsTestCase):
-    def create_dummy_version(self, settings, note="Dummy"):
-        # Create a version via operator
+
+    def _create_dummy_version(self, note="Dummy"):
+        """Helper to create a version and return its data."""
         bpy.ops.savepoints.commit('EXEC_DEFAULT', note=note)
         manifest = load_manifest()
+        # Assuming the new version is always at index 0 (newest)
         return manifest["versions"][0]
 
-    def test_deletion_protection(self):
-        print("Starting Deletion Protection Test (Extended)...")
+    def _get_all_version_ids(self):
+        """Helper to get a list of all current version IDs."""
+        manifest = load_manifest()
+        return [v["id"] for v in manifest["versions"]]
 
-        # 1. Setup
-        # SavePointsTestCase creates test_project.blend and registers addon
+    def test_deletion_protection_scenario(self):
+        """
+        Scenario:
+        Validates the lifecycle of a protected version:
+        1. Cannot be deleted by Operator (UI).
+        2. Cannot be deleted by Internal API.
+        3. Persists through Pruning (cleanup).
+        4. Can be deleted after unprotecting.
+        """
+        print("Starting Deletion Protection Scenario...")
+
         settings = bpy.context.scene.savepoints_settings
 
-        print("\n--- Test 1: Manual Deletion Protection (Operator) ---")
-
-        # Create a version
-        v1 = self.create_dummy_version(settings, "Protected Version")
-        v1_id = v1["id"]
+        # Prepare the target version
+        target_version = self._create_dummy_version(note="Protected Target")
+        target_id = target_version["id"]
 
         # Enable protection
-        set_version_protection(v1_id, True)
+        set_version_protection(target_id, True)
 
-        # Try to delete via operator
-        settings.active_version_index = 0
-        bpy.ops.savepoints.delete('EXEC_DEFAULT')
+        # --- Step 1: Manual Deletion Protection (Operator) ---
+        with self.subTest(step="1. Protection against Operator"):
+            print("Step 1: Attempting deletion via Operator...")
 
-        # Check manifest
-        manifest = load_manifest()
-        found = any(v["id"] == v1_id for v in manifest["versions"])
-        if not found:
-            self.fail("Protected version was deleted by Operator!")
-        print("Test 1 Passed.")
+            # Target the specific version in UI list (index 0 currently)
+            settings.active_version_index = 0
 
-        print("\n--- Test 2: Internal API Protection ---")
-        delete_version_by_id(v1_id)
-        manifest = load_manifest()
-        found = any(v["id"] == v1_id for v in manifest["versions"])
-        if not found:
-            self.fail("Protected version was deleted by internal API!")
-        print("Test 2 Passed.")
+            # Attempt delete
+            bpy.ops.savepoints.delete('EXEC_DEFAULT')
 
-        print("\n--- Test 3: Prune Protection (Basic) ---")
-        # Create filler versions
-        for i in range(3):
-            self.create_dummy_version(settings, f"Filler {i}")
-            time.sleep(0.1)
+            # Verify: Should still exist
+            current_ids = self._get_all_version_ids()
+            self.assertIn(target_id, current_ids, "Protected version was deleted by Operator!")
 
-        # v1 (Protected) is now index 3 (Oldest)
-        # Prune max_keep=1
-        prune_versions(max_keep=1)
+        # --- Step 2: Internal API Protection ---
+        with self.subTest(step="2. Protection against Internal API"):
+            print("Step 2: Attempting deletion via Internal API...")
 
-        manifest = load_manifest()
-        remaining_ids = [v["id"] for v in manifest["versions"]]
-        if v1_id not in remaining_ids:
-            self.fail("Protected version was deleted by Prune!")
-        print("Test 3 Passed.")
+            # Attempt delete directly by ID
+            delete_version_by_id(target_id)
 
-        print("\n--- Test 4: Unprotect and Delete ---")
-        # Create a fresh version for this test since previous tests might have cleared the manifest
-        v5 = self.create_dummy_version(settings, "Version to Unprotect")
-        v5_id = v5["id"]
+            # Verify: Should still exist
+            current_ids = self._get_all_version_ids()
+            self.assertIn(target_id, current_ids, "Protected version was deleted by internal API!")
 
-        # Ensure it starts protected
-        set_version_protection(v5_id, True)
+        # --- Step 3: Prune Protection ---
+        with self.subTest(step="3. Protection against Pruning"):
+            print("Step 3: Attempting deletion via Pruning...")
 
-        # Unprotect
-        set_version_protection(v5_id, False)
+            # Create filler versions to push the protected version down the list
+            # We add wait times to ensure timestamps are distinct
+            for i in range(3):
+                time.sleep(0.1)
+                self._create_dummy_version(note=f"Filler {i}")
 
-        # Delete
-        delete_version_by_id(v5_id)
+            # Now we have [Filler2, Filler1, Filler0, ProtectedTarget]
+            # Prune with max_keep=1.
+            # Normal behavior: Keep Filler2, delete everything else.
+            # Protected behavior: Keep Filler2 AND ProtectedTarget.
+            prune_versions(max_keep=1)
 
-        # Verify deletion
-        manifest = load_manifest()
-        remaining_ids = [v["id"] for v in manifest["versions"]]
-        if v5_id in remaining_ids:
-            self.fail("Unprotected version was NOT deleted!")
-        print("Test 4 Passed.")
+            current_ids = self._get_all_version_ids()
 
-        print("\nALL TESTS PASSED")
+            # Verify: Protected version must persist
+            self.assertIn(target_id, current_ids, "Protected version was deleted by Prune!")
+
+            # Optional Verify: Pruning actually worked (some fillers should be gone)
+            # Depending on implementation, Filler 0 or 1 should be gone.
+            self.assertLess(len(current_ids), 4, "Pruning didn't delete any versions at all")
+
+        # --- Step 4: Unprotect and Delete ---
+        with self.subTest(step="4. Unprotect and Delete"):
+            print("Step 4: Unprotecting and Deleting...")
+
+            # Unprotect
+            set_version_protection(target_id, False)
+
+            # Delete
+            delete_version_by_id(target_id)
+
+            # Verify: Should be gone now
+            current_ids = self._get_all_version_ids()
+            self.assertNotIn(target_id, current_ids, "Unprotected version was NOT deleted!")
+
+        print("Deletion Protection Scenario: Completed")
 
 
 if __name__ == "__main__":
