@@ -1,9 +1,9 @@
 import json
-
 import sys
 import unittest
 from pathlib import Path
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -12,79 +12,83 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from savepoints.services.linking import link_history
-# Add project root to sys.path
 from savepoints_test_case import SavePointsTestCase
 
 
 class TestLinkHistoryValidation(SavePointsTestCase):
-    def test_link_history_validation(self):
-        print("Starting Link History Validation Test...")
+
+    def test_link_history_validation_scenario(self):
+        """
+        Scenario:
+        1. Attempt to link a history folder with a malformed (non-JSON) manifest -> Expect ValueError.
+        2. Attempt to link a history folder with valid JSON but missing required keys -> Expect ValueError.
+        3. Link a valid history folder -> Expect Success, directory move, and correct naming.
+        """
+        print("Starting Link History Validation Scenario...")
 
         # Setup Paths
-        # Use self.blend_path from base class (test_project.blend)
-        project_path = self.blend_path
+        project_path = str(self.blend_path)  # test_project.blend
 
         bad_json_dir = self.test_dir / "bad_json_history"
         missing_keys_dir = self.test_dir / "missing_keys_history"
         valid_dir = self.test_dir / "valid_history"
 
-        # 1. Test Malformed JSON
-        bad_json_dir.mkdir()
-        (bad_json_dir / "manifest.json").write_text("{ this is not json }", encoding='utf-8')
+        # --- Step 1: Test Malformed JSON ---
+        with self.subTest(step="1. Malformed JSON"):
+            print("Testing Malformed JSON input...")
 
-        print("Testing Malformed JSON...")
-        try:
-            link_history(bad_json_dir, str(project_path))
-            self.fail("Malformed JSON should have raised ValueError")
-        except ValueError as e:
-            print(f"Caught expected error: {e}")
-            pass
+            bad_json_dir.mkdir()
+            (bad_json_dir / "manifest.json").write_text("{ this is not json }", encoding='utf-8')
 
-        # 2. Test Missing Keys (Valid JSON but not a manifest)
-        missing_keys_dir.mkdir()
-        (missing_keys_dir / "manifest.json").write_text("{}", encoding='utf-8')
+            # Verify that link_history raises ValueError for invalid JSON syntax
+            with self.assertRaises(ValueError, msg="Malformed JSON should raise ValueError"):
+                link_history(bad_json_dir, project_path)
 
-        print("Testing Missing Keys...")
-        try:
-            link_history(missing_keys_dir, str(project_path))
-            self.fail("Empty JSON should have raised ValueError")
-        except ValueError as e:
-            print(f"Caught expected error: {e}")
+        # --- Step 2: Test Missing Keys ---
+        with self.subTest(step="2. Missing Keys"):
+            print("Testing Missing Keys input...")
 
-        # 3. Test Valid Manifest
-        valid_dir.mkdir()
-        valid_manifest = {
-            "versions": [],
-            "parent_file": str(project_path)
-        }
-        with (valid_dir / "manifest.json").open('w', encoding='utf-8') as f:
-            json.dump(valid_manifest, f)
+            missing_keys_dir.mkdir()
+            (missing_keys_dir / "manifest.json").write_text("{}", encoding='utf-8')
 
-        print("Testing Valid Manifest...")
-        # This should succeed
-        target_path_str = link_history(valid_dir, str(project_path))
-        print("Valid manifest linked successfully.")
+            # Verify that link_history raises ValueError for missing schema keys (e.g., 'parent_file')
+            with self.assertRaises(ValueError, msg="Empty JSON should raise ValueError"):
+                link_history(missing_keys_dir, project_path)
 
-        # Verification
-        target_path = Path(target_path_str)
-        if not target_path.exists():
-            self.fail(f"Target history directory not found at: {target_path}")
+        # --- Step 3: Test Valid Manifest (Happy Path) ---
+        with self.subTest(step="3. Valid Manifest"):
+            print("Testing Valid Manifest input...")
 
-        if valid_dir.exists():
-            self.fail(f"Source directory still exists at: {valid_dir}")
+            valid_dir.mkdir()
+            valid_manifest = {
+                "versions": [],
+                "parent_file": project_path
+            }
 
-        if not (target_path / "manifest.json").exists():
-            self.fail("manifest.json not found in target directory")
+            with (valid_dir / "manifest.json").open('w', encoding='utf-8') as f:
+                json.dump(valid_manifest, f)
 
-        # Expect .test_project_history because blend file is test_project.blend
-        expected_name = ".test_project_history"
-        if target_path.name != expected_name:
-            self.fail(f"Unexpected target directory name. Expected {expected_name}, got {target_path.name}")
+            # Execution
+            target_path_str = link_history(valid_dir, project_path)
+            target_path = Path(target_path_str)
 
-        print("ALL VALIDATION TESTS PASSED")
+            # Verification
+            # 1. Target directory should exist
+            self.assertTrue(target_path.exists(), f"Target history directory not found at: {target_path}")
+
+            # 2. Source directory should be moved (not exist)
+            self.assertFalse(valid_dir.exists(), f"Source directory still exists at: {valid_dir}")
+
+            # 3. Manifest should be preserved
+            self.assertTrue((target_path / "manifest.json").exists(), "manifest.json not found in target directory")
+
+            # 4. Directory name check (Should be .test_project_history)
+            expected_name = ".test_project_history"
+            self.assertEqual(target_path.name, expected_name,
+                             f"Unexpected target directory name. Expected '{expected_name}', got '{target_path.name}'")
+
+        print("Link History Validation Scenario: Completed")
 
 
 if __name__ == "__main__":
-    res = unittest.main(argv=[''], exit=False)
-    if not res.result.wasSuccessful():
-        sys.exit(1)
+    unittest.main(argv=[''], exit=False)

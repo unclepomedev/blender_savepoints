@@ -354,7 +354,11 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
         blend_path = find_snapshot_path(item.version_id)
 
         if not blend_path:
-            self.report({'ERROR'}, f"Snapshot file not found for version: {item.version_id}")
+            # Automatically clean up ghost entry
+            version_id = item.version_id
+            self.report({'WARNING'}, f"Snapshot file not found. Removed version {version_id} from list.")
+            delete_version_by_id(version_id)
+            sync_history_to_props(context)
             return {'CANCELLED'}
 
         # Handle unsaved changes (Interactive only)
