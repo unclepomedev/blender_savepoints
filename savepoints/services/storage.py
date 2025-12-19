@@ -248,7 +248,19 @@ def get_fork_target_path(snapshot_path: Path) -> Path:
         stem = history_dirname[1:-8]  # remove '.' and '_history'
 
     filename = f"{stem}_{version_id}.blend"
-    return project_root / filename
+    target_path = project_root / filename
+
+    if not target_path.exists():
+        return target_path
+
+    # Handle collision with sequential numbering
+    counter = 1
+    while True:
+        filename = f"{stem}_{version_id}_{counter:03d}.blend"
+        target_path = project_root / filename
+        if not target_path.exists():
+            return target_path
+        counter += 1
 
 
 def initialize_history_for_path(target_path: Path) -> None:

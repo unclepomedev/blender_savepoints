@@ -35,3 +35,4 @@ test-blender:
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_ghost.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_commit_selection_persistence.py
     "{{blender_exe}}" --factory-startup -b -P tests/blender/test_commit_selection_persistence_extended.py
+    "{{blender_exe}}" --factory-startup -b -P tests/blender/test_fork_collision.py
