@@ -1,7 +1,8 @@
+import os
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 import bpy
 
@@ -125,8 +126,6 @@ class TestRescueAssets(SavePointsTestCase):
 
         print("Rescue Assets Scenario: Completed")
 
-
-import os  # Needed for os.sep
 
 if __name__ == '__main__':
     unittest.main(argv=[''], exit=False)

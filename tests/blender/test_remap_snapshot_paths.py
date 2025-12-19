@@ -153,7 +153,7 @@ class TestRemapSnapshotPaths(SavePointsTestCase):
 
         # --- Step 4: Snapshot Outside History ---
         with self.subTest(step="4. Snapshot Outside History"):
-            # Save as snapshot but in root (not in .savepoints folder)
+            # Save as snapshot but in root (not in history folder like .project_history)
             outside_snapshot = project_dir / "copy.blend_snapshot"
             bpy.ops.wm.save_as_mainfile(filepath=str(outside_snapshot), check_existing=False)
 
