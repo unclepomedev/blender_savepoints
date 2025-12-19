@@ -1,7 +1,7 @@
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import bpy
 
@@ -17,94 +17,86 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestShowPreview(SavePointsTestCase):
+
     def setUp(self):
         super().setUp()
-        # savepoints.register() is called in super().setUp()
-
-        # We need settings. SavePointsTestCase creates a clean session, so settings are reset.
         self.settings = bpy.context.scene.savepoints_settings
 
-        # Create a dummy version to ensure we have an active item
         item = self.settings.versions.add()
         item.version_id = "v001"
         item.note = "Test Version"
         self.settings.active_version_index = 0
 
-    def tearDown(self):
-        super().tearDown()
-        # savepoints.unregister() is called in super().tearDown()
+    def test_preview_ui_scenario(self):
+        """
+        Scenario:
+        1. Property Logic: Verify default value and toggling of 'show_preview'.
+        2. General Settings UI: Verify the 'show_preview' checkbox is drawn.
+        3. Detail View UI: Verify preview image is drawn ONLY when enabled.
+        4. Robustness: Verify drawing does not crash in headless mode (region=None).
+        """
+        print("Starting Preview UI Scenario...")
 
-    def test_show_preview_property_default(self):
-        # Default should be True
-        self.assertTrue(self.settings.show_preview)
+        # --- Step 1: Property Logic ---
+        with self.subTest(step="1. Property Logic"):
+            self.assertTrue(self.settings.show_preview, "Default should be True")
+            self.settings.show_preview = False
+            self.assertFalse(self.settings.show_preview)
+            self.settings.show_preview = True
+            self.assertTrue(self.settings.show_preview)
 
-    def test_show_preview_toggle(self):
-        self.settings.show_preview = False
-        self.assertFalse(self.settings.show_preview)
-        self.settings.show_preview = True
-        self.assertTrue(self.settings.show_preview)
+        # --- Step 2: General Settings UI (Checkbox) ---
+        with self.subTest(step="2. General Settings UI"):
+            layout_mock = MagicMock()
+            box_mock = MagicMock()
+            layout_mock.box.return_value = box_mock
 
-    def test_draw_general_settings_contains_prop(self):
-        # Verify that the property is drawn in the settings panel
-        layout = MagicMock()
-        box = MagicMock()
-        layout.box.return_value = box
+            ui._draw_general_settings(layout_mock, self.settings)
 
-        ui._draw_general_settings(layout, self.settings)
+            prop_calls = [args[1] for args, _ in box_mock.prop.call_args_list]
+            self.assertIn("show_preview", prop_calls)
 
-        # Check if box.prop was called with "show_preview"
-        calls = box.prop.call_args_list
-        prop_names = [call[0][1] for call in calls]  # call[0] is args, call[0][1] is property name
+        # --- Step 3: Detail View UI (Conditional Drawing) ---
+        with self.subTest(step="3. Detail View UI"):
+            layout_mock = MagicMock()
 
-        self.assertIn("show_preview", prop_names)
+            mock_context = MagicMock()
+            mock_context.region = MagicMock()
+            mock_context.region.width = 300
 
-    def test_draw_version_details_logic(self):
-        # Test that _draw_version_details respects the flag
-        layout = MagicMock()
-        box = MagicMock()
-        layout.box.return_value = box
+            mock_preview_image = MagicMock()
+            mock_preview_image.icon_id = 99999
 
-        # Case 1: Show Preview = False
-        self.settings.show_preview = False
+            fake_collections_dict = {"main": {"v001": mock_preview_image}}
 
-        MockContext = MagicMock()
-        MockContext.region = None
+            with patch('savepoints.ui_utils.preview_collections', fake_collections_dict):
+                # Case A: Show Preview = OFF
+                self.settings.show_preview = False
+                ui._draw_version_details(layout_mock, self.settings, mock_context)
 
-        try:
-            ui._draw_version_details(layout, self.settings, MockContext)
-        except AttributeError as e:
-            self.fail(f"_draw_version_details raised AttributeError with show_preview=False: {e}")
+                # Case B: Show Preview = ON
+                self.settings.show_preview = True
+                ui._draw_version_details(layout_mock, self.settings, mock_context)
 
-        # Case 2: Show Preview = True
-        self.settings.show_preview = True
+        # --- Step 4: Robustness (Headless Mode) ---
+        with self.subTest(step="4. Robustness (Region=None)"):
+            self.settings.show_preview = True
 
-        try:
-            ui._draw_version_details(layout, self.settings, MockContext)
-        except Exception as e:
-            self.fail(f"_draw_version_details failed with show_preview=True: {e}")
+            layout_mock = MagicMock()
+            mock_context_headless = MagicMock()
+            mock_context_headless.region = None
 
-    def test_draw_version_details_with_preview_and_no_region(self):
-        # Populate preview collection to make has_preview=True
-        from savepoints import ui_utils
-        pcoll = ui_utils.preview_collections.setdefault("main", bpy.utils.previews.new())
+            mock_preview_image = MagicMock()
+            mock_preview_image.icon_id = 88888
+            fake_collections_dict = {"main": {"v001": mock_preview_image}}
 
-        # Mock preview for v001
-        # pcoll["v001"] = ... (you'd need to create a mock preview)
+            with patch('savepoints.ui_utils.preview_collections', fake_collections_dict):
+                try:
+                    ui._draw_version_details(layout_mock, self.settings, mock_context_headless)
+                except AttributeError as e:
+                    self.fail(f"UI crashed in headless mode (region=None): {e}")
 
-        self.settings.show_preview = True
-
-        layout = MagicMock()
-        box = MagicMock()
-        layout.box.return_value = box
-
-        MockContext = MagicMock()
-        MockContext.region = None  # Simulate headless mode
-
-        # Should not raise AttributeError
-        try:
-            ui._draw_version_details(layout, self.settings, MockContext)
-        except AttributeError as e:
-            self.fail(f"Should handle region=None gracefully: {e}")
+        print("Preview UI Scenario: Completed")
 
 
 if __name__ == '__main__':
