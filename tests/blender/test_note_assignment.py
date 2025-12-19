@@ -115,7 +115,7 @@ class TestNoteAssignment(SavePointsTestCase):
         self.assertEqual(op.note, "Explicit Note")
 
     def test_invoke_no_active_object(self):
-        """Case: No active object -> Empty Note"""
+        """Case: No active object -> 'No Active Object'"""
         # Deselect everything to simulate no active object in real context
         bpy.ops.object.select_all(action='DESELECT')
         bpy.context.view_layer.objects.active = None
