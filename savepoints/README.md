@@ -67,6 +67,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 7. **Relinking History**:
    - If the history folder is missing (e.g., after moving the `.blend` file), a **Link Existing History Folder** button will appear.
    - Click it to select and reconnect an existing history folder.
+   - **Note that the selected source folder will be moved to the current location and deleted from the original path.**
 8. **Export Project**:
    - Go to **File > Export > SavePoints Project (.zip)**.
    - This creates a zip file containing your current `.blend` file and its entire history folder.
@@ -154,6 +155,7 @@ SavePointsは、プロジェクトのバージョン管理をサポートするB
    - **Lock Versions**: リストの **Lock** アイコン（鍵マーク）をクリックすると、そのバージョンは保護され、自動削除や手動削除の対象外になります。
 7. **Relinking History**:
    - `.blend` ファイルを移動するなどして履歴フォルダが見つからない場合、**Link Existing History Folder** ボタンが表示されます。既存のフォルダを選択して再接続できます。
+   - **※選択した元のフォルダは現在の場所に移動され、元の場所からは削除されますのでご注意ください。**
 8. **Export Project**:
    - **File > Export > SavePoints Project (.zip)** を選択します。
    - 現在の `.blend` ファイルと履歴フォルダ一式をまとめたzipファイルを作成します。バックアップや共有に便利です。
@@ -240,6 +242,7 @@ SavePoints 是一款 Blender 插件，可以帮助您轻松管理项目版本。
    - **Lock Versions**: 点击版本旁边的 Lock 图标以保护它。锁定的版本永远不会被自动删除，除非解锁，否则无法手动删除。
 7. **Relinking History**:
    - 如果历史文件夹丢失 (例如移动 `.blend` 文件后)，会出现 **Link Existing History Folder** 按钮。点击它以选择并重新连接现有的历史文件夹。
+   - **请注意：选中的源文件夹将被移动到当前位置，并从原始路径中删除。**
 8. **Export Project**:
    - 转到 **File > Export > SavePoints Project (.zip)**。
    - 这将创建一个包含当前 `.blend` 文件及其整个历史文件夹的 zip 文件。
