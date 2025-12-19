@@ -103,7 +103,7 @@ Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Ble
 4. **Rename** the extension from `.blend_snapshot` to `.blend`.
 5. Open it normally in Blender.
 
-## Testing (under maintenance)
+## Testing (for developers)
 
 This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
 
