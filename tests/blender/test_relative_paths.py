@@ -174,6 +174,87 @@ class TestRelativePaths(SavePointsTestCase):
 
         print("Rescue Unmap Logic Scenario: Completed")
 
+    def test_active_user_paths_scenario(self):
+        """
+        Scenario:
+        1. Create an image assigned to a Material Node (Active User).
+        2. Ensure NO fake user is set on the image.
+        3. Commit -> Snapshot -> Fork.
+        4. Verify path remapping works correctly for active users too.
+        """
+        print("Starting Active User Paths Scenario...")
+
+        # --- Step 1: Setup Active User Chain ---
+        with self.subTest(step="1. Setup Active User"):
+            # Create a specific image for this test
+            active_img_name = "ActiveImage"
+            active_img = bpy.data.images.new(active_img_name, width=64, height=64)
+            active_img.filepath = "//my_texture.png"  # Reuse same physical file
+            active_img.use_fake_user = False
+
+            # Create Material with Nodes
+            mat = bpy.data.materials.new(name="ActiveMaterial")
+            # Avoid DeprecationWarning: check if nodes are already enabled
+            if mat.node_tree is None:
+                mat.use_nodes = True
+            nodes = mat.node_tree.nodes
+
+            # Add Image Texture Node
+            tex_node = nodes.new(type="ShaderNodeTexImage")
+            tex_node.image = active_img
+
+            # Assign material to object
+            bpy.ops.mesh.primitive_cube_add()
+            obj = bpy.context.object
+            obj.name = "ActiveUserCube"
+            if obj.data.materials:
+                obj.data.materials[0] = mat
+            else:
+                obj.data.materials.append(mat)
+
+            # Verify user count
+            self.assertTrue(active_img.users > 0, "Image should have active users")
+            self.assertFalse(active_img.use_fake_user, "Image should not have fake user")
+
+            # Save to persist setup
+            bpy.ops.wm.save_mainfile()
+
+        # --- Step 2: Commit ---
+        with self.subTest(step="2. Commit"):
+            bpy.ops.savepoints.commit(note="v1_active")
+
+            history_dir = self.test_dir / ".test_project_history"
+            snapshot_path = history_dir / "v001" / "snapshot.blend_snapshot"
+            self.assertTrue(snapshot_path.exists(), "Snapshot not created")
+
+        # --- Step 3: Verify Snapshot ---
+        with self.subTest(step="3. Verify Snapshot Path"):
+            bpy.ops.wm.open_mainfile(filepath=str(snapshot_path))
+
+            img = bpy.data.images.get(active_img_name)
+            self.assertIsNotNone(img, "ActiveImage missing in snapshot")
+
+            path_norm = img.filepath.replace("\\", "/")
+            self.assertTrue(path_norm.startswith("//../../"),
+                            f"Snapshot path expected to start with //../../, got: {path_norm}")
+
+        # --- Step 4: Fork and Verify ---
+        with self.subTest(step="4. Fork and Verify"):
+            bpy.ops.savepoints.fork_version()
+
+            current_path = Path(bpy.data.filepath)
+            # Check file exists and is not snapshot
+            self.assertFalse(current_path.name.endswith(".blend_snapshot"))
+
+            img = bpy.data.images.get(active_img_name)
+            path_norm = img.filepath.replace("\\", "/")
+
+            if path_norm.startswith("//"):
+                self.assertFalse(path_norm.startswith("//../../"), "Path should be unmapped")
+                self.assertTrue(path_norm.endswith("my_texture.png"))
+
+        print("Active User Paths Scenario: Completed")
+
 
 if __name__ == '__main__':
     unittest.main(argv=[''], exit=False)
