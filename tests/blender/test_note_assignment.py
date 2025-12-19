@@ -129,7 +129,7 @@ class TestNoteAssignment(SavePointsTestCase):
         res = self.invoke_func(op, mock_ctx, None)
 
         self.assertEqual(res, {'FINISHED'})
-        self.assertEqual(op.note, "")
+        self.assertEqual(op.note, "No Active Object")
 
     def test_invoke_exception_handling(self):
         """Case: Context Error -> Graceful failure (Empty Note)"""

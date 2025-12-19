@@ -63,7 +63,7 @@ class TestRetentionPolicy(SavePointsTestCase):
             ids = self._get_version_ids()
             self.assertEqual(len(ids), 3, "Count should remain 3 after pruning")
             self.assertNotIn("v001", ids, "Oldest version (v001) should be pruned")
-            self.assertIn("v004", ids, "Newest version (v004) should represent")
+            self.assertIn("v004", ids, "Newest version (v004) should be present")
 
         # --- Step 2: Disable Limit ---
         with self.subTest(step="2. Disable Limit"):
