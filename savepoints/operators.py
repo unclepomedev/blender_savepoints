@@ -251,7 +251,7 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         if found_context:
             try:
                 with context.temp_override(**found_context):
-                    bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="")
+                    bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="", link=False, autoselect=True)
                 return True
             except Exception as e:
                 print(f"[SavePoints] Append Error: {e}")
