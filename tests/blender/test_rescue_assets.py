@@ -1,9 +1,12 @@
+import os
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -16,112 +19,112 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestRescueAssets(SavePointsTestCase):
-    def test_rescue_assets_execution(self):
-        print("\n--- Test Rescue Assets ---")
-        # 1. Create a dummy snapshot
-        version_id = "v001"
-        # The history dir is derived from the blend file name set in setUp (test_project.blend)
-        history_dir = self.test_dir / ".test_project_history"
-        version_dir = history_dir / version_id
-        version_dir.mkdir(parents=True)
 
-        snapshot_path = version_dir / "snapshot.blend_snapshot"
-        # Create a valid blend file as snapshot
-        bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), copy=True)
+    def setUp(self):
+        super().setUp()
+        # Ensure we know where the history should be
+        # SavePointsTestCase sets up a file named "test_project.blend"
+        self.history_dir = self.test_dir / ".test_project_history"
 
-        # Verify history dir matches
-        computed_history_dir = get_history_dir()
-        self.assertEqual(str(computed_history_dir), str(history_dir))
+        # Verify environment matches expectation
+        computed_dir = get_history_dir()
+        if str(computed_dir) != str(self.history_dir):
+            self.fail(f"Environment mismatch: Expected {self.history_dir}, got {computed_dir}")
 
-        # 2. Run Operator with INVALID version
-        print("Testing invalid version...")
-        try:
-            # This should fail (return CANCELLED, causing RuntimeError in script call)
-            bpy.ops.savepoints.rescue_assets(version_id="v999")
-            self.fail("Operator should have failed for missing snapshot")
-        except RuntimeError as e:
-            # Expected
-            print("Caught expected error for invalid version.")
-            pass
+    def test_rescue_assets_scenario(self):
+        """
+        Scenario:
+        1. Standard Snapshot: Create a .blend_snapshot file, run operator.
+           Verify it creates a temp file and attempts to open the append dialog.
+        2. Legacy Snapshot: Create a .blend file (old format), run operator.
+           Verify it handles it correctly as above.
+        3. Invalid Version: Run operator with non-existent ID.
+           Verify it fails gracefully (CANCELLED).
+        """
+        print("Starting Rescue Assets Scenario...")
 
-        # 3. Run Operator with VALID version
-        print("Testing valid version...")
-        try:
-            # This calls wm.append('INVOKE_DEFAULT', directory=...)
-            # In background mode, this *might* fail or return FINISHED depending on Blender version/behavior.
-            # If it returns FINISHED, it means it found the file and called append.
-            # If it fails with "context is incorrect", it also means it tried to call append (since append is context sensitive).
+        # We patch the method that actually calls 'wm.append' (UI).
+        # This prevents RuntimeError in headless mode and allows us to inspect the path passed to it.
+        # Note: We patch the class method, so the instance created by bpy.ops uses the mock.
+        with patch("savepoints.operators.SAVEPOINTS_OT_rescue_assets._open_append_dialog") as mock_open_dialog:
 
-            res = bpy.ops.savepoints.rescue_assets(version_id=version_id)
-            print(f"Result: {res}")
+            # --- Step 1: Standard Snapshot (.blend_snapshot) ---
+            with self.subTest(step="1. Standard Snapshot"):
+                version_id = "v001"
+                version_dir = self.history_dir / version_id
+                version_dir.mkdir(parents=True, exist_ok=True)
 
-            if "FINISHED" in res:
-                print("Operator finished successfully.")
+                # Create dummy snapshot
+                snapshot_path = version_dir / "snapshot.blend_snapshot"
+                bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), copy=True)
 
-        except RuntimeError as e:
-            # Check if the error is the expected one for headless environment
-            err_str = str(e)
+                # Execute Operator
+                res = bpy.ops.savepoints.rescue_assets(version_id=version_id)
 
-            # Normalize path separators for cross-platform check
-            err_str_norm = err_str.replace("\\", "/")
-            expected_path_part = f"{version_id}/snapshot_rescue_temp.blend/Object"
+                # Verification
+                self.assertEqual(res, {'FINISHED'}, "Operator should finish successfully when mocked")
 
-            if "Snapshot file not found" in err_str:
-                self.fail(f"Snapshot not found: {e}")
+                # Check if temp file was generated (Real IO check)
+                temp_file = version_dir / "snapshot_rescue_temp.blend"
+                self.assertTrue(temp_file.exists(), "Temp rescue file should be created on disk")
 
-            elif "nothing indicated" in err_str and expected_path_part in err_str_norm:
-                # SUCCESS: This error confirms that the operator constructed the correct path
-                # and attempted to open it via wm.append.
-                # The "nothing indicated" error is expected because we are in background mode (no UI).
-                print(f"Test Passed: Verified correct append path attempt:\n  -> .../{expected_path_part}")
+                # Check if UI dialog was requested with correct path
+                mock_open_dialog.assert_called()
+                args, _ = mock_open_dialog.call_args
+                # args[0] is 'self' (operator instance), args[1] is 'context', args[2] is 'directory'
+                # or strictly check arguments depending on signature.
+                # Let's check the kwargs or last arg for the path
+                directory_arg = args[-1]  # Assuming directory is the last arg based on typical usage
 
-            else:
-                # Unexpected error
-                print(f"Caught unexpected runtime error: {e}")
-                # We interpret this as a pass if it's just a UI context error, but warn the user
-                if "context" in err_str.lower():
-                    print("Pass (UI Context Error)")
-                else:
-                    raise e
+                expected_part = f"{version_id}/snapshot_rescue_temp.blend/Object"
+                # Normalize path for Windows/Mac
+                self.assertIn(expected_part.replace("/", os.sep), str(directory_arg).replace("/", os.sep))
 
-        # Note: We can't verify the exact directory string passed to append without mocking, 
-        # but passing this test ensures the file was found and logic proceeded to append call.
+                # Cleanup for next step
+                mock_open_dialog.reset_mock()
 
-    def test_rescue_assets_legacy(self):
-        print("\n--- Test Rescue Assets (Legacy .blend) ---")
-        version_id = "v002"
-        # The history dir is determined by the blend file name ("test_project.blend")
-        history_dir = self.test_dir / ".test_project_history"
-        version_dir = history_dir / version_id
-        version_dir.mkdir(parents=True, exist_ok=True)
+            # --- Step 2: Legacy Snapshot (.blend) ---
+            with self.subTest(step="2. Legacy Snapshot"):
+                version_id = "v002"
+                version_dir = self.history_dir / version_id
+                version_dir.mkdir(parents=True, exist_ok=True)
 
-        # Create legacy snapshot
-        snapshot_path = version_dir / "snapshot.blend"
-        bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), copy=True)
+                # Create legacy snapshot
+                snapshot_path = version_dir / "snapshot.blend"
+                bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), copy=True)
 
-        print(f"Testing rescue for legacy file: {snapshot_path}")
+                # Execute Operator
+                res = bpy.ops.savepoints.rescue_assets(version_id=version_id)
 
-        try:
-            res = bpy.ops.savepoints.rescue_assets(version_id=version_id)
-            print(f"Result: {res}")
+                # Verification
+                self.assertEqual(res, {'FINISHED'})
 
-        except RuntimeError as e:
-            err_str = str(e)
-            # Normalize path separators
-            err_str_norm = err_str.replace("\\", "/")
+                # Check temp file logic
+                temp_file = version_dir / "snapshot_rescue_temp.blend"
+                self.assertTrue(temp_file.exists(), "Temp file should be created from legacy snapshot")
 
-            # The operator creates a temp file from the source
-            temp_blend_path = version_dir / "snapshot_rescue_temp.blend"
+                # Check UI call
+                mock_open_dialog.assert_called_once()
 
-            if temp_blend_path.exists():
-                print("Temp file created, meaning source file was found.")
-            else:
-                if "Snapshot file not found" in err_str:
-                    self.fail(f"Legacy snapshot not detected: {e}")
-                else:
-                    # Some other error, but maybe file was found?
-                    # If temp file doesn't exist, it likely failed before copy or copy failed.
-                    print(f"Caught error without temp file: {err_str}")
+                # Cleanup
+                mock_open_dialog.reset_mock()
+
+            # --- Step 3: Invalid Version ---
+            with self.subTest(step="3. Invalid Version"):
+                # Execute with missing version
+                # In headless mode via bpy.ops, if an operator returns {'CANCELLED'},
+                # it raises a RuntimeError.
+                try:
+                    bpy.ops.savepoints.rescue_assets(version_id="v999")
+                    self.fail("Operator should fail for missing version")
+                except RuntimeError:
+                    # Expected behavior for CANCELLED operator
+                    pass
+
+                # Ensure UI was NOT called
+                mock_open_dialog.assert_not_called()
+
+        print("Rescue Assets Scenario: Completed")
 
 
 if __name__ == '__main__':

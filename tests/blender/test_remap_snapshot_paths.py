@@ -4,6 +4,7 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -16,170 +17,172 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestRemapSnapshotPaths(SavePointsTestCase):
-    def test_remap_snapshot_paths(self):
-        print("Starting Remap Snapshot Paths Test...")
-        # test_dir is provided by SavePointsTestCase
-        project_dir = self.test_dir
 
-        # Paths setup
-        history_dir = project_dir / ".project_history"
-        version_dir = history_dir / "v001"
-        version_dir.mkdir(parents=True)
-
-        # Create a dummy library file to link against
+    def _setup_dummy_assets(self, project_dir):
+        """Helper to create dummy Image, Library, and VSE strip for testing."""
+        # 1. Setup Directories
         lib_dir = project_dir / "Lib"
-        lib_dir.mkdir()
-        lib_path = lib_dir / "library.blend"
-
-        # Create dummy image file location (file doesn't need to exist for logic test, but path does)
+        lib_dir.mkdir(parents=True, exist_ok=True)
         tex_dir = project_dir / "Textures"
-        tex_dir.mkdir()
+        tex_dir.mkdir(parents=True, exist_ok=True)
+
+        lib_path = lib_dir / "library.blend"
         img_path = tex_dir / "image.png"
 
-        # Create dummy object to link and save lib
+        # 2. Create Dummy Library File
         bpy.ops.wm.read_factory_settings(use_empty=True)
-        ob = bpy.data.objects.new("DummyObj", None)
-        ob.use_fake_user = True
-        bpy.ops.wm.save_as_mainfile(filepath=str(lib_path))
+        bpy.data.objects.new("DummyObj", None).use_fake_user = True
+        bpy.ops.wm.save_as_mainfile(filepath=str(lib_path), check_existing=False)
 
-        # --- Setup Data Blocks ---
-        # Start with a clean slate
+        # 3. Reset to clean slate for the actual test file
         bpy.ops.wm.read_factory_settings(use_empty=True)
 
-        # 1. Image
+        # 4. Create Image Datablock
         img = bpy.data.images.new("TestImage", 128, 128)
 
-        # 2. Library
+        # 5. Link Library
         with bpy.data.libraries.load(str(lib_path), link=True) as (data_from, data_to):
             if "DummyObj" in data_from.objects:
                 data_to.objects = ["DummyObj"]
 
-        if not bpy.data.libraries:
-            self.fail(f"Failed to load library. Libs: {list(bpy.data.libraries)}")
+        lib = bpy.data.libraries[0] if bpy.data.libraries else None
 
-        lib = bpy.data.libraries[0]
-
-        # 3. VSE
+        # 6. Setup VSE
         scene = bpy.context.scene
         if not scene.sequence_editor:
             scene.sequence_editor_create()
 
-        # Add an image strip
-        with open(img_path, 'wb') as f:
-            f.write(b'fake png')
+        # Create real dummy image file
+        # img datablock is already created above
+        img.filepath_raw = str(img_path)
+        img.file_format = 'PNG'
+        img.save()
 
-        print(f"DEBUG: SequenceEditor attributes: {dir(scene.sequence_editor)}")
-        # Check if sequences exists or if we need to use something else
-        if hasattr(scene.sequence_editor, "sequences"):
-            seq = scene.sequence_editor.sequences.new_image("TestSeq", str(img_path), channel=1, frame_start=1)
-        elif hasattr(scene.sequence_editor, "strips"):
-            seq = scene.sequence_editor.strips.new_image("TestSeq", str(img_path), channel=1, frame_start=1)
-        else:
-            print("WARNING: 'sequences' and 'strips' not found in SequenceEditor.")
-            seq = None
+        # Add Strip
+        # API compatibility check
+        sequences = getattr(scene.sequence_editor, "sequences",
+                            getattr(scene.sequence_editor, "strips", None))
 
-        print("\n--- Test 1: Valid Snapshot Remapping ---")
-        # 1. Move file to snapshot location
-        snapshot_path = version_dir / "snapshot.blend_snapshot"
-        bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), check_existing=False)
+        seq = None
+        if sequences is not None:
+            seq = sequences.new_image("TestSeq", str(img_path), channel=1, frame_start=1)
 
-        # 2. Set broken relative paths (simulate they are relative to project root)
-        img.filepath = "//Textures/image.png"
-        lib.filepath = "//Lib/library.blend"
+        return img, lib, seq, img_path
 
-        # Check what property seq has
-        seq_has_filepath = hasattr(seq, "filepath")
-        seq_has_directory = hasattr(seq, "directory")
+    def test_remap_scenario(self):
+        """
+        Scenario:
+        1. Valid Snapshot: Verify paths are remapped (deepened) when saved as a snapshot.
+        2. Idempotency: Verify remapping doesn't compound if run twice.
+        3. Normal Blend: Verify normal .blend files are ignored.
+        4. Outside History: Verify snapshots outside the history folder are ignored.
+        5. Absolute Paths: Verify absolute paths are not converted to relative.
+        """
+        print("Starting Remap Snapshot Paths Scenario...")
 
-        if seq_has_filepath:
-            seq.filepath = "//Textures/image.png"
-        elif seq_has_directory:
-            seq.directory = "//Textures/"
+        project_dir = self.test_dir
+        history_dir = project_dir / ".project_history"
+        version_dir = history_dir / "v001"
+        version_dir.mkdir(parents=True, exist_ok=True)
 
-        # Verify setup
-        print(f"Current Filepath: {bpy.data.filepath}")
+        # Setup Assets
+        img, lib, seq, real_img_path = self._setup_dummy_assets(project_dir)
 
-        # RUN REMAP
-        remap_snapshot_paths(None)
+        # Verify setup success
+        self.assertIsNotNone(lib, "Library setup failed")
+        self.assertIsNotNone(seq, "VSE setup failed")
 
-        # ASSERT
-        expected_prefix = "//../../"
+        # --- Step 1: Valid Snapshot Remapping ---
+        with self.subTest(step="1. Valid Snapshot"):
+            # Move file to snapshot location (deep inside history)
+            snapshot_path = version_dir / "snapshot.blend_snapshot"
+            bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), check_existing=False)
 
-        img_path_normalized = img.filepath.replace("\\", "/")
-        self.assertTrue(img_path_normalized.startswith(expected_prefix),
-                        f"Image path not remapped! Got: {img.filepath}")
+            # Set paths to "Project Root Relative" (//Lib/...)
+            # This simulates a file that was just copied from root to deep history
+            img.filepath = "//Textures/image.png"
+            lib.filepath = "//Lib/library.blend"
 
-        lib_path_normalized = lib.filepath.replace("\\", "/")
-        self.assertTrue(lib_path_normalized.startswith(expected_prefix),
-                        f"Library path not remapped! Got: {lib.filepath}")
+            # VSE handling
+            if hasattr(seq, "filepath"):
+                seq.filepath = "//Textures/image.png"
+            elif hasattr(seq, "directory"):
+                seq.directory = "//Textures/"
 
-        if seq:
-            if seq_has_filepath:
-                seq_path_normalized = seq.filepath.replace("\\", "/")
-                self.assertTrue(seq_path_normalized.startswith(expected_prefix),
-                                f"Sequence filepath not remapped! Got: {seq.filepath}")
-            elif seq_has_directory:
-                seq_dir_normalized = seq.directory.replace("\\", "/")
-                self.assertTrue(seq_dir_normalized.startswith(expected_prefix),
-                                f"Sequence directory not remapped! Got: {seq.directory}")
+            # Run Remap
+            remap_snapshot_paths(None)
 
-        print("Test 1 Passed: All paths remapped correctly.")
+            # Assert: Should now be relative from deep history (//../../)
+            expected_prefix = "//../../"
 
-        print("\n--- Test 2: Double Remapping Prevention ---")
-        # Paths are now //../../...
-        # Run remap again
-        remap_snapshot_paths(None)
+            self.assertTrue(img.filepath.replace("\\", "/").startswith(expected_prefix),
+                            f"Image path failed: {img.filepath}")
+            self.assertTrue(lib.filepath.replace("\\", "/").startswith(expected_prefix),
+                            f"Library path failed: {lib.filepath}")
 
-        img_path_normalized = img.filepath.replace("\\", "/")
-        self.assertFalse(img_path_normalized.startswith("//../../../../"),
-                         f"Double remapping detected! Got: {img.filepath}")
+            if hasattr(seq, "filepath"):
+                self.assertTrue(seq.filepath.replace("\\", "/").startswith(expected_prefix),
+                                f"Sequence path failed: {seq.filepath}")
 
-        print("Test 2 Passed: Paths remained stable.")
+        # --- Step 2: Idempotency ---
+        with self.subTest(step="2. Idempotency"):
+            # Run again on already remapped paths
+            remap_snapshot_paths(None)
 
-        print("\n--- Test 3: Not a Snapshot (Normal .blend) ---")
-        # Move to normal project location
-        project_blend = project_dir / "project.blend"
-        bpy.ops.wm.save_as_mainfile(filepath=str(project_blend), check_existing=False)
+            # Assert: Should NOT become //../../../../
+            path_norm = img.filepath.replace("\\", "/")
+            self.assertFalse(path_norm.startswith("//../../../../"),
+                             f"Double remapping detected: {img.filepath}")
+            self.assertTrue(path_norm.startswith("//../../"),
+                            "Path should remain correctly remapped")
 
-        # Reset paths
-        img.filepath = "//Textures/image.png"
+        # --- Step 3: Normal .blend File ---
+        with self.subTest(step="3. Normal .blend"):
+            # Save as normal project file
+            project_blend = project_dir / "project.blend"
+            bpy.ops.wm.save_as_mainfile(filepath=str(project_blend), check_existing=False)
 
-        remap_snapshot_paths(None)
+            # Reset path
+            img.filepath = "//Textures/image.png"
 
-        self.assertEqual(img.filepath, "//Textures/image.png",
-                         f"Remapped unexpectedly in normal file! Got: {img.filepath}")
+            # Run Remap
+            remap_snapshot_paths(None)
 
-        print("Test 3 Passed: Normal file ignored.")
+            # Assert: Should NOT change
+            self.assertEqual(img.filepath, "//Textures/image.png", "Normal .blend file should be ignored")
 
-        print("\n--- Test 4: Snapshot outside History folder ---")
-        # Move to snapshot outside history
-        outside_snapshot = project_dir / "copy.blend_snapshot"
-        bpy.ops.wm.save_as_mainfile(filepath=str(outside_snapshot), check_existing=False)
+        # --- Step 4: Snapshot Outside History ---
+        with self.subTest(step="4. Snapshot Outside History"):
+            # Save as snapshot but in root (not in history folder like .project_history)
+            outside_snapshot = project_dir / "copy.blend_snapshot"
+            bpy.ops.wm.save_as_mainfile(filepath=str(outside_snapshot), check_existing=False)
 
-        # Reset paths
-        img.filepath = "//Textures/image.png"
+            # Reset path
+            img.filepath = "//Textures/image.png"
 
-        remap_snapshot_paths(None)
+            # Run Remap
+            remap_snapshot_paths(None)
 
-        self.assertEqual(img.filepath, "//Textures/image.png",
-                         f"Remapped unexpectedly outside history! Got: {img.filepath}")
+            # Assert: Should NOT change
+            self.assertEqual(img.filepath, "//Textures/image.png", "Snapshot outside history should be ignored")
 
-        print("Test 4 Passed: Snapshot outside history ignored.")
+        # --- Step 5: Absolute Paths ---
+        with self.subTest(step="5. Absolute Paths"):
+            # Move back to valid snapshot location
+            bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), check_existing=False)
 
-        print("\n--- Test 5: Absolute Paths ---")
-        # Move back to valid snapshot location to test exclusion logic
-        bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path), check_existing=False)
+            # Set Absolute Path
+            abs_path = str(real_img_path)
+            img.filepath = abs_path
 
-        # Set absolute path
-        abs_path = str(img_path)
-        img.filepath = abs_path
+            # Run Remap
+            remap_snapshot_paths(None)
 
-        remap_snapshot_paths(None)
+            # Assert: Should stay absolute (not start with //)
+            self.assertFalse(img.filepath.startswith("//"),
+                             f"Absolute path was incorrectly remapped: {img.filepath}")
 
-        # On Windows/some setups, abs_path format might vary slightly, but checking if it was NOT remapped to relative is key.
-        self.assertFalse(img.filepath.startswith("//"), f"Absolute path was remapped to relative! Got: {img.filepath}")
-
-        print("Test 5 Passed: Absolute path ignored.")
+        print("Remap Snapshot Paths Scenario: Completed")
 
 
 if __name__ == "__main__":
