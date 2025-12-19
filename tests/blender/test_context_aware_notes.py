@@ -118,4 +118,7 @@ class TestContextAwareNotes(SavePointsTestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(argv=[''], exit=False)
+    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    if not result.wasSuccessful():
+        print("\n❌ Tests Failed!")
+        sys.exit(1)

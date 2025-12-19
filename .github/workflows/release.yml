@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*"
+  merge_group:
   workflow_dispatch:
 
 permissions:
@@ -66,6 +67,15 @@ jobs:
           BLENDER_EXE: blender
         run: just test-blender
 
+      - name: Create Success Marker
+        run: touch success-${{ runner.os }}-${{ matrix.blender-version }}
+
+      - name: Upload Success Marker
+        uses: actions/upload-artifact@v4
+        with:
+          name: success-${{ runner.os }}-${{ matrix.blender-version }}
+          path: success-${{ runner.os }}-${{ matrix.blender-version }}
+
   test-windows:
     name: Test on Windows - Blender ${{ matrix.blender-version }}
     runs-on: windows-latest
@@ -123,6 +133,47 @@ jobs:
         env:
           BLENDER_EXE: blender.exe
         run: just test-blender
+
+      - name: Create Success Marker
+        shell: bash
+        run: touch success-${{ runner.os }}-${{ matrix.blender-version }}
+
+      - name: Upload Success Marker
+        uses: actions/upload-artifact@v4
+        with:
+          name: success-${{ runner.os }}-${{ matrix.blender-version }}
+          path: success-${{ runner.os }}-${{ matrix.blender-version }}
+
+  update-badges:
+    needs: [ test-linux, test-windows ]
+    if: always() && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Update README Badges
+        run: python3 tools/update_badges.py
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "docs: update compatibility badges [skip ci]"
+            git push
+          fi
 
   build-and-release:
     needs: [ test-linux, test-windows ]

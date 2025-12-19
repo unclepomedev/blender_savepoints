@@ -3,6 +3,8 @@
 [![Blender Extensions](https://img.shields.io/badge/Blender_Extensions-Available-F5792A?logo=blender&logoColor=white)](https://extensions.blender.org/add-ons/savepoints/)
 [![License](https://img.shields.io/github/license/unclepomedev/blender_savepoints)](https://github.com/unclepomedev/blender_savepoints/blob/main/LICENSE)
 [![Release Blender Addon](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml/badge.svg)](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml)
+<!-- BLENDER_BADGES_START -->
+<!-- BLENDER_BADGES_END -->
 
 <div align="center">
   <strong>
@@ -103,7 +105,7 @@ Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Ble
 4. **Rename** the extension from `.blend_snapshot` to `.blend`.
 5. Open it normally in Blender.
 
-## Testing (under maintenance)
+## Testing (for developers)
 
 This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
 
