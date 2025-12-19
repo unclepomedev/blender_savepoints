@@ -179,7 +179,7 @@ def generate_default_note(context) -> str:
     try:
         obj = context.active_object
         if not obj:
-            return ""
+            return "No Active Object"
 
         mode = obj.mode
 
