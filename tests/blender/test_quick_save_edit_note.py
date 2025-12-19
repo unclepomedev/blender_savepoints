@@ -4,94 +4,104 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
     sys.path.append(str(CURRENT_DIR))
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
-from savepoints_test_case import SavePointsTestCase
+
 from savepoints.services.storage import load_manifest
+from savepoints_test_case import SavePointsTestCase
 
 
 class TestQuickSaveEditNote(SavePointsTestCase):
-    def test_quick_save_edit_note(self):
-        print("Starting Quick Save & Edit Note Test...")
-        # SavePointsTestCase setup provides self.test_dir and self.blend_path (test_project.blend)
 
-        # 1. Setup
-        # Create an object to verify context-aware note assignment
-        bpy.ops.mesh.primitive_cube_add()
-        bpy.context.object.name = "QuickSaveCube"
-        obj = bpy.context.object
+    def test_quick_save_and_edit_scenario(self):
+        """
+        Scenario:
+        1. Quick Save: Execute commit with 'show_save_dialog=False'.
+           Verify it runs without blocking (FINISHED) and generates a context-aware note.
+        2. Edit Note: Modify the note of the existing version.
+           Verify the change is persisted to the manifest.
+        """
+        print("Starting Quick Save & Edit Note Scenario...")
 
-        # Ensure it is active
-        bpy.context.view_layer.objects.active = obj
-        obj.select_set(True)
+        # Variables to persist across subtests
+        version_id = None
+        target_obj_name = "QuickSaveCube"
+        initial_expected_note = f"Object: {target_obj_name}"
+        updated_note_text = "Updated Note by Test"
 
-        settings = bpy.context.scene.savepoints_settings
+        # --- Step 1: Setup & Quick Save ---
+        with self.subTest(step="1. Quick Save (Skip Dialog)"):
+            print("Executing Quick Save...")
 
-        print("\n--- Test 1: Quick Save (Skip Dialog) ---")
+            # Setup Object
+            bpy.ops.mesh.primitive_cube_add()
+            obj = bpy.context.active_object
+            obj.name = target_obj_name
 
-        # Enable Quick Save (disable dialog)
-        settings.show_save_dialog = False
+            # Configure Settings: Disable Dialog for Quick Save behavior
+            bpy.context.scene.savepoints_settings.show_save_dialog = False
 
-        # When show_save_dialog is False, the operator should execute immediately (via invoke calling execute)
-        # without showing a popup. But since we invoke operators via python script with 'INVOKE_DEFAULT',
-        # we can test if it runs without blocking or error.
+            # Execute Commit using INVOKE_DEFAULT.
+            # We use INVOKE because the logic to "Skip Dialog" resides in the invoke() method.
+            # We use temp_override to ensure 'generate_default_note' sees the correct active object.
+            with bpy.context.temp_override(
+                    active_object=obj,
+                    object=obj,
+                    selected_objects=[obj],
+                    selected_editable_objects=[obj]
+            ):
+                res = bpy.ops.savepoints.commit('INVOKE_DEFAULT')
 
-        # Execute operator
+            self.assertIn('FINISHED', res, "Quick Save failed (likely stuck in modal or error)")
 
-        # Override context to ensure active_object is passed correctly in background mode
-        # Using temp_override for Blender 3.2+
-        with bpy.context.temp_override(active_object=obj, object=obj, selected_objects=[obj],
-                                       selected_editable_objects=[obj]):
-            res = bpy.ops.savepoints.commit('INVOKE_DEFAULT')
+        # --- Step 2: Verify Created Version ---
+        with self.subTest(step="2. Verify Auto Note"):
+            print("Verifying auto-generated note...")
 
-        if "FINISHED" not in res:
-            self.fail(f"Quick Save failed: result={res}")
+            manifest = load_manifest()
+            versions = manifest.get("versions", [])
 
-        # Verify version created
-        manifest = load_manifest()
-        versions = manifest.get("versions", [])
-        if not versions:
-            self.fail("Version not created")
+            self.assertEqual(len(versions), 1, "Expected exactly 1 version to be created")
 
-        v1 = versions[0]  # Newest
-        print(f"Generated Note: '{v1['note']}'")
+            v1 = versions[0]
+            self.assertEqual(v1['note'], initial_expected_note,
+                             f"Note mismatch. Expected '{initial_expected_note}', got '{v1['note']}'")
 
-        # Verify default note generation (Strict check restored after manual fix)
-        # The manual fix ensures invoke() sets the note before execution.
-        expected_note = "Object: QuickSaveCube"
-        if v1['note'] != expected_note:
-            self.fail(f"Note mismatch. Expected '{expected_note}', got '{v1['note']}'")
+            # Store ID for next step
+            version_id = v1['id']
 
-        print("Test 1 Passed.")
+        # --- Step 3: Edit Note ---
+        with self.subTest(step="3. Edit Note"):
+            print(f"Editing note for {version_id}...")
 
-        print("\n--- Test 2: Edit Note ---")
+            # Execute Edit Note using EXEC_DEFAULT (Direct execution, no UI needed)
+            res = bpy.ops.savepoints.edit_note(
+                'EXEC_DEFAULT',
+                version_id=version_id,
+                new_note=updated_note_text
+            )
 
-        v1_id = v1["id"]
-        new_note_text = "Updated Note"
+            self.assertIn('FINISHED', res, "Edit Note operator failed")
 
-        # Call edit_note operator
-        # We pass properties directly and use EXEC_DEFAULT to skip invoke dialog
-        res = bpy.ops.savepoints.edit_note('EXEC_DEFAULT', version_id=v1_id, new_note=new_note_text)
+        # --- Step 4: Verify Update ---
+        with self.subTest(step="4. Verify Note Update"):
+            print("Verifying persistence of updated note...")
 
-        if "FINISHED" not in res:
-            self.fail(f"Edit Note failed: result={res}")
+            # Reload manifest to check disk state
+            manifest = load_manifest()
+            v1_updated = manifest["versions"][0]
 
-        # Verify manifest
-        manifest = load_manifest()
-        v1_updated = manifest["versions"][0]
+            # Verify integrity
+            self.assertEqual(v1_updated["id"], version_id, "Version ID mismatch (Order changed?)")
+            self.assertEqual(v1_updated["note"], updated_note_text,
+                             f"Note update failed. Expected '{updated_note_text}', got '{v1_updated['note']}'")
 
-        if v1_updated["id"] != v1_id:
-            self.fail("Version order changed unexpectedly")
-
-        if v1_updated["note"] != new_note_text:
-            self.fail(f"Note update failed. Expected '{new_note_text}', got '{v1_updated['note']}'")
-
-        print("Test 2 Passed.")
-        print("\nALL TESTS PASSED")
+        print("Quick Save & Edit Note Scenario: Completed")
 
 
 if __name__ == "__main__":

@@ -88,13 +88,11 @@ class TestHud(unittest.TestCase):
         mock_context = MagicMock()
         mock_context.area.type = "VIEW_3D"
 
-        # 修正1: core.py のロジックを通過するように正しい命名規則にする (.history -> .my_project_history)
         mock_context.blend_data.filepath = "/path/to/.my_project_history/v001/snapshot.blend_snapshot"
 
         mock_context.region.width = 800
         mock_context.region.height = 600
 
-        # 修正2: HUDコード内で使用している ui_scale の値を設定する (これがないと計算でエラーになる)
         mock_context.preferences.system.ui_scale = 1.0
 
         type(mock_bpy).context = PropertyMock(return_value=mock_context)

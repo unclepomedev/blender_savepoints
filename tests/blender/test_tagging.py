@@ -4,6 +4,7 @@ from pathlib import Path
 
 import bpy
 
+# Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parents[1]
 if str(CURRENT_DIR) not in sys.path:
@@ -16,52 +17,91 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestTagging(SavePointsTestCase):
-    # setup and teardown handled by SavePointsTestCase
 
-    def test_set_tag(self):
-        print("\n--- Test Set Tag ---")
-
-        # 1. Create Version
-        # Ensure we have active object for thumbnail (not strictly needed but good practice)
-        bpy.ops.mesh.primitive_cube_add()
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Initial")
-
+    def _get_version_from_settings(self, target_id):
+        """Helper to retrieve version item from UI list by ID."""
         settings = bpy.context.scene.savepoints_settings
-        self.assertTrue(len(settings.versions) > 0, "Version should be created")
+        for v in settings.versions:
+            if v.version_id == target_id:
+                return v
+        return None
 
-        # Get latest version
-        v1 = settings.versions[0]
-        v1_id = v1.version_id
-
-        # Verify default tag
-        print(f"Checking default tag for {v1_id}...")
-        self.assertEqual(v1.tag, 'NONE', "Default tag should be NONE")
-
-        # 2. Set Tag to STABLE
-        print(f"Setting tag for {v1_id} to STABLE...")
-        bpy.ops.savepoints.set_tag('EXEC_DEFAULT', version_id=v1_id, tag='STABLE')
-
-        # 3. Verify in Props (Immediate update via sync)
-        v1_updated = settings.versions[0]
-        self.assertEqual(v1_updated.tag, 'STABLE', "Tag property should be STABLE")
-
-        # 4. Verify in Manifest (Persistence)
+    def _get_version_from_manifest(self, target_id):
+        """Helper to retrieve version dict from disk manifest by ID."""
         manifest = load_manifest()
-        v_data = manifest["versions"][0]
-        self.assertEqual(v_data["tag"], 'STABLE', "Manifest tag should be STABLE")
+        for v in manifest.get("versions", []):
+            if v["id"] == target_id:
+                return v
+        return None
 
-        # 5. Set Tag to BUG
-        print(f"Setting tag for {v1_id} to BUG...")
-        bpy.ops.savepoints.set_tag('EXEC_DEFAULT', version_id=v1_id, tag='BUG')
+    def test_tagging_scenario(self):
+        """
+        Scenario:
+        1. Create a version and confirm the default tag is 'NONE'.
+        2. Update the tag to 'STABLE' and verify it reflects in both UI properties and disk manifest.
+        3. Update the tag again to 'BUG' and verify the change is persisted.
+        """
+        print("Starting Tagging Scenario...")
 
-        v1_updated = settings.versions[0]
-        self.assertEqual(v1_updated.tag, 'BUG', "Tag property should be BUG")
+        version_id = None
 
-        manifest = load_manifest()
-        v_data = manifest["versions"][0]
-        self.assertEqual(v_data["tag"], 'BUG', "Manifest tag should be BUG")
+        # --- Step 1: Create Version & Check Default ---
+        with self.subTest(step="1. Create Version"):
+            print("Creating version...")
 
-        print("Tagging Test Passed.")
+            # Setup context (ensure active object exists)
+            bpy.ops.mesh.primitive_cube_add()
+
+            # Commit
+            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Initial")
+            self.assertIn('FINISHED', res, "Commit failed")
+
+            # Get Version ID
+            settings = bpy.context.scene.savepoints_settings
+            self.assertGreater(len(settings.versions), 0, "No versions created")
+
+            # Assuming the new one is at index 0
+            version_id = settings.versions[0].version_id
+            print(f"Target Version ID: {version_id}")
+
+            # Verify Default Tag (Should be NONE)
+            v_prop = self._get_version_from_settings(version_id)
+            self.assertIsNotNone(v_prop, "Version not found in settings")
+            self.assertEqual(v_prop.tag, 'NONE', "Default tag should be NONE")
+
+        # --- Step 2: Set Tag to STABLE ---
+        with self.subTest(step="2. Set Tag STABLE"):
+            print(f"Setting tag for {version_id} to STABLE...")
+
+            res = bpy.ops.savepoints.set_tag('EXEC_DEFAULT', version_id=version_id, tag='STABLE')
+            self.assertIn('FINISHED', res, "Set Tag operator failed")
+
+            # Verify in UI Props (Immediate update)
+            v_prop = self._get_version_from_settings(version_id)
+            self.assertEqual(v_prop.tag, 'STABLE', "UI Property tag not updated to STABLE")
+
+            # Verify in Disk Manifest (Persistence)
+            v_disk = self._get_version_from_manifest(version_id)
+            self.assertIsNotNone(v_disk, "Version missing in manifest")
+            self.assertEqual(v_disk["tag"], 'STABLE', "Manifest tag not persisted as STABLE")
+
+        # --- Step 3: Set Tag to BUG ---
+        with self.subTest(step="3. Set Tag BUG"):
+            print(f"Setting tag for {version_id} to BUG...")
+
+            # Update tag again to verify overwriting works
+            res = bpy.ops.savepoints.set_tag('EXEC_DEFAULT', version_id=version_id, tag='BUG')
+            self.assertIn('FINISHED', res, "Set Tag operator failed")
+
+            # Verify in UI Props
+            v_prop = self._get_version_from_settings(version_id)
+            self.assertEqual(v_prop.tag, 'BUG', "UI Property tag not updated to BUG")
+
+            # Verify in Disk Manifest
+            v_disk = self._get_version_from_manifest(version_id)
+            self.assertEqual(v_disk["tag"], 'BUG', "Manifest tag not persisted as BUG")
+
+        print("Tagging Scenario: Completed")
 
 
 if __name__ == '__main__':

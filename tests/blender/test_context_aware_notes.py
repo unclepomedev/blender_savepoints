@@ -114,7 +114,7 @@ class TestContextAwareNotes(SavePointsTestCase):
         bpy.context.view_layer.objects.active = None
 
         note = generate_default_note(bpy.context)
-        self.assertEqual(note, "")
+        self.assertEqual(note, "No Active Object")
 
 
 if __name__ == '__main__':
