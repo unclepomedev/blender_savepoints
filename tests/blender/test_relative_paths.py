@@ -36,20 +36,15 @@ class TestRelativePaths(SavePointsTestCase):
         self.obj = bpy.context.object
         self.obj.name = "TexturedCube"
 
-        # Material & Texture Setup
-        mat = bpy.data.materials.new(name="TexturedMat")
-        mat.use_nodes = True
-        self.obj.data.materials.append(mat)
-
-        # Node Setup
-        tex_node = mat.node_tree.nodes.new('ShaderNodeTexImage')
+        img = bpy.data.images.new("TestImage", width=128, height=128)
+        img.filepath = "//my_texture.png"
+        img.use_fake_user = True
 
         try:
             img = bpy.data.images.load(str(self.texture_path))
             img.name = "TestImage"
             # Force relative path (//my_texture.png)
             img.filepath = f"//{self.texture_name}"
-            tex_node.image = img
         except Exception as e:
             self.fail(f"Failed to load image during setup: {e}")
 
