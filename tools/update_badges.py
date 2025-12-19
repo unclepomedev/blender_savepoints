@@ -51,8 +51,8 @@ def main():
     with open(readme_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    start_marker = ""
-    end_marker = ""
+    start_marker = "<!-- BLENDER_BADGES_START -->"
+    end_marker = "<!-- BLENDER_BADGES_END -->"
 
     pattern = re.compile(f"({re.escape(start_marker)}).*?({re.escape(end_marker)})", re.DOTALL)
 
