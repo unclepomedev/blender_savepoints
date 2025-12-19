@@ -9,6 +9,19 @@ from .storage import (
 )
 
 
+def _get_collections_to_remap():
+    return [
+        getattr(bpy.data, "images", []),
+        getattr(bpy.data, "libraries", []),
+        getattr(bpy.data, "sounds", []),
+        getattr(bpy.data, "fonts", []),
+        getattr(bpy.data, "cache_files", []),  # This does not exist in Mac, Blender5.0.
+        getattr(bpy.data, "movieclips", []),  # This does not exist in Mac, Blender5.0.
+        getattr(bpy.data, "volumes", []),
+        getattr(bpy.data, "texts", []),
+    ]
+
+
 def remap_snapshot_paths(dummy: Any) -> None:
     """
     Dynamically fix relative paths when opening a snapshot from the history folder.
@@ -28,16 +41,7 @@ def remap_snapshot_paths(dummy: Any) -> None:
     print(f"[SavePoints] Detected snapshot load: {filepath}. Remapping relative paths...")
 
     # Collections to iterate over
-    collections_to_remap = [
-        getattr(bpy.data, "images", []),
-        getattr(bpy.data, "libraries", []),
-        getattr(bpy.data, "sounds", []),
-        getattr(bpy.data, "fonts", []),
-        getattr(bpy.data, "cache_files", []),
-        getattr(bpy.data, "movieclips", []),
-        getattr(bpy.data, "volumes", []),
-        getattr(bpy.data, "texts", []),
-    ]
+    collections_to_remap = _get_collections_to_remap()
 
     for collection in collections_to_remap:
         for item in collection:
@@ -90,16 +94,7 @@ def unmap_snapshot_paths() -> bool:
     """
     changed = False
     # Collections to iterate over
-    collections_to_remap = [
-        getattr(bpy.data, "images", []),
-        getattr(bpy.data, "libraries", []),
-        getattr(bpy.data, "sounds", []),
-        getattr(bpy.data, "fonts", []),
-        getattr(bpy.data, "cache_files", []),
-        getattr(bpy.data, "movieclips", []),
-        getattr(bpy.data, "volumes", []),
-        getattr(bpy.data, "texts", []),
-    ]
+    collections_to_remap = _get_collections_to_remap()
 
     for collection in collections_to_remap:
         for item in collection:
