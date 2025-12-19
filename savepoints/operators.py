@@ -6,6 +6,7 @@ import bpy
 from bpy_extras.io_utils import ImportHelper
 
 from .handler_manager import RescuePostLoadHandler
+from .services.asset_path import unmap_snapshot_paths
 from .services.backup import create_backup, HistoryDirectoryUnavailableError
 from .services.ghost import get_ghost_collection_name, load_ghost, unload_ghost
 from .services.linking import link_history, resolve_history_path_from_selection
@@ -513,9 +514,13 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             self.report({'WARNING'}, f"History creation failed: {e}")
 
         try:
-            # Save the current snapshot (with remapped paths in memory) to the new location.
-            # Blender automatically fixes relative paths when saving to a new location.
+            # 1. Save to new location (Blender tries to fix paths, but often fails for Deep -> Shallow move)
             bpy.ops.wm.save_as_mainfile(filepath=str(target_path))
+
+            if unmap_snapshot_paths():
+                self.report({'INFO'}, "Fixed relative paths for forked project.")
+                bpy.ops.wm.save_mainfile()
+
         except Exception as e:
             self.report({'ERROR'}, f"Failed to fork file: {e}")
             return {'CANCELLED'}
