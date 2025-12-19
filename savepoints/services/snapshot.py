@@ -8,6 +8,7 @@ from .selection import preserve_selection
 from .storage import (
     get_history_dir,
     load_manifest,
+    is_safe_filename,
     SNAPSHOT_FILENAME,
     LEGACY_SNAPSHOT_FILENAME,
     THUMBNAIL_FILENAME
@@ -19,6 +20,10 @@ from ..ui_utils import sync_history_to_props
 
 def create_snapshot(context, version_id, note, skip_thumbnail=False):
     """Helper to create a snapshot."""
+    if not is_safe_filename(version_id):
+        print(f"Error: Invalid version ID '{version_id}'.")
+        return
+
     history_dir_str = get_history_dir()
     if not history_dir_str:
         return
@@ -68,6 +73,9 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
 
 def find_snapshot_path(version_id: str) -> Path | None:
     """Find the snapshot file path for a given version ID."""
+    if not is_safe_filename(version_id):
+        return None
+
     history_dir_str = get_history_dir()
     if not history_dir_str:
         return None
