@@ -4,7 +4,9 @@ on:
   push:
     tags:
       - "v*"
-  merge_group:
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
