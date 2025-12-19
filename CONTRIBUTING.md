@@ -2,7 +2,7 @@
 
 ```mermaid
 graph TD
-    Start(("Start<br>(Push Tag / Merge Group)"))
+    Start(("Start<br>(Push Tag / PR)"))
 
     subgraph TestMatrix ["Test Matrix (Parallel Execution)"]
         direction LR
