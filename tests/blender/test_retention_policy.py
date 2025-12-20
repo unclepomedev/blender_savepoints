@@ -12,7 +12,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints.services.storage import load_manifest
+from savepoints.services.manifest import load_manifest
 from savepoints.services.versioning import set_version_protection
 # For test purpose, we might need to manually inject autosave if operator fails
 from savepoints.operators import create_snapshot

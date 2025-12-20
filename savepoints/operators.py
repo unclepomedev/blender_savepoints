@@ -19,9 +19,12 @@ from .services.rescue import (
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     get_parent_path_from_snapshot,
-    load_manifest,
     get_fork_target_path,
+)
+from .services.manifest import (
+    load_manifest,
     initialize_history_for_path
+
 )
 from .services.versioning import (
     get_next_version_id,

@@ -5,10 +5,12 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from .manifest import (
+    load_manifest, save_manifest
+)
 from .storage import (
     to_posix_path, is_safe_filename,
     get_history_dir,
-    load_manifest, save_manifest
 )
 
 

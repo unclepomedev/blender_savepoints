@@ -12,7 +12,8 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints.services.storage import get_parent_path_from_snapshot, load_manifest, get_history_dir
+from savepoints.services.manifest import load_manifest
+from savepoints.services.storage import get_parent_path_from_snapshot, get_history_dir
 from savepoints_test_case import SavePointsTestCase
 
 
