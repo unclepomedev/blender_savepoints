@@ -150,6 +150,7 @@ def prune_versions(max_keep: int) -> int:
     # Filter only manual versions (exclude autosave)
     # List is ordered Newest -> Oldest
     manual_versions = [v for v in versions if v.get("id") != "autosave"]
+    manual_versions.sort(key=lambda x: x.get("id", ""), reverse=True)
 
     ids_to_delete = []
     unlocked_count = 0
