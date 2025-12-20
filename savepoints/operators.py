@@ -126,6 +126,10 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
     new_note: bpy.props.StringProperty(name="Note")
 
     def invoke(self, context, event):
+        item = getattr(context, "savepoints_item", None)
+        if item:
+            self.version_id = item.version_id
+            self.new_note = item.note
         return context.window_manager.invoke_props_dialog(self)
 
     def draw(self, context):
