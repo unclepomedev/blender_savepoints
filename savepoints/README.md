@@ -64,6 +64,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 6. **Disk Management & Protection**:
    - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50) excluding locked versions.
    - **Lock Versions**: Click the Lock icon next to a version to protect it. Locked versions are never auto-deleted and cannot be manually deleted unless unlocked.
+   - Pruning is triggered automatically when a new version is saved or when the list is refreshed.
 7. **Relinking History**:
    - If the history folder is missing (e.g., after moving the `.blend` file), a **Link Existing History Folder** button will appear.
    - Click it to select and reconnect an existing history folder.
@@ -153,6 +154,7 @@ SavePointsは、プロジェクトのバージョン管理をサポートするB
 6. **Disk Management & Protection**:
    - **Limit Versions**: Disk Management セクションで有効にすると、最新のN件（デフォルト50）のみを保持し、古いものを自動削除します。
    - **Lock Versions**: リストの **Lock** アイコン（鍵マーク）をクリックすると、そのバージョンは保護され、自動削除や手動削除の対象外になります。
+   - 新しいバージョンを保存した時、またはリストをリフレッシュした時に、古いバージョンの自動削除が実行されます。
 7. **Relinking History**:
    - `.blend` ファイルを移動するなどして履歴フォルダが見つからない場合、**Link Existing History Folder** ボタンが表示されます。既存のフォルダを選択して再接続できます。
    - **※選択した元のフォルダは現在の場所に移動され、元の場所からは削除されますのでご注意ください。**
@@ -240,6 +242,7 @@ SavePoints 是一款 Blender 插件，可以帮助您轻松管理项目版本。
 6. **Disk Management & Protection**:
    - **Limit Versions**: 在 Disk Management 部分启用 "Limit Versions" 以自动仅保留最新的 N 个版本 (默认 50)，**不包括锁定的版本**。
    - **Lock Versions**: 点击版本旁边的 Lock 图标以保护它。锁定的版本永远不会被自动删除，除非解锁，否则无法手动删除。
+   - 保存新版本或刷新列表时，会自动触发旧版本的清理操作。
 7. **Relinking History**:
    - 如果历史文件夹丢失 (例如移动 `.blend` 文件后)，会出现 **Link Existing History Folder** 按钮。点击它以选择并重新连接现有的历史文件夹。
    - **请注意：选中的源文件夹将被移动到当前位置，并从原始路径中删除。**
