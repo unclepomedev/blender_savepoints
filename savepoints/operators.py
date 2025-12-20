@@ -10,6 +10,11 @@ from .services.asset_path import unmap_snapshot_paths
 from .services.backup import create_backup, HistoryDirectoryUnavailableError
 from .services.ghost import get_ghost_collection_name, load_ghost, unload_ghost
 from .services.linking import link_history, resolve_history_path_from_selection
+from .services.manifest import (
+    load_manifest,
+    initialize_history_for_path
+
+)
 from .services.rescue import (
     cleanup_rescue_temp_files,
     create_rescue_temp_file,
@@ -20,11 +25,6 @@ from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     get_parent_path_from_snapshot,
     get_fork_target_path,
-)
-from .services.manifest import (
-    load_manifest,
-    initialize_history_for_path
-
 )
 from .services.versioning import (
     get_next_version_id,
@@ -285,7 +285,14 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         if found_context:
             try:
                 with context.temp_override(**found_context):
-                    bpy.ops.wm.append('INVOKE_DEFAULT', filepath=append_dir, directory=append_dir, filename="", link=False, autoselect=True)
+                    bpy.ops.wm.append(
+                        'INVOKE_DEFAULT',
+                        filepath=append_dir,
+                        directory=append_dir,
+                        filename="",
+                        link=False,
+                        autoselect=True
+                    )
                 return True
             except Exception as e:
                 print(f"[SavePoints] Append Error: {e}")
@@ -454,6 +461,13 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
 
     def execute(self, context):
         cleanup_rescue_temp_files()
+
+        settings = context.scene.savepoints_settings
+        if settings.use_limit_versions:
+            prune_versions(
+                max_keep=settings.max_versions_to_keep,
+            )
+
         sync_history_to_props(context)
         return {'FINISHED'}
 
