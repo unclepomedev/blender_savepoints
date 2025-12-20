@@ -6,7 +6,8 @@ from typing import Any
 import bpy
 import bpy.utils.previews
 
-from .services.storage import from_posix_path, format_file_size, load_manifest, get_history_dir
+from .services.manifest import load_manifest
+from .services.storage import from_posix_path, format_file_size, get_history_dir
 
 preview_collections: dict = {}
 

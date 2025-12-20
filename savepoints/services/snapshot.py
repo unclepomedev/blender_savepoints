@@ -4,10 +4,12 @@ from pathlib import Path
 
 import bpy
 
+from .manifest import (
+    load_manifest,
+)
 from .selection import preserve_selection
 from .storage import (
     get_history_dir,
-    load_manifest,
     is_safe_filename,
     SNAPSHOT_FILENAME,
     LEGACY_SNAPSHOT_FILENAME,

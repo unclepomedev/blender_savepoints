@@ -12,7 +12,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints.services.storage import load_manifest
+from savepoints.services.manifest import load_manifest
 from savepoints_test_case import SavePointsTestCase
 
 
