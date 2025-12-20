@@ -28,7 +28,7 @@ def load_manifest(create_if_missing: bool = True) -> dict[str, Any]:
         manifest (dict): Manifest object containing at least the keys:
             - `parent_file` (str): path to the parent .blend file
             - `versions` (list): list of version entries
-            - `schema_version` (str): manifest schema version
+            - `schema_version` (int): manifest schema version
             - `project_uuid` (str): stable UUID for the project
     """
     path_str = get_manifest_path()
