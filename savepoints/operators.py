@@ -34,7 +34,8 @@ from .services.versioning import (
     update_version_tag,
     is_safe_filename,
     prune_versions,
-    generate_default_note
+    generate_default_note,
+    VersionLimitReachedError
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas, find_3d_view_override
 
@@ -105,7 +106,12 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             self.note = generate_default_note(context)
 
         manifest = load_manifest()
-        new_id_str = get_next_version_id(manifest.get("versions", []))
+        try:
+            new_id_str = get_next_version_id(manifest.get("versions", []))
+        except VersionLimitReachedError:
+            self.report({'ERROR'}, "Version limit reached (v1000). Please consider forking the project.")
+            return {'CANCELLED'}
+
         create_snapshot(context, new_id_str, self.note)
 
         # Auto Pruning

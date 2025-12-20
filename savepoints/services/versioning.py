@@ -14,6 +14,12 @@ from .storage import (
 )
 
 
+
+class VersionLimitReachedError(Exception):
+    """Exception raised when the maximum version limit is reached."""
+    pass
+
+
 def get_next_version_id(versions: list[dict]) -> str:
     """Generate the next version ID (e.g. "v001")."""
     max_id = 0
@@ -26,6 +32,10 @@ def get_next_version_id(versions: list[dict]) -> str:
                     max_id = num
             except ValueError:
                 pass
+    
+    if max_id >= 999:
+        raise VersionLimitReachedError("Version limit reached")
+
     return f"v{max_id + 1:03d}"
 
 
