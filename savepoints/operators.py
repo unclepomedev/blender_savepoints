@@ -293,9 +293,9 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
         settings = context.scene.savepoints_settings
 
         target_item = None
-        for item in settings.versions:
-            if item.version_id == version_id:
-                target_item = item
+        for v in settings.versions:
+            if v.version_id == version_id:
+                target_item = v
                 break
 
         if not target_item:
