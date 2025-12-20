@@ -31,6 +31,15 @@ def load_manifest(create_if_missing: bool = True) -> dict[str, Any]:
             - `schema_version` (int): manifest schema version
             - `project_uuid` (str): stable UUID for the project
     """
+    project_path = get_project_path()
+    if not project_path:
+        return {
+            "parent_file": "",
+            "versions": [],
+            "schema_version": SCHEMA_VERSION,
+            "project_uuid": str(uuid.uuid4()),
+        }
+
     path_str = get_manifest_path()
     if path_str:
         path = Path(path_str)
@@ -52,7 +61,7 @@ def load_manifest(create_if_missing: bool = True) -> dict[str, Any]:
             except Exception as e:
                 print(f"Error loading manifest: {e}")
     default_manifest = {
-        "parent_file": get_project_path(),
+        "parent_file": project_path,
         "versions": [],
         "schema_version": SCHEMA_VERSION,
         "project_uuid": str(uuid.uuid4()),
