@@ -302,7 +302,7 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
             return {'CANCELLED'}
 
         new_state = not target_item.is_protected
-        set_version_protection(self.version_id, new_state)
+        set_version_protection(version_id, new_state)
         target_item.is_protected = new_state
         return {'FINISHED'}
 
