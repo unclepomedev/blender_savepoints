@@ -4,6 +4,7 @@
 [![License](https://img.shields.io/github/license/unclepomedev/blender_savepoints)](https://github.com/unclepomedev/blender_savepoints/blob/main/LICENSE)
 [![Release Blender Addon](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml/badge.svg)](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml)
 <!-- BLENDER_BADGES_START -->
+[![Blender 4.2](https://img.shields.io/badge/Blender-4.2-green?logo=blender&logoColor=white)](https://www.blender.org/download/) [![Blender 4.5](https://img.shields.io/badge/Blender-4.5-green?logo=blender&logoColor=white)](https://www.blender.org/download/) [![Blender 5.0](https://img.shields.io/badge/Blender-5.0-green?logo=blender&logoColor=white)](https://www.blender.org/download/)
 <!-- BLENDER_BADGES_END -->
 
 <div align="center">
