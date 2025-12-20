@@ -8,6 +8,7 @@ import bpy.utils.previews
 
 from .services.manifest import load_manifest
 from .services.storage import from_posix_path, format_file_size, get_history_dir
+from .services.versioning import get_sorted_versions
 
 preview_collections: dict = {}
 
@@ -52,12 +53,9 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         pcoll.clear()
 
     history_dir = get_history_dir()
+    sorted_versions = get_sorted_versions(data, newest_first=True, include_autosave=True)
 
-    versions = data.get("versions", [])
-    # Sort: Normal versions first (by ID), autosave last
-    versions.sort(key=lambda v: (1 if v.get("id") == "autosave" else 0, v.get("id", "")))
-
-    for v_data in versions:
+    for v_data in sorted_versions:
         item = settings.versions.add()
         item.version_id = v_data.get("id", "")
         item.timestamp = v_data.get("timestamp", "")
