@@ -76,7 +76,7 @@ from savepoints.services.versioning import get_next_version_id, VersionLimitReac
 
 class TestVersionLimit(unittest.TestCase):
     def test_version_limit_v999(self):
-        # Scenario: Last version is v999. Next should be v1000 (currently).
+        # Scenario: Last version is v999. Should raise VersionLimitReachedError (v999 is the limit).
         versions = [{"id": "v999"}]
 
         with self.assertRaises(VersionLimitReachedError):
