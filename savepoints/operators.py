@@ -133,11 +133,16 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         layout.prop(self, "new_note")
 
     def execute(self, context):
-        if not self.version_id:
+        item = getattr(context, "savepoints_item", None)
+        if item:
+            version_id = item.version_id
+        else:
+            version_id = self.version_id
+        if not version_id:
             return {'CANCELLED'}
 
         try:
-            update_version_note(self.version_id, self.new_note)
+            update_version_note(version_id, self.new_note)
         except Exception as e:
             self.report({'ERROR'}, f"Failed to update note: {e}")
             return {'CANCELLED'}
@@ -211,13 +216,18 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
         return self._run(context)
 
     def _run(self, context):
-        if not is_safe_filename(self.version_id):
+        item = getattr(context, "savepoints_item", None)
+        if item:
+            version_id = item.version_id
+        else:
+            version_id = self.version_id
+        if not is_safe_filename(version_id):
             self.report({'ERROR'}, "Invalid version ID")
             return {'CANCELLED'}
 
-        snapshot_path = find_snapshot_path(self.version_id)
+        snapshot_path = find_snapshot_path(version_id)
         if not snapshot_path:
-            self.report({'ERROR'}, f"Snapshot file not found for version: {self.version_id}")
+            self.report({'ERROR'}, f"Snapshot file not found for version: {version_id}")
             return {'CANCELLED'}
 
         try:
@@ -271,14 +281,20 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
     version_id: bpy.props.StringProperty()
 
     def execute(self, context):
-        if self.version_id == "autosave":
+        item = getattr(context, "savepoints_item", None)
+        if item:
+            version_id = item.version_id
+        else:
+            version_id = self.version_id
+
+        if version_id == "autosave":
             return {'CANCELLED'}
 
         settings = context.scene.savepoints_settings
 
         target_item = None
         for item in settings.versions:
-            if item.version_id == self.version_id:
+            if item.version_id == version_id:
                 target_item = item
                 break
 
@@ -300,7 +316,11 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
     version_id: bpy.props.StringProperty()
 
     def execute(self, context):
-        version_id = self.version_id
+        item = getattr(context, "savepoints_item", None)
+        if item:
+            version_id = item.version_id
+        else:
+            version_id = self.version_id
         collection_name = get_ghost_collection_name(version_id)
 
         # Check if exists
