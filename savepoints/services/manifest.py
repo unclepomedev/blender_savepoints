@@ -73,7 +73,7 @@ def _backfill(data):
     if "parent_file" not in data:
         data["parent_file"] = get_project_path()
         mutated = True
-    if not isinstance(data.get("versions", []), list):
+    if "versions" not in data or not isinstance(data["versions"], list):
         data["versions"] = []
         mutated = True
     return mutated
