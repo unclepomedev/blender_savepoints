@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import time
+import traceback
 
 import bpy
 from bpy.app.handlers import persistent
@@ -49,10 +50,14 @@ def delayed_sync_history():
     if not context or not context.scene:
         return None
 
-    ui_utils.sync_history_to_props(context)
+    try:
+        ui_utils.sync_history_to_props(context)
 
-    if hasattr(context.scene, "savepoints_settings"):
-        context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+        if hasattr(context.scene, "savepoints_settings"):
+            context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+    except Exception as e:
+        print(f"[SavePoints] Error during delayed sync: {e}")
+        traceback.print_exc()
 
     return None
 
