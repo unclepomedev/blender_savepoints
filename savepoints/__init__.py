@@ -41,11 +41,20 @@ addon_keymaps = []
 @persistent
 def load_handler(dummy):
     """Sync history when file is loaded."""
-    if bpy.context.scene:
-        ui_utils.sync_history_to_props(bpy.context)
-        # Reset autosave timer
-        if hasattr(bpy.context.scene, "savepoints_settings"):
-            bpy.context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+    bpy.app.timers.register(delayed_sync_history, first_interval=0.1)
+
+
+def delayed_sync_history():
+    context = bpy.context
+    if not context or not context.scene:
+        return None
+
+    ui_utils.sync_history_to_props(context)
+
+    if hasattr(context.scene, "savepoints_settings"):
+        context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+
+    return None
 
 
 @persistent

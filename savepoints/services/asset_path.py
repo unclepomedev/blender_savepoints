@@ -15,8 +15,6 @@ def _get_collections_to_remap():
         getattr(bpy.data, "libraries", []),
         getattr(bpy.data, "sounds", []),
         getattr(bpy.data, "fonts", []),
-        getattr(bpy.data, "cache_files", []),  # This does not exist in Mac, Blender5.0.
-        getattr(bpy.data, "movieclips", []),  # This does not exist in Mac, Blender5.0.
         getattr(bpy.data, "volumes", []),
         getattr(bpy.data, "texts", []),
     ]
