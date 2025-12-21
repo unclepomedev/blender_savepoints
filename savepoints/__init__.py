@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import time
+import traceback
 
 import bpy
 from bpy.app.handlers import persistent
@@ -41,11 +42,24 @@ addon_keymaps = []
 @persistent
 def load_handler(dummy):
     """Sync history when file is loaded."""
-    if bpy.context.scene:
-        ui_utils.sync_history_to_props(bpy.context)
-        # Reset autosave timer
-        if hasattr(bpy.context.scene, "savepoints_settings"):
-            bpy.context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+    bpy.app.timers.register(delayed_sync_history, first_interval=0.1)
+
+
+def delayed_sync_history():
+    context = bpy.context
+    if not context or not context.scene:
+        return None
+
+    try:
+        ui_utils.sync_history_to_props(context)
+
+        if hasattr(context.scene, "savepoints_settings"):
+            context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+    except Exception as e:
+        print(f"[SavePoints] Error during delayed sync: {e}")
+        traceback.print_exc()
+
+    return None
 
 
 @persistent
