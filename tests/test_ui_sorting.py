@@ -130,11 +130,11 @@ class TestUiSorting(unittest.TestCase):
         self.assertEqual(mock_settings.versions.add.call_count, 4)
 
         # Verify Order of added items
-        # The items should have been populated in the sorted order: v001, v002, v003, autosave
+        # The items should have been populated in the sorted order: v003, v002, v001, autosave
 
-        self.assertEqual(created_items[0].version_id, "v001")
+        self.assertEqual(created_items[0].version_id, "v003")
         self.assertEqual(created_items[1].version_id, "v002")
-        self.assertEqual(created_items[2].version_id, "v003")
+        self.assertEqual(created_items[2].version_id, "v001")
         self.assertEqual(created_items[3].version_id, "autosave")
 
 

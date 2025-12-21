@@ -14,7 +14,6 @@ from .storage import (
 )
 
 
-
 class VersionLimitReachedError(Exception):
     """Exception raised when the maximum version limit is reached."""
     pass
@@ -32,7 +31,7 @@ def get_next_version_id(versions: list[dict]) -> str:
                     max_id = num
             except ValueError:
                 pass
-    
+
     if max_id >= 999:
         raise VersionLimitReachedError("Version limit reached")
 
@@ -155,12 +154,7 @@ def prune_versions(max_keep: int) -> int:
         return 0
 
     manifest = load_manifest()
-    versions = manifest.get("versions", [])
-
-    # Filter only manual versions (exclude autosave)
-    # List is ordered Newest -> Oldest
-    manual_versions = [v for v in versions if v.get("id") != "autosave"]
-    manual_versions.sort(key=lambda x: x.get("id", ""), reverse=True)
+    manual_versions = get_sorted_versions(manifest, newest_first=True, include_autosave=False)
 
     ids_to_delete = []
     unlocked_count = 0
@@ -213,3 +207,30 @@ def generate_default_note(context) -> str:
         return f"{friendly_mode}: {obj.name}"
     except Exception:
         return ""
+
+
+def get_sorted_versions(manifest: dict, newest_first: bool = True, include_autosave: bool = False) -> list:
+    """
+    Returns a sorted list of version dictionaries.
+
+    Args:
+        manifest: The manifest dictionary.
+        newest_first: If True, sorts v002 -> v001. If False, v001 -> v002.
+        include_autosave: Whether to include the 'autosave' entry.
+    """
+    raw_versions = manifest.get("versions", [])
+
+    # 1. Manual versions (v001, v002...)
+    manual_versions = [v for v in raw_versions if v.get("id") != "autosave"]
+    manual_versions.sort(key=lambda x: x.get("id", ""), reverse=newest_first)
+
+    if not include_autosave:
+        return manual_versions
+
+    # 2. Handle autosave
+    autosave_entry = next((v for v in raw_versions if v.get("id") == "autosave"), None)
+
+    if autosave_entry:
+        return manual_versions + [autosave_entry]
+
+    return manual_versions

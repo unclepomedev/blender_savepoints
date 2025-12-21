@@ -8,6 +8,7 @@ import bpy.utils.previews
 
 from .services.manifest import load_manifest
 from .services.storage import from_posix_path, format_file_size, get_history_dir
+from .services.versioning import get_sorted_versions
 
 preview_collections: dict = {}
 
@@ -44,6 +45,13 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
     """
     data = load_manifest(create_if_missing=False)
     settings = context.scene.savepoints_settings
+    current_selected_id = None
+    if len(settings.versions) > 0 and settings.active_version_index >= 0:
+        try:
+            current_selected_id = settings.versions[settings.active_version_index].version_id
+        except IndexError:
+            pass
+
     settings.versions.clear()
 
     # Update Previews
@@ -52,12 +60,11 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         pcoll.clear()
 
     history_dir = get_history_dir()
+    sorted_versions = get_sorted_versions(data, newest_first=True, include_autosave=True)
 
-    versions = data.get("versions", [])
-    # Sort: Normal versions first (by ID), autosave last
-    versions.sort(key=lambda v: (1 if v.get("id") == "autosave" else 0, v.get("id", "")))
+    new_active_index = 0
 
-    for v_data in versions:
+    for i, v_data in enumerate(sorted_versions):
         item = settings.versions.add()
         item.version_id = v_data.get("id", "")
         item.timestamp = v_data.get("timestamp", "")
@@ -71,11 +78,14 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         fsize = v_data.get("file_size", 0)
         item.file_size_display = format_file_size(fsize)
 
+        if current_selected_id and item.version_id == current_selected_id:
+            new_active_index = i
+
         _load_item_preview(pcoll, history_dir, item)
 
     # If we have versions and no active index, set to 0
-    if len(settings.versions) > 0 and settings.active_version_index < 0:
-        settings.active_version_index = 0
+    if len(settings.versions) > 0:
+        settings.active_version_index = new_active_index
 
 
 def force_redraw_areas(context: bpy.types.Context, area_types: set[str] = None) -> None:
