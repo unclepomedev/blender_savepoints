@@ -34,8 +34,7 @@ from .services.versioning import (
     update_version_tag,
     is_safe_filename,
     prune_versions,
-    generate_default_note,
-    VersionLimitReachedError
+    generate_default_note
 )
 from .ui_utils import sync_history_to_props, force_redraw_areas, find_3d_view_override
 
