@@ -216,7 +216,11 @@ class TestPathUtils(unittest.TestCase):
         # We need to import operators here so it uses the mocked bpy
         import importlib
         import savepoints.operators
+        import savepoints.services.storage
+
         importlib.reload(savepoints.operators)
+        importlib.reload(savepoints.services.storage)
+
         from savepoints.operators import SAVEPOINTS_OT_commit
 
         mock_context = mock.MagicMock()
@@ -234,12 +238,35 @@ class TestPathUtils(unittest.TestCase):
         self.assertTrue(SAVEPOINTS_OT_commit.poll(mock_context), f"Poll should be True for normal file: {normal_path}")
 
         # Case 2: Snapshot file -> poll should be False
-        history_dir = ".MyScene_history"
-        snapshot_path = os.path.join(base, history_dir, "v001", "snapshot.blend_snapshot")
+        with mock.patch('savepoints.services.storage.Path') as MockPath:
+            # 1. create mock path object
+            mock_resolved = mock.MagicMock()
+            MockPath.return_value.resolve.return_value = mock_resolved
 
-        bpy.data.filepath = snapshot_path
-        self.assertFalse(SAVEPOINTS_OT_commit.poll(mock_context),
-                         f"Poll should be False for snapshot file: {snapshot_path}")
+            # 2. create parent chain
+            mock_ver_dir = mock.MagicMock()
+            mock_hist_dir = mock.MagicMock()
+            mock_proj_dir = mock.MagicMock()
+
+            # path.parent -> version_dir
+            type(mock_resolved).parent = mock.PropertyMock(return_value=mock_ver_dir)
+            # version_dir.parent -> history_dir
+            type(mock_ver_dir).parent = mock.PropertyMock(return_value=mock_hist_dir)
+            # history_dir.parent -> project_dir
+            type(mock_hist_dir).parent = mock.PropertyMock(return_value=mock_proj_dir)
+
+            # 3. create dir name
+            target_history_name = ".MyScene_history"
+            type(mock_hist_dir).name = mock.PropertyMock(return_value=target_history_name)
+
+            mock_proj_dir.__truediv__.return_value = "/project/MyScene.blend"
+
+            # 4. execute test
+            snapshot_path = "/project/.MyScene_history/v001/snapshot.blend_snapshot"
+            bpy.data.filepath = snapshot_path
+
+            self.assertFalse(SAVEPOINTS_OT_commit.poll(mock_context),
+                             f"Poll should be False for snapshot file: {snapshot_path}")
 
 
 if __name__ == '__main__':

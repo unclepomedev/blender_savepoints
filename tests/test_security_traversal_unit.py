@@ -1,10 +1,8 @@
-import os
 import sys
+import tempfile
 import types
 import unittest
 import unittest.mock as mock
-import tempfile
-import shutil
 from pathlib import Path
 
 # Add project root to sys.path
