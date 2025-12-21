@@ -1,7 +1,7 @@
 import sys
 import unittest
-from unittest.mock import MagicMock, patch
 from pathlib import Path
+from unittest.mock import MagicMock
 
 # Add project root to path
 CURRENT_DIR = Path(__file__).resolve().parent
@@ -71,16 +71,42 @@ class MockImportHelper: pass
 sys.modules['bpy_extras.io_utils'].ImportHelper = MockImportHelper
 sys.modules['bpy_extras.io_utils'].ExportHelper = MockImportHelper  # Added this
 
-from savepoints.services.versioning import get_next_version_id, VersionLimitReachedError
+from savepoints.services.versioning import get_next_version_id, get_sorted_versions
 
 
 class TestVersionLimit(unittest.TestCase):
-    def test_version_limit_v999(self):
-        # Scenario: Last version is v999. Should raise VersionLimitReachedError (v999 is the limit).
+    def test_version_over_999(self):
+        # Scenario: Last version is v999. Should NOT raise error, but return v1000.
         versions = [{"id": "v999"}]
 
-        with self.assertRaises(VersionLimitReachedError):
-            get_next_version_id(versions)
+        next_id = get_next_version_id(versions)
+        self.assertEqual(next_id, "v1000")
+
+    def test_version_sorting(self):
+        # Scenario: Verify sorting works for mixed digits (v2, v10, v999, v1000)
+        # Note: manifest["versions"] is usually a list of dicts.
+        manifest = {
+            "versions": [
+                {"id": "v2"},
+                {"id": "v10"},
+                {"id": "v999"},
+                {"id": "v1000"},
+                {"id": "v1"}
+            ]
+        }
+
+        # newest_first=True -> v1000 should be first, v1 last
+        sorted_versions = get_sorted_versions(manifest, newest_first=True)
+        self.assertEqual(sorted_versions[0]["id"], "v1000")
+        self.assertEqual(sorted_versions[1]["id"], "v999")
+        self.assertEqual(sorted_versions[2]["id"], "v10")
+        self.assertEqual(sorted_versions[3]["id"], "v2")
+        self.assertEqual(sorted_versions[4]["id"], "v1")
+
+        # newest_first=False -> v1 first, v1000 last
+        sorted_versions_asc = get_sorted_versions(manifest, newest_first=False)
+        self.assertEqual(sorted_versions_asc[0]["id"], "v1")
+        self.assertEqual(sorted_versions_asc[-1]["id"], "v1000")
 
 
 if __name__ == '__main__':

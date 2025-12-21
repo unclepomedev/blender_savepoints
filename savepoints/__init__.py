@@ -55,8 +55,8 @@ def delayed_sync_history():
 
         if hasattr(context.scene, "savepoints_settings"):
             context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
-    except Exception as e:
-        print(f"[SavePoints] Error during delayed sync: {e}")
+    except Exception:
+        print("[SavePoints] Error during delayed sync history on load.")
         traceback.print_exc()
 
     return None
