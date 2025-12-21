@@ -106,11 +106,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             self.note = generate_default_note(context)
 
         manifest = load_manifest()
-        try:
-            new_id_str = get_next_version_id(manifest.get("versions", []))
-        except VersionLimitReachedError:
-            self.report({'ERROR'}, "Version limit reached (v1000). Please consider forking the project.")
-            return {'CANCELLED'}
+        new_id_str = get_next_version_id(manifest.get("versions", []))
 
         create_snapshot(context, new_id_str, self.note)
 

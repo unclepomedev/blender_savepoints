@@ -32,9 +32,6 @@ def get_next_version_id(versions: list[dict]) -> str:
             except ValueError:
                 pass
 
-    if max_id >= 999:
-        raise VersionLimitReachedError("Version limit reached")
-
     return f"v{max_id + 1:03d}"
 
 
@@ -222,7 +219,14 @@ def get_sorted_versions(manifest: dict, newest_first: bool = True, include_autos
 
     # 1. Manual versions (v001, v002...)
     manual_versions = [v for v in raw_versions if v.get("id") != "autosave"]
-    manual_versions.sort(key=lambda x: x.get("id", ""), reverse=newest_first)
+
+    def version_sort_key(v):
+        vid = v.get("id", "")
+        if vid.startswith("v") and vid[1:].isdigit():
+            return int(vid[1:])
+        return -1
+
+    manual_versions.sort(key=version_sort_key, reverse=newest_first)
 
     if not include_autosave:
         return manual_versions
