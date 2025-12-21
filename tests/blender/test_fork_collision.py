@@ -70,6 +70,7 @@ class TestForkCollision(SavePointsTestCase):
 
         # Actually, simpler: load the original project, then checkout v001 again.
         bpy.ops.wm.open_mainfile(filepath=str(self.blend_path))
+        bpy.ops.savepoints.refresh()
         bpy.context.scene.savepoints_settings.active_version_index = 0
         bpy.ops.savepoints.checkout()
 
