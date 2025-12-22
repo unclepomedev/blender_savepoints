@@ -22,6 +22,7 @@ def create_rescue_temp_file(snapshot_path: Path) -> Path:
 
     Raises:
         OSError: If copying fails.
+        TimeoutError: If the temp file cannot be validated within 1 second.
     """
     version_dir = snapshot_path.parent
     temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
