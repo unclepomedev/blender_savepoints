@@ -8,7 +8,8 @@ from .snapshot import find_snapshot_path
 from .storage import (
     get_history_dir,
     SNAPSHOT_FILENAME,
-    LEGACY_SNAPSHOT_FILENAME
+    LEGACY_SNAPSHOT_FILENAME,
+    is_safe_filename
 )
 
 _LINKED_DATA_COLLECTIONS = (
@@ -53,6 +54,10 @@ def _remove_ghost_collection(collection: bpy.types.Collection, context: bpy.type
 
 
 def _purge_ghost_libraries(version_id: str) -> None:
+    if not is_safe_filename(version_id):
+        print(f"[SavePoints] Security Warning: Invalid version_id detected in purge: {version_id}")
+        return
+
     history_dir_str = get_history_dir()
     if not history_dir_str:
         return
