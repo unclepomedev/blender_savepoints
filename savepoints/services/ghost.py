@@ -13,7 +13,7 @@ from .storage import (
 )
 
 _LINKED_DATA_COLLECTIONS = (
-    "objects", "meshes", "materials", "textures", "images",
+    "objects", "collections", "meshes", "materials", "textures", "images",
     "armatures", "actions", "curves", "lights", "cameras",
     "node_groups", "fonts", "cache_files", "movieclips"
 )
