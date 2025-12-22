@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Any
+from typing import Any, Generator
 
 import bpy
 
@@ -18,6 +18,54 @@ def _get_collections_to_remap():
         getattr(bpy.data, "volumes", []),
         getattr(bpy.data, "texts", []),
     ]
+
+
+def _get_all_sequences():
+    scene = getattr(bpy.context, "scene", None)
+    if not scene or not getattr(scene, "sequence_editor", None):
+        return []
+
+    # Support for Blender < 4.4 (sequences_all) and >= 4.4 (strips_all)
+    sequences = getattr(scene.sequence_editor, "sequences_all", None)
+    if sequences is None:
+        sequences = getattr(scene.sequence_editor, "strips_all", [])
+    return sequences
+
+
+def _iter_asset_attributes() -> Generator[tuple[Any, str], None, None]:
+    # Collections to iterate over
+    for collection in _get_collections_to_remap():
+        for item in collection:
+            if hasattr(item, "filepath"):
+                yield item, "filepath"
+
+    # VSE Support
+    for seq in _get_all_sequences():
+        if hasattr(seq, "filepath"):
+            yield seq, "filepath"
+        if hasattr(seq, "directory"):
+            yield seq, "directory"
+
+
+def _transform_path_to_history(path: str) -> str | None:
+    # Normalize slashes to handle Windows paths (e.g. //..\..\)
+    path_normalized = path.replace("\\", "/")
+    # Check for relative path (starts with //) and avoid double remapping
+    if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
+        # path[2:] preserves original separators
+        return "//../../" + path[2:]
+    return None
+
+
+def _transform_path_from_history(path: str) -> str | None:
+    # Normalize slashes
+    path_normalized = path.replace("\\", "/")
+    # Check for //../../
+    if path_normalized.startswith("//../../"):
+        # Remove ../../ (keep //)
+        # //../../path -> //path
+        return "//" + path_normalized[8:]
+    return None
 
 
 def remap_snapshot_paths(dummy: Any) -> None:
@@ -38,48 +86,20 @@ def remap_snapshot_paths(dummy: Any) -> None:
 
     print(f"[SavePoints] Detected snapshot load: {filepath}. Remapping relative paths...")
 
-    # Collections to iterate over
-    collections_to_remap = _get_collections_to_remap()
+    for item, attr in _iter_asset_attributes():
+        current_path = getattr(item, attr)
+        new_path = _transform_path_to_history(current_path)
 
-    for collection in collections_to_remap:
-        for item in collection:
-            if hasattr(item, "filepath"):
-                path = item.filepath
-                # Check for relative path (starts with //) and avoid double remapping
-                # Normalize slashes to handle Windows paths (e.g. //..\..\)
-                path_normalized = path.replace("\\", "/")
-                if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
-                    new_path = "//../../" + path[2:]
-                    item.filepath = new_path
+        if new_path:
+            setattr(item, attr, new_path)
 
-                    if hasattr(item, "reload"):
-                        try:
-                            item.reload()
-                        except RuntimeError:
-                            # Some libraries/images might fail to reload if the file is missing
-                            pass
-
-    # VSE Support
-    scene = getattr(bpy.context, "scene", None)
-    if scene and getattr(scene, "sequence_editor", None):
-        # Support for Blender < 4.4 (sequences_all) and >= 4.4 (strips_all)
-        sequences = getattr(scene.sequence_editor, "sequences_all", None)
-        if sequences is None:
-            sequences = getattr(scene.sequence_editor, "strips_all", [])
-
-        for seq in sequences:
-            # Check for filepath or directory property
-            if hasattr(seq, "filepath"):
-                path = seq.filepath
-                path_normalized = path.replace("\\", "/")
-                if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
-                    seq.filepath = "//../../" + path[2:]
-
-            if hasattr(seq, "directory"):
-                path = seq.directory
-                path_normalized = path.replace("\\", "/")
-                if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
-                    seq.directory = "//../../" + path[2:]
+            # Try reloading if supported (mostly for images/libraries)
+            if hasattr(item, "reload"):
+                try:
+                    item.reload()
+                except RuntimeError:
+                    # Some libraries/images might fail to reload if the file is missing
+                    pass
 
 
 def unmap_snapshot_paths() -> bool:
@@ -91,43 +111,13 @@ def unmap_snapshot_paths() -> bool:
         bool: True if any path was modified, False otherwise.
     """
     changed = False
-    # Collections to iterate over
-    collections_to_remap = _get_collections_to_remap()
 
-    for collection in collections_to_remap:
-        for item in collection:
-            if hasattr(item, "filepath"):
-                path = item.filepath
-                # Normalize slashes
-                path_normalized = path.replace("\\", "/")
-                # Check for //../../
-                if path_normalized.startswith("//../../"):
-                    # Remove ../../ (keep //)
-                    # //../../path -> //path
-                    new_path = "//" + path_normalized[8:]
-                    item.filepath = new_path
-                    changed = True
+    for item, attr in _iter_asset_attributes():
+        current_path = getattr(item, attr)
+        new_path = _transform_path_from_history(current_path)
 
-    # VSE Support
-    scene = getattr(bpy.context, "scene", None)
-    if scene and getattr(scene, "sequence_editor", None):
-        sequences = getattr(scene.sequence_editor, "sequences_all", None)
-        if sequences is None:
-            sequences = getattr(scene.sequence_editor, "strips_all", [])
-
-        for seq in sequences:
-            if hasattr(seq, "filepath"):
-                path = seq.filepath
-                path_normalized = path.replace("\\", "/")
-                if path_normalized.startswith("//../../"):
-                    seq.filepath = "//" + path_normalized[8:]
-                    changed = True
-
-            if hasattr(seq, "directory"):
-                path = seq.directory
-                path_normalized = path.replace("\\", "/")
-                if path_normalized.startswith("//../../"):
-                    seq.directory = "//" + path_normalized[8:]
-                    changed = True
+        if new_path:
+            setattr(item, attr, new_path)
+            changed = True
 
     return changed
