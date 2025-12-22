@@ -38,12 +38,19 @@ def create_rescue_temp_file(snapshot_path: Path) -> Path:
     timeout = 1.0
     start_time = time.time()
 
+    is_ready = False
+
     while (time.time() - start_time) < timeout:
-        if temp_blend_path.exists() and temp_blend_path.stat().st_size > 0:
-            break
+        try:
+            if temp_blend_path.stat().st_size > 0:
+                is_ready = True
+                break
+        except OSError:
+            pass
+
         time.sleep(0.05)
 
-    if not temp_blend_path.exists() or temp_blend_path.stat().st_size == 0:
+    if not is_ready:
         try:
             if temp_blend_path.exists():
                 os.remove(temp_blend_path)
