@@ -43,5 +43,5 @@ def create_backup(file_path: Path) -> Path:
     backup_path = history_dir / backup_filename
 
     shutil.copy2(file_path, backup_path)
-    
+
     return backup_path
