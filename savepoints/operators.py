@@ -251,6 +251,9 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
 
         try:
             temp_blend_path = create_rescue_temp_file(snapshot_path)
+        except TimeoutError:
+            self.report({'WARNING'}, "System busy: Could not prepare rescue file. Please try again.")
+            return {'CANCELLED'}
         except Exception as e:
             self.report({'ERROR'}, f"Failed to create temp file: {e}")
             return {'CANCELLED'}

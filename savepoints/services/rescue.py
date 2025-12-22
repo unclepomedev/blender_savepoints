@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import time
 from pathlib import Path
 
 from .storage import (
@@ -26,6 +27,30 @@ def create_rescue_temp_file(snapshot_path: Path) -> Path:
     temp_blend_path = version_dir / RESCUE_TEMP_FILENAME
 
     shutil.copy2(str(snapshot_path), str(temp_blend_path))
+
+    if hasattr(os, "sync"):
+        try:
+            os.sync()
+        except OSError:
+            pass
+
+    timeout = 1.0
+    start_time = time.time()
+
+    while (time.time() - start_time) < timeout:
+        if temp_blend_path.exists() and temp_blend_path.stat().st_size > 0:
+            break
+        time.sleep(0.05)
+
+    if not temp_blend_path.exists() or temp_blend_path.stat().st_size == 0:
+        try:
+            if temp_blend_path.exists():
+                os.remove(temp_blend_path)
+        except Exception:
+            pass
+
+        raise TimeoutError(f"[SavePoints] Failed to create valid temp file within {timeout}s: {temp_blend_path}")
+
     print(f"[SavePoints] Created temp file for rescue: {temp_blend_path}")
 
     return temp_blend_path
