@@ -1,13 +1,20 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from pathlib import Path
+
 import bpy
 
 from .snapshot import find_snapshot_path
 from .storage import (
     get_history_dir,
-    to_posix_path,
     SNAPSHOT_FILENAME,
     LEGACY_SNAPSHOT_FILENAME
+)
+
+_LINKED_DATA_COLLECTIONS = (
+    "objects", "meshes", "materials", "textures", "images",
+    "armatures", "actions", "curves", "lights", "cameras",
+    "node_groups", "fonts", "cache_files", "movieclips"
 )
 
 
@@ -50,30 +57,38 @@ def _purge_ghost_libraries(version_id: str) -> None:
     if not history_dir_str:
         return
 
-    # Look for libraries that seem to be from this snapshot
+    history_dir = Path(history_dir_str).resolve()
+
+    expected_paths = set()
+    for fname in [SNAPSHOT_FILENAME, LEGACY_SNAPSHOT_FILENAME]:
+        p = (history_dir / version_id / fname).resolve()
+        expected_paths.add(p)
+
     libs_to_process = []
     for lib in bpy.data.libraries:
-        path_norm = to_posix_path(lib.filepath)
-        if (f"/{version_id}/{SNAPSHOT_FILENAME}" in path_norm or
-                f"/{version_id}/{LEGACY_SNAPSHOT_FILENAME}" in path_norm):
-            libs_to_process.append(lib)
+        if not lib.filepath:
+            continue
 
-    # Collections to check for linked data
-    data_collections = [
-        bpy.data.objects, bpy.data.meshes, bpy.data.materials,
-        bpy.data.textures, bpy.data.images, bpy.data.armatures,
-        bpy.data.actions, bpy.data.curves, bpy.data.lights,
-        bpy.data.cameras, bpy.data.node_groups, bpy.data.fonts,
-        bpy.data.cache_files, bpy.data.movieclips
-    ]
+        abs_filepath_str = bpy.path.abspath(lib.filepath)
+
+        try:
+            lib_path = Path(abs_filepath_str).resolve()
+
+            if lib_path in expected_paths:
+                libs_to_process.append(lib)
+        except (OSError, ValueError):
+            continue
 
     for lib in libs_to_process:
-        # Force remove all data blocks linked from this library
-        for col in data_collections:
-            items = [item for item in col if getattr(item, "library", None) == lib]
+        for attr in _LINKED_DATA_COLLECTIONS:
+            collection = getattr(bpy.data, attr, None)
+            if not collection:
+                continue
+
+            items = [item for item in collection if getattr(item, "library", None) == lib]
             for item in items:
                 try:
-                    col.remove(item, do_unlink=True)
+                    collection.remove(item, do_unlink=True)
                 except Exception:
                     pass
 
@@ -90,9 +105,6 @@ def load_ghost(version_id: str, context: bpy.types.Context) -> int:
     snapshot_path = find_snapshot_path(version_id)
 
     if not snapshot_path:
-        # Try to construct path manually if find_snapshot_path fails (e.g. if history dir is weird),
-        # but find_snapshot_path handles checking existence.
-        # If it returned None, it means it really wasn't found.
         raise FileNotFoundError(f"Snapshot file not found for version: {version_id}")
 
     objects = _load_objects_from_snapshot(str(snapshot_path))
