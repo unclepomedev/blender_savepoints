@@ -52,8 +52,7 @@ def _transform_path_to_history(path: str) -> str | None:
     path_normalized = path.replace("\\", "/")
     # Check for relative path (starts with //) and avoid double remapping
     if path_normalized.startswith("//") and not path_normalized.startswith("//../../"):
-        # path[2:] preserves original separators
-        return "//../../" + path[2:]
+        return "//../../" + path_normalized[2:]
     return None
 
 
