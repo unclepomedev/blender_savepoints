@@ -115,11 +115,11 @@ from savepoints.services.versioning import delete_version_by_id
 
 
 class TestSecurityTraversal(unittest.TestCase):
-    @mock.patch("savepoints.services.versioning.shutil.rmtree")
+    @mock.patch("savepoints.services.versioning.send2trash")
     @mock.patch("savepoints.services.versioning.get_history_dir")
     @mock.patch("savepoints.services.versioning.load_manifest")
     @mock.patch("savepoints.services.versioning.save_manifest")
-    def test_delete_version_path_traversal_prevention(self, mock_save, mock_load, mock_get_history, mock_rmtree):
+    def test_delete_version_path_traversal_prevention(self, mock_save, mock_load, mock_get_history, mock_send2trash):
         # Setup temporary directories
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -143,15 +143,15 @@ class TestSecurityTraversal(unittest.TestCase):
             # Action
             delete_version_by_id(malicious_id)
 
-            # Verification: rmtree should NOT be called
-            self.assertFalse(mock_rmtree.called, "shutil.rmtree should NOT be called for path traversal attempt")
+            # Verification: send2trash should NOT be called
+            self.assertFalse(mock_send2trash.called, "send2trash should NOT be called for path traversal attempt")
 
-    @mock.patch("savepoints.services.versioning.shutil.rmtree")
+    @mock.patch("savepoints.services.versioning.send2trash")
     @mock.patch("savepoints.services.versioning.get_history_dir")
     @mock.patch("savepoints.services.versioning.load_manifest")
     @mock.patch("savepoints.services.versioning.save_manifest")
     def test_delete_version_rejects_multiple_traversal_patterns(self, mock_save, mock_load, mock_get_history,
-                                                                mock_rmtree):
+                                                                mock_send2trash):
         malicious_ids = [
             "../../system",
             "../../../etc",
@@ -166,9 +166,9 @@ class TestSecurityTraversal(unittest.TestCase):
         mock_load.return_value = {"versions": []}
 
         for malicious_id in malicious_ids:
-            mock_rmtree.reset_mock()
+            mock_send2trash.reset_mock()
             delete_version_by_id(malicious_id)
-            self.assertFalse(mock_rmtree.called, f"rmtree should not be called for: {malicious_id}")
+            self.assertFalse(mock_send2trash.called, f"send2trash should not be called for: {malicious_id}")
 
 
 if __name__ == '__main__':
