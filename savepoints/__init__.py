@@ -31,6 +31,7 @@ classes = (
     operators.SAVEPOINTS_OT_fork_version,
     operators.SAVEPOINTS_OT_delete,
     operators.SAVEPOINTS_OT_refresh,
+    operators.SAVEPOINTS_OT_guard_save,
     ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
@@ -100,6 +101,10 @@ def register():
         kmi2 = km.keymap_items.new("savepoints.commit", 'S', 'PRESS', ctrl=True, alt=True, shift=True)
         kmi2.properties.force_quick = True
         addon_keymaps.append((km, kmi2))
+
+        # Guard Save: Ctrl+S (Intercept standard save)
+        kmi_guard = km.keymap_items.new("savepoints.guard_save", 'S', 'PRESS', ctrl=True)
+        addon_keymaps.append((km, kmi_guard))
 
 
 def unregister():
