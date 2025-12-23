@@ -71,12 +71,6 @@ class MockPropertyGroup: pass
 bpy.types.PropertyGroup = MockPropertyGroup
 
 
-class MockCollection: pass
-
-
-bpy.types.Collection = MockCollection
-
-
 class MockUIList: pass
 
 
