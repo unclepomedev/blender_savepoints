@@ -24,7 +24,7 @@ from .services.rescue import (
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     get_parent_path_from_snapshot,
-    get_fork_target_path,
+    get_fork_target_path, SNAPSHOT_EXT,
 )
 from .services.versioning import (
     get_next_version_id,
@@ -587,3 +587,33 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
         force_redraw_areas(context)
 
         return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_guard_save(bpy.types.Operator):
+    """Intercept Ctrl+S to prevent saving over snapshots."""
+    bl_idname = "savepoints.guard_save"
+    bl_label = "Guard Save"
+    bl_options = {'INTERNAL'}
+
+    def execute(self, context):
+        filepath = bpy.data.filepath
+        if filepath and filepath.lower().endswith(SNAPSHOT_EXT):
+            msg = "Snapshot Mode (Review Mode): Please use Fork or Save as Parent."
+            self.report({'WARNING'}, msg)
+
+            if not bpy.app.background:
+                def draw_popup(self, context):
+                    layout = self.layout
+                    layout.label(text="Snapshot Mode (Review Mode)")
+                    layout.label(text="Please use 'Fork' or 'Save as Parent'.")
+
+                context.window_manager.popup_menu(draw_popup, title="Save Prevented", icon='ERROR')
+
+            return {'CANCELLED'}
+
+        # Normal Save
+        try:
+            return bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
+        except RuntimeError:
+            # Can happen if cancelled or other internal issues, usually safe to ignore in wrapper
+            return {'CANCELLED'}

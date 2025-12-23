@@ -59,7 +59,7 @@ def draw_hud():
         blf.enable(font_id, blf.SHADOW)
         blf.shadow(font_id, 3, 0.0, 0.0, 0.0, 1.0)
 
-        text = "SNAPSHOT MODE (READ ONLY)"
+        text = "SNAPSHOT MODE (REVIEW MODE)"
         text_width, text_height = blf.dimensions(font_id, text)
 
         positions = [
