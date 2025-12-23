@@ -14,12 +14,12 @@ license = [
     "SPDX:GPL-3.0-or-later",
 ]
 
+wheels = [
+  "./wheels/Send2Trash-1.8.3-py3-none-any.whl",
+]
+
 [description]
 text = "A lightweight version control tool for Blender. Create save points with thumbnails and notes, and restore them anytime from the UI."
 
 [permissions]
 files = "Create version history and move deleted versions to trash"
-
-wheels = [
-  "./wheels/Send2Trash-1.8.3-py3-none-any.whl",
-]
