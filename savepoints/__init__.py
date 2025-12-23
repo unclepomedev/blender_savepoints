@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-
+import sys
 import time
 import traceback
 
@@ -91,19 +91,35 @@ def register():
     kc = wm.keyconfigs.addon
     if kc:
         km = kc.keymaps.new(name='Window', space_type='EMPTY')
+        is_mac = (sys.platform == 'darwin')
 
-        # Standard: Ctrl+Alt+S
-        kmi1 = km.keymap_items.new("savepoints.commit", 'S', 'PRESS', ctrl=True, alt=True)
+        # ---------------------------------------------------------
+        # 1. Standard: Ctrl+Alt+S (Mac: Cmd+Alt+S)
+        # ---------------------------------------------------------
+        kmi1 = km.keymap_items.new(
+            "savepoints.commit", 'S', 'PRESS',
+            ctrl=(not is_mac), oskey=is_mac, alt=True
+        )
         kmi1.properties.force_quick = False
         addon_keymaps.append((km, kmi1))
 
-        # Forced Quick: Ctrl+Alt+Shift+S
-        kmi2 = km.keymap_items.new("savepoints.commit", 'S', 'PRESS', ctrl=True, alt=True, shift=True)
+        # ---------------------------------------------------------
+        # 2. Forced Quick: Ctrl+Alt+Shift+S (Mac: Cmd+Alt+Shift+S)
+        # ---------------------------------------------------------
+        kmi2 = km.keymap_items.new(
+            "savepoints.commit", 'S', 'PRESS',
+            ctrl=(not is_mac), oskey=is_mac, alt=True, shift=True
+        )
         kmi2.properties.force_quick = True
         addon_keymaps.append((km, kmi2))
 
-        # Guard Save: Ctrl+S (Intercept standard save)
-        kmi_guard = km.keymap_items.new("savepoints.guard_save", 'S', 'PRESS', ctrl=True)
+        # ---------------------------------------------------------
+        # 3. Guard Save: Ctrl+S (Mac: Cmd+S) -> Intercept standard save
+        # ---------------------------------------------------------
+        kmi_guard = km.keymap_items.new(
+            "savepoints.guard_save", 'S', 'PRESS',
+            ctrl=(not is_mac), oskey=is_mac
+        )
         addon_keymaps.append((km, kmi_guard))
 
 
