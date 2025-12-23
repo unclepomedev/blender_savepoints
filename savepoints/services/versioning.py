@@ -5,6 +5,8 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from send2trash import send2trash
+
 from .manifest import (
     load_manifest, save_manifest
 )
@@ -136,7 +138,7 @@ def delete_version_by_id(version_id: str) -> None:
             version_dir = Path(history_dir_str) / version_id
             if version_dir.exists():
                 try:
-                    shutil.rmtree(version_dir)
+                    send2trash(str(version_dir))
                 except Exception as e:
                     print(f"Failed to remove directory {version_dir}: {e}")
 

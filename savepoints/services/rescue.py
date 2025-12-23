@@ -5,6 +5,8 @@ import shutil
 import time
 from pathlib import Path
 
+from send2trash import send2trash
+
 from .storage import (
     RESCUE_TEMP_FILENAME, get_history_dir
 )
@@ -53,7 +55,7 @@ def create_rescue_temp_file(snapshot_path: Path) -> Path:
     if not is_ready:
         try:
             if temp_blend_path.exists():
-                os.remove(temp_blend_path)
+                send2trash(str(temp_blend_path))
         except Exception:
             pass
 
@@ -73,7 +75,7 @@ def delete_rescue_temp_file(temp_path: Path):
     """
     if temp_path.exists():
         try:
-            os.remove(temp_path)
+            send2trash(str(temp_path))
             print(f"[SavePoints] Removed temp file for rescue: {temp_path}")
         except Exception as e:
             print(f"[SavePoints] Error removing temp file: {e}")
@@ -101,7 +103,7 @@ def cleanup_rescue_temp_files() -> int:
             temp_file = version_dir / RESCUE_TEMP_FILENAME
             if temp_file.exists():
                 try:
-                    temp_file.unlink()
+                    send2trash(str(temp_file))
                     count += 1
                 except Exception as e:
                     print(f"[SavePoints] Failed to remove temp file {temp_file}: {e}")
