@@ -48,8 +48,8 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 2. **Locate the Panel**: Open the 3D Viewport and find the **SavePoints** tab in the N-Panel.
 3. **Save a Version**:
    - Click **Save Version** or use shortcuts:
-     - `Ctrl + Alt (Opt) + S`: Standard Save (respects "Show Save Dialog" setting).
-     - `Ctrl + Alt (Opt) + Shift + S`: Forced Quick Save (always skips dialog).
+     - `Ctrl/Cmd + Alt (Opt) + S`: Standard Save (respects "Show Save Dialog" setting).
+     - `Ctrl/Cmd + Alt (Opt) + Shift + S`: Forced Quick Save (always skips dialog).
    - Enter a note (optional) and confirm.
    - *Tip*: Disable **"Show Save Dialog"** in settings for one-click saving with the standard shortcut.
    - A new version is created inside a hidden history folder next to your `.blend` file.
@@ -159,8 +159,8 @@ SavePointsは、プロジェクトのバージョン管理をサポートするB
 2. **Locate the Panel**: 3Dビューポートの **N-Panel** (サイドバー) にある **SavePoints** タブを開きます。
 3. **Save a Version**:
    - **Save Version** ボタンをクリックするか、ショートカットを使用します：
-     - `Ctrl + Alt (Opt) + S`: 通常セーブ (設定によりダイアログを表示)。
-     - `Ctrl + Alt (Opt) + Shift + S`: 強制クイックセーブ (常にダイアログをスキップ)。
+     - `Ctrl/Cmd + Alt (Opt) + S`: 通常セーブ (設定によりダイアログを表示)。
+     - `Ctrl/Cmd + Alt (Opt) + Shift + S`: 強制クイックセーブ (常にダイアログをスキップ)。
    - **Note** を入力（任意）して確定します。
    - *Tip*: 設定で **"Show Save Dialog"** をオフにすると、標準ショートカットでワンクリック保存が可能になります。
    - `.blend` ファイルと同じ場所に隠しフォルダが作成され、そこに履歴が保存されます。
@@ -246,8 +246,8 @@ SavePoints 是一款 Blender 插件，可以帮助您轻松管理项目版本。
 2. **Locate the Panel**: 打开 3D 视口并在 N-Panel (侧边栏) 中找到 **SavePoints** 选项卡。
 3. **Save a Version**:
    - 点击 **Save Version** 或使用快捷键：
-     - `Ctrl + Alt (Opt) + S`: 标准保存 (遵循 "Show Save Dialog" 设置)。
-     - `Ctrl + Alt (Opt) + Shift + S`: 强制快速保存 (总是跳过对话框)。
+     - `Ctrl/Cmd + Alt (Opt) + S`: 标准保存 (遵循 "Show Save Dialog" 设置)。
+     - `Ctrl/Cmd + Alt (Opt) + Shift + S`: 强制快速保存 (总是跳过对话框)。
    - 输入备注 (可选) 并确认。
    - *提示*: 在设置中禁用 **"Show Save Dialog"** 可使用标准快捷键一键保存。
    - 新版本将创建在 `.blend` 文件旁边的隐藏历史文件夹中。
