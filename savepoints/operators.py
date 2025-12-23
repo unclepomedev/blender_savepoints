@@ -24,7 +24,7 @@ from .services.rescue import (
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
     get_parent_path_from_snapshot,
-    get_fork_target_path,
+    get_fork_target_path, SNAPSHOT_EXT,
 )
 from .services.versioning import (
     get_next_version_id,
@@ -597,7 +597,7 @@ class SAVEPOINTS_OT_guard_save(bpy.types.Operator):
 
     def execute(self, context):
         filepath = bpy.data.filepath
-        if filepath and filepath.lower().endswith(".blend_snapshot"):
+        if filepath and filepath.lower().endswith(SNAPSHOT_EXT):
             msg = "Snapshot Mode (Read Only): Please use Fork or Save as Parent."
             self.report({'WARNING'}, msg)
 
