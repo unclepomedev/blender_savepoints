@@ -598,13 +598,13 @@ class SAVEPOINTS_OT_guard_save(bpy.types.Operator):
     def execute(self, context):
         filepath = bpy.data.filepath
         if filepath and filepath.lower().endswith(SNAPSHOT_EXT):
-            msg = "Snapshot Mode (Read Only): Please use Fork or Save as Parent."
+            msg = "Snapshot Mode (Review Mode): Please use Fork or Save as Parent."
             self.report({'WARNING'}, msg)
 
             if not bpy.app.background:
                 def draw_popup(self, context):
                     layout = self.layout
-                    layout.label(text="Snapshot Mode (Read Only)")
+                    layout.label(text="Snapshot Mode (Review Mode)")
                     layout.label(text="Please use 'Fork' or 'Save as Parent'.")
 
                 context.window_manager.popup_menu(draw_popup, title="Save Prevented", icon='ERROR')
