@@ -21,10 +21,7 @@ def preserve_selection():
 
     selected_names = [obj.name for obj in bpy.context.selected_objects]
 
-    original_mode = active_obj.mode if active_obj else 'OBJECT'
-
-    if not active_obj and bpy.context.mode != 'OBJECT':
-        original_mode = bpy.context.mode
+    original_mode = active_obj.mode if active_obj else bpy.context.mode
 
     try:
         yield
