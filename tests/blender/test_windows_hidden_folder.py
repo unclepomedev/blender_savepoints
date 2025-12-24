@@ -28,6 +28,7 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
 
         # Constants
         FILE_ATTRIBUTE_HIDDEN = 0x02
+        FILE_ATTRIBUTE_DIRECTORY = 0x10
 
         # --- Step 1: Windows + Dot Folder ---
         with self.subTest(step="1. Windows + Dot Folder"):
@@ -37,18 +38,22 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
             with patch('savepoints.services.storage.sys.platform', 'win32'):
                 with patch('savepoints.services.storage.ctypes') as mock_ctypes:
                     # Setup Mock
-                    mock_set_attr = MagicMock()
-                    mock_ctypes.windll.kernel32.SetFileAttributesW = mock_set_attr
+                    mock_get = MagicMock(return_value=FILE_ATTRIBUTE_DIRECTORY)
+                    mock_set = MagicMock()
+
+                    mock_ctypes.windll.kernel32.GetFileAttributesW = mock_get
+                    mock_ctypes.windll.kernel32.SetFileAttributesW = mock_set
 
                     # Execute
                     ensure_directory(dot_folder)
 
                     # Assert: Directory exists
                     self.assertTrue(dot_folder.exists())
-                    self.assertTrue(dot_folder.is_dir())
+                    mock_get.assert_called_once_with(str(dot_folder))
 
                     # Assert: Hidden attribute set
-                    mock_set_attr.assert_called_once_with(str(dot_folder), FILE_ATTRIBUTE_HIDDEN)
+                    expected_attr = FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_HIDDEN
+                    mock_set.assert_called_once_with(str(dot_folder), expected_attr)
 
         # --- Step 2: Windows + Normal Folder ---
         with self.subTest(step="2. Windows + Normal Folder"):
@@ -57,8 +62,11 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
             # Mock Windows environment
             with patch('savepoints.services.storage.sys.platform', 'win32'):
                 with patch('savepoints.services.storage.ctypes') as mock_ctypes:
-                    mock_set_attr = MagicMock()
-                    mock_ctypes.windll.kernel32.SetFileAttributesW = mock_set_attr
+                    mock_get = MagicMock(return_value=FILE_ATTRIBUTE_DIRECTORY)
+                    mock_set = MagicMock()
+
+                    mock_ctypes.windll.kernel32.GetFileAttributesW = mock_get
+                    mock_ctypes.windll.kernel32.SetFileAttributesW = mock_set
 
                     # Execute
                     ensure_directory(normal_folder)
@@ -67,7 +75,7 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
                     self.assertTrue(normal_folder.exists())
 
                     # Assert: Attribute NOT set
-                    mock_set_attr.assert_not_called()
+                    mock_set.assert_not_called()
 
         # --- Step 3: Non-Windows + Dot Folder ---
         with self.subTest(step="3. Non-Windows + Dot Folder"):

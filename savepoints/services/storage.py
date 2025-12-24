@@ -57,7 +57,12 @@ def ensure_directory(path: Path) -> None:
     if sys.platform == 'win32' and path.name.startswith('.'):
         try:
             # FILE_ATTRIBUTE_HIDDEN = 0x02
-            ctypes.windll.kernel32.SetFileAttributesW(str(path), 0x02)
+            path_str = str(path)
+            # Get existing attributes
+            attrs = ctypes.windll.kernel32.GetFileAttributesW(path_str)
+            if attrs != -1:  # -1 indicates error
+                # Preserve existing attributes and add hidden
+                ctypes.windll.kernel32.SetFileAttributesW(path_str, attrs | 0x02)
         except Exception as e:
             print(f"Warning: Failed to hide directory {path}: {e}")
 
