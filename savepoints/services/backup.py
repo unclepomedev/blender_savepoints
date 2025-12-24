@@ -4,7 +4,7 @@ import shutil
 import time
 from pathlib import Path
 
-from .storage import get_history_dir_for_path
+from .storage import get_history_dir_for_path, ensure_directory
 
 
 class HistoryDirectoryUnavailableError(Exception):
@@ -35,7 +35,7 @@ def create_backup(file_path: Path) -> Path:
         raise HistoryDirectoryUnavailableError("History directory unavailable.")
 
     history_dir = Path(history_dir_str)
-    history_dir.mkdir(parents=True, exist_ok=True)
+    ensure_directory(history_dir)
 
     timestamp = int(time.time())
     filename = file_path.name

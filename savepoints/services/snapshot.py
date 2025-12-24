@@ -13,7 +13,8 @@ from .storage import (
     is_safe_filename,
     SNAPSHOT_FILENAME,
     LEGACY_SNAPSHOT_FILENAME,
-    THUMBNAIL_FILENAME
+    THUMBNAIL_FILENAME,
+    ensure_directory,
 )
 from .thumbnail import capture_thumbnail
 from .versioning import add_version_to_manifest
@@ -38,8 +39,10 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
         manifest = load_manifest()
 
         folder_name = version_id
+        ensure_directory(history_dir)
+
         version_dir = history_dir / folder_name
-        version_dir.mkdir(parents=True, exist_ok=True)
+        ensure_directory(version_dir)
 
         obj_count = len(bpy.data.objects)
 

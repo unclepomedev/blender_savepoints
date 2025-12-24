@@ -10,6 +10,7 @@ from .storage import (
     get_project_path,
     get_history_dir_for_path,
     MANIFEST_NAME,
+    ensure_directory,
 )
 
 SCHEMA_VERSION = 1
@@ -113,7 +114,7 @@ def save_manifest_to_path(manifest_path: Path, data: dict[str, Any]) -> None:
         data (dict[str, Any]): Manifest data to persist.
     """
     try:
-        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        ensure_directory(manifest_path.parent)
         with manifest_path.open('w', encoding='utf-8') as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
     except Exception as e:
@@ -141,7 +142,7 @@ def initialize_history_for_path(target_path: Path) -> None:
         new_history_dir_str = get_history_dir_for_path(str(target_path))
         if new_history_dir_str:
             new_history_dir = Path(new_history_dir_str)
-            new_history_dir.mkdir(parents=True, exist_ok=True)
+            ensure_directory(new_history_dir)
 
             # Create default manifest
             manifest_path = new_history_dir / MANIFEST_NAME
