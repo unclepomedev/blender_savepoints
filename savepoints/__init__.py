@@ -61,6 +61,7 @@ def load_handler(dummy):
             ui_utils.sync_history_to_props(context)
 
             if hasattr(context.scene, "savepoints_settings"):
+                # Reset autosave timer on load so autosave doesn't trigger immediately after opening a file
                 context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
         except Exception:
             print("[SavePoints] Error during delayed sync history on load.")
