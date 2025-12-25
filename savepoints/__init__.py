@@ -43,24 +43,33 @@ addon_keymaps = []
 @persistent
 def load_handler(dummy):
     """Sync history when file is loaded."""
-    bpy.app.timers.register(delayed_sync_history, first_interval=0.1)
+    max_retries = 20
+    execution_state = {"retries": 0}
 
+    def _delayed_sync_history():
+        context = bpy.context
+        if not context or not context.scene or (not bpy.app.background and not context.view_layer):
+            execution_state["retries"] += 1
 
-def delayed_sync_history():
-    context = bpy.context
-    if not context or not context.scene:
+            if execution_state["retries"] > max_retries:
+                print(f"[SavePoints] Warning: History sync timed out after {max_retries} retries.")
+                return None
+
+            return 0.05
+
+        try:
+            ui_utils.sync_history_to_props(context)
+
+            if hasattr(context.scene, "savepoints_settings"):
+                # Reset autosave timer on load so autosave doesn't trigger immediately after opening a file
+                context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+        except Exception:
+            print("[SavePoints] Error during delayed sync history on load.")
+            traceback.print_exc()
+
         return None
 
-    try:
-        ui_utils.sync_history_to_props(context)
-
-        if hasattr(context.scene, "savepoints_settings"):
-            context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
-    except Exception:
-        print("[SavePoints] Error during delayed sync history on load.")
-        traceback.print_exc()
-
-    return None
+    bpy.app.timers.register(_delayed_sync_history, first_interval=0.01)
 
 
 @persistent
