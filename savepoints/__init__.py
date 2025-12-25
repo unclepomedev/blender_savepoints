@@ -43,7 +43,7 @@ addon_keymaps = []
 @persistent
 def load_handler(dummy):
     """Sync history when file is loaded."""
-    max_retries = 10
+    max_retries = 20
     execution_state = {"retries": 0}
 
     def _delayed_sync_history():
