@@ -12,6 +12,11 @@ class SavePointsVersion(bpy.types.PropertyGroup):
     object_count: bpy.props.IntProperty(name="Object Count", default=0)
     file_size_display: bpy.props.StringProperty(name="File Size", default="")
     is_protected: bpy.props.BoolProperty(name="Protected", default=False)
+    selected: bpy.props.BoolProperty(
+        name="Selected",
+        description="Select this version for batch operations",
+        default=False
+    )
     tag: bpy.props.EnumProperty(
         name="Tag",
         items=[
@@ -23,6 +28,17 @@ class SavePointsVersion(bpy.types.PropertyGroup):
         ],
         default='NONE'
     )
+
+
+def update_filter_tag(self, context):
+    if context.area:
+        context.area.tag_redraw()
+
+    # Deselect items that do not match the new filter
+    if self.filter_tag != 'ALL':
+        for version in self.versions:
+            if version.tag != self.filter_tag:
+                version.selected = False
 
 
 class SavePointsSettings(bpy.types.PropertyGroup):
@@ -39,7 +55,7 @@ class SavePointsSettings(bpy.types.PropertyGroup):
             ('BUG', "Bug", "", 'ERROR', 4),
         ],
         default='ALL',
-        update=lambda self, context: context.area.tag_redraw() if context.area else None
+        update=update_filter_tag
     )
 
     show_save_dialog: bpy.props.BoolProperty(
@@ -80,3 +96,10 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         min=1
     )
     last_autosave_timestamp: bpy.props.StringProperty(default="0.0")
+
+    is_batch_mode: bpy.props.BoolProperty(
+        name="Batch Mode",
+        description="Toggle batch operation mode",
+        default=False,
+        update=lambda self, context: context.area.tag_redraw() if context.area else None
+    )

@@ -36,6 +36,13 @@ class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
 
 class SAVEPOINTS_UL_version_list(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
+        settings = context.scene.savepoints_settings
+        if item.version_id != "autosave":
+            if settings.is_batch_mode:
+                layout.prop(item, "selected", text="")
+        elif settings.is_batch_mode:
+            layout.label(text="", icon="BLANK1")
+
         pcoll = ui_utils.preview_collections.get("main")
         icon_val = 0
         if pcoll and item.version_id in pcoll:
@@ -129,14 +136,23 @@ def _draw_snapshot_mode(layout, parent_filepath):
 
 
 def _draw_history_list(layout, settings):
-    layout.operator("savepoints.commit", text="Save Version", icon='FILE_TICK')
+    if not settings.is_batch_mode:
+        layout.operator("savepoints.commit", text="Save Version", icon='FILE_TICK')
 
     layout.separator()
     layout.label(text="History:")
 
-    # Filter Tag
+    # Filter Tag and Batch Toggle
     row = layout.row()
     row.prop(settings, "filter_tag", text="Filter")
+
+    icon = 'CHECKBOX_HLT' if settings.is_batch_mode else 'CHECKBOX_DEHLT'
+    row.operator("savepoints.toggle_batch_mode", text="", icon=icon, depress=settings.is_batch_mode)
+
+    if settings.is_batch_mode:
+        row = layout.row(align=True)
+        row.operator("savepoints.select_all", text="Select All", icon='CHECKBOX_HLT')
+        row.operator("savepoints.deselect_all", text="Deselect All", icon='CHECKBOX_DEHLT')
 
     row = layout.row()
     row.template_list("SAVEPOINTS_UL_version_list", "", settings, "versions", settings, "active_version_index")
@@ -144,6 +160,18 @@ def _draw_history_list(layout, settings):
     col = row.column(align=True)
     col.operator("savepoints.refresh", text="", icon='FILE_REFRESH')
     col.operator("savepoints.delete", text="", icon='TRASH')
+
+    if settings.is_batch_mode:
+        layout.separator()
+        row = layout.row()
+        row.scale_y = 1.5
+
+        count = 0
+        for v in settings.versions:
+            if v.version_id.startswith('v') and v.selected:
+                count += 1
+
+        row.operator("savepoints.batch_render", text=f"Batch Render Selected ({count})", icon='RENDER_STILL')
 
 
 def _draw_version_details(layout, settings, context):
