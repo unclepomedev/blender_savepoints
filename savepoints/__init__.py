@@ -43,13 +43,13 @@ addon_keymaps = []
 @persistent
 def load_handler(dummy):
     """Sync history when file is loaded."""
-    bpy.app.timers.register(delayed_sync_history, first_interval=0.1)
+    bpy.app.timers.register(delayed_sync_history, first_interval=0.01)
 
 
 def delayed_sync_history():
     context = bpy.context
-    if not context or not context.scene:
-        return None
+    if not context or not context.scene or not context.view_layer:
+        return 0.05
 
     try:
         ui_utils.sync_history_to_props(context)
