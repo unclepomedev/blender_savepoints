@@ -135,16 +135,6 @@ class TestBatchRenderFormat(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    # Create mock property if it doesn't exist so test doesn't crash on setup
-    if not hasattr(bpy.types.Scene, "savepoints_settings"):
-        # Minimal mock
-        class MockSettings(bpy.types.PropertyGroup):
-            versions: bpy.props.CollectionProperty(type=bpy.types.PropertyGroup)
-
-
-        bpy.utils.register_class(MockSettings)
-        bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=MockSettings)
-
     result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
