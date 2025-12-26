@@ -10,7 +10,8 @@ def _escape_for_applescript(text):
 
 
 def _escape_for_powershell(text):
-    return text.replace('"', '`"')
+    # Escape backtick first, then dollar sign and double quote
+    return text.replace('`', '``').replace('$', '`$').replace('"', '`"')
 
 
 def send_os_notification(title, message):
