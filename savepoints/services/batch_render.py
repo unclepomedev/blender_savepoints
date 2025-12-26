@@ -1,3 +1,25 @@
+import datetime
+import os
+import bpy
+
+
+def get_batch_render_output_dir(base_path="//"):
+    """
+    Generates the output directory path for batch rendering.
+    Format: renders_batch/{blend_name}_{timestamp}
+    """
+    abs_base = bpy.path.abspath(base_path)
+    if bpy.data.filepath:
+        blend_name = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
+    else:
+        blend_name = "untitled"
+
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    folder_name = f"{blend_name}_{timestamp}"
+
+    return os.path.join(abs_base, "renders_batch", folder_name)
+
+
 def extract_render_settings(context):
     scene = context.scene
     render = scene.render

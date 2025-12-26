@@ -7,7 +7,7 @@ import tempfile
 
 import bpy
 
-from .services.batch_render import extract_render_settings, get_worker_script_content
+from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir
 from .services.selection import get_selected_versions
 from .services.snapshot import find_snapshot_path
 
@@ -51,7 +51,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 shutil.rmtree(self.temp_dir)
             return {'CANCELLED'}
 
-        self.output_dir = os.path.join(bpy.path.abspath("//"), "renders_batch")
+        self.output_dir = get_batch_render_output_dir()
         os.makedirs(self.output_dir, exist_ok=True)
 
         self.task_queue = list(self.target_versions)
