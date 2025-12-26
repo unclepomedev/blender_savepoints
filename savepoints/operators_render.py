@@ -14,7 +14,7 @@ from .services.snapshot import find_snapshot_path
 
 
 class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
-    """Batch Render selected versions without freezing UI"""
+    """Batch Render selected versions. (Shift+Click to Skip Dialog & RENDER)"""
     bl_idname = "savepoints.batch_render"
     bl_label = "Batch Render Snapshots"
     bl_options = {'REGISTER'}
@@ -29,6 +29,10 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     )
 
     def invoke(self, context, event):
+        if event.shift:
+            self.dry_run = False
+            self.report({'INFO'}, "🚀 Instant Batch Render Started! (Shift+Click)")
+            return self.execute(context)
         return context.window_manager.invoke_props_dialog(self, width=400)
 
     def check(self, context):
