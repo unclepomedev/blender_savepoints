@@ -1,6 +1,7 @@
 import sys
 import unittest
 from pathlib import Path
+
 import bpy
 
 # Add project root to path
@@ -23,22 +24,24 @@ class TestFilterDeselect(SavePointsTestCase):
         bpy.ops.savepoints.commit(note="V2")
 
         self.settings = bpy.context.scene.savepoints_settings
-        self.versions = self.settings.versions
+        versions = self.settings.versions
+
+        self.v1 = next(v for v in versions if v.note == "V1")
+        self.v2 = next(v for v in versions if v.note == "V2")
 
         # Setup tags
         # V1 -> STABLE
         # V2 -> BUG
-        if len(self.versions) >= 2:
-            self.versions[0].tag = 'STABLE'
-            self.versions[1].tag = 'BUG'
+        self.v1.tag = 'STABLE'
+        self.v2.tag = 'BUG'
 
     def test_deselect_hidden_items_on_filter_change(self):
         """
         Verify that when the filter changes, items that are hidden (don't match filter)
         are automatically deselected.
         """
-        v1 = self.versions[0]  # STABLE
-        v2 = self.versions[1]  # BUG
+        v1 = self.v1  # STABLE
+        v2 = self.v2  # BUG
 
         # 1. Select both
         v1.selected = True
@@ -56,8 +59,8 @@ class TestFilterDeselect(SavePointsTestCase):
         """
         Verify switching between restrictive filters.
         """
-        v1 = self.versions[0]  # STABLE
-        v2 = self.versions[1]  # BUG
+        v1 = self.v1  # STABLE
+        v2 = self.v2  # BUG
 
         # Select V1
         v1.selected = True
