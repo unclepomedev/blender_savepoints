@@ -1,6 +1,37 @@
 import os
+import subprocess
+import sys
 
 import bpy
+
+
+def send_os_notification(title, message):
+    """
+    Send OS-native notification without external dependencies.
+    """
+    try:
+        if sys.platform == "darwin":  # macOS
+            script = f'display notification "{message}" with title "{title}" sound name "default"'
+            subprocess.run(["osascript", "-e", script], check=False)
+
+        elif sys.platform == "win32":  # Windows
+            ps_script = f"""
+            [reflection.assembly]::loadwithpartialname("System.Windows.Forms");
+            $icon = [system.windows.forms.notifyicon]::new();
+            $icon.icon = [system.drawing.icon]::extractassociatedicon((Get-Process -id $pid).Path);
+            $icon.visible = $true;
+            $icon.showballoontip(3000, "{title}", "{message}", [system.windows.forms.tooltipicon]::Info);
+            start-sleep -m 3000; 
+            $icon.dispose();
+            """
+            subprocess.run(["powershell", "-Command", ps_script], creationflags=subprocess.CREATE_NO_WINDOW,
+                           check=False)
+
+        elif sys.platform.startswith("linux"):  # Linux
+            subprocess.run(["notify-send", title, message], check=False)
+
+    except Exception as e:
+        print(f"[SavePoints] Notification failed: {e}")
 
 
 def open_folder_platform_independent(directory_path):

@@ -9,7 +9,7 @@ import bpy
 
 from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir, \
     create_error_log_text_block
-from .services.post_process import open_folder_platform_independent, create_vse_timelapse
+from .services.post_process import open_folder_platform_independent, create_vse_timelapse, send_os_notification
 from .services.selection import get_selected_versions
 from .services.snapshot import find_snapshot_path
 
@@ -242,7 +242,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             except Exception:
                 pass
 
-        if self.current_task_idx > 0:  # 少なくとも1つは処理した
+        if self.current_task_idx > 0:
+            print(f"[SavePoints] Batch Render Complete! Processed {self.current_task_idx} versions.")
             self.report({'INFO'}, f"Batch Render Complete! ({self.current_task_idx} versions)")
 
             open_folder_platform_independent(self.output_dir)
@@ -262,8 +263,15 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                     self.report({'WARNING'}, "Could not create timelapse scene (Check System Console).")
 
             except Exception as e:
-                print(f"Post-process error: {e}")
+                print(f"[SavePoints] Post-process error: {e}")
+                import traceback
+                traceback.print_exc()
                 self.report({'WARNING'}, "Error during post-processing. See console.")
+
+            send_os_notification(
+                title="SavePoints Batch Render",
+                message=f"Completed! {self.current_task_idx} versions rendered.",
+            )
 
         else:
             self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
