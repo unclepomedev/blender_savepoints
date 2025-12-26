@@ -130,7 +130,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         except Exception as e:
             self.report({'ERROR'}, f"Process start failed: {e}")
             self.cancel_process()
-            self.finish(bpy.context)
+            return self.finish(bpy.context)
 
     def cancel_process(self):
         if self._process:
