@@ -43,6 +43,27 @@ class TestBatchRenderUtils(SavePointsTestCase):
         pattern = r"^" + re.escape(blend_name) + r"_\d{8}_\d{6}$"
         self.assertRegex(folder_name, pattern)
 
+    def test_get_batch_render_output_dir_unsaved(self):
+        """
+        Verify fallback behavior when the blend file is not saved (unsaved).
+        Expected: renders_batch/untitled_{timestamp}
+        """
+        # Force unsaved state
+        bpy.ops.wm.read_homefile(use_empty=True)
+        self.assertFalse(bpy.data.filepath, "Filepath should be empty after read_homefile")
+
+        # Use test_dir to avoid writing to project root
+        output_dir = get_batch_render_output_dir(base_path=str(self.test_dir))
+
+        parent_dir = os.path.dirname(output_dir)
+        folder_name = os.path.basename(output_dir)
+
+        self.assertEqual(os.path.basename(parent_dir), "renders_batch")
+
+        # Check "untitled" prefix
+        pattern = r"^untitled_\d{8}_\d{6}$"
+        self.assertRegex(folder_name, pattern)
+
 
 if __name__ == "__main__":
     result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result

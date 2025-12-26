@@ -124,6 +124,128 @@ class TestBatchRender(SavePointsTestCase):
 
         print("Batch Render Scenario: Completed")
 
+    def test_batch_render_fallback_scenario(self):
+        """
+        Scenario for Camera Fallback:
+        1. Create a version WITH a camera.
+        2. Delete the camera and create a version WITHOUT a camera.
+        3. Add a new camera to the current scene (Source of Truth).
+        4. Execute batch render.
+        5. Verify that the version without a camera was rendered using the fallback logic.
+        """
+        print("\nStarting Batch Render Fallback Scenario...")
+
+        # --- Step 1: Scene Setup (Low Res for Speed) ---
+        with self.subTest(step="1. Setup"):
+            bpy.context.scene.render.resolution_x = 32
+            bpy.context.scene.render.resolution_y = 32
+            bpy.context.scene.render.resolution_percentage = 100
+            bpy.context.scene.render.engine = 'CYCLES'
+            bpy.context.scene.cycles.device = 'CPU'
+            bpy.context.scene.cycles.samples = 1
+
+        # --- Step 2: Create History with and without Camera ---
+        with self.subTest(step="2. Create Mixed History"):
+            # v001: Normal (Has Camera)
+            if not bpy.context.scene.camera:
+                bpy.ops.object.camera_add()
+                bpy.context.scene.camera = bpy.context.active_object
+
+            bpy.ops.mesh.primitive_cube_add()
+            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Has_Camera")
+
+            # v002: Abnormal (No Camera)
+            # Delete the camera to simulate a state where it was removed
+            bpy.ops.object.select_all(action='DESELECT')
+            for obj in bpy.context.scene.objects:
+                if obj.type == 'CAMERA':
+                    obj.select_set(True)
+            bpy.ops.object.delete()
+
+            bpy.ops.mesh.primitive_uv_sphere_add()
+            bpy.context.active_object.location.x = 2
+            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="No_Camera_Missing")
+
+            # --- CRITICAL STEP ---
+            # Restore a camera in the CURRENT scene.
+            # The batch render relies on the "current active camera" to define the view.
+            bpy.ops.object.camera_add()
+            cam = bpy.context.active_object
+            cam.name = "New_Master_Camera"
+            bpy.context.scene.camera = cam
+            cam.location = (0, -15, 5)
+            cam.rotation_euler = (1.3, 0, 0)
+
+            # Save main file to ensure paths are correct
+            bpy.ops.wm.save_mainfile()
+
+        # --- Step 3: Execute Batch Render ---
+        with self.subTest(step="3. Execute Render"):
+            settings = bpy.context.scene.savepoints_settings
+            # Filter specifically for the "No_Camera" version to test fallback
+            target_versions = [v for v in settings.versions if "No_Camera" in v.note]
+
+            self.assertTrue(len(target_versions) > 0, "Failed to find the test version")
+
+            output_dir_str = get_batch_render_output_dir()
+            output_dir = Path(output_dir_str)
+            if output_dir.exists():
+                shutil.rmtree(output_dir)
+            output_dir.mkdir(parents=True, exist_ok=True)
+
+            # Extract settings (This will capture the "New_Master_Camera" matrix)
+            render_settings = extract_render_settings(bpy.context)
+
+            temp_dir = tempfile.mkdtemp()
+            try:
+                settings_path = os.path.join(temp_dir, "render_config.json")
+                with open(settings_path, 'w') as f:
+                    json.dump(render_settings, f)
+
+                worker_script_path = os.path.join(temp_dir, "worker.py")
+                with open(worker_script_path, 'w') as f:
+                    f.write(get_worker_script_content())
+
+                blender_bin = bpy.app.binary_path
+
+                for v in target_versions:
+                    snapshot_path = find_snapshot_path(v.version_id)
+
+                    cmd = [
+                        blender_bin,
+                        "-b",
+                        "--factory-startup",
+                        str(snapshot_path),
+                        "-P", worker_script_path,
+                        "--",
+                        settings_path,
+                        str(output_dir),
+                        f"{v.version_id}_fallback_test"
+                    ]
+
+                    # Run process. If fallback logic is missing, this should fail (exit code 1)
+                    # or produce no output.
+                    try:
+                        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+                    except subprocess.CalledProcessError as e:
+                        print(f"\n[Worker Stdout]:\n{e.stdout}")
+                        print(f"\n[Worker Stderr]:\n{e.stderr}")
+                        self.fail(f"Render failed for {v.version_id}. Fallback logic might be missing.")
+
+            finally:
+                shutil.rmtree(temp_dir)
+
+            # Verify Output
+            files = list(output_dir.glob("*.png"))  # Assuming PNG default
+            print(f"Found files: {[f.name for f in files]}")
+
+            self.assertTrue(len(files) > 0, "No image generated. Fallback camera creation likely failed.")
+
+            if output_dir.exists():
+                shutil.rmtree(output_dir)
+
+        print("Batch Render Fallback Scenario: Completed")
+
 
 if __name__ == "__main__":
     result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
