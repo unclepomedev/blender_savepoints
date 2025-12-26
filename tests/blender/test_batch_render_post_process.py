@@ -20,7 +20,7 @@ from savepoints_test_case import SavePointsTestCase
 from savepoints.services.post_process import (
     create_vse_timelapse,
     open_folder_platform_independent,
-    send_os_notification
+    send_os_notification, _escape_for_powershell
 )
 
 
@@ -154,6 +154,61 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
                 command_list = args[0]
                 self.assertEqual(command_list[0], "notify-send")
                 print("  [OK] Linux logic verified.")
+
+    def test_powershell_escaping(self):
+        """
+        Test internal PowerShell escaping logic specifically.
+        Verify that backticks, dollars, and quotes are escaped correctly.
+        """
+        print("\nTesting PowerShell Escaping...")
+
+        # Case 1: Simple Injection
+        dangerous_str = 'Hello"; Write-Host "Injected'
+        escaped = _escape_for_powershell(dangerous_str)
+        # Expected: Hello`"; Write-Host `"Injected
+        self.assertEqual(escaped, 'Hello`"; Write-Host `"Injected')
+
+        # Case 2: Variable Expansion & Backticks
+        complex_str = 'Path: $env:TEMP and newline `n'
+        escaped_complex = _escape_for_powershell(complex_str)
+        # Expected: Path: `$env:TEMP and newline ``n
+        self.assertEqual(escaped_complex, 'Path: `$env:TEMP and newline ``n')
+
+        print("  [OK] PowerShell escaping logic is secure.")
+
+    def test_vse_timelapse_trailing_slash(self):
+        """
+        Test if VSE scene name is correctly derived even if path has trailing slash.
+        """
+        print("\nTesting VSE Scene Name with Trailing Slash...")
+
+        # Setup dummy images
+        valid_png_data = (
+            b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89'
+            b'\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82'
+        )
+        temp_dir = tempfile.mkdtemp()
+        folder_name = os.path.basename(temp_dir)  # e.g., tmp12345
+
+        try:
+            fname = "v001.png"
+            with open(os.path.join(temp_dir, fname), 'wb') as f:
+                f.write(valid_png_data)
+
+            # Execute with trailing slash path (e.g., /tmp/tmp12345/)
+            path_with_slash = os.path.join(temp_dir, "")
+            scene_name = create_vse_timelapse(path_with_slash, scene_name_suffix="_TestTL")
+
+            # Verify
+            self.assertIsNotNone(scene_name)
+            # The name should NOT start with _ (empty basename), it should have the folder name
+            self.assertTrue(scene_name.startswith(folder_name))
+            self.assertIn("_TestTL", scene_name)
+
+            print(f"  [OK] Path '{path_with_slash}' resolved to scene '{scene_name}'")
+
+        finally:
+            shutil.rmtree(temp_dir)
 
 
 if __name__ == "__main__":

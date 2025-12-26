@@ -84,7 +84,10 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
         return None
 
     # 2. get current file name and determine scene name
-    base_name = os.path.basename(directory_path)
+    clean_path = directory_path.rstrip(os.sep)
+    base_name = os.path.basename(clean_path)
+    if not base_name:
+        base_name = "render"
     scene_name = f"{base_name}{scene_name_suffix}"
 
     new_scene = bpy.data.scenes.new(name=scene_name)
