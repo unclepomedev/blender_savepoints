@@ -5,27 +5,39 @@ import sys
 import bpy
 
 
+def _escape_for_applescript(text):
+    return text.replace('\\', '\\\\').replace('"', '\\"')
+
+
+def _escape_for_powershell(text):
+    return text.replace('"', '`"')
+
+
 def send_os_notification(title, message):
     """
     Send OS-native notification without external dependencies.
     """
     try:
         if sys.platform == "darwin":  # macOS
-            script = f'display notification "{message}" with title "{title}" sound name "default"'
+            safe_title = _escape_for_applescript(title)
+            safe_message = _escape_for_applescript(message)
+            script = f'display notification "{safe_message}" with title "{safe_title}" sound name "default"'
             subprocess.run(["osascript", "-e", script], check=False)
 
         elif sys.platform == "win32":  # Windows
+            safe_title = _escape_for_powershell(title)
+            safe_message = _escape_for_powershell(message)
             ps_script = f"""
             [reflection.assembly]::loadwithpartialname("System.Windows.Forms");
             $icon = [system.windows.forms.notifyicon]::new();
             $icon.icon = [system.drawing.icon]::extractassociatedicon((Get-Process -id $pid).Path);
             $icon.visible = $true;
-            $icon.showballoontip(3000, "{title}", "{message}", [system.windows.forms.tooltipicon]::Info);
+            $icon.showballoontip(3000, "{safe_title}", "{safe_message}", [system.windows.forms.tooltipicon]::Info);
             start-sleep -m 3000; 
             $icon.dispose();
             """
-            subprocess.run(["powershell", "-Command", ps_script], creationflags=subprocess.CREATE_NO_WINDOW,
-                           check=False)
+            creation_flags = getattr(subprocess, 'CREATE_NO_WINDOW', 0x08000000)
+            subprocess.run(["powershell", "-Command", ps_script], creationflags=creation_flags, check=False)
 
         elif sys.platform.startswith("linux"):  # Linux
             subprocess.run(["notify-send", title, message], check=False)
