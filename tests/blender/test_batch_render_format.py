@@ -110,6 +110,7 @@ class TestBatchRenderFormat(SavePointsTestCase):
             versions = [v for v in settings.versions if v.version_id.startswith('v')]
             v = versions[0]
             snapshot_path = find_snapshot_path(v.version_id)
+            self.assertIsNotNone(snapshot_path, f"Snapshot not found for version {v.version_id}")
 
             cmd = [
                 blender_bin,
