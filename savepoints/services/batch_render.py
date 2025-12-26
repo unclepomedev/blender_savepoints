@@ -168,7 +168,7 @@ if __name__ == "__main__":
 def create_error_log_text_block(version_id, log_path):
     """
     Reads a log file and creates/updates a Blender Text Block.
-    Returns the text block object or None if failed.
+    Returns the text block object. On failure, the block contains an error message.
     """
     text_name = f"Log_{version_id}"
 
