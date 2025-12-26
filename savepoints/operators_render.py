@@ -252,12 +252,13 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 scene_name = create_vse_timelapse(self.output_dir)
 
                 if scene_name:
-                    def draw_notification(self, context):
-                        self.layout.label(text="Timelapse Scene Created!")
-                        row = self.layout.row()
-                        row.label(text=f"Scene: {scene_name}")
+                    if not bpy.app.background:
+                        def draw_notification(self, context):
+                            self.layout.label(text="Timelapse Scene Created!")
+                            row = self.layout.row()
+                            row.label(text=f"Scene: {scene_name}")
 
-                    context.window_manager.popup_menu(draw_notification, title="Render Finished", icon='SEQUENCE')
+                        context.window_manager.popup_menu(draw_notification, title="Render Finished", icon='SEQUENCE')
                     self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
                 else:
                     self.report({'WARNING'}, "Could not create timelapse scene (Check System Console).")
