@@ -110,6 +110,8 @@ class TestBatchRender(SavePointsTestCase):
 
             finally:
                 shutil.rmtree(temp_dir)
+                if output_dir.exists():
+                    shutil.rmtree(output_dir)
 
             files = list(output_dir.glob("*.png"))
             print(f"Found rendered files in {output_dir}: {[f.name for f in files]}")
