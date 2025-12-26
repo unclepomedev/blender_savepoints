@@ -126,7 +126,15 @@ def run_render(json_path, output_dir, file_prefix):
         scene.world = bpy.data.worlds[world_name]
 
     cam_matrix = settings.get("camera_matrix_world")
-    if cam_matrix and scene.camera:
+
+    if cam_matrix:
+        if not scene.camera:
+            print("Worker: No camera found. Creating a fallback camera.")
+            cam_data = bpy.data.cameras.new("BatchRenderCam")
+            cam_obj = bpy.data.objects.new("BatchRenderCam", cam_data)
+            scene.collection.objects.link(cam_obj)
+            scene.camera = cam_obj
+        
         scene.camera.matrix_world = Matrix(cam_matrix)
 
     # 5. Execute
