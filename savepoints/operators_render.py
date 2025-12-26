@@ -22,7 +22,20 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     _timer = None
     _process = None
 
+    dry_run: bpy.props.BoolProperty(
+        name="Dry Run (Low Quality)",
+        description="Render low quality JPEG for quick check (_dryrun suffix)",
+        default=False
+    )
+
     def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(self, "dry_run", text="Dry Run (Fast, JPEG)")
+
+    def execute(self, context):
         if not bpy.data.filepath:
             self.report({'ERROR'}, "Blend file must be saved before batch rendering.")
             return {'CANCELLED'}
@@ -40,7 +53,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self.worker_script_path = os.path.join(self.temp_dir, "worker_render.py")
 
         try:
-            render_settings = extract_render_settings(context)
+            render_settings = extract_render_settings(context, dry_run=self.dry_run)
             with open(self.settings_path, 'w') as f:
                 json.dump(render_settings, f, indent=4)
 
@@ -52,7 +65,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 shutil.rmtree(self.temp_dir)
             return {'CANCELLED'}
 
-        self.output_dir = get_batch_render_output_dir()
+        self.output_dir = get_batch_render_output_dir(dry_run=self.dry_run)
         os.makedirs(self.output_dir, exist_ok=True)
 
         self.task_queue = list(self.target_versions)

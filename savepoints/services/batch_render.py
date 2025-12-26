@@ -3,7 +3,7 @@ import os
 import bpy
 
 
-def get_batch_render_output_dir(base_path="//"):
+def get_batch_render_output_dir(base_path="//", dry_run=False):
     """
     Generates the output directory path for batch rendering.
     Format: renders_batch/{blend_name}_{timestamp}
@@ -15,12 +15,16 @@ def get_batch_render_output_dir(base_path="//"):
         blend_name = "untitled"
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    folder_name = f"{blend_name}_{timestamp}"
+    
+    if dry_run:
+        folder_name = f"{blend_name}_{timestamp}_dryrun"
+    else:
+        folder_name = f"{blend_name}_{timestamp}"
 
     return os.path.join(abs_base, "renders_batch", folder_name)
 
 
-def extract_render_settings(context):
+def extract_render_settings(context, dry_run=False):
     scene = context.scene
     render = scene.render
     camera = scene.camera
@@ -43,6 +47,12 @@ def extract_render_settings(context):
         settings["samples"] = scene.cycles.samples
     elif render.engine in ['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT']:
         settings["samples"] = scene.eevee.taa_render_samples
+
+    if dry_run:
+        settings["output_format_override"] = "JPEG"
+        settings["resolution_percentage"] = 50
+        settings["samples"] = 8
+        settings["jpeg_quality"] = 50
 
     return settings
 
@@ -109,6 +119,9 @@ def run_render(json_path, output_dir, file_prefix):
         render.image_settings.file_format = 'PNG'
     elif fmt_override == 'JPEG':
         render.image_settings.file_format = 'JPEG'
+        quality = settings.get("jpeg_quality")
+        if quality:
+            render.image_settings.quality = quality
     elif fmt_override == 'SCENE':
         current_fmt = settings.get("current_scene_format")
         if current_fmt:
