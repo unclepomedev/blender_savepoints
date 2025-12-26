@@ -287,8 +287,15 @@ class SAVEPOINTS_OT_switch_scene(bpy.types.Operator):
     scene_name: bpy.props.StringProperty()
 
     def execute(self, context):
-        if self.scene_name in bpy.data.scenes:
-            context.window.scene = bpy.data.scenes[self.scene_name]
+        if self.scene_name not in bpy.data.scenes:
+            self.report({'WARNING'}, f"Scene '{self.scene_name}' not found.")
+            return {'CANCELLED'}
+
+        if not context.window:
+            self.report({'WARNING'}, "Cannot switch scene: No active window found.")
+            return {'CANCELLED'}
+
+        context.window.scene = bpy.data.scenes[self.scene_name]
         return {'FINISHED'}
 
 
