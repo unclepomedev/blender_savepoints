@@ -155,6 +155,9 @@ def _draw_history_list(layout, settings):
         row.operator("savepoints.select_all", text="Select All", icon='CHECKBOX_HLT')
         row.operator("savepoints.deselect_all", text="Deselect All", icon='CHECKBOX_DEHLT')
 
+        row = layout.row()
+        row.prop(settings, "batch_output_format", expand=True)
+
     row = layout.row()
     row.template_list("SAVEPOINTS_UL_version_list", "", settings, "versions", settings, "active_version_index")
 
