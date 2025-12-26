@@ -7,7 +7,8 @@ import tempfile
 
 import bpy
 
-from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir
+from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir, \
+    create_error_log_text_block
 from .services.selection import get_selected_versions
 from .services.snapshot import find_snapshot_path
 
@@ -78,10 +79,18 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 if ret_code is None:
                     return {'PASS_THROUGH'}
                 else:
+                    if self.current_log_handle:
+                        self.current_log_handle.close()
+                        self.current_log_handle = None
+
                     if ret_code == 0:
                         self.report({'INFO'}, f"Finished: {self.current_version_id}")
                     else:
-                        self.report({'ERROR'}, f"Failed: {self.current_version_id} (Code {ret_code})")
+                        error_msg = f"Failed: {self.current_version_id} (Code {ret_code})"
+                        self.report({'ERROR'}, error_msg)
+
+                        create_error_log_text_block(self.current_version_id, self.current_log_path)
+                        self.report({'WARNING'}, f"Check Text Editor 'Log_{self.current_version_id}' for details.")
 
                     self._process = None
                     self.current_task_idx += 1
@@ -120,6 +129,10 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
         blender_bin = bpy.app.binary_path
 
+        log_filename = f"render_log_{self.current_version_id}.txt"
+        self.current_log_path = os.path.join(self.temp_dir, log_filename)
+        self.current_log_handle = open(self.current_log_path, 'w', encoding='utf-8')
+
         cmd = [
             blender_bin,
             "-b",
@@ -135,13 +148,18 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         try:
             self._process = subprocess.Popen(
                 cmd,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
+                stdout=self.current_log_handle,
+                stderr=self.current_log_handle
             )
             print(f"[SavePoints] Rendering {self.current_version_id} (PID: {self._process.pid})")
             return True
         except Exception as e:
             self.report({'ERROR'}, f"Process start failed: {e}")
+
+            if self.current_log_handle:
+                self.current_log_handle.close()
+                self.current_log_handle = None
+
             # Set flag to signal modal to finish
             self.task_queue.clear()
             self._process = None
@@ -154,6 +172,10 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             except OSError:
                 pass
             self._process = None
+
+        if hasattr(self, 'current_log_handle') and self.current_log_handle:
+            self.current_log_handle.close()
+            self.current_log_handle = None
 
     def finish(self, context):
         context.window_manager.progress_end()
