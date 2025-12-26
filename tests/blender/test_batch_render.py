@@ -67,15 +67,12 @@ class TestBatchRender(SavePointsTestCase):
             settings = bpy.context.scene.savepoints_settings
             target_versions = [v for v in settings.versions if v.version_id.startswith('v')]
 
-            # Use the actual service to determine output path
             output_dir_str = get_batch_render_output_dir()
             output_dir = Path(output_dir_str)
             
             if output_dir.exists():
                 shutil.rmtree(output_dir)
             
-            # Helper creates the full path, but we need to ensure it exists for the test logic (worker expects it to exist? No, worker assumes it can write to it. Operator creates it.)
-            # The operator creates the directory. So we should create it here too.
             output_dir.mkdir(parents=True, exist_ok=True)
 
             render_settings = extract_render_settings(bpy.context)
