@@ -33,6 +33,8 @@ def extract_render_settings(context):
         "frame_current": scene.frame_current,
         "camera_matrix_world": [list(row) for row in camera.matrix_world] if camera else [],
         "world_name": scene.world.name if scene.world else None,
+        "output_format_override": scene.savepoints_settings.batch_output_format,
+        "current_scene_format": render.image_settings.file_format,
     }
 
     if render.engine == 'CYCLES':
@@ -98,6 +100,17 @@ def run_render(json_path, output_dir, file_prefix):
     render.resolution_y = settings.get("resolution_y", 1080)
     render.resolution_percentage = settings.get("resolution_percentage", 100)
     render.engine = settings.get("engine", 'CYCLES')
+    
+    fmt_override = settings.get("output_format_override", "SCENE")
+    if fmt_override == 'PNG':
+        render.image_settings.file_format = 'PNG'
+    elif fmt_override == 'JPEG':
+        render.image_settings.file_format = 'JPEG'
+    elif fmt_override == 'SCENE':
+        current_fmt = settings.get("current_scene_format")
+        if current_fmt:
+            render.image_settings.file_format = current_fmt
+
     render.filepath = os.path.join(output_dir, file_prefix)
 
     if render.engine == 'CYCLES' and "samples" in settings:

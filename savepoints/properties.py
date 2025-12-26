@@ -103,3 +103,14 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         default=False,
         update=lambda self, context: context.area.tag_redraw() if context.area else None
     )
+
+    batch_output_format: bpy.props.EnumProperty(
+        name="Output Format",
+        description="Select the output file format for batch rendering",
+        items=[
+            ('SCENE', "Scene Settings", "Use the format defined in the current scene"),
+            ('PNG', "PNG", "Force PNG format"),
+            ('JPEG', "JPEG", "Force JPEG format"),
+        ],
+        default='SCENE'
+    )

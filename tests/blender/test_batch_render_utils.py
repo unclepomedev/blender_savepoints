@@ -24,8 +24,6 @@ class TestBatchRenderUtils(SavePointsTestCase):
         Verify that the output directory follows the format:
         renders_batch/{blend_name}_{timestamp}
         """
-        # Ensure we have a filepath set (SavePointsTestCase usually saves as test_project.blend)
-        # But let's verify explicitly
         self.assertTrue(bpy.data.filepath, "Test setup should have saved a blend file")
 
         blend_name = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
