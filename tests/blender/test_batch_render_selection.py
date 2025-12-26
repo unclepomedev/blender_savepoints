@@ -16,15 +16,14 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestBatchSelection(SavePointsTestCase):
-    def test_batch_selection_scenario(self):
+    def test_batch_selection_ui_operators(self):
         """
         Scenario:
         1. Create versions and setup tags (Setup).
-        2. Test basic Select All / Deselect All.
-        3. Test Select All with Filter active.
-        4. Test Smart Target Logic (Fallback mechanism).
+        2. Test 'Select All' and 'Deselect All' operators.
+        3. Test 'Select All' behavior when a Filter is active.
         """
-        print("Starting Batch Selection Scenario...")
+        print("Starting Batch Selection UI Operators Test...")
 
         settings = bpy.context.scene.savepoints_settings
         versions = settings.versions
@@ -38,8 +37,6 @@ class TestBatchSelection(SavePointsTestCase):
             bpy.ops.savepoints.commit(note="V3")
 
             # Assign tags: V1: STABLE, V2: BUG, V3: STABLE
-            # Note: versions list order implies V1 is index 0 (oldest) or last depending on sort,
-            # but usually savepoints appends. Assuming index matches creation order for this test.
             if len(versions) >= 3:
                 versions[0].tag = 'STABLE'  # V1
                 versions[1].tag = 'BUG'  # V2
@@ -51,10 +48,10 @@ class TestBatchSelection(SavePointsTestCase):
             for v in versions:
                 self.assertFalse(v.selected, f"Version {v.version_id} should initially be unselected")
 
-            # Execute select_all operator
+            # Execute select_all operator (Simulate UI button click)
             bpy.ops.savepoints.select_all()
 
-            # Verify all valid versions are selected
+            # Verify flags are updated
             for v in versions:
                 if v.version_id.startswith('v'):
                     self.assertTrue(v.selected, f"{v.version_id} should be selected after Select All")
@@ -62,7 +59,7 @@ class TestBatchSelection(SavePointsTestCase):
             # Execute deselect_all operator
             bpy.ops.savepoints.deselect_all()
 
-            # Verify all are unselected
+            # Verify flags are cleared
             for v in versions:
                 self.assertFalse(v.selected, f"{v.version_id} should be unselected after Deselect All")
 
@@ -71,7 +68,7 @@ class TestBatchSelection(SavePointsTestCase):
             # Set filter to 'STABLE'
             settings.filter_tag = 'STABLE'
 
-            # Execute select_all (should only select visible/filtered items)
+            # Execute select_all (Operator should respect the filter)
             bpy.ops.savepoints.select_all()
 
             # Verification
@@ -79,38 +76,11 @@ class TestBatchSelection(SavePointsTestCase):
             self.assertFalse(versions[1].selected, "V2 (Bug) should NOT be selected (hidden by filter)")
             self.assertTrue(versions[2].selected, "V3 (Stable) should be selected")
 
-            # Cleanup for next steps: Reset filter and selection
-            settings.filter_tag = 'ALL'  # Reset filter
+            # Cleanup: Reset filter and selection
+            settings.filter_tag = 'ALL'
             bpy.ops.savepoints.deselect_all()
 
-        # --- Step 4: Smart Target Logic ---
-        with self.subTest(step="4. Smart Target Logic"):
-            """Verify the smart target selection logic (fallback mechanism)."""
-
-            # Case A: Nothing selected -> Fallback to all (implicit selection)
-            # Ensure nothing is selected first
-            bpy.ops.savepoints.deselect_all()
-
-            # Logic simulation:
-            targets_a = [v for v in versions if v.version_id.startswith('v') and v.selected]
-            if not targets_a:
-                # Fallback: if nothing is explicitly selected, take all valid versions
-                targets_a = [v for v in versions if v.version_id.startswith('v')]
-
-            self.assertEqual(len(targets_a), 3, "Should fallback to all 3 versions when nothing is selected")
-
-            # Case B: Specific selection -> Only that item is targeted
-            versions[1].selected = True  # Select V2 only manually
-
-            # Logic simulation:
-            targets_b = [v for v in versions if v.version_id.startswith('v') and v.selected]
-            if not targets_b:
-                targets_b = [v for v in versions if v.version_id.startswith('v')]
-
-            self.assertEqual(len(targets_b), 1, "Should select exactly 1 version when explicitly checked")
-            self.assertEqual(targets_b[0].note, "V2", "The selected version should be V2")
-
-        print("Batch Selection Scenario: Completed")
+        print("Batch Selection UI Operators Test: Completed")
 
 
 if __name__ == "__main__":

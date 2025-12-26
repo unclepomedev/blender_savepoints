@@ -5,6 +5,7 @@ import os
 import bpy
 
 from . import ui_utils
+from .services.selection import get_selected_versions
 from .services.storage import get_parent_path_from_snapshot, get_history_dir
 
 
@@ -166,10 +167,7 @@ def _draw_history_list(layout, settings):
         row = layout.row()
         row.scale_y = 1.5
 
-        count = 0
-        for v in settings.versions:
-            if v.version_id.startswith('v') and v.selected:
-                count += 1
+        count = len(get_selected_versions(settings))
 
         row.operator("savepoints.batch_render", text=f"Batch Render Selected ({count})", icon='RENDER_STILL')
 

@@ -112,8 +112,10 @@ if __name__ == "__main__":
                 run_render(args[0], args[1], args[2])
             else:
                 print("Worker Error: Missing arguments.")
+                sys.exit(1)
         else:
             print("Worker Error: No arguments separator '--' found.")
+            sys.exit(1)
     except Exception as e:
         print(f"Worker Global Error: {e}")
         sys.exit(1)

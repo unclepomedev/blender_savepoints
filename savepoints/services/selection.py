@@ -51,3 +51,20 @@ def preserve_selection():
                     bpy.ops.object.mode_set(mode=original_mode)
                 except Exception as e:
                     print(f"[SavePoints] Warning: Failed to restore mode {original_mode}: {e}")
+
+
+def get_selected_versions(settings):
+    """
+    Returns a list of versions that are currently selected in the UI.
+    Excludes 'autosave' or invalid IDs.
+
+    Args:
+        settings (SavePointsSettings): The settings property group containing versions.
+
+    Returns:
+        list[SavePointsVersion]: List of selected version items.
+    """
+    return [
+        v for v in settings.versions
+        if v.version_id.startswith('v') and v.selected
+    ]

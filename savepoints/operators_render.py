@@ -8,6 +8,7 @@ import tempfile
 import bpy
 
 from .services.batch_render import extract_render_settings, get_worker_script_content
+from .services.selection import get_selected_versions
 from .services.snapshot import find_snapshot_path
 
 
@@ -23,10 +24,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     def invoke(self, context, event):
         self.settings = context.scene.savepoints_settings
 
-        self.target_versions = [
-            v for v in self.settings.versions
-            if v.version_id.startswith('v') and v.selected
-        ]
+        self.target_versions = get_selected_versions(self.settings)
 
         if not self.target_versions:
             self.report({'WARNING'}, "No versions found to render.")
