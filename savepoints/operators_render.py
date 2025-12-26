@@ -9,6 +9,7 @@ import bpy
 
 from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir, \
     create_error_log_text_block
+from .services.post_process import open_folder_platform_independent, create_vse_timelapse, send_os_notification
 from .services.selection import get_selected_versions
 from .services.snapshot import find_snapshot_path
 
@@ -241,6 +242,61 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             except Exception:
                 pass
 
+        if self.current_task_idx > 0:
+            print(f"[SavePoints] Batch Render Complete! Processed {self.current_task_idx} versions.")
+            self.report({'INFO'}, f"Batch Render Complete! ({self.current_task_idx} versions)")
+
+            open_folder_platform_independent(self.output_dir)
+
+            try:
+                scene_name = create_vse_timelapse(self.output_dir)
+
+                if scene_name:
+                    if not bpy.app.background:
+                        def draw_notification(self, context):
+                            self.layout.label(text="Timelapse Scene Created!")
+                            row = self.layout.row()
+                            row.label(text=f"Scene: {scene_name}")
+
+                        context.window_manager.popup_menu(draw_notification, title="Render Finished", icon='SEQUENCE')
+                    self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
+                else:
+                    self.report({'WARNING'}, "Could not create timelapse scene (Check System Console).")
+
+            except Exception as e:
+                print(f"[SavePoints] Post-process error: {e}")
+                import traceback
+                traceback.print_exc()
+                self.report({'WARNING'}, "Error during post-processing. See console.")
+
+            send_os_notification(
+                title="SavePoints Batch Render",
+                message=f"Completed! {self.current_task_idx} versions rendered.",
+            )
+
+        else:
+            self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
+
+        return {'FINISHED'}
+
+
+class SAVEPOINTS_OT_switch_scene(bpy.types.Operator):
+    """Switch to the specified scene"""
+    bl_idname = "savepoints.switch_scene"
+    bl_label = "Switch Scene"
+
+    scene_name: bpy.props.StringProperty()
+
+    def execute(self, context):
+        if self.scene_name not in bpy.data.scenes:
+            self.report({'WARNING'}, f"Scene '{self.scene_name}' not found.")
+            return {'CANCELLED'}
+
+        if not context.window:
+            self.report({'WARNING'}, "Cannot switch scene: No active window found.")
+            return {'CANCELLED'}
+
+        context.window.scene = bpy.data.scenes[self.scene_name]
         return {'FINISHED'}
 
 
