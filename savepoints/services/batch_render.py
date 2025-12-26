@@ -33,6 +33,8 @@ def extract_render_settings(context):
         "frame_current": scene.frame_current,
         "camera_matrix_world": [list(row) for row in camera.matrix_world] if camera else [],
         "world_name": scene.world.name if scene.world else None,
+        "active_view_layer": context.view_layer.name,  # For ViewLayer syncing
+        "main_blend_path": bpy.data.filepath,  # For appending assets
         "output_format_override": scene.savepoints_settings.batch_output_format,
         "current_scene_format": render.image_settings.file_format,
     }
@@ -89,6 +91,7 @@ def run_render(json_path, output_dir, file_prefix):
         settings = json.load(f)
 
     scene = bpy.context.scene
+    context = bpy.context
     render = scene.render
 
     # 2. Setup GPU
@@ -100,7 +103,7 @@ def run_render(json_path, output_dir, file_prefix):
     render.resolution_y = settings.get("resolution_y", 1080)
     render.resolution_percentage = settings.get("resolution_percentage", 100)
     render.engine = settings.get("engine", 'CYCLES')
-    
+
     fmt_override = settings.get("output_format_override", "SCENE")
     if fmt_override == 'PNG':
         render.image_settings.file_format = 'PNG'
@@ -118,13 +121,39 @@ def run_render(json_path, output_dir, file_prefix):
     elif render.engine in ['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT'] and "samples" in settings:
         scene.eevee.taa_render_samples = settings["samples"]
 
-    # 4. Apply Scene Context
-    scene.frame_current = settings.get("frame_current", 1)
-
+    # 4. Apply Scene Context (World & ViewLayer)
     world_name = settings.get("world_name")
-    if world_name and world_name in bpy.data.worlds:
-        scene.world = bpy.data.worlds[world_name]
+    main_blend_path = settings.get("main_blend_path")
 
+    if world_name:
+        # If world is missing locally, try to append from main file
+        if world_name not in bpy.data.worlds and main_blend_path and os.path.exists(main_blend_path):
+            print(f"Worker: World '{world_name}' missing locally. Appending from main file...")
+            try:
+                with bpy.data.libraries.load(main_blend_path, link=False) as (data_from, data_to):
+                    if world_name in data_from.worlds:
+                        data_to.worlds = [world_name]
+            except Exception as e:
+                print(f"Worker Warning: Failed to append world: {e}")
+
+        # Set the world if it exists now
+        if world_name in bpy.data.worlds:
+            scene.world = bpy.data.worlds[world_name]
+
+    # Prevents compositor black screens by matching the ViewLayer name
+    target_layer_name = settings.get("active_view_layer", "View Layer")
+    current_layer = context.view_layer
+
+    if current_layer.name != target_layer_name:
+        # If the target name is already taken by another (inactive) layer, rename it out of the way
+        if target_layer_name in scene.view_layers:
+            scene.view_layers[target_layer_name].name = f"{target_layer_name}_backup"
+
+        print(f"Worker: Renaming active ViewLayer '{current_layer.name}' -> '{target_layer_name}'")
+        current_layer.name = target_layer_name
+
+    # 5. Camera & Execution
+    scene.frame_current = settings.get("frame_current", 1)
     cam_matrix = settings.get("camera_matrix_world")
 
     if cam_matrix:
@@ -134,10 +163,9 @@ def run_render(json_path, output_dir, file_prefix):
             cam_obj = bpy.data.objects.new("BatchRenderCam", cam_data)
             scene.collection.objects.link(cam_obj)
             scene.camera = cam_obj
-        
+
         scene.camera.matrix_world = Matrix(cam_matrix)
 
-    # 5. Execute
     print(f"Rendering frame {scene.frame_current} to {render.filepath}...")
     try:
         bpy.ops.render.render(write_still=True)
