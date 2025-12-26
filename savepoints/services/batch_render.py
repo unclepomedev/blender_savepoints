@@ -163,3 +163,30 @@ if __name__ == "__main__":
         print(f"Worker Global Error: {e}")
         sys.exit(1)
 """
+
+
+def create_error_log_text_block(version_id, log_path):
+    """
+    Reads a log file and creates/updates a Blender Text Block.
+    Returns the text block object or None if failed.
+    """
+    text_name = f"Log_{version_id}"
+
+    if text_name in bpy.data.texts:
+        bpy.data.texts.remove(bpy.data.texts[text_name])
+
+    new_text = bpy.data.texts.new(name=text_name)
+
+    if not os.path.exists(log_path):
+        new_text.write(f"Error: Log file not found at {log_path}")
+        return new_text
+
+    try:
+        with open(log_path, 'r', encoding='utf-8', errors='replace') as f:
+            log_content = f.read()
+            header = f"# SavePoints Batch Render Log\n# Version: {version_id}\n# Path: {log_path}\n{'=' * 40}\n\n"
+            new_text.write(header + log_content)
+    except Exception as e:
+        new_text.write(f"Failed to read log file: {e}")
+
+    return new_text

@@ -7,7 +7,8 @@ import tempfile
 
 import bpy
 
-from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir
+from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir, \
+    create_error_log_text_block
 from .services.selection import get_selected_versions
 from .services.snapshot import find_snapshot_path
 
@@ -88,7 +89,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                         error_msg = f"Failed: {self.current_version_id} (Code {ret_code})"
                         self.report({'ERROR'}, error_msg)
 
-                        self.create_error_log_text_block(self.current_version_id, self.current_log_path)
+                        create_error_log_text_block(self.current_version_id, self.current_log_path)
                         self.report({'WARNING'}, f"Check Text Editor 'Log_{self.current_version_id}' for details.")
 
                     self._process = None
@@ -188,21 +189,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 pass
 
         return {'FINISHED'}
-
-    def create_error_log_text_block(self, version_id, log_path):
-        text_name = f"Log_{version_id}"
-
-        if text_name in bpy.data.texts:
-            bpy.data.texts.remove(bpy.data.texts[text_name])
-
-        new_text = bpy.data.texts.new(name=text_name)
-
-        try:
-            with open(log_path, 'r', encoding='utf-8') as f:
-                log_content = f.read()
-                new_text.write(log_content)
-        except Exception as e:
-            new_text.write(f"Failed to read log file: {e}")
 
 
 class SAVEPOINTS_OT_toggle_batch_mode(bpy.types.Operator):
