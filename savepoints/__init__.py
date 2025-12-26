@@ -9,6 +9,7 @@ from bpy.app.handlers import persistent
 from . import hud
 from . import operators
 from . import operators_io
+from . import operators_render
 from . import properties
 from . import ui
 from . import ui_utils
@@ -32,6 +33,10 @@ classes = (
     operators.SAVEPOINTS_OT_delete,
     operators.SAVEPOINTS_OT_refresh,
     operators.SAVEPOINTS_OT_guard_save,
+    operators_render.SAVEPOINTS_OT_toggle_batch_mode,
+    operators_render.SAVEPOINTS_OT_select_all,
+    operators_render.SAVEPOINTS_OT_deselect_all,
+    operators_render.SAVEPOINTS_OT_batch_render,
     ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
