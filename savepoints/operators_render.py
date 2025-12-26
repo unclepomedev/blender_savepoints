@@ -59,7 +59,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self._timer = context.window_manager.event_timer_add(0.5, window=context.window)
         context.window_manager.modal_handler_add(self)
 
-        self.start_next_render()
+        if not self.start_next_render():
+            return self.finish(context)
 
         return {'RUNNING_MODAL'}
 
@@ -80,9 +81,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                     self.current_task_idx += 1
                     context.window_manager.progress_update(self.current_task_idx)
 
-                    if self.task_queue:
-                        self.start_next_render()
-                    else:
+                    if not self.start_next_render():
                         return self.finish(context)
 
         elif event.type == 'ESC':
@@ -93,18 +92,25 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         return {'PASS_THROUGH'}
 
     def start_next_render(self):
-        if not self.task_queue:
-            return
+        if self._process:
+            return True
 
-        version = self.task_queue.pop(0)
-        self.current_version_id = version.version_id
+        while self.task_queue:
+            version = self.task_queue.pop(0)
+            self.current_version_id = version.version_id
 
-        snapshot_path = find_snapshot_path(version.version_id)
-        if not snapshot_path or not snapshot_path.exists():
-            self.report({'WARNING'}, f"Skipping {version.version_id}: File not found.")
-            self.current_task_idx += 1
-            self.start_next_render()
-            return
+            snapshot_path = find_snapshot_path(version.version_id)
+            if not snapshot_path or not snapshot_path.exists():
+                self.report({'WARNING'}, f"Skipping {version.version_id}: File not found.")
+                self.current_task_idx += 1
+                bpy.context.window_manager.progress_update(self.current_task_idx)
+                continue
+
+            # Found valid snapshot, proceed with render
+            break
+        else:
+            # No more tasks
+            return False
 
         blender_bin = bpy.app.binary_path
 
@@ -123,14 +129,17 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         try:
             self._process = subprocess.Popen(
                 cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL
             )
             print(f"[SavePoints] Rendering {self.current_version_id} (PID: {self._process.pid})")
+            return True
         except Exception as e:
             self.report({'ERROR'}, f"Process start failed: {e}")
-            self.cancel_process()
-            return self.finish(bpy.context)
+            # Set flag to signal modal to finish
+            self.task_queue.clear()
+            self._process = None
+            return False
 
     def cancel_process(self):
         if self._process:
