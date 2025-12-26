@@ -22,6 +22,10 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     _process = None
 
     def invoke(self, context, event):
+        if not bpy.data.filepath:
+            self.report({'ERROR'}, "Blend file must be saved before batch rendering.")
+            return {'CANCELLED'}
+
         self.settings = context.scene.savepoints_settings
 
         self.target_versions = get_selected_versions(self.settings)
@@ -43,6 +47,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 f.write(get_worker_script_content())
         except Exception as e:
             self.report({'ERROR'}, f"Initialization failed: {e}")
+            if os.path.exists(self.temp_dir):
+                shutil.rmtree(self.temp_dir)
             return {'CANCELLED'}
 
         self.output_dir = os.path.join(bpy.path.abspath("//"), "renders_batch")
@@ -59,7 +65,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self._timer = context.window_manager.event_timer_add(0.5, window=context.window)
         context.window_manager.modal_handler_add(self)
 
-        if not self.start_next_render():
+        if not self.start_next_render(context):
             return self.finish(context)
 
         return {'RUNNING_MODAL'}
@@ -81,7 +87,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                     self.current_task_idx += 1
                     context.window_manager.progress_update(self.current_task_idx)
 
-                    if not self.start_next_render():
+                    if not self.start_next_render(context):
                         return self.finish(context)
 
         elif event.type == 'ESC':
@@ -91,7 +97,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
         return {'PASS_THROUGH'}
 
-    def start_next_render(self):
+    def start_next_render(self, context):
         if self._process:
             return True
 
@@ -103,7 +109,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             if not snapshot_path or not snapshot_path.exists():
                 self.report({'WARNING'}, f"Skipping {version.version_id}: File not found.")
                 self.current_task_idx += 1
-                bpy.context.window_manager.progress_update(self.current_task_idx)
+                context.window_manager.progress_update(self.current_task_idx)
                 continue
 
             # Found valid snapshot, proceed with render
