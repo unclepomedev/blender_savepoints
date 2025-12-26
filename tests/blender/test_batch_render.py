@@ -19,7 +19,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints_test_case import SavePointsTestCase
 
-from savepoints.services.batch_render import extract_render_settings, get_worker_script_content
+from savepoints.services.batch_render import extract_render_settings, get_worker_script_content, \
+    get_batch_render_output_dir
 from savepoints.services.snapshot import find_snapshot_path
 
 
@@ -67,10 +68,13 @@ class TestBatchRender(SavePointsTestCase):
             settings = bpy.context.scene.savepoints_settings
             target_versions = [v for v in settings.versions if v.version_id.startswith('v')]
 
-            output_dir = self.test_dir / "renders_batch"
+            output_dir_str = get_batch_render_output_dir()
+            output_dir = Path(output_dir_str)
+
             if output_dir.exists():
                 shutil.rmtree(output_dir)
-            output_dir.mkdir()
+
+            output_dir.mkdir(parents=True, exist_ok=True)
 
             render_settings = extract_render_settings(bpy.context)
             temp_dir = tempfile.mkdtemp()
@@ -109,11 +113,14 @@ class TestBatchRender(SavePointsTestCase):
                 shutil.rmtree(temp_dir)
 
             files = list(output_dir.glob("*.png"))
-            print(f"Found rendered files: {[f.name for f in files]}")
+            print(f"Found rendered files in {output_dir}: {[f.name for f in files]}")
 
             for v in target_versions:
                 matched = any(f"{v.version_id}_render" in f.name for f in files)
                 self.assertTrue(matched, f"Render output for {v.version_id} missing")
+
+            if output_dir.exists():
+                shutil.rmtree(output_dir)
 
         print("Batch Render Scenario: Completed")
 
