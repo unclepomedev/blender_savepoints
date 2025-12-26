@@ -9,13 +9,16 @@ test-blender:
     #!/usr/bin/env bash
     set -e
 
-    # Get local site-packages to make dependencies available in Blender
-    export LOCAL_SITE_PACKAGES=$(python -c "import site; print(site.getsitepackages()[0])")
+    export LOCAL_SITE_PACKAGES=$(python3 -c "import site; print(site.getsitepackages()[0])" 2>/dev/null || echo "")
+    echo "Using Site Packages: $LOCAL_SITE_PACKAGES"
 
     for test_file in tests/blender/test_*.py; do
         echo "---------------------------------------------------"
         echo "Running: $test_file"
-        "{{ blender_exe }}" --factory-startup -b -P tests/blender/setup_dependencies.py -P "$test_file"
+
+        "{{ blender_exe }}" --factory-startup -b \
+            -P tests/blender/setup_dependencies.py \
+            -P "$test_file" || exit 1
     done
 
     echo "✅ All tests passed!"
