@@ -29,11 +29,47 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     )
 
     def invoke(self, context, event):
-        return context.window_manager.invoke_props_dialog(self)
+        return context.window_manager.invoke_props_dialog(self, width=400)
+
+    def check(self, context):
+        return True
 
     def draw(self, context):
         layout = self.layout
-        layout.prop(self, "dry_run", text="Dry Run (Fast, JPEG)")
+
+        row = layout.row()
+        row.scale_y = 1.2
+        row.prop(self, "dry_run", toggle=True)
+
+        if self.dry_run:
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text="🚀 DRY RUN MODE", icon='TIME')
+
+            col.separator()
+            col.label(text="• Resolution: 25% (Fast)")
+            col.label(text="• Samples: 1 + Denoise")
+            col.label(text="• Output: JPEG (Quality 70)")
+            col.label(text="• Folder: ..._dryrun")
+
+            box.label(text="Files will be saved for quick review.", icon='INFO')
+
+        else:
+            count = len(get_selected_versions(context.scene.savepoints_settings))
+
+            box = layout.box()
+            col = box.column(align=True)
+            row = col.row()
+            row.alignment = 'CENTER'
+            row.label(text=f"🎬 FINAL RENDER ({count} Versions)", icon='RENDER_STILL')
+
+            col.separator()
+            col.label(text="• Settings: User Defined / Override")
+            col.label(text="• Output: Selected Format")
+
+            box.label(text="This may take a while.", icon='ERROR')
 
     def execute(self, context):
         if not bpy.data.filepath:

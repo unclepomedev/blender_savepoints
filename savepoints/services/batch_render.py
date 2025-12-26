@@ -50,9 +50,9 @@ def extract_render_settings(context, dry_run=False):
 
     if dry_run:
         settings["output_format_override"] = "JPEG"
-        settings["resolution_percentage"] = 50
-        settings["samples"] = 8
-        settings["jpeg_quality"] = 50
+        settings["resolution_percentage"] = 25
+        settings["samples"] = 1
+        settings["jpeg_quality"] = 70
 
     return settings
 

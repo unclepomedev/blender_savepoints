@@ -27,7 +27,7 @@ class TestBatchRenderDryRun(SavePointsTestCase):
     def test_dry_run_execution(self):
         """
         Test the Dry Run functionality:
-        1. Checks if 'dry_run=True' overrides settings correctly (JPEG, low res, samples=8).
+        1. Checks if 'dry_run=True' overrides settings correctly (JPEG, low res, samples=1).
         2. Checks if output directory has '_dryrun' suffix.
         3. Executes a subprocess render to verify the worker script respects these settings.
         """
@@ -62,9 +62,9 @@ class TestBatchRenderDryRun(SavePointsTestCase):
             # Check Render Settings Overrides
             settings = extract_render_settings(bpy.context, dry_run=True)
             self.assertEqual(settings["output_format_override"], "JPEG", "Format should be forced to JPEG")
-            self.assertEqual(settings["resolution_percentage"], 50, "Resolution should be 50%")
-            self.assertEqual(settings["samples"], 8, "Samples should be reduced to 8")
-            self.assertEqual(settings.get("jpeg_quality"), 50, "JPEG Quality should be 50")
+            self.assertEqual(settings["resolution_percentage"], 25, "Resolution should be 25%")
+            self.assertEqual(settings["samples"], 1, "Samples should be reduced to 1")
+            self.assertEqual(settings.get("jpeg_quality"), 70, "JPEG Quality should be 70")
 
         # --- Step 3: Execute Render via Subprocess ---
         with self.subTest(step="3. Execute Worker"):
