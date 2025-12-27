@@ -66,6 +66,7 @@ class TestContextAwareSync(SavePointsTestCase):
         self.assertAlmostEqual(cd.shift_x, 0.2)
         self.assertAlmostEqual(cd.shift_y, -0.1)
         self.assertAlmostEqual(cd.clip_start, 0.5)
+        self.assertAlmostEqual(cd.clip_end, 500.0)
         self.assertEqual(cd.sensor_fit, 'VERTICAL')
 
         print("Camera Lens Sync Test: Completed")
@@ -113,9 +114,11 @@ class TestContextAwareSync(SavePointsTestCase):
 
         try:
             vs.view_transform = 'AgX'
+            target_view_transform = 'AgX'
             target_look = 'AgX - High Contrast'
         except TypeError:
             vs.view_transform = 'Standard'
+            target_view_transform = 'Standard'
             target_look = 'High Contrast'
 
         try:
@@ -138,6 +141,11 @@ class TestContextAwareSync(SavePointsTestCase):
 
         # --- Step 3: Reset & Apply ---
         # Reset settings to default to ensure values are actually applied
+        if target_view_transform == 'AgX':
+            try:
+                vs.view_transform = 'Standard'
+            except TypeError:
+                pass
         vs.look = 'None'
         vs.exposure = 0.0
         vs.gamma = 1.0
@@ -145,6 +153,7 @@ class TestContextAwareSync(SavePointsTestCase):
         setup_view_settings(self.scene, settings)
 
         # --- Step 4: Verification ---
+        self.assertEqual(vs.view_transform, target_view_transform)
         self.assertEqual(vs.look, target_look)
         self.assertAlmostEqual(vs.exposure, 1.5)
         self.assertAlmostEqual(vs.gamma, 2.2)
@@ -172,10 +181,12 @@ class TestContextAwareSync(SavePointsTestCase):
         except Exception as e:
             self.fail(f"Setup functions crashed on missing data: {e}")
 
-        # Check if defaults are applied (Default lens is usually 50mm)
-        if self.scene.camera:
-            self.assertEqual(self.scene.camera.data.lens, 50.0)
+        self.assertIsNotNone(self.scene.camera, "setup_camera should create a camera when matrix_world is provided")
 
+        cd = self.scene.camera.data
+        self.assertEqual(cd.lens, 50.0, "Default lens should be 50mm")
+        self.assertEqual(cd.sensor_fit, 'AUTO', "Default sensor_fit should be AUTO")
+        self.assertAlmostEqual(cd.clip_start, 0.1, places=5, msg="Default clip_start should be 0.1")
         print("Resilience Test: Completed")
 
 
