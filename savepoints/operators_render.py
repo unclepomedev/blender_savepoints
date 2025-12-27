@@ -265,26 +265,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
             open_folder_platform_independent(self.output_dir)
 
-            try:
-                scene_name = create_vse_timelapse(self.output_dir)
-
-                if scene_name:
-                    if not bpy.app.background:
-                        def draw_notification(self, context):
-                            self.layout.label(text="Timelapse Scene Created!")
-                            row = self.layout.row()
-                            row.label(text=f"Scene: {scene_name}")
-
-                        context.window_manager.popup_menu(draw_notification, title="Render Finished", icon='SEQUENCE')
-                    self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
-                else:
-                    self.report({'WARNING'}, "Could not create timelapse scene (Check System Console).")
-
-            except Exception as e:
-                print(f"[SavePoints] Post-process error: {e}")
-                import traceback
-                traceback.print_exc()
-                self.report({'WARNING'}, "Error during post-processing. See console.")
+            if not self.dry_run:
+                self._process_timelapse_creation(context)
 
             send_os_notification(
                 title="SavePoints Batch Render",
@@ -295,6 +277,28 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
 
         return {'FINISHED'}
+
+    def _process_timelapse_creation(self, context):
+        try:
+            scene_name = create_vse_timelapse(self.output_dir)
+
+            if scene_name:
+                if not bpy.app.background:
+                    def draw_notification(self, context):
+                        self.layout.label(text="Timelapse Scene Created!")
+                        row = self.layout.row()
+                        row.label(text=f"Scene: {scene_name}")
+
+                    context.window_manager.popup_menu(draw_notification, title="Render Finished", icon='SEQUENCE')
+                self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
+            else:
+                self.report({'WARNING'}, "Could not create timelapse scene (Check System Console).")
+
+        except Exception as e:
+            print(f"[SavePoints] Post-process error: {e}")
+            import traceback
+            traceback.print_exc()
+            self.report({'WARNING'}, "Error during post-processing. See console.")
 
 
 class SAVEPOINTS_OT_switch_scene(bpy.types.Operator):
