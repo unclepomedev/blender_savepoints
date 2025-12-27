@@ -151,6 +151,22 @@ class TestBatchRenderExtras(SavePointsTestCase):
 
         # --- Step 1: Create 3 Versions ---
         with self.subTest(step="1. Setup History"):
+            bpy.context.scene.render.engine = 'CYCLES'
+            bpy.context.scene.cycles.device = 'CPU'
+
+            bpy.context.scene.cycles.samples = 1
+            bpy.context.scene.cycles.preview_samples = 1
+            bpy.context.scene.cycles.max_bounces = 0
+            bpy.context.scene.cycles.diffuse_bounces = 0
+            bpy.context.scene.cycles.glossy_bounces = 0
+            bpy.context.scene.cycles.transparent_max_bounces = 0
+            bpy.context.scene.cycles.transmission_bounces = 0
+            bpy.context.scene.cycles.volume_bounces = 0
+            bpy.context.scene.cycles.use_denoising = False
+            bpy.context.scene.render.resolution_x = 32
+            bpy.context.scene.render.resolution_y = 32
+            bpy.context.scene.render.resolution_percentage = 100
+
             if not bpy.context.scene.camera:
                 bpy.ops.object.camera_add(location=(0, -10, 5), rotation=(1.1, 0, 0))
                 bpy.context.scene.camera = bpy.context.active_object
