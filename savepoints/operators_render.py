@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
+
 import json
 import os
 import shutil
@@ -15,7 +16,14 @@ from .services.snapshot import find_snapshot_path
 
 
 class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
-    """Batch Render selected versions. (Shift+Click to Skip Dialog & RENDER)"""
+    """
+    Batch Render selected versions. (Shift+Click to Skip Dialog & RENDER)
+
+    NOTE: This operator runs Blender with '--factory-startup' flag for stability.
+    - User addons and startup scripts are DISABLED during batch rendering.
+    - Only data embedded in the blend file (shaders, modifiers, etc.) will be rendered.
+    - Addons that generate content at render-time will not function.
+    """
     bl_idname = "savepoints.batch_render"
     bl_label = "Batch Render Snapshots"
     bl_options = {'REGISTER'}
@@ -53,7 +61,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             row = col.row()
             row.alignment = 'CENTER'
             row.label(text="🚀 DRY RUN MODE", icon='TIME')
-
             col.separator()
             col.label(text="• Resolution: 25% (Fast)")
             col.label(text="• Samples: 1 + Denoise")
@@ -61,10 +68,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             col.label(text="• Folder: ..._dryrun")
 
             box.label(text="Files will be saved for quick review.", icon='INFO')
-
         else:
             count = len(get_selected_versions(context.scene.savepoints_settings))
-
             box = layout.box()
             col = box.column(align=True)
             row = col.row()
@@ -72,7 +77,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             row.label(text=f"🎬 FINAL RENDER ({count} Versions)", icon='RENDER_STILL')
 
             main_settings = scene.render.image_settings
-
             col.separator()
             sub = col.column(align=True)
             sub.scale_y = 0.8
@@ -102,8 +106,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             return {'CANCELLED'}
 
         self.settings = context.scene.savepoints_settings
-
         self.target_versions = get_selected_versions(self.settings)
+        self._is_cancelled = False
 
         if not self.target_versions:
             self.report({'WARNING'}, "No versions found to render.")
@@ -112,6 +116,11 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self.temp_dir = tempfile.mkdtemp(prefix="sp_batch_")
         self.settings_path = os.path.join(self.temp_dir, "render_config.json")
         self.worker_script_path = get_worker_script_path()
+        if not os.path.exists(self.worker_script_path):
+            self.report({'ERROR'}, f"Worker script not found at {self.worker_script_path}")
+            if os.path.exists(self.temp_dir):
+                shutil.rmtree(self.temp_dir)
+            return {'CANCELLED'}
 
         try:
             render_settings = extract_render_settings(context, dry_run=self.dry_run)
@@ -150,28 +159,28 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 if ret_code is None:
                     return {'PASS_THROUGH'}
                 else:
-                    if self.current_log_handle:
-                        self.current_log_handle.close()
-                        self.current_log_handle = None
+                    self._cleanup_current_log()
 
                     if ret_code == 0:
                         self.report({'INFO'}, f"Finished: {self.current_version_id}")
                     else:
                         error_msg = f"Failed: {self.current_version_id} (Code {ret_code})"
                         self.report({'ERROR'}, error_msg)
-
                         create_error_log_text_block(self.current_version_id, self.current_log_path)
                         self.report({'WARNING'}, f"Check Text Editor 'Log_{self.current_version_id}' for details.")
 
                     self._process = None
                     self.current_task_idx += 1
                     context.window_manager.progress_update(self.current_task_idx)
+                    msg = f"SavePoints Batch: Processed {self.current_task_idx}/{self.total_tasks} versions..."
+                    context.workspace.status_text_set(msg)
 
                     if not self.start_next_render(context):
                         return self.finish(context)
 
         elif event.type == 'ESC':
-            self.report({'WARNING'}, "Batch Render Cancelled.")
+            self._is_cancelled = True
+            self.report({'WARNING'}, "Batch Render Cancelled by User.")
             self.cancel_process()
             return self.finish(context)
 
@@ -192,14 +201,11 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 context.window_manager.progress_update(self.current_task_idx)
                 continue
 
-            # Found valid snapshot, proceed with render
             break
         else:
-            # No more tasks
             return False
 
         blender_bin = bpy.app.binary_path
-
         log_filename = f"render_log_{self.current_version_id}.txt"
         self.current_log_path = os.path.join(self.temp_dir, log_filename)
         self.current_log_handle = open(self.current_log_path, 'w', encoding='utf-8')
@@ -207,7 +213,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         cmd = [
             blender_bin,
             "-b",
-            "--factory-startup",  # Clean environment
+            "--factory-startup",
             str(snapshot_path),
             "-P", self.worker_script_path,
             "--",
@@ -226,30 +232,34 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             return True
         except Exception as e:
             self.report({'ERROR'}, f"Process start failed: {e}")
-
-            if self.current_log_handle:
-                self.current_log_handle.close()
-                self.current_log_handle = None
-
-            # Set flag to signal modal to finish
-            self.task_queue.clear()
+            self._cleanup_current_log()
             self._process = None
             return False
 
     def cancel_process(self):
         if self._process:
+            print(f"[SavePoints] Killing process PID: {self._process.pid}")
             try:
                 self._process.kill()
-            except OSError:
-                pass
+                self._process.wait(timeout=1)
+            except Exception as e:
+                print(f"Error killing process: {e}")
             self._process = None
 
+        self._cleanup_current_log()
+
+    def _cleanup_current_log(self):
         if hasattr(self, 'current_log_handle') and self.current_log_handle:
-            self.current_log_handle.close()
+            try:
+                self.current_log_handle.close()
+            except Exception:
+                pass
             self.current_log_handle = None
 
     def finish(self, context):
         context.window_manager.progress_end()
+        context.workspace.status_text_set(None)
+
         if self._timer:
             context.window_manager.event_timer_remove(self._timer)
 
@@ -260,39 +270,57 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 pass
 
         if self.current_task_idx > 0:
-            print(f"[SavePoints] Batch Render Complete! Processed {self.current_task_idx} versions.")
-            self.report({'INFO'}, f"Batch Render Complete! ({self.current_task_idx} versions)")
+            if self._is_cancelled:
+                self.report({'WARNING'},
+                            f"Batch Render Interrupted. ({self.current_task_idx}/{self.total_tasks} completed)")
+                open_folder_platform_independent(self.output_dir)
 
-            open_folder_platform_independent(self.output_dir)
+            else:
+                self.report({'INFO'}, f"Batch Render Complete! ({self.current_task_idx} versions)")
+                open_folder_platform_independent(self.output_dir)
 
-            if not self.dry_run:
-                self._process_timelapse_creation(context)
+                if not self.dry_run:
+                    self._process_timelapse_creation(context)
 
-            send_os_notification(
-                title="SavePoints Batch Render",
-                message=f"Completed! {self.current_task_idx} versions rendered.",
-            )
-
+                send_os_notification(
+                    title="SavePoints Batch Render",
+                    message=f"Completed! {self.current_task_idx} versions rendered.",
+                )
         else:
-            self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
+            if self._is_cancelled:
+                self.report({'WARNING'}, "Batch Render Cancelled.")
+            else:
+                self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
 
         return {'FINISHED'}
 
     def _process_timelapse_creation(self, context):
         try:
             scene_name = create_vse_timelapse(self.output_dir)
-
             if scene_name:
-                if not bpy.app.background:
-                    def draw_notification(self, context):
-                        self.layout.label(text="Timelapse Scene Created!")
-                        row = self.layout.row()
-                        row.label(text=f"Scene: {scene_name}")
-
-                    context.window_manager.popup_menu(draw_notification, title="Render Finished", icon='SEQUENCE')
                 self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
+
+                if not bpy.app.background:
+                    count = self.current_task_idx
+
+                    def draw_notification(self, context):
+                        layout = self.layout
+                        layout.label(text=f"Successfully processed {count} versions.")
+
+                        layout.separator()
+
+                        layout.label(text="Auto-Timelapse created:", icon='SEQUENCE')
+                        row = layout.row()
+                        row.label(text=f"  Scene: {scene_name}")
+                        layout.label(text="  (Switch scene to view playback)", icon='INFO')
+
+                    context.window_manager.popup_menu(
+                        draw_notification,
+                        title="Batch Render Complete",
+                        icon='CHECKMARK'
+                    )
             else:
-                self.report({'WARNING'}, "Could not create timelapse scene (Check System Console).")
+                self.report({'WARNING'}, "Could not create timelapse scene.")
 
         except Exception as e:
             print(f"[SavePoints] Post-process error: {e}")
