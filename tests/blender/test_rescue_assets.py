@@ -22,7 +22,6 @@ class TestRescueAssets(SavePointsTestCase):
 
     def setUp(self):
         super().setUp()
-        # Ensure we know where the history should be
         # SavePointsTestCase sets up a file named "test_project.blend"
         self.history_dir = self.test_dir / ".test_project_history"
 
@@ -71,9 +70,6 @@ class TestRescueAssets(SavePointsTestCase):
                 # Check if UI dialog was requested with correct path
                 mock_open_dialog.assert_called()
                 args, _ = mock_open_dialog.call_args
-                # args[0] is 'self' (operator instance), args[1] is 'context', args[2] is 'directory'
-                # or strictly check arguments depending on signature.
-                # Let's check the kwargs or last arg for the path
                 directory_arg = args[-1]  # Assuming directory is the last arg based on typical usage
 
                 expected_part = f"{version_id}/snapshot_rescue_temp.blend/Object"

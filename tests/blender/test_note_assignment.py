@@ -13,7 +13,6 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-# Import the actual operator class to access its methods directly
 import savepoints.operators
 from savepoints_test_case import SavePointsTestCase
 
@@ -62,11 +61,6 @@ class TestNoteAssignment(SavePointsTestCase):
         op.force_quick = force_quick
         op.note = note
         op.execute.return_value = {'FINISHED'}
-
-        # Important: Attach the real _get_default_note logic if it's called internally via self
-        # Or, rely on the fact that invoke calls savepoints.operators.generate_default_note directly.
-        # Looking at your previous code, generate_default_note is imported.
-        # If the operator calls `self.report`, the mock handles it automatically.
 
         return op
 

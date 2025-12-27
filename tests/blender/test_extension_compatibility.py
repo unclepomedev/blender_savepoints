@@ -74,7 +74,6 @@ class TestExtensionCompatibility(SavePointsTestCase):
         """Helper to find the index of a version ID and set it active."""
         settings = bpy.context.scene.savepoints_settings
         for i, v in enumerate(settings.versions):
-            # [FIXED] Use 'version_id' instead of 'id' to match PropertyGroup definition
             if v.version_id == target_id:
                 settings.active_version_index = i
                 return

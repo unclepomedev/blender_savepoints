@@ -14,7 +14,6 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints.services.manifest import load_manifest
 from savepoints.services.versioning import set_version_protection
-# For test purpose, we might need to manually inject autosave if operator fails
 from savepoints.operators import create_snapshot
 from savepoints_test_case import SavePointsTestCase
 
@@ -93,13 +92,7 @@ class TestRetentionPolicy(SavePointsTestCase):
 
         # --- Step 4: Protected Versions (Quota Exclusion) ---
         with self.subTest(step="4. Protected Versions"):
-            # Setup: Create v7, v8
-            # Current: v6, v5. + v7, v8. -> Total 4.
-            # But wait, Max is 2. So v5, v6 might get pruned as we add v7, v8.
-            # Let's reset settings to safely populate first.
             settings.use_limit_versions = False
-
-            # Add v7, v8
             bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v7")
             bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v8")
 
