@@ -178,6 +178,7 @@ class TestBatchRenderExtras(SavePointsTestCase):
             # V2 (Will be corrupted)
             bpy.context.active_object.location.x += 2
             bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V2_Fail")
+            v2_id = bpy.context.scene.savepoints_settings.versions[-1].version_id
 
             # V3
             bpy.context.active_object.location.x += 2
@@ -242,20 +243,11 @@ class TestBatchRenderExtras(SavePointsTestCase):
                         f"{v.version_id}_resilience"
                     ]
 
-                    print(f"Testing Version: {v.version_id}...")
                     try:
                         subprocess.run(cmd, check=True, capture_output=True, text=True)
-                        print(f"-> {v.version_id} Success!")
                     except subprocess.CalledProcessError as e:
-                        if "v002" in v.version_id:
-                            print(f"-> {v.version_id} Failed as expected (File Missing).")
+                        if v2_id in v.version_id:
                             continue
-
-                        print(f"\n{'!' * 20} UNEXPECTED WORKER CRASH ({v.version_id}) {'!' * 20}")
-                        print(f"Exit Code: {e.returncode}")
-                        print(f"--- STDOUT ---\n{e.stdout}")
-                        print(f"--- STDERR ---\n{e.stderr}")
-                        print(f"{'!' * 60}\n")
 
             finally:
                 shutil.rmtree(temp_dir)
