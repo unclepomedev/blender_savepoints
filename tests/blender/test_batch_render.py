@@ -19,7 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints_test_case import SavePointsTestCase
 
-from savepoints.services.batch_render import extract_render_settings, get_worker_script_content, \
+from savepoints.services.batch_render import extract_render_settings, get_worker_script_path, \
     get_batch_render_output_dir
 from savepoints.services.snapshot import find_snapshot_path
 
@@ -84,9 +84,7 @@ class TestBatchRender(SavePointsTestCase):
                 with open(settings_path, 'w') as f:
                     json.dump(render_settings, f)
 
-                worker_script_path = os.path.join(temp_dir, "worker.py")
-                with open(worker_script_path, 'w') as f:
-                    f.write(get_worker_script_content())
+                worker_script_path = get_worker_script_path()
 
                 blender_bin = bpy.app.binary_path
 
@@ -202,9 +200,7 @@ class TestBatchRender(SavePointsTestCase):
                 with open(settings_path, 'w') as f:
                     json.dump(render_settings, f)
 
-                worker_script_path = os.path.join(temp_dir, "worker.py")
-                with open(worker_script_path, 'w') as f:
-                    f.write(get_worker_script_content())
+                worker_script_path = get_worker_script_path()
 
                 blender_bin = bpy.app.binary_path
 

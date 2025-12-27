@@ -7,7 +7,7 @@ import tempfile
 
 import bpy
 
-from .services.batch_render import extract_render_settings, get_worker_script_content, get_batch_render_output_dir, \
+from .services.batch_render import extract_render_settings, get_worker_script_path, get_batch_render_output_dir, \
     create_error_log_text_block
 from .services.post_process import open_folder_platform_independent, create_vse_timelapse, send_os_notification
 from .services.selection import get_selected_versions
@@ -111,15 +111,12 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
         self.temp_dir = tempfile.mkdtemp(prefix="sp_batch_")
         self.settings_path = os.path.join(self.temp_dir, "render_config.json")
-        self.worker_script_path = os.path.join(self.temp_dir, "worker_render.py")
+        self.worker_script_path = get_worker_script_path()
 
         try:
             render_settings = extract_render_settings(context, dry_run=self.dry_run)
             with open(self.settings_path, 'w') as f:
                 json.dump(render_settings, f, indent=4)
-
-            with open(self.worker_script_path, 'w') as f:
-                f.write(get_worker_script_content())
         except Exception as e:
             self.report({'ERROR'}, f"Initialization failed: {e}")
             if os.path.exists(self.temp_dir):

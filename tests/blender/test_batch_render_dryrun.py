@@ -18,7 +18,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from savepoints_test_case import SavePointsTestCase
-from savepoints.services.batch_render import extract_render_settings, get_worker_script_content, \
+from savepoints.services.batch_render import extract_render_settings, get_worker_script_path, \
     get_batch_render_output_dir
 from savepoints.services.snapshot import find_snapshot_path
 
@@ -82,9 +82,7 @@ class TestBatchRenderDryRun(SavePointsTestCase):
                     json.dump(settings, f)
 
                 # write worker
-                worker_script_path = os.path.join(temp_dir, "worker.py")
-                with open(worker_script_path, 'w') as f:
-                    f.write(get_worker_script_content())
+                worker_script_path = get_worker_script_path()
 
                 render_output_dir = os.path.join(temp_dir, "render_result")
                 os.makedirs(render_output_dir, exist_ok=True)
