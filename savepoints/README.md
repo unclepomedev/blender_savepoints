@@ -10,6 +10,8 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
 - **Rescue Assets**: Easily append objects from a specific version without opening the full snapshot.
 - **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
+- **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse.
+- **Context-Aware Rendering**: **(New!)** Applies your **current** camera position, lighting, and render settings to **past** snapshots. This ensures perfect alignment for timelapses, regardless of how the camera moved during the project.
 - **Quick Save**: Option to skip the note dialog for instant saving.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 - **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
@@ -61,14 +63,29 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 9. **Tagging & Filtering**:
    - Click the tag icon on any version row to assign a tag (Stable, Milestone, etc.).
    - Use the filter dropdown at the top of the list to show only specific tags (e.g., only "Stable" versions).
+10. **Batch Rendering & Timelapse**:
+    - **Enter Batch Mode**: Toggle the checkbox at the top right of the history list.
+    - **Select Versions**: Check the boxes for the versions you want to render. (Use "Select All" combined with filters to quickly select all "Stable" versions).
+    - **Configure Output**: Choose **SCENE** (uses current render settings), **PNG**, or **JPEG**.
+    - **Start Render**: Click **Batch Render Selected**.
+      - *Note*: The renderer applies your **current scene's camera, world, and render settings** to the past versions.
+      - **Dry Run (Preview)**: Click normally to open the dialog, then check **"Dry Run"** to render a quick low-quality preview (25% resolution, 1 sample).
+      - **Instant Final Render**: Hold `Shift` + Click the button to **skip the dialog** and immediately start the final render.
+      - **Cancel**: Press `ESC` at any time to abort the process.
+    - **Auto-Timelapse**: When finished, a new scene named `..._Timelapse` is created with all images imported into the Video Sequence Editor (VSE) for immediate playback.
+    - **Output Location**: Files are saved in `//renders_batch/{BlendName}_{Timestamp}/`.
 
 ## ⚠️ Note
 
-Thumbnails are skipped in no-GPU environments, but versioning remains fully functional. (Compatible with headless mode for automation and CI/CD workflows.)
+### Batch Rendering Limitations
+To ensure maximum stability, the batch renderer runs in **Factory Startup Mode**.
+- **Supported**: Geometry, Shaders, Modifiers, Geometry Nodes.
+- **Not Supported**: Third-party add-ons that generate geometry specifically at render-time (e.g., some scattering tools) will not be loaded.
+- **GPU Support**: The renderer attempts to auto-detect and use your saved System Preferences (CUDA/OptiX/Metal) even in factory mode.
 
-### ℹ️ Note regarding Asset Browser
-
-Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Blender from scanning them, ensuring **no duplicate assets appear in your Asset Browser**.
+### General Notes
+- Thumbnails are skipped in no-GPU environments, but versioning remains fully functional.
+- **Asset Browser**: Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Blender from scanning them, ensuring **no duplicate assets appear in your Asset Browser**.
 
 *For users upgrading from older versions: Legacy snapshots saved as standard `.blend` files may still cause duplication. You can safely delete them via the SavePoints panel to clean up your library.*
 
