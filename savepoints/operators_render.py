@@ -16,7 +16,14 @@ from .services.snapshot import find_snapshot_path
 
 
 class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
-    """Batch Render selected versions. (Shift+Click to Skip Dialog & RENDER)"""
+    """
+    Batch Render selected versions. (Shift+Click to Skip Dialog & RENDER)
+
+    NOTE: This operator runs Blender with '--factory-startup' flag for stability.
+    - User addons and startup scripts are DISABLED during batch rendering.
+    - Only data embedded in the blend file (shaders, modifiers, etc.) will be rendered.
+    - Addons that generate content at render-time will not function.
+    """
     bl_idname = "savepoints.batch_render"
     bl_label = "Batch Render Snapshots"
     bl_options = {'REGISTER'}
