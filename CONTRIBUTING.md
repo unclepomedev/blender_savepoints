@@ -1,4 +1,23 @@
-## CI/CD Process
+## Testing
+
+This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
+
+To run the tests:
+
+```bash
+just test-blender
+```
+
+> **Note**: 
+> - Check and configure the `blender_exe` path in `justfile` to match your environment.
+> - [Just](https://github.com/casey/just) is required to run the command.
+
+This script verifies typical use cases and ensures the add-on fails safely (at least to the best of the developer's knowledge).
+
+### CI Environment
+
+In addition to local testing on macOS and Windows, these E2E tests are automatically executed on Windows and Linux via GitHub Actions.
+
 
 ```mermaid
 graph TD

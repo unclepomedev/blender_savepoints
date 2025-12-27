@@ -221,6 +221,8 @@ jobs:
 
       - name: Create Zip File
         run: |
+          cp README.ja.md savepoints/ || true
+          cp README.zh-CN.md savepoints/ || true
           zip -r ./savepoints_${{ steps.version.outputs.TAG_NAME }}.zip savepoints -x "*.pyc" -x "*__pycache__*"
 
       - name: Create GitHub Release
