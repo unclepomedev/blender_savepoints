@@ -11,15 +11,14 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Rescue Assets**: Easily append objects from a specific version without opening the full snapshot.
 - **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
 - **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse.
-- **Context-Aware Rendering**: **(New!)** Applies your **current** camera position*, world environment, and basic render settings (Resolution, Samples) to **past** snapshots.
+- **Context-Aware Rendering**: **(New!)** Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
+  <br>*(Note: Compositor nodes remain as they were in the snapshot.)*
 - **Quick Save**: Option to skip the note dialog for instant saving.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 - **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
 - **Disk Management**: Automatically deletes the oldest versions to maintain a manageable history size, while preserving locked versions.
 - **Version Protection**: Lock specific versions to prevent them from being auto-deleted or accidentally removed.
 - **Version Tagging**: Assign tags (Stable, Milestone, Experiment, Bug) to versions and filter the history list to find important snapshots instantly.
-
-<br>*(Note: Camera lens/focal length, Color Management, and Compositor nodes remain as they were in the snapshot.)*
 
 ## Usage
 
