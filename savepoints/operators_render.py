@@ -241,7 +241,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         if hasattr(self, 'current_log_handle') and self.current_log_handle:
             try:
                 self.current_log_handle.close()
-            except:
+            except Exception:
                 pass
             self.current_log_handle = None
 
