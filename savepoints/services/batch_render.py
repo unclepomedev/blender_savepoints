@@ -38,11 +38,28 @@ def extract_render_settings(context, dry_run=False):
         "engine": render.engine,
         "frame_current": scene.frame_current,
         "camera_matrix_world": [list(row) for row in camera.matrix_world] if camera else [],
+        "camera_data": {
+            "type": camera.data.type,
+            "lens": camera.data.lens,
+            "ortho_scale": camera.data.ortho_scale,
+            "sensor_width": camera.data.sensor_width,
+            "sensor_height": camera.data.sensor_height,
+            "sensor_fit": camera.data.sensor_fit,
+            "shift_x": camera.data.shift_x,
+            "shift_y": camera.data.shift_y,
+            "clip_start": camera.data.clip_start,
+            "clip_end": camera.data.clip_end,
+        } if camera else None,
         "world_name": scene.world.name if scene.world else None,
+        "view_settings": {
+            "view_transform": scene.view_settings.view_transform,
+            "look": scene.view_settings.look,
+            "exposure": scene.view_settings.exposure,
+            "gamma": scene.view_settings.gamma,
+        },
         "active_view_layer": context.view_layer.name,  # For ViewLayer syncing
         "main_blend_path": bpy.data.filepath,  # For appending assets
         "output_format_override": scene.savepoints_settings.batch_output_format,
-
         "image_settings": {
             "file_format": img_settings.file_format,
             "color_mode": img_settings.color_mode,

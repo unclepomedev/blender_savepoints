@@ -43,6 +43,7 @@ def run_render(json_path, output_dir, file_prefix):
     # 6. Camera & Execution
     scene.frame_current = settings.get("frame_current", 1)
     scene_utils.setup_camera(scene, settings)
+    scene_utils.setup_view_settings(scene, settings)
 
     print(f"Rendering frame {scene.frame_current} to {render.filepath}...")
     try:
