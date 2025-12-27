@@ -1,14 +1,27 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 def apply_image_settings(render, settings):
     # A. Inherited settings
     src_img_settings = settings.get("image_settings", {})
     if src_img_settings:
-        render.image_settings.file_format = src_img_settings.get("file_format", "PNG")
+        try:
+            render.image_settings.file_format = src_img_settings.get("file_format", "PNG")
+        except Exception:
+            pass
+
         render.image_settings.color_mode = src_img_settings.get("color_mode", "RGBA")
-        render.image_settings.color_depth = src_img_settings.get("color_depth", "8")
+        try:
+            render.image_settings.color_depth = src_img_settings.get("color_depth", "8")
+        except Exception:
+            pass
+
         render.image_settings.compression = src_img_settings.get("compression", 15)
         render.image_settings.quality = src_img_settings.get("quality", 90)
         if "exr_codec" in src_img_settings:
-            render.image_settings.exr_codec = src_img_settings["exr_codec"]
+            try:
+                render.image_settings.exr_codec = src_img_settings["exr_codec"]
+            except Exception:
+                pass
 
     # B. Overrides
     fmt_override = settings.get("output_format_override", "SCENE")
