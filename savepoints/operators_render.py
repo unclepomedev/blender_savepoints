@@ -41,6 +41,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
     def draw(self, context):
         layout = self.layout
+        scene = context.scene
 
         row = layout.row()
         row.scale_y = 1.2
@@ -70,11 +71,30 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             row.alignment = 'CENTER'
             row.label(text=f"🎬 FINAL RENDER ({count} Versions)", icon='RENDER_STILL')
 
-            col.separator()
-            col.label(text="• Settings: User Defined / Override")
-            col.label(text="• Output: Selected Format")
+            main_settings = scene.render.image_settings
 
-            box.label(text="This may take a while.", icon='ERROR')
+            col.separator()
+            sub = col.column(align=True)
+            sub.scale_y = 0.8
+            sub.label(text="Output Settings (Inherited):", icon='PREFERENCES')
+
+            fmt = scene.savepoints_settings.batch_output_format
+            if fmt == 'SCENE':
+                fmt_label = main_settings.file_format
+                details = f"{main_settings.color_mode}, {main_settings.color_depth}-bit"
+                if fmt_label == 'JPEG':
+                    details += f", Q:{main_settings.quality}"
+                elif fmt_label == 'PNG':
+                    details += f", Comp:{main_settings.compression}%"
+            else:
+                fmt_label = fmt
+                details = "Override Active"
+
+            sub.label(text=f"  Format: {fmt_label}")
+            if fmt == 'SCENE':
+                sub.label(text=f"  Details: {details}")
+
+            box.label(text="This may take a while.", icon='INFO')
 
     def execute(self, context):
         if not bpy.data.filepath:

@@ -15,7 +15,6 @@ def get_batch_render_output_dir(base_path="//", dry_run=False):
         blend_name = "untitled"
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    
     if dry_run:
         folder_name = f"{blend_name}_{timestamp}_dryrun"
     else:
@@ -28,6 +27,7 @@ def extract_render_settings(context, dry_run=False):
     scene = context.scene
     render = scene.render
     camera = scene.camera
+    img_settings = scene.render.image_settings
 
     settings = {
         "resolution_x": render.resolution_x,
@@ -40,19 +40,30 @@ def extract_render_settings(context, dry_run=False):
         "active_view_layer": context.view_layer.name,  # For ViewLayer syncing
         "main_blend_path": bpy.data.filepath,  # For appending assets
         "output_format_override": scene.savepoints_settings.batch_output_format,
-        "current_scene_format": render.image_settings.file_format,
+
+        "image_settings": {
+            "file_format": img_settings.file_format,
+            "color_mode": img_settings.color_mode,
+            "color_depth": img_settings.color_depth,
+            "compression": img_settings.compression,
+            "quality": img_settings.quality,
+            "exr_codec": img_settings.exr_codec,
+        }
     }
 
     if render.engine == 'CYCLES':
         settings["samples"] = scene.cycles.samples
     elif render.engine in ['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT']:
-        settings["samples"] = scene.eevee.taa_render_samples
+        settings["samples"] = getattr(scene.eevee, "taa_render_samples", 64)
 
     if dry_run:
         settings["output_format_override"] = "JPEG"
         settings["resolution_percentage"] = 25
         settings["samples"] = 1
         settings["jpeg_quality"] = 70
+        settings["image_settings"]["quality"] = 70
+        settings["image_settings"]["file_format"] = 'JPEG'
+        settings["image_settings"]["color_mode"] = 'RGB'
 
     return settings
 
@@ -72,7 +83,12 @@ from mathutils import Matrix
 def enable_gpu():
     try:
         preferences = bpy.context.preferences
-        cycles_prefs = preferences.addons['cycles'].preferences
+        cycles_addon = preferences.addons.get('cycles')
+        if not cycles_addon:
+            print("Worker: Cycles addon not found in preferences (Factory Startup?). Skipping GPU.")
+            return False
+
+        cycles_prefs = cycles_addon.preferences
         device_types = ['METAL', 'OPTIX', 'CUDA', 'HIP', 'ONEAPI']
 
         for dtype in device_types:
@@ -101,8 +117,31 @@ def run_render(json_path, output_dir, file_prefix):
         settings = json.load(f)
 
     scene = bpy.context.scene
-    context = bpy.context
     render = scene.render
+
+    # A. Apply inherited settings first
+    src_img_settings = settings.get("image_settings", {})
+    if src_img_settings:
+        render.image_settings.file_format = src_img_settings.get("file_format", "PNG")
+        render.image_settings.color_mode = src_img_settings.get("color_mode", "RGBA")
+        render.image_settings.color_depth = src_img_settings.get("color_depth", "8")
+        render.image_settings.compression = src_img_settings.get("compression", 15)
+        render.image_settings.quality = src_img_settings.get("quality", 90)
+
+    # B. Apply overrides
+    fmt_override = settings.get("output_format_override", "SCENE")
+
+    if fmt_override == 'PNG':
+        render.image_settings.file_format = 'PNG'
+    elif fmt_override == 'JPEG':
+        render.image_settings.file_format = 'JPEG'
+        render.image_settings.color_mode = 'RGB'
+
+        # Check for overrides (DryRun puts 'jpeg_quality' in root)
+        if "jpeg_quality" in settings:
+             render.image_settings.quality = settings["jpeg_quality"]
+        elif "quality" in src_img_settings:
+             render.image_settings.quality = src_img_settings["quality"]
 
     # 2. Setup GPU
     if settings.get("engine") == 'CYCLES':
@@ -114,34 +153,20 @@ def run_render(json_path, output_dir, file_prefix):
     render.resolution_percentage = settings.get("resolution_percentage", 100)
     render.engine = settings.get("engine", 'CYCLES')
 
-    fmt_override = settings.get("output_format_override", "SCENE")
-    if fmt_override == 'PNG':
-        render.image_settings.file_format = 'PNG'
-    elif fmt_override == 'JPEG':
-        render.image_settings.file_format = 'JPEG'
-        quality = settings.get("jpeg_quality")
-        if quality:
-            render.image_settings.quality = quality
-    elif fmt_override == 'SCENE':
-        current_fmt = settings.get("current_scene_format")
-        if current_fmt:
-            render.image_settings.file_format = current_fmt
-
     render.filepath = os.path.join(output_dir, file_prefix)
 
     if render.engine == 'CYCLES' and "samples" in settings:
         scene.cycles.samples = settings["samples"]
     elif render.engine in ['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT'] and "samples" in settings:
-        scene.eevee.taa_render_samples = settings["samples"]
+        if hasattr(scene.eevee, "taa_render_samples"):
+            scene.eevee.taa_render_samples = settings["samples"]
 
     # 4. Apply Scene Context (World & ViewLayer)
     world_name = settings.get("world_name")
     main_blend_path = settings.get("main_blend_path")
 
     if world_name:
-        # If world is missing locally, try to append from main file
         if world_name not in bpy.data.worlds and main_blend_path and os.path.exists(main_blend_path):
-            print(f"Worker: World '{world_name}' missing locally. Appending from main file...")
             try:
                 with bpy.data.libraries.load(main_blend_path, link=False) as (data_from, data_to):
                     if world_name in data_from.worlds:
@@ -149,16 +174,14 @@ def run_render(json_path, output_dir, file_prefix):
             except Exception as e:
                 print(f"Worker Warning: Failed to append world: {e}")
 
-        # Set the world if it exists now
         if world_name in bpy.data.worlds:
             scene.world = bpy.data.worlds[world_name]
 
     # Prevents compositor black screens by matching the ViewLayer name
     target_layer_name = settings.get("active_view_layer", "View Layer")
-    current_layer = context.view_layer
+    current_layer = bpy.context.view_layer 
 
     if current_layer.name != target_layer_name:
-        # If the target name is already taken by another (inactive) layer, rename it out of the way
         if target_layer_name in scene.view_layers:
             scene.view_layers[target_layer_name].name = f"{target_layer_name}_backup"
 

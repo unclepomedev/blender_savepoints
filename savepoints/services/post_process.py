@@ -96,7 +96,8 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     current_scene = bpy.context.scene
     new_scene.render.resolution_x = current_scene.render.resolution_x
     new_scene.render.resolution_y = current_scene.render.resolution_y
-    new_scene.render.fps = 24
+    new_scene.render.fps = current_scene.render.fps
+    new_scene.render.fps_base = current_scene.render.fps_base
 
     # 4. VSE setup
     if not new_scene.sequence_editor:
