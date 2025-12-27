@@ -111,6 +111,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self.worker_script_path = get_worker_script_path()
         if not os.path.exists(self.worker_script_path):
             self.report({'ERROR'}, f"Worker script not found at {self.worker_script_path}")
+            if os.path.exists(self.temp_dir):
+                shutil.rmtree(self.temp_dir)
             return {'CANCELLED'}
 
         try:

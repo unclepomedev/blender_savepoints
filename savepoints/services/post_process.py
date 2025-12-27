@@ -73,7 +73,7 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
         return None
 
     # 1. collect and sort image files
-    valid_exts = {'.png', '.jpg', '.jpeg', '.exr', '.tif', '.tiff'}
+    valid_exts = {'.png', '.jpg', '.jpeg', '.exr', '.tif', '.tiff', '.webp'}
     files = [
         f for f in os.listdir(directory_path)
         if os.path.splitext(f)[1].lower() in valid_exts
