@@ -127,6 +127,8 @@ def run_render(json_path, output_dir, file_prefix):
         render.image_settings.color_depth = src_img_settings.get("color_depth", "8")
         render.image_settings.compression = src_img_settings.get("compression", 15)
         render.image_settings.quality = src_img_settings.get("quality", 90)
+        if "exr_codec" in src_img_settings:
+            render.image_settings.exr_codec = src_img_settings["exr_codec"]
 
     # B. Apply overrides
     fmt_override = settings.get("output_format_override", "SCENE")
