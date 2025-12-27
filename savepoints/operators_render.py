@@ -100,6 +100,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
         self.settings = context.scene.savepoints_settings
         self.target_versions = get_selected_versions(self.settings)
+        self._is_cancelled = False
 
         if not self.target_versions:
             self.report({'WARNING'}, "No versions found to render.")
@@ -169,6 +170,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                         return self.finish(context)
 
         elif event.type == 'ESC':
+            self._is_cancelled = True
             self.report({'WARNING'}, "Batch Render Cancelled by User.")
             self.cancel_process()
             return self.finish(context)
@@ -247,6 +249,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
     def finish(self, context):
         context.window_manager.progress_end()
+        context.workspace.status_text_set(None)
+
         if self._timer:
             context.window_manager.event_timer_remove(self._timer)
 
@@ -257,7 +261,12 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 pass
 
         if self.current_task_idx > 0:
-            if not self._process:
+            if self._is_cancelled:
+                self.report({'WARNING'},
+                            f"Batch Render Interrupted. ({self.current_task_idx}/{self.total_tasks} completed)")
+                open_folder_platform_independent(self.output_dir)
+
+            else:
                 self.report({'INFO'}, f"Batch Render Complete! ({self.current_task_idx} versions)")
                 open_folder_platform_independent(self.output_dir)
 
@@ -269,7 +278,9 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                     message=f"Completed! {self.current_task_idx} versions rendered.",
                 )
         else:
-            if not self._process:
+            if self._is_cancelled:
+                self.report({'WARNING'}, "Batch Render Cancelled.")
+            else:
                 self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
 
         return {'FINISHED'}
