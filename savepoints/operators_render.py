@@ -162,6 +162,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                     self._process = None
                     self.current_task_idx += 1
                     context.window_manager.progress_update(self.current_task_idx)
+                    msg = f"SavePoints Batch: Processed {self.current_task_idx}/{self.total_tasks} versions..."
+                    context.workspace.status_text_set(msg)
 
                     if not self.start_next_render(context):
                         return self.finish(context)
