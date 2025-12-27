@@ -30,8 +30,6 @@ class TestFilterDeselect(SavePointsTestCase):
         self.v2 = next(v for v in versions if v.note == "V2")
 
         # Setup tags
-        # V1 -> STABLE
-        # V2 -> BUG
         self.v1.tag = 'STABLE'
         self.v2.tag = 'BUG'
 
@@ -62,13 +60,9 @@ class TestFilterDeselect(SavePointsTestCase):
         v1 = self.v1  # STABLE
         v2 = self.v2  # BUG
 
-        # Select V1
         v1.selected = True
         v2.selected = False
 
-        # Filter is currently ALL (default)
-
-        # Switch to BUG
         self.settings.filter_tag = 'BUG'
 
         # V1 (STABLE) should now be deselected because it's hidden

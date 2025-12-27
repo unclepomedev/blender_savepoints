@@ -14,7 +14,6 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints_test_case import SavePointsTestCase
 from savepoints.services.batch_render import extract_render_settings
-# Assuming these functions are in workers/scene_utils.py based on previous context
 from savepoints.workers.scene_utils import setup_camera, setup_view_settings
 
 

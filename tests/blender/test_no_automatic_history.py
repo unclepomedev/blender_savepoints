@@ -12,7 +12,6 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-# Import specific module for explicit function call verification
 from savepoints import ui_utils
 from savepoints_test_case import SavePointsTestCase
 
