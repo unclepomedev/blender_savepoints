@@ -28,7 +28,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     bl_options = {'REGISTER'}
 
     _timer = None
-    _process = None
 
     dry_run: bpy.props.BoolProperty(
         name="Dry Run (Low Quality)",
