@@ -148,7 +148,7 @@ class BatchRenderExecutor:
             if self.current_log_handle:
                 try:
                     self.current_log_handle.write(error_msg)
-                except:
+                except Exception:
                     pass
             return False
 
