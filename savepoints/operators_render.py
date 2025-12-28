@@ -3,16 +3,15 @@
 import json
 import os
 import shutil
-import subprocess
 import tempfile
 
 import bpy
 
+from .services.batch_executor import BatchRenderExecutor
 from .services.batch_render import extract_render_settings, get_worker_script_path, get_batch_render_output_dir, \
     create_error_log_text_block
 from .services.post_process import open_folder_platform_independent, create_vse_timelapse, send_os_notification
 from .services.selection import get_selected_versions
-from .services.snapshot import find_snapshot_path
 
 
 class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
@@ -135,126 +134,72 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self.output_dir = get_batch_render_output_dir(dry_run=self.dry_run)
         os.makedirs(self.output_dir, exist_ok=True)
 
-        self.task_queue = list(self.target_versions)
-        self.total_tasks = len(self.task_queue)
-        self.current_task_idx = 0
-        self.current_version_id = ""
+        # Initialize Executor
+        blender_bin = bpy.app.binary_path
+        self.executor = BatchRenderExecutor(
+            tasks=self.target_versions,
+            temp_dir=self.temp_dir,
+            output_dir=self.output_dir,
+            settings_path=self.settings_path,
+            worker_script_path=self.worker_script_path,
+            blender_bin=blender_bin
+        )
 
-        self.report({'INFO'}, f"Batch Render Started: {self.total_tasks} versions.")
-        context.window_manager.progress_begin(0, self.total_tasks)
+        total_tasks = len(self.target_versions)
+        self.report({'INFO'}, f"Batch Render Started: {total_tasks} versions.")
+        context.window_manager.progress_begin(0, total_tasks)
 
         self._timer = context.window_manager.event_timer_add(0.5, window=context.window)
         context.window_manager.modal_handler_add(self)
 
-        if not self.start_next_render(context):
+        # Initial update to start first task or finish if empty
+        status_info = self.executor.update()
+        if status_info.get('status') == 'FINISHED':
             return self.finish(context)
 
         return {'RUNNING_MODAL'}
 
     def modal(self, context, event):
         if event.type == 'TIMER':
-            if self._process:
-                ret_code = self._process.poll()
+            status_info = self.executor.update()
+            status = status_info.get('status')
 
-                if ret_code is None:
-                    return {'PASS_THROUGH'}
+            if status == 'TASK_FINISHED':
+                version_id = status_info.get('version_id')
+                ret_code = status_info.get('return_code')
+                log_path = status_info.get('log_path')
+                progress = status_info.get('progress')
+
+                if ret_code == 0:
+                    self.report({'INFO'}, f"Finished: {version_id}")
                 else:
-                    self._cleanup_current_log()
+                    error_msg = f"Failed: {version_id} (Code {ret_code})"
+                    self.report({'ERROR'}, error_msg)
+                    create_error_log_text_block(version_id, log_path)
+                    self.report({'WARNING'}, f"Check Text Editor 'Log_{version_id}' for details.")
 
-                    if ret_code == 0:
-                        self.report({'INFO'}, f"Finished: {self.current_version_id}")
-                    else:
-                        error_msg = f"Failed: {self.current_version_id} (Code {ret_code})"
-                        self.report({'ERROR'}, error_msg)
-                        create_error_log_text_block(self.current_version_id, self.current_log_path)
-                        self.report({'WARNING'}, f"Check Text Editor 'Log_{self.current_version_id}' for details.")
+                context.window_manager.progress_update(progress[0])
+                msg = f"SavePoints Batch: Processed {progress[0]}/{progress[1]} versions..."
+                context.workspace.status_text_set(msg)
 
-                    self._process = None
-                    self.current_task_idx += 1
-                    context.window_manager.progress_update(self.current_task_idx)
-                    msg = f"SavePoints Batch: Processed {self.current_task_idx}/{self.total_tasks} versions..."
-                    context.workspace.status_text_set(msg)
+            elif status == 'SKIPPED':
+                version_id = status_info.get('version_id')
+                progress = status_info.get('progress')
+                self.report({'WARNING'}, f"Skipping {version_id}: File not found.")
+                context.window_manager.progress_update(progress[0])
 
-                    if not self.start_next_render(context):
-                        return self.finish(context)
+            elif status == 'FINISHED':
+                return self.finish(context)
+
+            elif status == 'CANCELLED':
+                return self.finish(context)
 
         elif event.type == 'ESC':
-            self._is_cancelled = True
+            self.executor.cancel()
             self.report({'WARNING'}, "Batch Render Cancelled by User.")
-            self.cancel_process()
             return self.finish(context)
 
         return {'PASS_THROUGH'}
-
-    def start_next_render(self, context):
-        if self._process:
-            return True
-
-        while self.task_queue:
-            version = self.task_queue.pop(0)
-            self.current_version_id = version.version_id
-
-            snapshot_path = find_snapshot_path(version.version_id)
-            if not snapshot_path or not snapshot_path.exists():
-                self.report({'WARNING'}, f"Skipping {version.version_id}: File not found.")
-                self.current_task_idx += 1
-                context.window_manager.progress_update(self.current_task_idx)
-                continue
-
-            break
-        else:
-            return False
-
-        blender_bin = bpy.app.binary_path
-        log_filename = f"render_log_{self.current_version_id}.txt"
-        self.current_log_path = os.path.join(self.temp_dir, log_filename)
-        self.current_log_handle = open(self.current_log_path, 'w', encoding='utf-8')
-
-        cmd = [
-            blender_bin,
-            "-b",
-            "--factory-startup",
-            str(snapshot_path),
-            "-P", self.worker_script_path,
-            "--",
-            self.settings_path,
-            self.output_dir,
-            f"{version.version_id}_render"
-        ]
-
-        try:
-            self._process = subprocess.Popen(
-                cmd,
-                stdout=self.current_log_handle,
-                stderr=self.current_log_handle
-            )
-            print(f"[SavePoints] Rendering {self.current_version_id} (PID: {self._process.pid})")
-            return True
-        except Exception as e:
-            self.report({'ERROR'}, f"Process start failed: {e}")
-            self._cleanup_current_log()
-            self._process = None
-            return False
-
-    def cancel_process(self):
-        if self._process:
-            print(f"[SavePoints] Killing process PID: {self._process.pid}")
-            try:
-                self._process.kill()
-                self._process.wait(timeout=1)
-            except Exception as e:
-                print(f"Error killing process: {e}")
-            self._process = None
-
-        self._cleanup_current_log()
-
-    def _cleanup_current_log(self):
-        if hasattr(self, 'current_log_handle') and self.current_log_handle:
-            try:
-                self.current_log_handle.close()
-            except Exception:
-                pass
-            self.current_log_handle = None
 
     def finish(self, context):
         context.window_manager.progress_end()
@@ -269,14 +214,23 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             except Exception:
                 pass
 
-        if self.current_task_idx > 0:
-            if self._is_cancelled:
+        completed_count = 0
+        is_cancelled = False
+        total_tasks = 0
+
+        if hasattr(self, 'executor'):
+            completed_count = self.executor.current_task_idx
+            is_cancelled = self.executor.is_cancelled
+            total_tasks = self.executor.total_tasks
+
+        if completed_count > 0:
+            if is_cancelled:
                 self.report({'WARNING'},
-                            f"Batch Render Interrupted. ({self.current_task_idx}/{self.total_tasks} completed)")
+                            f"Batch Render Interrupted. ({completed_count}/{total_tasks} completed)")
                 open_folder_platform_independent(self.output_dir)
 
             else:
-                self.report({'INFO'}, f"Batch Render Complete! ({self.current_task_idx} versions)")
+                self.report({'INFO'}, f"Batch Render Complete! ({completed_count} versions)")
                 open_folder_platform_independent(self.output_dir)
 
                 if not self.dry_run:
@@ -284,10 +238,10 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
                 send_os_notification(
                     title="SavePoints Batch Render",
-                    message=f"Completed! {self.current_task_idx} versions rendered.",
+                    message=f"Completed! {completed_count} versions rendered.",
                 )
         else:
-            if self._is_cancelled:
+            if is_cancelled:
                 self.report({'WARNING'}, "Batch Render Cancelled.")
             else:
                 self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
@@ -301,7 +255,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
 
                 if not bpy.app.background:
-                    count = self.current_task_idx
+                    count = self.executor.current_task_idx if hasattr(self, 'executor') else 0
 
                     def draw_notification(self, context):
                         layout = self.layout
