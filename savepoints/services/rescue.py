@@ -5,6 +5,8 @@ import shutil
 import time
 from pathlib import Path
 
+import bpy
+
 from .storage import (
     RESCUE_TEMP_FILENAME, get_history_dir
 )
@@ -35,7 +37,7 @@ def create_rescue_temp_file(snapshot_path: Path) -> Path:
         except OSError:
             pass
 
-    timeout = 1.0
+    timeout = 5.0
     start_time = time.time()
 
     is_ready = False
@@ -64,19 +66,38 @@ def create_rescue_temp_file(snapshot_path: Path) -> Path:
     return temp_blend_path
 
 
-def delete_rescue_temp_file(temp_path: Path):
+def delete_rescue_temp_file(temp_path: Path, delay: float = 5.0, max_retries: int = 5):
     """
     Safely delete the rescue temporary file.
+    Uses a timer to handle file locks (common on Windows) and ensure deletion.
 
     Args:
         temp_path (Path): Path to the temporary file to delete.
+        delay (float): Initial delay in seconds before attempting deletion.
+        max_retries (int): Number of times to retry if deletion fails.
     """
-    if temp_path.exists():
+    target_path = Path(temp_path)
+
+    def _deletion_task():
+        nonlocal max_retries
+        if not target_path.exists():
+            return None  # File already gone, stop timer
+
         try:
-            os.remove(temp_path)
-            print(f"[SavePoints] Removed temp file for rescue: {temp_path}")
-        except Exception as e:
-            print(f"[SavePoints] Error removing temp file: {e}")
+            os.remove(target_path)
+            print(f"[SavePoints] Removed temp file for rescue: {target_path}")
+            return None  # Success, stop timer
+        except (PermissionError, OSError) as e:
+            if max_retries > 0:
+                max_retries -= 1
+                return 1.0  # Retry in 1 second
+            else:
+                print(f"[SavePoints] Failed to remove temp file after retries: {e}")
+                return None  # Stop timer
+
+    # Register the timer
+    # Note: Closures create new function objects, so register calls are always unique
+    bpy.app.timers.register(_deletion_task, first_interval=delay)
 
 
 def cleanup_rescue_temp_files() -> int:
