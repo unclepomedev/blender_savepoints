@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import datetime
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -105,7 +106,7 @@ def update_version_tag(version_id: str, new_tag: str) -> None:
         save_manifest(manifest)
 
 
-def delete_version_by_id(version_id: str) -> None:
+def delete_version_by_id(version_id: str, use_trash: bool = True) -> None:
     """Delete a version from disk and manifest."""
     # Validate version_id to prevent path traversal
     if not is_safe_filename(version_id):
@@ -137,7 +138,10 @@ def delete_version_by_id(version_id: str) -> None:
             version_dir = Path(history_dir_str) / version_id
             if version_dir.exists():
                 try:
-                    send2trash(str(version_dir))
+                    if use_trash:
+                        send2trash(str(version_dir))
+                    else:
+                        shutil.rmtree(version_dir)
                 except Exception as e:
                     print(f"Failed to remove directory {version_dir}: {e}")
 
