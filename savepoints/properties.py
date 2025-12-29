@@ -70,6 +70,12 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         default=True
     )
 
+    use_compression: bpy.props.BoolProperty(
+        name="Compress Snapshots",
+        description="Compresses the snapshot file. Saves disk space (~40-60%) but increases save time.",
+        default=True,
+    )
+
     use_limit_versions: bpy.props.BoolProperty(
         name="Limit Versions",
         description="Enable automatic deletion of old versions to save disk space",

@@ -54,7 +54,14 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
 
         # Save Snapshot
         snapshot_path = version_dir / SNAPSHOT_FILENAME
-        bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path))
+
+        # Check compression setting
+        use_compress = False
+        settings = getattr(context.scene, "savepoints_settings", None)
+        if settings:
+            use_compress = settings.use_compression
+
+        bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path), compress=use_compress)
 
         # Capture file size
         file_size = 0

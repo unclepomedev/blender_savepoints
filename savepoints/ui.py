@@ -255,6 +255,7 @@ def _draw_general_settings(layout, settings):
     box.label(text="General", icon='PREFERENCES')
     box.prop(settings, "show_save_dialog")
     box.prop(settings, "show_preview")
+    box.prop(settings, "use_compression")
 
 
 def _draw_auto_save_settings(layout, settings):
