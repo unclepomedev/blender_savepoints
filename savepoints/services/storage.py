@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import ctypes
+import shutil
 import sys
 from pathlib import Path
 
@@ -194,3 +195,16 @@ def format_file_size(size_in_bytes: float | int) -> str:
             return f"{size:.1f} {unit}"
         size /= 1024.0
     return f"{size:.1f} TB"
+
+
+def get_free_disk_space(path: str) -> int:
+    """
+    Return the free disk space in bytes for the given path.
+    """
+    try:
+        if not path:
+            return 0
+        usage = shutil.disk_usage(path)
+        return usage.free
+    except Exception:
+        return 0
