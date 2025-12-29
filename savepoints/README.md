@@ -11,15 +11,15 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Rescue Assets**: Easily append objects from a specific version without opening the full snapshot.
 - **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
 - **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse.
-- **Context-Aware Rendering**: **(New!)** Applies your **current** camera position*, world environment, and basic render settings (Resolution, Samples) to **past** snapshots.
+- **Context-Aware Rendering**: **(New!)** Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
+  <br>*(Note: Compositor nodes remain as they were in the snapshot.)*
+- **Snapshot Compression**: **(New!)** Option to compress snapshot files. This allows you to trade a slightly longer save time for significantly reduced file sizes. (Default: **Enabled**)
 - **Quick Save**: Option to skip the note dialog for instant saving.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 - **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
 - **Disk Management**: Automatically deletes the oldest versions to maintain a manageable history size, while preserving locked versions.
 - **Version Protection**: Lock specific versions to prevent them from being auto-deleted or accidentally removed.
 - **Version Tagging**: Assign tags (Stable, Milestone, Experiment, Bug) to versions and filter the history list to find important snapshots instantly.
-
-<br>*(Note: Camera lens/focal length, Color Management, and Compositor nodes remain as they were in the snapshot.)*
 
 ## Usage
 
@@ -51,6 +51,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
    - **Note**: Auto-save does not generate thumbnails to avoid rendering interruptions.
 6. **Disk Management & Protection**:
+   - **Snapshot Compression**: Enabled by default in the General settings. Keep this ON to save disk space, or turn it OFF if you prioritize maximum save speed over file size.
    - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50) excluding locked versions.
    - **Lock Versions**: Click the Lock icon next to a version to protect it. Locked versions are never auto-deleted and cannot be manually deleted unless unlocked.
    - Pruning is triggered automatically when a new version is saved or when the list is refreshed.
