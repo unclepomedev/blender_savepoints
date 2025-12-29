@@ -8,6 +8,26 @@ from . import ui_utils
 from .services.selection import get_selected_versions
 from .services.storage import get_parent_path_from_snapshot, get_history_dir, get_free_disk_space, format_file_size
 
+LOW_DISK_SPACE_THRESHOLD = 10 * 1024 * 1024 * 1024  # 10 GB
+
+
+def _draw_disk_space_alert(layout, check_dir: str | None):
+    """
+    Display a low disk space alert if free space is below threshold.
+
+    Args:
+        layout: Blender UI layout
+        check_dir: Directory path to check (can be None)
+    """
+    if not check_dir:
+        return
+
+    free_space = get_free_disk_space(check_dir)
+    if free_space > 0 and free_space < LOW_DISK_SPACE_THRESHOLD:
+        row = layout.row()
+        row.alert = True
+        row.label(text=f"Low Disk Space: {format_file_size(free_space)}", icon='ERROR')
+
 
 class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
     bl_label = "Set Tag"
@@ -144,14 +164,7 @@ def _draw_history_list(layout, settings):
         history_dir = get_history_dir()
         if not history_dir and bpy.data.filepath:
             history_dir = os.path.dirname(bpy.data.filepath)
-
-        if history_dir:
-            free_space = get_free_disk_space(history_dir)
-            limit = 10 * 1024 * 1024 * 1024  # 10 GB
-            if free_space < limit:
-                row = layout.row()
-                row.alert = True
-                row.label(text=f"Low Disk Space: {format_file_size(free_space)}", icon='ERROR')
+        _draw_disk_space_alert(layout, history_dir)
 
     layout.separator()
     layout.label(text="History:")
@@ -233,15 +246,8 @@ def _draw_empty_state(layout):
     layout.operator("savepoints.commit", text="Create First Version", icon='FILE_TICK')
 
     # Check disk space
-    if bpy.data.filepath:
-        check_dir = os.path.dirname(bpy.data.filepath)
-        if check_dir:
-            free_space = get_free_disk_space(check_dir)
-            limit = 10 * 1024 * 1024 * 1024  # 10 GB
-            if free_space < limit:
-                row = layout.row()
-                row.alert = True
-                row.label(text=f"Low Disk Space: {format_file_size(free_space)}", icon='ERROR')
+    check_dir = os.path.dirname(bpy.data.filepath) if bpy.data.filepath else None
+    _draw_disk_space_alert(layout, check_dir)
 
 
 def _draw_general_settings(layout, settings):
