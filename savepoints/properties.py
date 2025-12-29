@@ -72,7 +72,7 @@ class SavePointsSettings(bpy.types.PropertyGroup):
 
     use_compression: bpy.props.BoolProperty(
         name="Compress Snapshots",
-        description="Compresses the snapshot file (Gzip). Saves disk space (~40-60%) but increases save time.",
+        description="Compresses the snapshot file. Saves disk space (~40-60%) but increases save time.",
         default=False,
     )
 
