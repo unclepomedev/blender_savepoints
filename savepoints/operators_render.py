@@ -3,6 +3,7 @@
 import json
 import os
 import shutil
+import subprocess
 import tempfile
 
 import bpy
@@ -95,6 +96,12 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             sub.label(text=f"  Format: {fmt_label}")
             if fmt == 'SCENE':
                 sub.label(text=f"  Details: {details}")
+
+            sub.separator()
+            row = sub.row()
+            row.prop(scene.savepoints_settings, "batch_create_mp4")
+            if scene.savepoints_settings.batch_create_mp4:
+                row.label(text="(mp4)", icon='FILE_MOVIE')
 
             box.label(text="This may take a while.", icon='INFO')
 
@@ -247,9 +254,58 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
         return {'FINISHED'}
 
+    def _launch_timelapse_mp4_generation(self, context, input_dir):
+        worker_dir = os.path.dirname(get_worker_script_path())
+        timelapse_script = os.path.join(worker_dir, "timelapse_worker.py")
+
+        if not os.path.exists(timelapse_script):
+            self.report({'ERROR'}, f"Timelapse worker not found: {timelapse_script}")
+            return
+
+        # Output file: folder/timelapse.mp4
+        output_file = os.path.join(input_dir, "timelapse.mp4")
+
+        fps = context.scene.render.fps
+
+        cmd = [
+            bpy.app.binary_path,
+            "-b",
+            "--factory-startup",
+            "-P", timelapse_script,
+            "--",
+            input_dir,
+            output_file,
+            str(fps)
+        ]
+
+        # Prevent command prompt window on Windows
+        startupinfo = None
+        if os.name == 'nt':
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+        try:
+            # Use startupinfo for Windows, close_fds for POSIX
+            subprocess.Popen(
+                cmd,
+                startupinfo=startupinfo,
+                close_fds=(os.name == 'posix')
+            )
+            self.report({'INFO'}, "MP4 generation started in background...")
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to start MP4 generation: {e}")
+
     def _process_timelapse_creation(self, context):
         try:
+            # 1. Create VSE Scene in Current File (Immediate Feedback)
             scene_name = create_vse_timelapse(self.output_dir)
+
+            mp4_triggered = False
+            if context.scene.savepoints_settings.batch_create_mp4:
+                # 2. Trigger Background MP4 Render
+                self._launch_timelapse_mp4_generation(context, self.output_dir)
+                mp4_triggered = True
+
             if scene_name:
                 self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
 
@@ -266,6 +322,11 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                         row = layout.row()
                         row.label(text=f"  Scene: {scene_name}")
                         layout.label(text="  (Switch scene to view playback)", icon='INFO')
+
+                        if mp4_triggered:
+                            layout.separator()
+                            layout.label(text="Exporting MP4 in background...", icon='FILE_MOVIE')
+                            layout.label(text="Check folder later.", icon='FILE_FOLDER')
 
                     context.window_manager.popup_menu(
                         draw_notification,
@@ -293,11 +354,9 @@ class SAVEPOINTS_OT_switch_scene(bpy.types.Operator):
         if self.scene_name not in bpy.data.scenes:
             self.report({'WARNING'}, f"Scene '{self.scene_name}' not found.")
             return {'CANCELLED'}
-
         if not context.window:
             self.report({'WARNING'}, "Cannot switch scene: No active window found.")
             return {'CANCELLED'}
-
         context.window.scene = bpy.data.scenes[self.scene_name]
         return {'FINISHED'}
 
@@ -323,21 +382,15 @@ class SAVEPOINTS_OT_select_all(bpy.types.Operator):
     def execute(self, context):
         settings = context.scene.savepoints_settings
         filter_tag = settings.filter_tag
-
         for v in settings.versions:
-            # Skip autosave or non-versions
             if not v.version_id.startswith('v'):
                 continue
-
-            # Apply Tag Filter
             match = True
             if filter_tag != 'ALL':
                 if v.tag != filter_tag:
                     match = False
-
             if match:
                 v.selected = True
-
         return {'FINISHED'}
 
 

@@ -120,3 +120,9 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         ],
         default='SCENE'
     )
+
+    batch_create_mp4: bpy.props.BoolProperty(
+        name="Create Timelapse MP4",
+        description="Automatically create and export an MP4 timelapse after batch rendering",
+        default=False
+    )
