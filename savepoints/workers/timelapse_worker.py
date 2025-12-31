@@ -43,7 +43,6 @@ def setup_vse_scene(input_dir, fps):
         strips_collection = seq.strips
     else:
         strips_collection = seq.sequences
-    # ---------------------------------------------------
 
     # Clear existing strips
     for s in strips_collection:
@@ -95,7 +94,7 @@ def setup_vse_scene(input_dir, fps):
 
 
 def run_timelapse_render(input_dir, output_filepath, fps):
-    print(f"Starting Timelapse Render...")
+    print("Starting Timelapse Render...")
     print(f"Input: {input_dir}")
     print(f"Output: {output_filepath}")
     print(f"FPS: {fps}")
@@ -107,7 +106,6 @@ def run_timelapse_render(input_dir, output_filepath, fps):
     # Output settings
     scene.render.filepath = output_filepath
 
-    # API Compatibility for Blender 5.0+
     try:
         img_settings = scene.render.image_settings
         if bpy.app.version >= (5, 0) and hasattr(img_settings, "media_type"):
