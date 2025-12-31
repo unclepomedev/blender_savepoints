@@ -22,8 +22,6 @@
 
 SavePoints is a Blender add-on that helps you manage project versions easily. It allows you to create snapshots of your current work with automatic thumbnails, making it simple to browse and restore previous states.
 
-![SavePoints UI Screenshot](resources/fig1.png)
-
 ## Features
 
 - **Incremental Saves**: Automatically generates version IDs (v001, v002, etc.) for each save.
