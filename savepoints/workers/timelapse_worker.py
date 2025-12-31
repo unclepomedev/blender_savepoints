@@ -82,9 +82,15 @@ def setup_vse_scene(input_dir, fps):
                     f"Input is {first_ext} (Linear). Keeping current View Transform: {scene.view_settings.view_transform}")
             else:
                 print(f"Input is {first_ext} (Display Referred). Forcing View Transform to 'Standard'.")
-                scene.view_settings.view_transform = 'Standard'
+                try:
+                    scene.view_settings.view_transform = 'Standard'
+                except TypeError:
+                    print(f"Warning: 'Standard' transform not found. Keeping: {scene.view_settings.view_transform}")
                 if hasattr(scene.view_settings, "look"):
-                    scene.view_settings.look = 'None'
+                    try:
+                        scene.view_settings.look = 'None'
+                    except (TypeError, ValueError):
+                        print("Warning: 'None' look not found.")
 
         return scene
 
