@@ -9,7 +9,7 @@
 
 ---
 
-### 📖 Documentation / ドキュメント / 文档
+## 📖 Documentation / ドキュメント / 文档
 
 We maintain our documentation and release notes exclusively on GitHub to ensure you always have the latest information.
 
@@ -21,13 +21,13 @@ We maintain our documentation and release notes exclusively on GitHub to ensure 
 
 ---
 
-### 🐞 Support & Issues
+## 🐞 Support & Issues
 
 If you encounter any bugs or have feature requests, please report them on our Issue Tracker:
 
 * [SavePoints Issues](https://github.com/unclepomedev/blender_savepoints/issues)
 
-### ⚖️ License
+## ⚖️ License
 
 SavePoints is released under the **GPL-3.0** license.
 Copyright (c) unclepomedev
