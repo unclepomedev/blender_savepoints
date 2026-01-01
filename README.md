@@ -32,7 +32,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
 - **Retrieve Objects**: Easily append objects from a specific version without opening the full snapshot.
 - **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
-- **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse.
+- **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse, with optional **Version ID overlay**.
 - **Context-Aware Rendering**: **(New!)** Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
   <br>*(Note: Compositor nodes remain as they were in the snapshot.)*
 - **Snapshot Compression**: **(New!)** Option to compress snapshot files. This allows you to trade a slightly longer save time for significantly reduced file sizes. (Default: **Enabled**)
@@ -94,8 +94,9 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
     - **Configure Output**: Choose **SCENE** (uses current render settings), **PNG**, or **JPEG**.
     - **Start Render**: Click **Batch Render Selected**.
       - *Note*: The renderer applies your **current scene's camera, world, and render settings** to the past versions.
-      - **Dry Run (Preview)**: Click normally to open the dialog, then check **"Dry Run"** to render a quick low-quality preview (25% resolution, 1 sample).
-      - **Instant Final Render**: Hold `Shift` + Click the button to **skip the dialog** and immediately start the final render.
+      - **Timelapse Settings**: In the dialog, check **Create Timelapse MP4** to generate a video file. You can enable **Burn-in Version ID** to overlay the version name (e.g., "v001") on the video and choose its corner position.
+      - **Dry Run (Preview)**: Check **"Dry Run"** to render a quick low-quality preview (25% resolution, 1 sample).
+      - **Instant Final Render**: Hold `Shift` + Click the button to **skip the dialog** and immediately start the final render (uses current settings).
       - **Cancel**: Press `ESC` at any time to abort the process.
     - **Auto-Timelapse**: When finished, a new scene named `..._Timelapse` is created with all images imported into the Video Sequence Editor (VSE) for immediate playback.
     - **Output Location**: Files are saved in `//renders_batch/{BlendName}_{Timestamp}/`.
