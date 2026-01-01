@@ -20,7 +20,8 @@ from savepoints_test_case import SavePointsTestCase
 from savepoints.services.post_process import (
     create_vse_timelapse,
     open_folder_platform_independent,
-    send_os_notification, _escape_for_powershell
+    send_os_notification, _escape_for_powershell,
+    FRAMES_PER_IMAGE
 )
 
 
@@ -33,7 +34,6 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         print("\nTesting VSE Timelapse Generation...")
 
         # 1. Setup Dummy Images with VALID PNG HEADER
-        # Blender logs error if file format is unknown.
         # Minimal 1x1 Transparent PNG signature
         valid_png_data = (
             b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89'
@@ -65,15 +65,18 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
             if strips is None:
                 strips = getattr(new_scene.sequence_editor, 'sequences', None)
 
-            self.assertEqual(len(strips), 1, "Should have exactly 1 strip")
+            self.assertEqual(len(strips), 3, "Should have exactly 3 strips")
 
-            strip = strips[0]
-            # Even with dummy png, Blender might read it differently,
-            # but we check if logic set the duration based on file count
-            self.assertEqual(strip.frame_final_duration, 3, "Strip duration should match file count")
-            self.assertEqual(new_scene.frame_end, 3, "Scene end frame should match file count")
+            # Check individual strips
+            for strip in strips:
+                self.assertEqual(strip.frame_final_duration, FRAMES_PER_IMAGE,
+                                 "Strip duration should match FRAMES_PER_IMAGE")
 
-            print(f"  [OK] VSE Scene '{scene_name}' created with 3 frames.")
+            # Check scene duration
+            expected_duration = 3 * FRAMES_PER_IMAGE
+            self.assertEqual(new_scene.frame_end, expected_duration, "Scene end frame should match total duration")
+
+            print(f"  [OK] VSE Scene '{scene_name}' created with {expected_duration} frames.")
 
         finally:
             shutil.rmtree(temp_dir)
@@ -81,7 +84,6 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
     def test_folder_open_mock(self):
         """
         Test folder opening logic using Mock.
-        Fix: Patch 'bpy.ops.wm' instead of 'path_open' directly to handle dynamic API.
         """
         print("\nTesting Folder Open (Mocked)...")
 
@@ -89,10 +91,8 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         with patch('bpy.ops.wm') as mock_wm:
             temp_dir = tempfile.mkdtemp()
             try:
-                # Execute
                 result = open_folder_platform_independent(temp_dir)
 
-                # Verify
                 self.assertTrue(result)
                 # Check if path_open was called on the mock object
                 mock_wm.path_open.assert_called_once_with(filepath=temp_dir)
@@ -104,7 +104,6 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
     def test_os_notification_mock(self):
         """
         Test OS notification logic for different platforms.
-        Fix: Mock 'subprocess' module entirely to inject Windows constants on macOS/Linux.
         """
         print("\nTesting OS Notification (Mocked)...")
 
