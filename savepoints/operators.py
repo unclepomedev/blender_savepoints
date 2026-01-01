@@ -230,7 +230,6 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
     version_id: bpy.props.StringProperty()
 
     objects: bpy.props.CollectionProperty(type=RetrieveObjectItem)
-    temp_file_path: bpy.props.StringProperty(options={'HIDDEN'})
 
     def invoke(self, context, event):
         item = getattr(context, "savepoints_item", None)
@@ -238,6 +237,8 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
             version_id = item.version_id
         else:
             version_id = self.version_id
+
+        self.version_id = version_id
 
         if not is_safe_filename(version_id):
             self.report({'ERROR'}, "Invalid version ID")
@@ -249,11 +250,7 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
             return {'CANCELLED'}
 
         try:
-            temp_path = create_retrieve_temp_file(snapshot_path)
-            self.temp_file_path = str(temp_path)
-
-            # Populate object list
-            object_names = get_importable_objects(temp_path)
+            object_names = get_importable_objects(snapshot_path)
             self.objects.clear()
             for name in object_names:
                 obj_item = self.objects.add()
@@ -261,7 +258,7 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
                 obj_item.selected = False
 
         except Exception as e:
-            self.report({'ERROR'}, f"Failed to prepare retrieve file: {e}")
+            self.report({'ERROR'}, f"Failed to read snapshot: {e}")
             return {'CANCELLED'}
 
         return context.window_manager.invoke_props_dialog(self, width=400)
@@ -276,17 +273,35 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
             col.prop(item, "selected", text=item.name)
 
     def execute(self, context):
-        if not self.temp_file_path:
+        item = getattr(context, "savepoints_item", None)
+        if item and not self.version_id:
+            self.version_id = item.version_id
+
+        if not self.version_id:
+            # Try to get from active
+            if context.scene.savepoints_settings.active_version_index >= 0:
+                idx = context.scene.savepoints_settings.active_version_index
+                if idx < len(context.scene.savepoints_settings.versions):
+                    self.version_id = context.scene.savepoints_settings.versions[idx].version_id
+
+        if not self.version_id:
+            self.report({'ERROR'}, "No version specified")
             return {'CANCELLED'}
 
-        temp_path = Path(self.temp_file_path)
+        snapshot_path = find_snapshot_path(self.version_id)
+        if not snapshot_path:
+            self.report({'ERROR'}, f"Snapshot not found: {self.version_id}")
+            return {'CANCELLED'}
 
+        temp_path = None
         try:
             target_objects = [item.name for item in self.objects if item.selected]
 
             if not target_objects:
                 self.report({'WARNING'}, "No objects selected.")
                 return {'CANCELLED'}
+
+            temp_path = create_retrieve_temp_file(snapshot_path)
 
             appended = append_objects(temp_path, target_objects)
             self.report({'INFO'}, f"Retrieved {len(appended)} objects.")
@@ -295,8 +310,8 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
             self.report({'ERROR'}, f"Retrieve failed: {e}")
             return {'CANCELLED'}
         finally:
-            # Always cleanup
-            delete_retrieve_temp_file(temp_path)
+            if temp_path:
+                delete_retrieve_temp_file(temp_path)
 
         return {'FINISHED'}
 
