@@ -11,7 +11,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints.services import versioning, rescue
+from savepoints.services import versioning
 from savepoints_test_case import SavePointsTestCase
 
 

@@ -5,7 +5,7 @@ from pathlib import Path
 import bpy
 from bpy_extras.io_utils import ImportHelper
 
-from .handler_manager import RescuePostLoadHandler
+from .properties import RetrieveObjectItem
 from .services.asset_path import unmap_snapshot_paths
 from .services.backup import create_backup, HistoryDirectoryUnavailableError
 from .services.ghost import get_ghost_collection_name, load_ghost, unload_ghost
@@ -15,11 +15,12 @@ from .services.manifest import (
     initialize_history_for_path
 
 )
-from .services.rescue import (
-    cleanup_rescue_temp_files,
-    create_rescue_temp_file,
-    delete_rescue_temp_file,
-    get_rescue_append_dir
+from .services.retrieve import (
+    cleanup_retrieve_temp_files,
+    create_retrieve_temp_file,
+    delete_retrieve_temp_file,
+    get_importable_objects,
+    append_objects
 )
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import (
@@ -36,7 +37,7 @@ from .services.versioning import (
     prune_versions,
     generate_default_note
 )
-from .ui_utils import sync_history_to_props, force_redraw_areas, find_3d_view_override
+from .ui_utils import sync_history_to_props, force_redraw_areas
 
 
 class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
@@ -220,26 +221,25 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
-    """Rescue Assets: Append objects from this version"""
-    bl_idname = "savepoints.rescue_assets"
-    bl_label = "Rescue Assets"
+class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
+    """Retrieve Objects: Append objects from this version"""
+    bl_idname = "savepoints.retrieve_objects"
+    bl_label = "Retrieve Objects"
     bl_options = {'REGISTER', 'UNDO'}
 
     version_id: bpy.props.StringProperty()
 
+    objects: bpy.props.CollectionProperty(type=RetrieveObjectItem)
+
     def invoke(self, context, event):
-        return self._run(context)
-
-    def execute(self, context):
-        return self._run(context)
-
-    def _run(self, context):
         item = getattr(context, "savepoints_item", None)
         if item:
             version_id = item.version_id
         else:
             version_id = self.version_id
+
+        self.version_id = version_id
+
         if not is_safe_filename(version_id):
             self.report({'ERROR'}, "Invalid version ID")
             return {'CANCELLED'}
@@ -250,55 +250,70 @@ class SAVEPOINTS_OT_rescue_assets(bpy.types.Operator):
             return {'CANCELLED'}
 
         try:
-            temp_blend_path = create_rescue_temp_file(snapshot_path)
-        except TimeoutError:
-            self.report({'WARNING'}, "System busy: Could not prepare rescue file. Please try again.")
-            return {'CANCELLED'}
+            object_names = get_importable_objects(snapshot_path)
+            self.objects.clear()
+            for name in object_names:
+                obj_item = self.objects.add()
+                obj_item.name = name
+                obj_item.selected = False
+
         except Exception as e:
-            self.report({'ERROR'}, f"Failed to create temp file: {e}")
+            self.report({'ERROR'}, f"Failed to read snapshot: {e}")
             return {'CANCELLED'}
 
-        append_dir = get_rescue_append_dir(temp_blend_path)
+        return context.window_manager.invoke_props_dialog(self, width=400)
 
-        # Capture initial state to detect changes
-        initial_obj_count = len(bpy.data.objects)
+    def draw(self, context):
+        layout = self.layout
+        layout.label(text="Select Objects to Retrieve:")
 
-        # Register handler using the new manager
-        handler = RescuePostLoadHandler(temp_blend_path, initial_obj_count)
-        handler.register()
+        box = layout.box()
+        col = box.column()
+        for item in self.objects:
+            col.prop(item, "selected", text=item.name)
 
-        if bpy.ops.object.mode_set.poll():
-            bpy.ops.object.mode_set(mode='OBJECT')
+    def execute(self, context):
+        item = getattr(context, "savepoints_item", None)
+        if item and not self.version_id:
+            self.version_id = item.version_id
 
-        if not self._open_append_dialog(context, append_dir):
-            handler.unregister()
-            delete_rescue_temp_file(temp_blend_path)
+        if not self.version_id:
+            # Try to get from active
+            if context.scene.savepoints_settings.active_version_index >= 0:
+                idx = context.scene.savepoints_settings.active_version_index
+                if idx < len(context.scene.savepoints_settings.versions):
+                    self.version_id = context.scene.savepoints_settings.versions[idx].version_id
+
+        if not self.version_id:
+            self.report({'ERROR'}, "No version specified")
             return {'CANCELLED'}
+
+        snapshot_path = find_snapshot_path(self.version_id)
+        if not snapshot_path:
+            self.report({'ERROR'}, f"Snapshot not found: {self.version_id}")
+            return {'CANCELLED'}
+
+        temp_path = None
+        try:
+            target_objects = [item.name for item in self.objects if item.selected]
+
+            if not target_objects:
+                self.report({'WARNING'}, "No objects selected.")
+                return {'CANCELLED'}
+
+            temp_path = create_retrieve_temp_file(snapshot_path)
+
+            appended = append_objects(temp_path, target_objects)
+            self.report({'INFO'}, f"Retrieved {len(appended)} objects.")
+
+        except Exception as e:
+            self.report({'ERROR'}, f"Retrieve failed: {e}")
+            return {'CANCELLED'}
+        finally:
+            if temp_path:
+                delete_retrieve_temp_file(temp_path)
 
         return {'FINISHED'}
-
-    def _open_append_dialog(self, context, append_dir):
-        found_context = find_3d_view_override(context)
-
-        if found_context:
-            try:
-                with context.temp_override(**found_context):
-                    bpy.ops.wm.append(
-                        'INVOKE_DEFAULT',
-                        filepath=append_dir,
-                        directory=append_dir,
-                        filename="",
-                        link=False,
-                        autoselect=True
-                    )
-                return True
-            except Exception as e:
-                print(f"[SavePoints] Append Error: {e}")
-                self.report({'ERROR'}, f"Rescue failed due to context error: {e}")
-                return False
-        else:
-            self.report({'ERROR'}, "Could not find a valid 3D Viewport to open the Append dialog.")
-            return False
 
 
 class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
@@ -458,7 +473,7 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
     bl_label = "Refresh"
 
     def execute(self, context):
-        cleanup_rescue_temp_files()
+        cleanup_retrieve_temp_files()
 
         settings = context.scene.savepoints_settings
         if settings.use_limit_versions:

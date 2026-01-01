@@ -92,8 +92,8 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             edit_op = layout.operator("savepoints.edit_note", text="", icon='GREASEPENCIL', emboss=False)
             edit_op.version_id = item.version_id
 
-            rescue_op = layout.operator("savepoints.rescue_assets", text="", icon='IMPORT', emboss=False)
-            rescue_op.version_id = item.version_id
+            retrieve_op = layout.operator("savepoints.retrieve_objects", text="", icon='IMPORT', emboss=False)
+            retrieve_op.version_id = item.version_id
 
             ghost_col_name = f"Ghost_Reference_{item.version_id}"
             is_ghost_active = bool(bpy.data.collections.get(ghost_col_name))

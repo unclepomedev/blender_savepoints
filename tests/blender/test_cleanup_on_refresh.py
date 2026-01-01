@@ -12,7 +12,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints.services.storage import RESCUE_TEMP_FILENAME
+from savepoints.services.storage import RETRIEVE_TEMP_FILENAME
 from savepoints_test_case import SavePointsTestCase
 
 
@@ -34,7 +34,7 @@ class TestCleanupOnRefresh(SavePointsTestCase):
         # Ensure parent directories exist
         version_dir.mkdir(parents=True, exist_ok=True)
 
-        temp_file_path = version_dir / RESCUE_TEMP_FILENAME
+        temp_file_path = version_dir / RETRIEVE_TEMP_FILENAME
 
         # --- Step 1: Setup Dirty State (Create leftover file) ---
         with self.subTest(step="1. Simulate Leftover Temp File"):
@@ -52,7 +52,7 @@ class TestCleanupOnRefresh(SavePointsTestCase):
             # Verify the file is gone
             self.assertFalse(
                 temp_file_path.exists(),
-                f"Cleanup failed: Temp file '{RESCUE_TEMP_FILENAME}' was NOT deleted after refresh."
+                f"Cleanup failed: Temp file '{RETRIEVE_TEMP_FILENAME}' was NOT deleted after refresh."
             )
 
         print("Cleanup on Refresh Test: Completed")
