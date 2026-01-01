@@ -62,9 +62,15 @@ def get_importable_objects(blend_path: Path) -> list[str]:
 
     Returns:
         list[str]: List of object names.
+
+    Raises:
+        OSError: If the blend file cannot be read.
     """
-    with bpy.data.libraries.load(str(blend_path)) as (data_from, _):
-        return sorted(data_from.objects)
+    try:
+        with bpy.data.libraries.load(str(blend_path)) as (data_from, _):
+            return sorted(data_from.objects)
+    except Exception as e:
+        raise OSError(f"Failed to read blend file: {e}")
 
 
 def append_objects(blend_path: Path, object_names: list[str]) -> list[bpy.types.Object]:
