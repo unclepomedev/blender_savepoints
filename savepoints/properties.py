@@ -126,3 +126,20 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         description="Automatically create and export an MP4 timelapse after batch rendering",
         default=False
     )
+
+    batch_burn_in: bpy.props.BoolProperty(
+        name="Burn-in Version ID",
+        description="Overlay version ID on the video",
+        default=False
+    )
+
+    batch_burn_in_pos: bpy.props.EnumProperty(
+        name="Position",
+        items=[
+            ('TL', "Top-Left", ""),
+            ('TR', "Top-Right", ""),
+            ('BL', "Bottom-Left", ""),
+            ('BR', "Bottom-Right", ""),
+        ],
+        default='BL'
+    )

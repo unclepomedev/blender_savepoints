@@ -101,7 +101,14 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             row = sub.row()
             row.prop(scene.savepoints_settings, "batch_create_mp4")
             if scene.savepoints_settings.batch_create_mp4:
-                row.label(text="(mp4)", icon='FILE_MOVIE')
+                row.label(text="", icon='FILE_MOVIE')
+
+                split = sub.split(factor=0.05)
+                split.separator()
+                col_sub = split.column(align=True)
+                col_sub.prop(scene.savepoints_settings, "batch_burn_in")
+                if scene.savepoints_settings.batch_burn_in:
+                    col_sub.prop(scene.savepoints_settings, "batch_burn_in_pos")
 
             box.label(text="This may take a while.", icon='INFO')
 
@@ -266,6 +273,8 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         output_file = os.path.join(input_dir, "timelapse.mp4")
 
         fps = context.scene.render.fps
+        burn_in = context.scene.savepoints_settings.batch_burn_in
+        burn_in_pos = context.scene.savepoints_settings.batch_burn_in_pos
 
         cmd = [
             bpy.app.binary_path,
@@ -275,7 +284,9 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             "--",
             input_dir,
             output_file,
-            str(fps)
+            str(fps),
+            str(int(burn_in)),
+            str(burn_in_pos)
         ]
 
         # Prevent command prompt window on Windows
