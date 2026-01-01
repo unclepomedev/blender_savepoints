@@ -130,7 +130,7 @@ class SavePointsSettings(bpy.types.PropertyGroup):
     batch_burn_in: bpy.props.BoolProperty(
         name="Burn-in Version ID",
         description="Overlay version ID on the video",
-        default=True
+        default=False
     )
 
     batch_burn_in_pos: bpy.props.EnumProperty(

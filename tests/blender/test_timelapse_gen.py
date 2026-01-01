@@ -31,8 +31,8 @@ class TestTimelapseGen(SavePointsTestCase):
     def tearDown(self):
         try:
             shutil.rmtree(self.temp_dir)
-        except:
-            pass
+        except Exception as e:
+            print(f"Warning: Failed to clean up temp dir: {e}")
         super().tearDown()
 
     def _create_dummy_frames(self, directory, count=5):

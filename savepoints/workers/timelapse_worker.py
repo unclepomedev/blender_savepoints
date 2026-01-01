@@ -261,6 +261,9 @@ if __name__ == "__main__":
 
                 if len(args) > 4:
                     burn_in_pos = args[4]
+                    if burn_in_pos not in ['TL', 'TR', 'BL', 'BR']:
+                        print(f"Warning: Invalid Burn-in position '{burn_in_pos}', using default 'BL'.")
+                        burn_in_pos = 'BL'
 
                 run_timelapse_render(in_dir, out_path, fps_val, burn_in, burn_in_pos)
             else:
