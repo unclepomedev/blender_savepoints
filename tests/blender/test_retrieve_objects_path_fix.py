@@ -57,15 +57,6 @@ class TestRetrieveObjectsPathFix(SavePointsTestCase):
 
         self.assertTrue(snapshot_path.exists(), "Snapshot must exist")
 
-        # Create temp file (simulating what operator does)
-        temp_path = retrieve.create_retrieve_temp_file(snapshot_path)
-
-        try:
-            pass
-        finally:
-            # We will restart the test logic to include an object
-            pass
-
     def test_retrieve_fixes_relative_paths_full(self):
         print("Starting Full Retrieve Path Fix Test...")
 
