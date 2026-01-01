@@ -59,13 +59,21 @@ def setup_burn_in(scene, strips, files, pos):
             text_content = text_content[:-7]
 
         try:
-            t_strip = strips.new_effect(
-                name=f"Text_{i}",
-                type='TEXT',
-                frame_start=i + 1,
-                channel=2,
-                length=1
-            )
+            kwargs = {
+                "name": f"Text_{i}",
+                "type": 'TEXT',
+                "frame_start": i + 1,
+                "channel": 2,
+            }
+
+            if bpy.app.version < (5, 0):
+                # Blender 4.x expects frame_end
+                kwargs["frame_end"] = i + 2
+            else:
+                # Blender 5.x expects length
+                kwargs["length"] = 1
+
+            t_strip = strips.new_effect(**kwargs)
             t_strip.frame_final_duration = 1
 
             t_strip.text = text_content
