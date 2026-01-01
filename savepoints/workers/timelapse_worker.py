@@ -10,12 +10,12 @@ def setup_burn_in(scene, strips, files, pos):
     """
     Adds text strips for each frame with the filename as text.
     """
-    res_x = scene.render.resolution_x
     res_y = scene.render.resolution_y
 
     # Dynamic font size (approx 4% of height)
     font_size = int(res_y * 0.04)
-    if font_size < 12: font_size = 12
+    if font_size < 12:
+        font_size = 12
 
     # Relative margins (3% and 5%)
     # Note: Y margin is often visually larger needed to not touch edge
@@ -248,7 +248,7 @@ if __name__ == "__main__":
                 if len(args) > 3:
                     try:
                         burn_in = bool(int(args[3]))
-                    except:
+                    except Exception:
                         pass
 
                 if len(args) > 4:
