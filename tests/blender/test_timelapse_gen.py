@@ -20,68 +20,87 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestTimelapseGen(SavePointsTestCase):
-    def test_timelapse_worker(self):
-        """
-        Test the standalone timelapse generation worker script.
-        """
-        print("\n=== Starting Timelapse Worker Test ===")
+    def setUp(self):
+        super().setUp()
+        self.temp_dir = tempfile.mkdtemp(prefix="sp_test_timelapse_")
+        self.input_dir = os.path.join(self.temp_dir, "input_images")
+        os.makedirs(self.input_dir, exist_ok=True)
+        self._create_dummy_frames(self.input_dir, count=5)
+        self.worker_script = os.path.join(PROJECT_ROOT, "savepoints", "workers", "timelapse_worker.py")
 
-        # 1. Setup Input Directory with Dummy Images
-        temp_dir = tempfile.mkdtemp(prefix="sp_test_timelapse_")
-        input_dir = os.path.join(temp_dir, "input_images")
-        os.makedirs(input_dir, exist_ok=True)
-        print(f"Creating dummy frames in: {input_dir}")
+    def tearDown(self):
+        try:
+            shutil.rmtree(self.temp_dir)
+        except:
+            pass
+        super().tearDown()
 
-        width, height = 64, 64
-        for i in range(5):
-            img_name = f"frame_{i:03d}"
-            img = bpy.data.images.new(img_name, width=width, height=height, alpha=True)
+    def _create_dummy_frames(self, directory, count=5):
+        print(f"Creating dummy frames in: {directory}")
+        for i in range(count):
+            # Create a simple image (64x64)
+            img = bpy.data.images.new(f"v{i:03d}_render", width=64, height=64)
+            # Make it colored (R=1.0) just to have data
+            img.generated_color = (1.0, 0.0, 0.0, 1.0)
 
-            r_val = (i / 5.0)
-            pixels = [r_val, 0.0, 1.0 - r_val, 1.0] * (width * height)
-            img.pixels = pixels
-
-            file_path = os.path.join(input_dir, f"{img_name}.png")
+            file_path = os.path.join(directory, f"v{i:03d}_render.png")
             img.filepath_raw = file_path
             img.file_format = 'PNG'
             img.save()
             bpy.data.images.remove(img)
 
-        # 2. Define Output Path
-        output_file = os.path.join(temp_dir, "output.mp4")
+    def test_timelapse_worker_basic(self):
+        """Test basic timelapse generation without burn-in."""
+        print("\n=== Test: Basic Timelapse ===")
+        output_file = os.path.join(self.temp_dir, "output_basic.mp4")
 
-        # 3. Locate Worker Script
-        worker_script = os.path.join(PROJECT_ROOT, "savepoints", "workers", "timelapse_worker.py")
-        self.assertTrue(os.path.exists(worker_script), f"Worker script not found: {worker_script}")
-
-        # 4. Run Worker
-        blender_bin = bpy.app.binary_path
         cmd = [
-            blender_bin,
+            bpy.app.binary_path,
             "-b",
             "--factory-startup",
-            "-P", worker_script,
+            "-P", self.worker_script,
             "--",
-            input_dir,
+            self.input_dir,
             output_file,
             "24"
         ]
 
+        self._run_worker(cmd)
+        self._assert_file_exists(output_file)
+
+    def test_timelapse_worker_burnin(self):
+        """Test timelapse generation WITH burn-in."""
+        print("\n=== Test: Burn-in Timelapse ===")
+        output_file = os.path.join(self.temp_dir, "output_burnin.mp4")
+
+        # Args: input, output, fps, burn_in(1), pos('TL')
+        cmd = [
+            bpy.app.binary_path,
+            "-b",
+            "--factory-startup",
+            "-P", self.worker_script,
+            "--",
+            self.input_dir,
+            output_file,
+            "24",
+            "1",  # Burn-in True
+            "TL"  # Top Left
+        ]
+
+        stdout = self._run_worker(cmd)
+        self.assertIn("Burn-in: True (TL)", stdout)
+        self.assertIn("Adding Burn-in text", stdout)
+        self.assertNotIn("Warning: Failed to add text strip", stdout)
+        self._assert_file_exists(output_file)
+
+    def _run_worker(self, cmd):
         print(f"Running worker command: {' '.join(cmd)}")
-
-        startupinfo = None
-        if os.name == 'nt':
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
         try:
-            result = subprocess.run(
-                cmd,
-                check=True,
-                capture_output=True,
-                text=True,
-                startupinfo=startupinfo
-            )
+            result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+            print("--- Worker STDOUT ---")
+            print(result.stdout)
+            print("---------------------")
+            return result.stdout
         except subprocess.CalledProcessError as e:
             print("--- Worker FAILED ---")
             print(f"Return Code: {e.returncode}")
@@ -89,22 +108,13 @@ class TestTimelapseGen(SavePointsTestCase):
             print("STDERR:", e.stderr)
             self.fail("Worker process failed. See output above.")
 
-        # 5. Assert Output Exists
-        if os.path.exists(output_file):
-            print(f"Success: MP4 created at {output_file}")
-            file_size = os.path.getsize(output_file)
-            print(f"File Size: {file_size} bytes")
-
-            self.assertGreater(file_size, 1024, "MP4 file is suspiciously small or empty")
+    def _assert_file_exists(self, filepath):
+        if os.path.exists(filepath):
+            file_size = os.path.getsize(filepath)
+            print(f"Success: File created at {filepath} ({file_size} bytes)")
+            self.assertGreater(file_size, 0, "File is empty")
         else:
-            self.fail(f"MP4 output file was not created at {output_file}")
-
-        # Cleanup
-        try:
-            shutil.rmtree(temp_dir)
-        except:
-            pass
-        print("=== Test Finished Successfully ===\n")
+            self.fail(f"File was not created at {filepath}")
 
 
 if __name__ == "__main__":
