@@ -5,6 +5,8 @@ import sys
 
 import bpy
 
+FRAMES_PER_IMAGE = 6
+
 
 def setup_burn_in(scene, strips, files, pos):
     """
@@ -59,22 +61,24 @@ def setup_burn_in(scene, strips, files, pos):
             text_content = text_content[:-7]
 
         try:
+            start_frame = i * FRAMES_PER_IMAGE + 1
+
             kwargs = {
                 "name": f"Text_{i}",
                 "type": 'TEXT',
-                "frame_start": i + 1,
+                "frame_start": start_frame,
                 "channel": 2,
             }
 
             if bpy.app.version < (5, 0):
                 # Blender 4.x expects frame_end
-                kwargs["frame_end"] = i + 2
+                kwargs["frame_end"] = start_frame + FRAMES_PER_IMAGE
             else:
                 # Blender 5.x expects length
-                kwargs["length"] = 1
+                kwargs["length"] = FRAMES_PER_IMAGE
 
             t_strip = strips.new_effect(**kwargs)
-            t_strip.frame_final_duration = 1
+            t_strip.frame_final_duration = FRAMES_PER_IMAGE
 
             t_strip.text = text_content
             t_strip.font_size = font_size
@@ -143,22 +147,26 @@ def setup_vse_scene(input_dir, fps, burn_in=False, burn_in_pos='BL'):
         strips_collection.remove(s)
 
     try:
-        strip = strips_collection.new_image(
-            name="Timelapse_Strip",
-            filepath=first_file_path,
-            channel=1,
-            frame_start=1
-        )
+        current_frame = 1
 
-        for f_name in files[1:]:
-            strip.elements.append(f_name)
+        for i, f_name in enumerate(files):
+            f_path = os.path.join(input_dir, f_name)
 
-        strip.frame_final_duration = len(files)
+            strip = strips_collection.new_image(
+                name=f"Image_{i}",
+                filepath=f_path,
+                channel=1,
+                frame_start=current_frame
+            )
+            strip.frame_final_duration = FRAMES_PER_IMAGE
+            current_frame += FRAMES_PER_IMAGE
 
         # 3. Scene Configuration
         scene.frame_start = 1
-        scene.frame_end = len(files)
+        scene.frame_end = current_frame - 1
         scene.render.fps = fps
+
+        print(f"Timelapse Duration: {scene.frame_end} frames")
 
         # Resolution handling
         try:

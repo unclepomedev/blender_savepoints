@@ -68,6 +68,26 @@ class TestTimelapseGen(SavePointsTestCase):
         self._run_worker(cmd)
         self._assert_file_exists(output_file)
 
+    def test_timelapse_worker_basic_duration(self):
+        """Test basic timelapse generation duration check."""
+        print("\n=== Test: Basic Timelapse Duration ===")
+        output_file = os.path.join(self.temp_dir, "output_basic_duration.mp4")
+
+        cmd = [
+            bpy.app.binary_path,
+            "-b",
+            "--factory-startup",
+            "-P", self.worker_script,
+            "--",
+            self.input_dir,
+            output_file,
+            "24"
+        ]
+
+        stdout = self._run_worker(cmd)
+        self.assertIn("Timelapse Duration: 30 frames", stdout)
+        self._assert_file_exists(output_file)
+
     def test_timelapse_worker_burnin(self):
         """Test timelapse generation WITH burn-in."""
         print("\n=== Test: Burn-in Timelapse ===")
