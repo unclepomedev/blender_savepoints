@@ -19,7 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints_test_case import SavePointsTestCase
 from savepoints.services.batch_render import extract_render_settings
-from savepoints.services.post_process import create_vse_timelapse
+from savepoints.services.post_process import create_vse_timelapse, FRAMES_PER_IMAGE
 
 
 class TestBatchRenderExtras(SavePointsTestCase):
@@ -126,11 +126,15 @@ class TestBatchRenderExtras(SavePointsTestCase):
                 else:
                     strips = new_scene.sequence_editor.sequences
 
-                self.assertEqual(len(strips), 1)
+                # Should have one strip per file
+                self.assertEqual(len(strips), len(file_names))
+                expected_end_frame = len(file_names) * FRAMES_PER_IMAGE
+                self.assertEqual(new_scene.frame_end, expected_end_frame)
 
-                strip = strips[0]
-                self.assertEqual(strip.type, 'IMAGE')
-                self.assertEqual(strip.frame_final_duration, 3)  # Should match file count
+                # Check individual strips
+                for strip in strips:
+                    self.assertEqual(strip.type, 'IMAGE')
+                    self.assertEqual(strip.frame_final_duration, FRAMES_PER_IMAGE)
 
         finally:
             shutil.rmtree(temp_dir)

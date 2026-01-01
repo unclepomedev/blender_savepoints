@@ -6,6 +6,8 @@ import sys
 
 import bpy
 
+FRAMES_PER_IMAGE = 6
+
 
 def _escape_for_applescript(text):
     return text.replace('\\', '\\\\').replace('"', '\\"')
@@ -113,20 +115,21 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
         strips_collection = seq.sequences
 
     try:
-        first_file_path = os.path.join(directory_path, files[0])
+        current_frame = 1
 
-        strip = strips_collection.new_image(
-            name="SavePoints_Timelapse",
-            filepath=first_file_path,
-            channel=1,
-            frame_start=1,
-        )
+        for i, f_name in enumerate(files):
+            f_path = os.path.join(directory_path, f_name)
 
-        for f_name in files[1:]:
-            strip.elements.append(f_name)
+            strip = strips_collection.new_image(
+                name=f"Timelapse_Image_{i}",
+                filepath=f_path,
+                channel=1,
+                frame_start=current_frame,
+            )
+            strip.frame_final_duration = FRAMES_PER_IMAGE
+            current_frame += FRAMES_PER_IMAGE
 
-        strip.frame_final_duration = len(files)
-        new_scene.frame_end = len(files)
+        new_scene.frame_end = current_frame - 1
 
         return new_scene.name
 
