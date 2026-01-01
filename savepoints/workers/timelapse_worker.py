@@ -83,16 +83,16 @@ def setup_burn_in(scene, strips, files, pos):
             t_strip.color = (1, 1, 1, 1)
 
             # Apply alignment and position
-            # Blender 4.x vs 5.x compatibility (align_x/y -> anchor_x/y)
+            # Blender 4.x vs 5.x compatibility (align_x/y -> alignment_x/y)
             if hasattr(t_strip, "align_x"):
                 t_strip.align_x = align_x
-            elif hasattr(t_strip, "anchor_x"):
-                t_strip.anchor_x = align_x
+            elif hasattr(t_strip, "alignment_x"):
+                t_strip.alignment_x = align_x
 
             if hasattr(t_strip, "align_y"):
                 t_strip.align_y = align_y
-            elif hasattr(t_strip, "anchor_y"):
-                t_strip.anchor_y = align_y
+            elif hasattr(t_strip, "alignment_y"):
+                t_strip.alignment_y = align_y
 
             t_strip.location = (loc_x, loc_y)
 
