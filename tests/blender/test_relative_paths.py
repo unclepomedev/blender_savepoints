@@ -108,16 +108,16 @@ class TestRelativePaths(SavePointsTestCase):
 
         print("Fork Relative Paths Scenario: Completed")
 
-    def test_rescue_unmaps_paths_scenario(self):
+    def test_retrieve_unmaps_paths_scenario(self):
         """
         Scenario:
         1. Prepare a snapshot containing an object with a remapped path (//../../).
-        2. Simulate a 'Rescue' operation by appending that object into a fresh file.
+        2. Simulate a 'Retrieve' operation by appending that object into a fresh file.
         3. Verify the appended object has the broken (deep) path.
-        4. Run `unmap_snapshot_paths` (the logic used by Rescue operator).
+        4. Run `unmap_snapshot_paths` (the logic used by Retrieve operator).
         5. Verify the path is fixed to be relative to the new project root.
         """
-        print("Starting Rescue Unmap Logic Scenario...")
+        print("Starting Retrieve Unmap Logic Scenario...")
 
         history_dir = self.test_dir / ".test_project_history"
         snapshot_path = history_dir / "v001" / "snapshot.blend_snapshot"
@@ -128,9 +128,9 @@ class TestRelativePaths(SavePointsTestCase):
             bpy.ops.wm.open_mainfile(filepath=str(self.blend_path))
             bpy.ops.savepoints.commit(note="v1")
 
-        # --- Step 2: Setup Clean Rescue Target ---
-        with self.subTest(step="2. Setup Rescue Target"):
-            new_project_path = self.test_dir / "rescue_target.blend"
+        # --- Step 2: Setup Clean Retrieve Target ---
+        with self.subTest(step="2. Setup Retrieve Target"):
+            new_project_path = self.test_dir / "retrieve_target.blend"
             bpy.ops.wm.save_as_mainfile(filepath=str(new_project_path))
 
             # Clean scene
@@ -139,7 +139,7 @@ class TestRelativePaths(SavePointsTestCase):
 
         # --- Step 3: Append from Snapshot ---
         with self.subTest(step="3. Append Data"):
-            # Manually append to simulate what the rescue operator does
+            # Manually append to simulate what the retrieve operator does
             with bpy.data.libraries.load(str(snapshot_path), link=False) as (data_from, data_to):
                 if "TexturedCube" in data_from.objects:
                     data_to.objects.append("TexturedCube")
@@ -172,7 +172,7 @@ class TestRelativePaths(SavePointsTestCase):
             self.assertFalse(path_fixed_norm.startswith("//../../"), "Path should not contain deep relative steps")
             self.assertTrue(path_fixed_norm.endswith(self.texture_name), "Path should point to texture")
 
-        print("Rescue Unmap Logic Scenario: Completed")
+        print("Retrieve Unmap Logic Scenario: Completed")
 
     def test_active_user_paths_scenario(self):
         """

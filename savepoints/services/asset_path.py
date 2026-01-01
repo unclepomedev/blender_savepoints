@@ -104,7 +104,7 @@ def remap_snapshot_paths(dummy: Any) -> None:
 def unmap_snapshot_paths() -> bool:
     """
     Dynamically revert relative paths (remove //../../ prefix) for objects/assets.
-    This is used when restoring assets to the project root (e.g. Rescue or Fork fixup).
+    This is used when restoring assets to the project root (e.g. Retrieve or Fork fixup).
 
     Returns:
         bool: True if any path was modified, False otherwise.
@@ -120,3 +120,37 @@ def unmap_snapshot_paths() -> bool:
             changed = True
 
     return changed
+
+
+def fix_retrieved_assets(assets) -> int:
+    """
+    Fix relative paths for a specific list of assets.
+    Used by Retrieve Objects to fix paths of newly imported assets.
+    
+    Args:
+        assets: Iterable of Blender ID blocks (Images, Libraries, etc.)
+
+    Returns:
+        int: Number of assets fixed.
+    """
+    count = 0
+    for item in assets:
+        # Check standard filepath
+        if hasattr(item, "filepath"):
+            current_path = item.filepath
+            new_path = _transform_path_from_history(current_path)
+            if new_path:
+                item.filepath = new_path
+                count += 1
+
+        # Check directory (mostly for VSE but could be others)
+        if hasattr(item, "directory"):
+            current_path = item.directory
+            new_path = _transform_path_from_history(current_path)
+            if new_path:
+                item.directory = new_path
+                count += 1
+
+    if count > 0:
+        print(f"[SavePoints] Fixed relative paths for {count} retrieved assets.")
+    return count

@@ -17,13 +17,14 @@ from .services.asset_path import remap_snapshot_paths
 from .services.autosave import autosave_timer
 
 classes = (
+    properties.RetrieveObjectItem,
     properties.SavePointsVersion,
     properties.SavePointsSettings,
     operators.SAVEPOINTS_OT_commit,
     operators.SAVEPOINTS_OT_link_history,
     operators.SAVEPOINTS_OT_edit_note,
     operators.SAVEPOINTS_OT_set_tag,
-    operators.SAVEPOINTS_OT_rescue_assets,
+    operators.SAVEPOINTS_OT_retrieve_objects,
     operators.SAVEPOINTS_OT_toggle_protection,
     operators.SAVEPOINTS_OT_toggle_ghost,
     operators.SAVEPOINTS_OT_checkout,

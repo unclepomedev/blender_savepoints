@@ -30,7 +30,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Notes**: Add custom notes to remember what changed in each version.
 - **Edit Notes**: Update notes for any version directly from the history list.
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
-- **Rescue Assets**: Easily append objects from a specific version without opening the full snapshot.
+- **Retrieve Objects**: Easily append objects from a specific version without opening the full snapshot.
 - **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
 - **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse.
 - **Context-Aware Rendering**: **(New!)** Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
@@ -59,7 +59,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Select a version from the history list.
    - View the thumbnail, note, object count, and file size.
    - **Edit Note**: Click the pencil icon next to the note to update it.
-   - **Rescue Assets**: Click the Import icon to browse and append objects from this version into your current scene.
+   - **Retrieve Objects**: Click the Import icon to browse and append objects from this version into your current scene.
    - **Ghost Reference**: Click the Ghost icon to toggle a wireframe overlay of this version in the viewport. Useful for comparing changes.
    - Click **Checkout (Restore)** to open that version.
    - You are now in **Snapshot Mode** (indicated by a red border in the viewport).

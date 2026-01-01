@@ -3,6 +3,12 @@
 import bpy
 
 
+
+class RetrieveObjectItem(bpy.types.PropertyGroup):
+    name: bpy.props.StringProperty(name="Name")
+    selected: bpy.props.BoolProperty(name="Select", default=False)
+
+
 class SavePointsVersion(bpy.types.PropertyGroup):
     version_id: bpy.props.StringProperty(name="ID")
     timestamp: bpy.props.StringProperty(name="Time")

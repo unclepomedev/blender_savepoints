@@ -8,7 +8,7 @@ SavePoints 是一款 Blender 插件，可以帮助您轻松管理项目版本。
 - **Notes**: 添加自定义备注以记录每个版本的更改。
 - **Edit Notes**: 直接从历史列表中更新任何版本的备注。
 - **Easy Restore**: 在 UI 中浏览历史记录，单击即可恢复任何版本。
-- **Rescue Assets**: 轻松从特定版本追加 (append) 对象，无需打开完整的快照。
+- **Retrieve Objects**: 轻松从特定版本追加 (append) 对象，无需打开完整的快照。
 - **Ghost Reference**: 在 3D 视口中以线框形式叠加以前的版本，以便在不切换文件的情况下直观地比较更改。
 - **Batch Timelapse**: **(New!)** 自动渲染多个版本以创建演变过程的延时摄影。
 - **Context-Aware Rendering**: **(New!)** 将您**当前**的摄像机设置（位置、镜头、移位）、世界环境、色彩管理（AgX/Filmic）以及渲染设置应用于**过去**的快照。
@@ -37,7 +37,7 @@ SavePoints 是一款 Blender 插件，可以帮助您轻松管理项目版本。
    - 从历史列表中选择一个版本。
    - 查看缩略图、备注、对象数量和文件大小。
    - **Edit Note**: 点击备注旁边的铅笔图标以更新它。
-   - **Rescue Assets**: 点击 Import 图标以浏览并将该版本中的对象追加 (append) 到当前场景。
+   - **Retrieve Objects**: 点击 Import 图标以浏览并将该版本中的对象追加 (append) 到当前场景。
    - **Ghost Reference**: 点击 Ghost 图标以在视口中切换该版本的线框叠加。用于比较更改。
    - 点击 **Checkout (Restore)** 打开该版本。
    - 您现在处于 **Snapshot Mode** (视口中显示红色边框)：

@@ -12,7 +12,7 @@ SNAPSHOT_EXT = ".blend_snapshot"
 SNAPSHOT_FILENAME = "snapshot.blend_snapshot"
 LEGACY_SNAPSHOT_FILENAME = "snapshot.blend"
 THUMBNAIL_FILENAME = "thumbnail.png"
-RESCUE_TEMP_FILENAME = "snapshot_rescue_temp.blend"
+RETRIEVE_TEMP_FILENAME = "snapshot_retrieve_temp.blend"
 MANIFEST_NAME = "manifest.json"
 SCHEMA_VERSION = 1
 
