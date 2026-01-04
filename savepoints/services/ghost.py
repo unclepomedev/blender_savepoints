@@ -117,7 +117,7 @@ def load_ghost(version_id: str, context: bpy.types.Context) -> int:
 
 
 def _load_objects_from_snapshot(path: str) -> list:
-    with bpy.data.libraries.load(path, link=True) as (data_from, data_to):
+    with bpy.data.libraries.load(path, link=False) as (data_from, data_to):
         data_to.objects = data_from.objects
     return data_to.objects
 
