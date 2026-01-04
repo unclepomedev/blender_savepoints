@@ -27,11 +27,21 @@ def unload_ghost(version_id: str, context: bpy.types.Context) -> None:
     collection_name = get_ghost_collection_name(version_id)
     existing_col = bpy.data.collections.get(collection_name)
 
-    if not existing_col:
-        return
+    if existing_col:
+        _remove_ghost_collection(existing_col, context)
 
-    _remove_ghost_collection(existing_col, context)
     _purge_ghost_libraries(version_id)
+    _cleanup_orphan_libraries()
+
+
+def _cleanup_orphan_libraries():
+    """Removes any libraries that have 0 users to prevent buildup."""
+    for lib in list(bpy.data.libraries):
+        if lib.users == 0:
+            try:
+                bpy.data.libraries.remove(lib)
+            except Exception:
+                pass
 
 
 def _remove_ghost_collection(collection: bpy.types.Collection, context: bpy.types.Context) -> None:
@@ -172,11 +182,4 @@ def cleanup_single_object_ghost(object_name: str, context: bpy.types.Context) ->
     if col:
         _remove_ghost_collection(col, context)
 
-    # Attempt to cleanup unused libraries (orphan data)
-    # This prevents library buildup when browsing history
-    for lib in list(bpy.data.libraries):
-        if lib.users == 0:
-            try:
-                bpy.data.libraries.remove(lib)
-            except Exception:
-                pass
+    _cleanup_orphan_libraries()
