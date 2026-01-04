@@ -151,14 +151,19 @@ def load_single_object_ghost(version_id: str, object_name: str, context: bpy.typ
     cleanup_single_object_ghost(object_name, context)
 
     snapshot_path = find_snapshot_path(version_id)
-    if not snapshot_path:
+    if not snapshot_path or not Path(snapshot_path).exists():
+        print(f"[SavePoints] Snapshot file missing for version: {version_id}")
         return
 
-    with bpy.data.libraries.load(str(snapshot_path), link=True) as (data_from, data_to):
-        if object_name in data_from.objects:
-            data_to.objects = [object_name]
-        else:
-            return
+    try:
+        with bpy.data.libraries.load(str(snapshot_path), link=True) as (data_from, data_to):
+            if object_name in data_from.objects:
+                data_to.objects = [object_name]
+            else:
+                return
+    except OSError:
+        print(f"[SavePoints] Failed to load library: {snapshot_path}")
+        return
 
     obj = data_to.objects[0] if data_to.objects else None
     if not obj:
