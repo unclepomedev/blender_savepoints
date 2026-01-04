@@ -9,6 +9,7 @@ from bpy.app.handlers import persistent
 from . import hud
 from . import operators
 from . import operators_io
+from . import operators_object_history
 from . import operators_render
 from . import properties
 from . import ui
@@ -38,6 +39,9 @@ classes = (
     operators_render.SAVEPOINTS_OT_select_all,
     operators_render.SAVEPOINTS_OT_deselect_all,
     operators_render.SAVEPOINTS_OT_batch_render,
+    operators_object_history.SavePointsObjectHistoryItem,
+    operators_object_history.SAVEPOINTS_UL_object_history,
+    operators_object_history.SAVEPOINTS_OT_show_object_history,
     ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
@@ -95,6 +99,15 @@ def register():
         bpy.utils.register_class(cls)
 
     bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
+
+    bpy.types.WindowManager.savepoints_object_history = bpy.props.CollectionProperty(
+        type=operators_object_history.SavePointsObjectHistoryItem
+    )
+    bpy.types.WindowManager.savepoints_object_history_index = bpy.props.IntProperty(
+        update=operators_object_history.update_ghost_preview
+    )
+    bpy.types.VIEW3D_MT_object_context_menu.append(operators_object_history.draw_object_context_menu)
+
     bpy.app.handlers.load_post.append(load_handler)
     bpy.app.handlers.load_post.append(auto_remap_paths_handler)
 
@@ -160,6 +173,10 @@ def unregister():
         bpy.utils.unregister_class(cls)
 
     del bpy.types.Scene.savepoints_settings
+
+    bpy.types.VIEW3D_MT_object_context_menu.remove(operators_object_history.draw_object_context_menu)
+    del bpy.types.WindowManager.savepoints_object_history
+    del bpy.types.WindowManager.savepoints_object_history_index
 
 
 if __name__ == "__main__":

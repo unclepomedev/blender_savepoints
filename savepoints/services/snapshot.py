@@ -18,6 +18,7 @@ from .storage import (
 )
 from .thumbnail import capture_thumbnail
 from .versioning import add_version_to_manifest
+from .object_data import save_object_data
 from ..ui_utils import sync_history_to_props
 
 
@@ -51,6 +52,9 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
         thumb_path = version_dir / thumb_filename
         if not skip_thumbnail:
             capture_thumbnail(context, str(thumb_path))
+
+        # Save Object Metadata
+        save_object_data(version_id, bpy.data.objects)
 
         # Save Snapshot
         snapshot_path = version_dir / SNAPSHOT_FILENAME

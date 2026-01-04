@@ -135,3 +135,48 @@ def _setup_ghost_collection(name: str, objects: list, context: bpy.types.Context
             obj.show_in_front = False
             count += 1
     return count
+
+
+def load_single_object_ghost(version_id: str, object_name: str, context: bpy.types.Context) -> None:
+    cleanup_single_object_ghost(object_name, context)
+
+    snapshot_path = find_snapshot_path(version_id)
+    if not snapshot_path:
+        return
+
+    with bpy.data.libraries.load(str(snapshot_path), link=True) as (data_from, data_to):
+        if object_name in data_from.objects:
+            data_to.objects = [object_name]
+        else:
+            return
+
+    obj = data_to.objects[0] if data_to.objects else None
+    if not obj:
+        return
+
+    col_name = f"Ghost_Single_{object_name}"
+
+    new_col = bpy.data.collections.new(col_name)
+    context.scene.collection.children.link(new_col)
+    new_col.objects.link(obj)
+
+    obj.display_type = 'WIRE'
+    obj.hide_select = True
+    obj.show_in_front = True
+
+
+def cleanup_single_object_ghost(object_name: str, context: bpy.types.Context) -> None:
+    col_name = f"Ghost_Single_{object_name}"
+    col = bpy.data.collections.get(col_name)
+
+    if col:
+        _remove_ghost_collection(col, context)
+
+    # Attempt to cleanup unused libraries (orphan data)
+    # This prevents library buildup when browsing history
+    for lib in list(bpy.data.libraries):
+        if lib.users == 0:
+            try:
+                bpy.data.libraries.remove(lib)
+            except:
+                pass
