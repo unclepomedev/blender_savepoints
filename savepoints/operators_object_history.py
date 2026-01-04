@@ -105,7 +105,7 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
 
         wm.savepoints_object_history_index = -1
 
-        return context.window_manager.invoke_props_dialog(self, width=600)
+        return context.window_manager.invoke_popup(self, width=600)
 
     def draw(self, context):
         layout = self.layout
