@@ -38,7 +38,10 @@ def extract_object_data(obj):
     data['matrix'] = _matrix_to_list(obj.matrix_world)
 
     # Bounding Box (Local coordinates -> Reduced to Min/Max)
-    data['bbox'] = _bbox_to_min_max(obj.bound_box)
+    if obj.bound_box and len(obj.bound_box) >= 8:
+        data['bbox'] = _bbox_to_min_max(obj.bound_box)
+    else:
+        data['bbox'] = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 
     # v_count (Mesh only)
     if obj.type == 'MESH' and obj.data:

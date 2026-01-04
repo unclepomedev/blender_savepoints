@@ -16,6 +16,7 @@ from . import ui
 from . import ui_utils
 from .services.asset_path import remap_snapshot_paths
 from .services.autosave import autosave_timer
+from .services.object_data import load_object_data
 
 classes = (
     properties.RetrieveObjectItem,
@@ -53,6 +54,7 @@ addon_keymaps = []
 @persistent
 def load_handler(dummy):
     """Sync history when file is loaded."""
+    load_object_data.cache_clear()
     max_retries = 20
     execution_state = {"retries": 0}
 
