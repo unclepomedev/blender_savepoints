@@ -178,5 +178,5 @@ def cleanup_single_object_ghost(object_name: str, context: bpy.types.Context) ->
         if lib.users == 0:
             try:
                 bpy.data.libraries.remove(lib)
-            except:
+            except Exception:
                 pass
