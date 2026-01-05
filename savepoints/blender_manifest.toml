@@ -1,11 +1,11 @@
 schema_version = "1.0.0"
 id = "savepoints"
-version = "1.4.0"
+version = "1.4.1"
 name = "SavePoints"
-tagline = "Create save points with previews to restore project versions"
+tagline = "Visual version control with easy restore and automatic timelapse creation"
 type = "add-on"
 website = "https://github.com/unclepomedev/blender_savepoints"
-tags = ["System"]
+tags = ["System", "Pipeline", "Render"]
 
 blender_version_min = "4.2.0"
 
@@ -19,7 +19,7 @@ wheels = [
 ]
 
 [description]
-text = "A lightweight version control tool for Blender. Create save points with thumbnails and notes, and restore them anytime from the UI."
+text = "Beyond simple incremental saves, it offers powerful tools to review and utilize your history. Manage versions with visual thumbnails, restore specific objects instantly, and automatically generate timelapses of your progress."
 
 [permissions]
 files = "Create version history and move deleted versions to trash"
