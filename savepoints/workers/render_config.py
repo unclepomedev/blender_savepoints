@@ -53,13 +53,33 @@ def apply_render_settings(scene, render, settings):
 
 def apply_ffmpeg_settings(render, settings):
     """
-    Applies FFMPEG settings for video output.
+    Applies FFMPEG settings.
+    FFmpeg enum values can vary between Blender versions.
     """
-    ffmpeg = render.ffmpeg
-    ffmpeg_settings = settings.get("ffmpeg", {})
+    ffmpeg_data = settings.get("ffmpeg", {})
+    if not ffmpeg_data:
+        return
 
-    # Defaults matching the timelapse worker requirements
-    ffmpeg.format = ffmpeg_settings.get("format", 'MPEG4')
-    ffmpeg.codec = ffmpeg_settings.get("codec", 'H264')
-    ffmpeg.constant_rate_factor = ffmpeg_settings.get("constant_rate_factor", 'HIGH')
-    ffmpeg.audio_codec = ffmpeg_settings.get("audio_codec", 'NONE')
+    # format
+    try:
+        render.ffmpeg.format = ffmpeg_data.get("format", 'MPEG4')
+    except Exception:
+        pass  # Log warning if needed
+
+    # codec
+    try:
+        render.ffmpeg.codec = ffmpeg_data.get("codec", 'H264')
+    except Exception:
+        pass
+
+    # constant_rate_factor (CRF)
+    try:
+        render.ffmpeg.constant_rate_factor = ffmpeg_data.get("constant_rate_factor", 'HIGH')
+    except Exception:
+        pass
+
+    # audio_codec
+    try:
+        render.ffmpeg.audio_codec = ffmpeg_data.get("audio_codec", 'NONE')
+    except Exception:
+        pass

@@ -14,7 +14,7 @@ import render_config  # noqa: E402
 import scene_utils  # noqa: E402
 
 FRAMES_PER_IMAGE = 6
-VALID_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.exr', '.tif', '.tiff', '.webp', '.tga', '.bmp'}
+VALID_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.exr', '.hdr', '.tif', '.tiff', '.webp', '.tga', '.bmp'}
 
 
 class TimelapseArgs:
@@ -323,7 +323,8 @@ class SceneBuilder:
         ext = self.first_image_info["ext"]
 
         if is_linear:
-            print(f"Input is {ext} (Linear/Float). Keeping current View Transform: {self.scene.view_settings.view_transform}")
+            print(
+                f"Input is {ext} (Linear/Float). Keeping current View Transform: {self.scene.view_settings.view_transform}")
         else:
             print(f"Input is {ext} (Display Referred). Forcing View Transform to 'Standard'.")
 
