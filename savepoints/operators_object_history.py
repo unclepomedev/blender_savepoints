@@ -5,8 +5,16 @@ import bpy
 from .services.ghost import load_single_object_ghost, cleanup_single_object_ghost
 from .services.object_history import compare_object_history
 
+CHANGE_TYPE_ICONS = {
+    'MAJOR': 'MESH_DATA',
+    'MINOR': 'MOD_EDGESPLIT',
+    'MOVED': 'CON_LOCLIKE',
+    'UNCHANGED': 'CHECKMARK',
+}
+
 
 class SavePointsObjectHistoryItem(bpy.types.PropertyGroup):
+    """Data storage for a single history entry in the UI list."""
     version_id: bpy.props.StringProperty()
     change_type: bpy.props.StringProperty()
     details: bpy.props.StringProperty()
@@ -15,60 +23,65 @@ class SavePointsObjectHistoryItem(bpy.types.PropertyGroup):
 
 
 class SAVEPOINTS_UL_object_history(bpy.types.UIList):
+    """UI List to display object history versions."""
+
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
-            row = layout.row()
+        # Ensure we are in a valid layout mode
+        if self.layout_type not in {'DEFAULT', 'COMPACT'}:
+            return
 
-            # Version ID (30%)
-            split = row.split(factor=0.25)
-            split.label(text=item.version_id)
+        row = layout.row()
 
-            # Type (25%)
-            split2 = split.split(factor=0.33)
-            icon_name = 'DOT'
-            type_label = item.change_type
+        # --- Column 1: Version ID (10%) ---
+        split = row.split(factor=0.10)
+        split.label(text=item.version_id)
 
-            if item.change_type == 'MAJOR':
-                icon_name = 'MESH_DATA'
-            elif item.change_type == 'MINOR':
-                icon_name = 'MOD_EDGESPLIT'
-            elif item.change_type == 'MOVED':
-                icon_name = 'CON_LOCLIKE'
-            elif item.change_type == 'UNCHANGED':
-                icon_name = 'CHECKMARK'
+        # --- Column 2: Change Type (25%) ---
+        # Split the remaining 90% by 0.25 -> 22.5% of total
+        split_2 = split.split(factor=0.25)
 
-            split2.label(text=type_label, icon=icon_name)
+        icon_name = CHANGE_TYPE_ICONS.get(item.change_type, 'DOT')
+        split_2.label(text=item.change_type, icon=icon_name)
 
-            # Details (45%)
-            split3 = split2.split(factor=0.5)
-            split3.label(text=item.details)
+        # --- Column 3: Details (Remaining space split) ---
+        # Allocate approx 50% of the remaining space to details
+        split_3 = split_2.split(factor=0.5)
+        split_3.label(text=item.details)
 
-            # Note (Remaining)
-            if item.note:
-                split3.label(text=item.note, icon='TEXT')
+        # --- Column 4: Note (Remaining) ---
+        if item.note:
+            split_3.label(text=item.note, icon='TEXT')
 
 
 def update_ghost_preview(self, context):
+    """
+    Callback triggered when the history list index changes.
+    Loads the ghost overlay for the selected version.
+    """
     wm = context.window_manager
     idx = wm.savepoints_object_history_index
     history = wm.savepoints_object_history
 
-    # We rely on active object being the same as when dialog opened.
+    # Active object is required for context
     obj = context.active_object
     if not obj:
         return
 
+    # Valid selection: Load ghost
     if 0 <= idx < len(history):
         item = history[idx]
         try:
             load_single_object_ghost(item.version_id, obj.name, context)
         except Exception as e:
-            print(f"[SavePoints] Ghost load error: {e}")
+            print(f"[SavePoints] Ghost load error for {item.version_id}: {e}")
+
+    # No selection or invalid index: Cleanup ghost
     else:
         cleanup_single_object_ghost(obj.name, context)
 
 
 class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
+    """Show history and ghost previews for the active object"""
     bl_idname = "savepoints.show_object_history"
     bl_label = "Object History"
     bl_options = {'REGISTER', 'UNDO'}
@@ -79,21 +92,21 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
 
     def invoke(self, context, event):
         obj = context.active_object
+        wm = context.window_manager
 
-        # Calculate history
+        # Compute history
         try:
             history_data = compare_object_history(obj)
         except Exception as e:
             self.report({'ERROR'}, f"Failed to compute history: {e}")
             return {'CANCELLED'}
 
-        wm = context.window_manager
+        # Populate UI List
         wm.savepoints_object_history.clear()
 
         if not history_data:
             self.report({'INFO'}, "No history changes found for this object.")
-            # We can still show empty dialog or just return. 
-            # Showing dialog confirms it worked but found nothing.
+            # Still showing the dialog to confirm we checked.
 
         for h in history_data:
             item = wm.savepoints_object_history.add()
@@ -103,7 +116,11 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
             item.note = h['note']
             item.timestamp = h['timestamp']
 
+        # Reset selection (triggers update_ghost_preview via property update if bound correctly)
         wm.savepoints_object_history_index = -1
+
+        # Explicit cleanup to ensure clean slate
+        cleanup_single_object_ghost(obj.name, context)
 
         return context.window_manager.invoke_popup(self, width=600)
 
@@ -114,23 +131,24 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
 
         layout.label(text=f"History for: {obj.name}", icon='OBJECT_DATAMODE')
 
-        row = layout.row()
-        row.template_list(
+        layout.template_list(
             "SAVEPOINTS_UL_object_history", "",
             wm, "savepoints_object_history",
             wm, "savepoints_object_history_index",
             rows=10
         )
 
+        layout.separator()
+        layout.label(text="Click an entry to preview ghost overlay", icon='INFO')
+
     def execute(self, context):
-        # Cleanup on close (OK)
-        obj = context.active_object
-        if obj:
-            cleanup_single_object_ghost(obj.name, context)
+        self._cleanup(context)
         return {'FINISHED'}
 
     def cancel(self, context):
-        # Cleanup on close (Cancel/Esc)
+        self._cleanup(context)
+
+    def _cleanup(self, context):
         obj = context.active_object
         if obj:
             cleanup_single_object_ghost(obj.name, context)
@@ -139,4 +157,4 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
 def draw_object_context_menu(self, context):
     layout = self.layout
     layout.operator_context = 'INVOKE_DEFAULT'
-    self.layout.operator(SAVEPOINTS_OT_show_object_history.bl_idname, text="Show Object History", icon='TIME')
+    layout.operator(SAVEPOINTS_OT_show_object_history.bl_idname, text="Show Object History", icon='TIME')
