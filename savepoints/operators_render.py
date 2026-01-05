@@ -3,7 +3,6 @@
 import json
 import os
 import shutil
-import subprocess
 import tempfile
 
 import bpy
@@ -11,7 +10,8 @@ import bpy
 from .services.batch_executor import BatchRenderExecutor
 from .services.batch_render import extract_render_settings, get_worker_script_path, get_batch_render_output_dir, \
     create_error_log_text_block
-from .services.post_process import open_folder_platform_independent, create_vse_timelapse, send_os_notification
+from .services.post_process import open_folder_platform_independent, create_vse_timelapse, send_os_notification, \
+    launch_timelapse_mp4_generation
 from .services.selection import get_selected_versions
 
 
@@ -261,50 +261,28 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
         return {'FINISHED'}
 
-    def _launch_timelapse_mp4_generation(self, context, input_dir):
-        worker_dir = os.path.dirname(get_worker_script_path())
-        timelapse_script = os.path.join(worker_dir, "timelapse_worker.py")
+    def _show_timelapse_notification(self, context, scene_name, mp4_triggered, count):
+        def draw_notification(self, context):
+            layout = self.layout
+            layout.label(text=f"Successfully processed {count} versions.")
 
-        if not os.path.exists(timelapse_script):
-            self.report({'ERROR'}, f"Timelapse worker not found: {timelapse_script}")
-            return
+            layout.separator()
 
-        # Output file: folder/timelapse.mp4
-        output_file = os.path.join(input_dir, "timelapse.mp4")
+            layout.label(text="Auto-Timelapse created:", icon='SEQUENCE')
+            row = layout.row()
+            row.label(text=f"  Scene: {scene_name}")
+            layout.label(text="  (Switch scene to view playback)", icon='INFO')
 
-        fps = context.scene.render.fps
-        burn_in = context.scene.savepoints_settings.batch_burn_in
-        burn_in_pos = context.scene.savepoints_settings.batch_burn_in_pos
+            if mp4_triggered:
+                layout.separator()
+                layout.label(text="Exporting MP4 in background...", icon='FILE_MOVIE')
+                layout.label(text="Check folder later.", icon='FILE_FOLDER')
 
-        cmd = [
-            bpy.app.binary_path,
-            "-b",
-            "--factory-startup",
-            "-P", timelapse_script,
-            "--",
-            input_dir,
-            output_file,
-            str(fps),
-            str(int(burn_in)),
-            str(burn_in_pos)
-        ]
-
-        # Prevent command prompt window on Windows
-        startupinfo = None
-        if os.name == 'nt':
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-
-        try:
-            # Use startupinfo for Windows, close_fds for POSIX
-            subprocess.Popen(
-                cmd,
-                startupinfo=startupinfo,
-                close_fds=(os.name == 'posix')
-            )
-            self.report({'INFO'}, "MP4 generation started in background...")
-        except Exception as e:
-            self.report({'ERROR'}, f"Failed to start MP4 generation: {e}")
+        context.window_manager.popup_menu(
+            draw_notification,
+            title="Batch Render Complete",
+            icon='CHECKMARK'
+        )
 
     def _process_timelapse_creation(self, context):
         try:
@@ -314,36 +292,33 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             mp4_triggered = False
             if context.scene.savepoints_settings.batch_create_mp4:
                 # 2. Trigger Background MP4 Render
-                self._launch_timelapse_mp4_generation(context, self.output_dir)
-                mp4_triggered = True
+                fps = context.scene.render.fps
+                burn_in = context.scene.savepoints_settings.batch_burn_in
+                burn_in_pos = context.scene.savepoints_settings.batch_burn_in_pos
+
+                # Output file: folder/timelapse.mp4
+                output_file = os.path.join(self.output_dir, "timelapse.mp4")
+
+                success = launch_timelapse_mp4_generation(
+                    self.output_dir,
+                    output_file,
+                    fps,
+                    burn_in,
+                    burn_in_pos
+                )
+
+                if success:
+                    mp4_triggered = True
+                    self.report({'INFO'}, "MP4 generation started in background...")
+                else:
+                    self.report({'ERROR'}, "Failed to start MP4 generation.")
 
             if scene_name:
                 self.report({'INFO'}, f"Timelapse scene created: '{scene_name}'")
 
                 if not bpy.app.background:
                     count = self.executor.current_task_idx if hasattr(self, 'executor') else 0
-
-                    def draw_notification(self, context):
-                        layout = self.layout
-                        layout.label(text=f"Successfully processed {count} versions.")
-
-                        layout.separator()
-
-                        layout.label(text="Auto-Timelapse created:", icon='SEQUENCE')
-                        row = layout.row()
-                        row.label(text=f"  Scene: {scene_name}")
-                        layout.label(text="  (Switch scene to view playback)", icon='INFO')
-
-                        if mp4_triggered:
-                            layout.separator()
-                            layout.label(text="Exporting MP4 in background...", icon='FILE_MOVIE')
-                            layout.label(text="Check folder later.", icon='FILE_FOLDER')
-
-                    context.window_manager.popup_menu(
-                        draw_notification,
-                        title="Batch Render Complete",
-                        icon='CHECKMARK'
-                    )
+                    self._show_timelapse_notification(context, scene_name, mp4_triggered, count)
             else:
                 self.report({'WARNING'}, "Could not create timelapse scene.")
 
