@@ -33,21 +33,25 @@ def _bbox_to_min_max(bbox):
     return [min_pt, max_pt]
 
 
-def extract_object_data(obj):
+def extract_object_data(obj, depsgraph=None):
+    """
+    Extract data from object.
+    Uses evaluated object if depsgraph is provided to ensure latest state.
+    """
     data = {}
 
-    # World Matrix
-    data['matrix'] = _matrix_to_list(obj.matrix_world)
+    eval_obj = obj.evaluated_get(depsgraph) if depsgraph else obj
 
-    # Bounding Box (Local coordinates -> Reduced to Min/Max)
-    if obj.bound_box and len(obj.bound_box) >= 8:
-        data['bbox'] = _bbox_to_min_max(obj.bound_box)
+    data['matrix'] = _matrix_to_list(eval_obj.matrix_world)
+    if eval_obj.bound_box and len(eval_obj.bound_box) >= 8:
+        data['bbox'] = _bbox_to_min_max(eval_obj.bound_box)
     else:
         data['bbox'] = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 
     # v_count (Mesh only)
-    if obj.type == 'MESH' and obj.data:
-        data['v_count'] = len(obj.data.vertices)
+    mesh = obj.data
+    if obj.type == 'MESH' and mesh:
+        data['v_count'] = len(mesh.vertices)
     else:
         data['v_count'] = 0
 
@@ -62,11 +66,17 @@ def save_object_data(version_id, objects):
     if not history_dir_str:
         return
 
+    depsgraph = None
     if bpy.context.view_layer:
+        for obj in objects:
+            if obj.mode == 'EDIT':
+                obj.update_from_editmode()
+
         bpy.context.view_layer.update()
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+
     history_dir = Path(history_dir_str)
     version_dir = history_dir / version_id
-    # Ensure directory exists (it should be created by snapshot process, but safety first)
     ensure_directory(version_dir)
 
     output_path = version_dir / f"{version_id}{OBJECT_DATA_SUFFIX}"
@@ -74,7 +84,7 @@ def save_object_data(version_id, objects):
     data_map = {}
     for obj in objects:
         try:
-            data_map[obj.name] = extract_object_data(obj)
+            data_map[obj.name] = extract_object_data(obj, depsgraph)
         except Exception as e:
             print(f"[SavePoints] Error extracting data for {obj.name}: {e}")
             continue
