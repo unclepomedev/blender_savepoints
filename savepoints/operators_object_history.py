@@ -9,7 +9,7 @@ CHANGE_TYPE_ICONS = {
     'MAJOR': 'MESH_DATA',
     'MINOR': 'MOD_EDGESPLIT',
     'MOVED': 'CON_LOCLIKE',
-    'UNCHANGED': 'CHECKMARK',
+    'RECORD': 'FILE_BACKUP',
 }
 
 
@@ -32,7 +32,7 @@ def populate_history_list(context):
     show_all = wm.savepoints_object_history_show_all
 
     try:
-        history_data = compare_object_history(obj, include_unchanged=show_all)
+        history_data = compare_object_history(obj, include_change_not_detected=show_all)
     except Exception as e:
         print(f"Failed to compute history: {e}")
         return
