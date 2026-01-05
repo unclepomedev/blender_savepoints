@@ -5,6 +5,14 @@ import sys
 
 import bpy
 
+# Add current directory to sys.path to allow importing sibling modules
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+
+import render_config  # noqa: E402
+import scene_utils  # noqa: E402
+
 FRAMES_PER_IMAGE = 6
 VALID_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.exr', '.tif', '.tiff', '.webp', '.tga', '.bmp'}
 
@@ -267,8 +275,12 @@ class SceneBuilder:
         # Resolution
         try:
             tmp_img = bpy.data.images.load(ref_image_path)
-            self.scene.render.resolution_x = tmp_img.size[0]
-            self.scene.render.resolution_y = tmp_img.size[1]
+            res_settings = {
+                "resolution_x": tmp_img.size[0],
+                "resolution_y": tmp_img.size[1],
+                "resolution_percentage": 100
+            }
+            render_config.apply_render_settings(self.scene, self.scene.render, res_settings)
             bpy.data.images.remove(tmp_img)
         except Exception as e:
             print(f"Warning: Could not detect resolution. Using default. Error: {e}")
@@ -281,16 +293,14 @@ class SceneBuilder:
             print(f"Input is {ext} (Linear). Keeping current View Transform: {self.scene.view_settings.view_transform}")
         else:
             print(f"Input is {ext} (Display Referred). Forcing View Transform to 'Standard'.")
-            try:
-                self.scene.view_settings.view_transform = 'Standard'
-            except TypeError:
-                print(f"Warning: 'Standard' transform not found. Keeping: {self.scene.view_settings.view_transform}")
 
-            if hasattr(self.scene.view_settings, "look"):
-                try:
-                    self.scene.view_settings.look = 'None'
-                except (TypeError, ValueError):
-                    print("Warning: 'None' look not found.")
+            settings = {
+                "view_settings": {
+                    "view_transform": 'Standard',
+                    "look": 'None'
+                }
+            }
+            scene_utils.setup_view_settings(self.scene, settings)
 
 
 class Renderer:
@@ -311,15 +321,22 @@ class Renderer:
         except Exception as e:
             print(f"Info: Blender 5.0+ media_type check skipped: {e}")
 
-        # FFMPEG Settings
-        self.scene.render.image_settings.file_format = 'FFMPEG'
-        self.scene.render.image_settings.color_mode = 'RGB'
+        # Apply Image Settings
+        settings = {
+            "image_settings": {
+                "file_format": 'FFMPEG',
+                "color_mode": 'RGB'
+            },
+            "ffmpeg": {
+                "format": 'MPEG4',
+                "codec": 'H264',
+                "constant_rate_factor": 'HIGH',
+                "audio_codec": 'NONE'
+            }
+        }
 
-        ffmpeg = self.scene.render.ffmpeg
-        ffmpeg.format = 'MPEG4'
-        ffmpeg.codec = 'H264'
-        ffmpeg.constant_rate_factor = 'HIGH'
-        ffmpeg.audio_codec = 'NONE'
+        render_config.apply_image_settings(self.scene.render, settings)
+        render_config.apply_ffmpeg_settings(self.scene.render, settings)
 
     def execute(self):
         print("Rendering animation...")

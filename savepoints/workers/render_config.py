@@ -49,3 +49,17 @@ def apply_render_settings(scene, render, settings):
     elif render.engine in ['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT'] and "samples" in settings:
         if hasattr(scene.eevee, "taa_render_samples"):
             scene.eevee.taa_render_samples = settings["samples"]
+
+
+def apply_ffmpeg_settings(render, settings):
+    """
+    Applies FFMPEG settings for video output.
+    """
+    ffmpeg = render.ffmpeg
+    ffmpeg_settings = settings.get("ffmpeg", {})
+
+    # Defaults matching the timelapse worker requirements
+    ffmpeg.format = ffmpeg_settings.get("format", 'MPEG4')
+    ffmpeg.codec = ffmpeg_settings.get("codec", 'H264')
+    ffmpeg.constant_rate_factor = ffmpeg_settings.get("constant_rate_factor", 'HIGH')
+    ffmpeg.audio_codec = ffmpeg_settings.get("audio_codec", 'NONE')
