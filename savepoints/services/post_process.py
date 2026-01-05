@@ -138,3 +138,46 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
         import traceback
         traceback.print_exc()
         return None
+
+
+def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_in_pos):
+    """
+    Launches the timelapse worker script in a background process to generate an MP4.
+    """
+    worker_script = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "workers", "timelapse_worker.py"))
+
+    if not os.path.exists(worker_script):
+        print(f"[SavePoints] Error: Timelapse worker not found at {worker_script}")
+        return False
+
+    cmd = [
+        bpy.app.binary_path,
+        "-b",
+        "--factory-startup",
+        "-P", worker_script,
+        "--",
+        input_dir,
+        output_file,
+        str(fps),
+        str(int(burn_in)),
+        str(burn_in_pos)
+    ]
+
+    # Prevent command prompt window on Windows
+    startupinfo = None
+    if sys.platform == 'win32':
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
+    try:
+        # Use startupinfo for Windows, close_fds for POSIX
+        subprocess.Popen(
+            cmd,
+            startupinfo=startupinfo,
+            close_fds=(os.name == 'posix')
+        )
+        print("[SavePoints] MP4 generation started in background...")
+        return True
+    except Exception as e:
+        print(f"[SavePoints] Failed to start MP4 generation: {e}")
+        return False
