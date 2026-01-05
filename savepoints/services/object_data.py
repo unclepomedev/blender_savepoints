@@ -4,6 +4,8 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
+import bpy
+
 from .storage import get_history_dir, ensure_directory
 
 OBJECT_DATA_SUFFIX = "_objects.json"
@@ -60,6 +62,8 @@ def save_object_data(version_id, objects):
     if not history_dir_str:
         return
 
+    if bpy.context.view_layer:
+        bpy.context.view_layer.update()
     history_dir = Path(history_dir_str)
     version_dir = history_dir / version_id
     # Ensure directory exists (it should be created by snapshot process, but safety first)
