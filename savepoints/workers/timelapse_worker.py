@@ -186,6 +186,13 @@ class SceneBuilder:
     def __init__(self, args: TimelapseArgs):
         self.args = args
         self.scene = bpy.context.scene
+        self.first_image_info = {
+            "path": "",
+            "resolution_x": 1920,
+            "resolution_y": 1080,
+            "is_linear": False,
+            "ext": ""
+        }
 
     def build(self):
         """Orchestrates the scene building process."""
@@ -198,10 +205,9 @@ class SceneBuilder:
             print("Error: No images found in directory.")
             return None
 
-        # Determine if linear (EXR) for color management
+        # Analyze the first image (Resolution & Color Space detection)
         first_file_path = os.path.join(self.args.input_dir, files[0])
-        first_ext = os.path.splitext(first_file_path)[1].lower()
-        is_linear = (first_ext == '.exr')
+        self._analyze_image(first_file_path)
 
         # Setup VSE
         strips = self._setup_vse_editor()
@@ -210,10 +216,10 @@ class SceneBuilder:
         total_frames = self._add_image_strips(strips, files)
 
         # Configure Scene (FPS, Duration, Resolution)
-        self._configure_scene_properties(total_frames, first_file_path)
+        self._configure_scene_properties(total_frames)
 
         # Color Management
-        self._setup_color_management(is_linear, first_ext)
+        self._setup_color_management()
 
         # Burn-in
         if self.args.burn_in:
@@ -231,6 +237,36 @@ class SceneBuilder:
         files.sort()
         return files
 
+    def _analyze_image(self, filepath):
+        """Loads the first image to determine resolution and likely color space."""
+        self.first_image_info["path"] = filepath
+        self.first_image_info["ext"] = os.path.splitext(filepath)[1].lower()
+
+        try:
+            # Load image temporarily
+            tmp_img = bpy.data.images.load(filepath)
+
+            # Resolution
+            self.first_image_info["resolution_x"] = tmp_img.size[0]
+            self.first_image_info["resolution_y"] = tmp_img.size[1]
+
+            # Color Space Heuristics
+            # 1. EXR and HDR are inherently Linear (Scene Referred)
+            if self.first_image_info["ext"] in {'.exr', '.hdr'}:
+                self.first_image_info["is_linear"] = True
+            # 2. Check if the image buffer is floating point (e.g. 32bit Float TIFF)
+            elif tmp_img.is_float:
+                print(f"Info: Image detected as Floating Point ({self.first_image_info['ext']}). Treating as Linear.")
+                self.first_image_info["is_linear"] = True
+            else:
+                self.first_image_info["is_linear"] = False
+
+            # Cleanup
+            bpy.data.images.remove(tmp_img)
+
+        except Exception as e:
+            print(f"Warning: Failed to analyze image {filepath}. Using defaults. Error: {e}")
+
     def _setup_vse_editor(self):
         if not self.scene.sequence_editor:
             self.scene.sequence_editor_create()
@@ -241,7 +277,6 @@ class SceneBuilder:
         else:
             strips_collection = seq.sequences
 
-        # Clear existing
         for s in strips_collection:
             strips_collection.remove(s)
 
@@ -265,32 +300,30 @@ class SceneBuilder:
 
         return current_frame
 
-    def _configure_scene_properties(self, end_frame, ref_image_path):
+    def _configure_scene_properties(self, end_frame):
         self.scene.frame_start = 1
         self.scene.frame_end = end_frame - 1
         self.scene.render.fps = self.args.fps
 
         print(f"Timelapse Duration: {self.scene.frame_end} frames")
 
-        # Resolution
-        try:
-            tmp_img = bpy.data.images.load(ref_image_path)
-            res_settings = {
-                "resolution_x": tmp_img.size[0],
-                "resolution_y": tmp_img.size[1],
-                "resolution_percentage": 100
-            }
-            render_config.apply_render_settings(self.scene, self.scene.render, res_settings)
-            bpy.data.images.remove(tmp_img)
-        except Exception as e:
-            print(f"Warning: Could not detect resolution. Using default. Error: {e}")
+        # Apply Resolution from analyzed info
+        res_settings = {
+            "resolution_x": self.first_image_info["resolution_x"],
+            "resolution_y": self.first_image_info["resolution_y"],
+            "resolution_percentage": 100
+        }
+        render_config.apply_render_settings(self.scene, self.scene.render, res_settings)
 
-    def _setup_color_management(self, is_linear, ext):
+    def _setup_color_management(self):
         if not hasattr(self.scene.view_settings, "view_transform"):
             return
 
+        is_linear = self.first_image_info["is_linear"]
+        ext = self.first_image_info["ext"]
+
         if is_linear:
-            print(f"Input is {ext} (Linear). Keeping current View Transform: {self.scene.view_settings.view_transform}")
+            print(f"Input is {ext} (Linear/Float). Keeping current View Transform: {self.scene.view_settings.view_transform}")
         else:
             print(f"Input is {ext} (Display Referred). Forcing View Transform to 'Standard'.")
 
