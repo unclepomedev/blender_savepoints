@@ -51,21 +51,31 @@ def apply_image_settings(render, settings):
             print(f"Worker Warning: Failed to override format to PNG: {e}")
 
     elif fmt_override == 'JPEG':
+        # Format
         try:
             render.image_settings.file_format = 'JPEG'
-            render.image_settings.color_mode = 'RGB'
+        except Exception as e:
+            print(f"Worker Warning: Failed to override file_format to JPEG: {e}")
+            return
 
+        # Color Mode
+        try:
+            render.image_settings.color_mode = 'RGB'
+        except Exception as e:
+            print(f"Worker Warning: Failed to set color_mode for JPEG: {e}")
+
+        # Quality
+        try:
             if "jpeg_quality" in settings:
                 render.image_settings.quality = settings["jpeg_quality"]
             elif "quality" in src_img_settings:
                 render.image_settings.quality = src_img_settings["quality"]
         except Exception as e:
-            print(f"Worker Warning: Failed to override format to JPEG: {e}")
+            print(f"Worker Warning: Failed to set quality for JPEG: {e}")
 
 
 def apply_render_settings(scene, render, settings):
     # Basic settings usually don't fail, but safe to wrap if paranoia is high.
-    # Typically resolution/engine are stable properties.
     render.resolution_x = settings.get("resolution_x", 1920)
     render.resolution_y = settings.get("resolution_y", 1080)
     render.resolution_percentage = settings.get("resolution_percentage", 100)
