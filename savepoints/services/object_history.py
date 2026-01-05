@@ -14,7 +14,7 @@ CHANGE_TYPE_RECORD = 'RECORD'
 def compare_object_history(obj, include_change_not_detected=False):
     """
     Compares object state efficiently by iterating form Oldest -> Newest (Single Pass).
-    If include_unchanged is True, returns all versions where object exists.
+    If include_change_not_detected is True, returns all versions where object exists.
     """
     manifest = load_manifest()
     if not manifest:
