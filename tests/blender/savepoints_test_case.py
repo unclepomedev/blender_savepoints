@@ -47,6 +47,11 @@ class SavePointsTestCase(unittest.TestCase):
             pass
 
     def tearDown(self):
+        # 0. Clear LRU Cache to prevent cross-test contamination
+        # (e.g. load_object_data caches results by version_id)
+        from savepoints.services.object_data import load_object_data
+        load_object_data.cache_clear()
+
         # 1. Unregister the addon
         try:
             savepoints.unregister()

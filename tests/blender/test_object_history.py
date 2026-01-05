@@ -96,6 +96,47 @@ class TestObjectHistory(SavePointsTestCase):
             self.assertEqual(history[3]['version_id'], 'v1')
             self.assertEqual(history[3]['change_type'], 'CREATED')
 
+    def test_object_history_with_unchanged(self):
+        # 1. Setup - Create Cube
+        bpy.ops.mesh.primitive_cube_add(size=2)
+        obj = bpy.context.active_object
+        obj.name = "TestCubeUnchanged"
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+        # --- VERSION 1: Base State ---
+        create_snapshot(bpy.context, "v1", "Base", skip_thumbnail=True)
+
+        # --- VERSION 2: No Change (Simulate Save without Edit) ---
+        create_snapshot(bpy.context, "v2", "Unchanged", skip_thumbnail=True)
+
+        # --- VERSION 3: Moved ---
+        obj.location.x += 5.0
+        bpy.context.view_layer.update()
+        create_snapshot(bpy.context, "v3", "Moved", skip_thumbnail=True)
+
+        with self.subTest("Default behavior (Hidden Unchanged)"):
+            history = compare_object_history(obj)
+            # Should show v3(MOVED) and v1(CREATED). v2 should be hidden.
+            self.assertEqual(len(history), 2)
+            self.assertEqual(history[0]['version_id'], 'v3')
+            self.assertEqual(history[0]['change_type'], 'MOVED')
+            self.assertEqual(history[1]['version_id'], 'v1')
+            self.assertEqual(history[1]['change_type'], 'CREATED')
+
+        with self.subTest("Show All (Include Unchanged)"):
+            history = compare_object_history(obj, include_change_not_detected=True)
+            # Should show v3, v2, v1
+            self.assertEqual(len(history), 3)
+
+            self.assertEqual(history[0]['version_id'], 'v3')
+            self.assertEqual(history[0]['change_type'], 'MOVED')
+
+            self.assertEqual(history[1]['version_id'], 'v2')
+            self.assertEqual(history[1]['change_type'], 'RECORD')
+            
+            self.assertEqual(history[2]['version_id'], 'v1')
+            self.assertEqual(history[2]['change_type'], 'CREATED')
+
 
 if __name__ == '__main__':
     result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
