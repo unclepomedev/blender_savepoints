@@ -32,7 +32,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
 - **Retrieve Objects**: Easily append objects from a specific version without opening the full snapshot.
 - **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
-- **Object History**: **(New!)** Right-click an object to see its version history (Mesh changes, movement) and instantly preview past states via Ghost overlay.
+- **Object History**: **(New!)** Right-click an object to see its version history. Detects changes (Mesh, Movement) and allows you to **access all past states**—even subtle ones like sculpting—via the Ghost overlay.
 - **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse, with optional **Version ID overlay**.
 - **Context-Aware Rendering**: **(New!)** Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
   <br>*(Note: Compositor nodes remain as they were in the snapshot.)*
@@ -103,7 +103,8 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
     - **Output Location**: Files are saved in `//renders_batch/{BlendName}_{Timestamp}/`.
 11. **Object History**:
     - Right-click any object in the 3D View and select **Show Object History**.
-    - A popup lists all detected changes: **Created**, **Moved**, **Minor** (Shape), or **Major** (Vertex Count).
+    - A popup lists detected changes: **Created**, **Moved**, **Minor** (Shape), or **Major** (Vertex Count).
+    - **Show All Versions**: Enable this toggle to list *every* snapshot containing the object, even if no changes were detected (marked as **Record**). This ensures you can access internal changes like sculpting or subtle deformations.
     - **Click an entry** to overlay a Ghost Reference of that specific version.
 
 ## ⚠️ Note
@@ -115,8 +116,8 @@ To ensure maximum stability, the batch renderer runs in **Factory Startup Mode**
 - **GPU Support**: The renderer attempts to auto-detect and use your saved System Preferences (CUDA/OptiX/Metal) even in factory mode.
 
 ### Object History Limitations
-The Object History feature is designed for instant feedback and relies on lightweight metadata (Vertex Count, Bounding Box, and Transform Matrix) rather than full geometry analysis. Please note:
-- **Internal Deformations**: Mesh changes that do not alter the object's overall Bounding Box or Vertex Count (e.g., sliding vertices on a flat surface) may not be detected.
+The Object History feature relies on lightweight metadata (Vertex Count, Bounding Box, and Transform Matrix) for instant feedback rather than full geometry analysis.
+- **Internal Deformations**: Changes that do not alter the bounding box or vertex count (e.g., sculpting on a fixed mesh) will not appear as "Modified" in the default list. **Use the "Show All Versions" toggle** to find these snapshots.
 - **Renaming**: History tracking relies on object names. Renaming an object will disconnect it from its past history.
 - **Scope**: Changes to Materials, Modifiers, or Custom Properties are not tracked in this view.
 
