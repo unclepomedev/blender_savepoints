@@ -12,7 +12,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints import operators
+from savepoints.services.snapshot import create_snapshot
 from savepoints_test_case import SavePointsTestCase
 
 
@@ -36,7 +36,7 @@ class TestAutosaveSkipThumb(SavePointsTestCase):
             print("Step 1: Testing create_snapshot(skip_thumbnail=True)...")
             version_id_no_thumb = "v_no_thumb"
 
-            operators.create_snapshot(context, version_id_no_thumb, "No Thumb", skip_thumbnail=True)
+            create_snapshot(context, version_id_no_thumb, "No Thumb", skip_thumbnail=True)
 
             # Verification: Snapshot exists, but thumbnail does not.
             v_dir = history_dir / version_id_no_thumb
@@ -56,7 +56,7 @@ class TestAutosaveSkipThumb(SavePointsTestCase):
             # Note: In background/headless mode, thumbnail generation may fail or be skipped internally.
             # We wrap this in try-except to ensure the test fails gracefully if the operator crashes.
             try:
-                operators.create_snapshot(context, version_id_with_thumb, "With Thumb", skip_thumbnail=False)
+                create_snapshot(context, version_id_with_thumb, "With Thumb", skip_thumbnail=False)
             except Exception as e:
                 self.fail(f"Snapshot creation failed during thumbnail generation step: {e}")
 
@@ -73,7 +73,7 @@ class TestAutosaveSkipThumb(SavePointsTestCase):
 
             # Simulate autosave call (which forces skip_thumbnail=True)
             # This validates that the 'autosave' reserved ID is handled correctly.
-            operators.create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)
+            create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)
 
             autosave_dir = history_dir / "autosave"
             self.assertTrue(autosave_dir.exists(), "Autosave dir not created")

@@ -7,10 +7,13 @@ import bpy
 from bpy.app.handlers import persistent
 
 from . import hud
-from . import operators
+from . import operators_attributes
+from . import operators_core
 from . import operators_io
 from . import operators_object_history
 from . import operators_render
+from . import operators_snapshot
+from . import operators_tools
 from . import properties
 from . import ui
 from . import ui_utils
@@ -22,20 +25,20 @@ classes = (
     properties.RetrieveObjectItem,
     properties.SavePointsVersion,
     properties.SavePointsSettings,
-    operators.SAVEPOINTS_OT_commit,
-    operators.SAVEPOINTS_OT_link_history,
-    operators.SAVEPOINTS_OT_edit_note,
-    operators.SAVEPOINTS_OT_set_tag,
-    operators.SAVEPOINTS_OT_retrieve_objects,
-    operators.SAVEPOINTS_OT_toggle_protection,
-    operators.SAVEPOINTS_OT_toggle_ghost,
-    operators.SAVEPOINTS_OT_checkout,
-    operators.SAVEPOINTS_OT_restore,
-    operators.SAVEPOINTS_OT_open_parent,
-    operators.SAVEPOINTS_OT_fork_version,
-    operators.SAVEPOINTS_OT_delete,
-    operators.SAVEPOINTS_OT_refresh,
-    operators.SAVEPOINTS_OT_guard_save,
+    operators_core.SAVEPOINTS_OT_commit,
+    operators_tools.SAVEPOINTS_OT_link_history,
+    operators_attributes.SAVEPOINTS_OT_edit_note,
+    operators_attributes.SAVEPOINTS_OT_set_tag,
+    operators_tools.SAVEPOINTS_OT_retrieve_objects,
+    operators_attributes.SAVEPOINTS_OT_toggle_protection,
+    operators_tools.SAVEPOINTS_OT_toggle_ghost,
+    operators_core.SAVEPOINTS_OT_checkout,
+    operators_snapshot.SAVEPOINTS_OT_restore,
+    operators_snapshot.SAVEPOINTS_OT_open_parent,
+    operators_snapshot.SAVEPOINTS_OT_fork_version,
+    operators_core.SAVEPOINTS_OT_delete,
+    operators_core.SAVEPOINTS_OT_refresh,
+    operators_snapshot.SAVEPOINTS_OT_guard_save,
     operators_render.SAVEPOINTS_OT_toggle_batch_mode,
     operators_render.SAVEPOINTS_OT_select_all,
     operators_render.SAVEPOINTS_OT_deselect_all,

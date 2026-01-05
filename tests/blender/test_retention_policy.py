@@ -14,7 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints.services.manifest import load_manifest
 from savepoints.services.versioning import set_version_protection
-from savepoints.operators import create_snapshot
+from savepoints.services.snapshot import create_snapshot
 from savepoints_test_case import SavePointsTestCase
 
 

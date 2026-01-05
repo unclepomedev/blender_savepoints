@@ -13,7 +13,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-import savepoints.operators
+import savepoints.operators_core
 from savepoints_test_case import SavePointsTestCase
 
 
@@ -27,7 +27,7 @@ class TestNoteAssignment(SavePointsTestCase):
 
         # Prepare the real invoke function we want to test
         # We access the unbound method directly from the class
-        self.invoke_func = savepoints.operators.SAVEPOINTS_OT_commit.invoke
+        self.invoke_func = savepoints.operators_core.SAVEPOINTS_OT_commit.invoke
 
     def _create_mock_context(self, show_dialog=False, active_object=None, simulate_error=False):
         """Helper to create a MagicMock that behaves like bpy.context"""
