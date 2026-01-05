@@ -12,7 +12,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints import operators
+from savepoints.services.snapshot import create_snapshot
 from savepoints_test_case import SavePointsTestCase
 
 
@@ -58,7 +58,7 @@ class TestCompression(SavePointsTestCase):
                 self.fail("Property 'use_compression' not defined in SavePointsSettings")
 
             version_id_comp = "v_compressed"
-            operators.create_snapshot(context, version_id_comp, "Compressed", skip_thumbnail=True)
+            create_snapshot(context, version_id_comp, "Compressed", skip_thumbnail=True)
 
             history_dir = self.test_dir / ".test_project_history"
             snap_path = history_dir / version_id_comp / "snapshot.blend_snapshot"
@@ -73,7 +73,7 @@ class TestCompression(SavePointsTestCase):
             settings.use_compression = False
 
             version_id_raw = "v_raw"
-            operators.create_snapshot(context, version_id_raw, "Raw", skip_thumbnail=True)
+            create_snapshot(context, version_id_raw, "Raw", skip_thumbnail=True)
 
             snap_path_raw = history_dir / version_id_raw / "snapshot.blend_snapshot"
 

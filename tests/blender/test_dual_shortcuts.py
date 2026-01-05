@@ -11,7 +11,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-import savepoints.operators
+from savepoints.operators_core import SAVEPOINTS_OT_commit
 from savepoints_test_case import SavePointsTestCase
 
 
@@ -19,7 +19,7 @@ class TestDualShortcuts(SavePointsTestCase):
 
     def setUp(self):
         super().setUp()
-        self.OpClass = savepoints.operators.SAVEPOINTS_OT_commit
+        self.OpClass = SAVEPOINTS_OT_commit
         self.invoke_func = self.OpClass.invoke
 
     def _create_mock_context(self, show_dialog=True):
@@ -46,9 +46,9 @@ class TestDualShortcuts(SavePointsTestCase):
         """
         print("Starting Dual Shortcuts Logic Test...")
 
-        # Mock 'generate_default_note' within savepoints.operators module
+        # Mock 'generate_default_note' within savepoints.operators_core module
         # We force it to return "Fixed Auto Note" so we can verify the assignment logic.
-        with patch('savepoints.operators.generate_default_note') as mock_gen_note:
+        with patch('savepoints.operators_core.generate_default_note') as mock_gen_note:
             mock_gen_note.return_value = "Fixed Auto Note"
 
             # --- Case 1: Dialog Enabled (force_quick=False) ---

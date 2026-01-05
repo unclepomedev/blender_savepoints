@@ -80,6 +80,18 @@ class MockContext: pass
 
 bpy.types.Context = MockContext
 
+
+class MockObject: pass
+
+
+bpy.types.Object = MockObject
+
+
+class MockCollection: pass
+
+
+bpy.types.Collection = MockCollection
+
 # Mock props
 bpy.props.StringProperty = mock.MagicMock()
 bpy.props.IntProperty = mock.MagicMock()
@@ -215,13 +227,13 @@ class TestPathUtils(unittest.TestCase):
         # Test that SAVEPOINTS_OT_commit.poll returns False when in snapshot mode
         # We need to import operators here so it uses the mocked bpy
         import importlib
-        import savepoints.operators
+        import savepoints.operators_core
         import savepoints.services.storage
 
-        importlib.reload(savepoints.operators)
+        importlib.reload(savepoints.operators_core)
         importlib.reload(savepoints.services.storage)
 
-        from savepoints.operators import SAVEPOINTS_OT_commit
+        from savepoints.operators_core import SAVEPOINTS_OT_commit
 
         mock_context = mock.MagicMock()
 
