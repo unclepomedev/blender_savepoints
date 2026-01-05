@@ -114,6 +114,12 @@ To ensure maximum stability, the batch renderer runs in **Factory Startup Mode**
 - **Not Supported**: Third-party add-ons that generate geometry specifically at render-time (e.g., some scattering tools) will not be loaded.
 - **GPU Support**: The renderer attempts to auto-detect and use your saved System Preferences (CUDA/OptiX/Metal) even in factory mode.
 
+### Object History Limitations
+The Object History feature is designed for instant feedback and relies on lightweight metadata (Vertex Count, Bounding Box, and Transform Matrix) rather than full geometry analysis. Please note:
+- **Internal Deformations**: Mesh changes that do not alter the object's overall Bounding Box or Vertex Count (e.g., sliding vertices on a flat surface) may not be detected.
+- **Renaming**: History tracking relies on object names. Renaming an object will disconnect it from its past history.
+- **Scope**: Changes to Materials, Modifiers, or Custom Properties are not tracked in this view.
+
 ### General Notes
 - Thumbnails are skipped in no-GPU environments, but versioning remains fully functional.
 - **Asset Browser**: Snapshots are saved with a custom `.blend_snapshot` extension. This prevents Blender from scanning them, ensuring **no duplicate assets appear in your Asset Browser**.
