@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from pathlib import Path
+
 import bpy
 from bpy_extras.io_utils import ImportHelper
-from pathlib import Path
 
 from .properties import RetrieveObjectItem
 from .services.ghost import get_ghost_collection_name, load_ghost, unload_ghost
@@ -153,6 +154,9 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
             version_id = item.version_id
         else:
             version_id = self.version_id
+        if not version_id:
+            self.report({'ERROR'}, "No version specified")
+            return {'CANCELLED'}
         collection_name = get_ghost_collection_name(version_id)
 
         # Check if exists
