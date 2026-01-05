@@ -159,7 +159,6 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
 
     def cancel(self, context):
         self._cleanup(context)
-        return {'CANCELLED'}
 
     def _cleanup(self, context):
         obj = context.active_object
