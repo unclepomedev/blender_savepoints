@@ -111,6 +111,12 @@ def register():
     bpy.types.WindowManager.savepoints_object_history_index = bpy.props.IntProperty(
         update=operators_object_history.update_ghost_preview
     )
+    bpy.types.WindowManager.savepoints_object_history_show_all = bpy.props.BoolProperty(
+        name="Show All Versions",
+        description="Include versions where no changes were detected (e.g. Sculpting)",
+        default=False,
+        update=operators_object_history.update_history_view_mode
+    )
     bpy.types.VIEW3D_MT_object_context_menu.append(operators_object_history.draw_object_context_menu)
 
     bpy.app.handlers.load_post.append(load_handler)
@@ -182,6 +188,7 @@ def unregister():
     bpy.types.VIEW3D_MT_object_context_menu.remove(operators_object_history.draw_object_context_menu)
     del bpy.types.WindowManager.savepoints_object_history
     del bpy.types.WindowManager.savepoints_object_history_index
+    del bpy.types.WindowManager.savepoints_object_history_show_all
 
 
 if __name__ == "__main__":

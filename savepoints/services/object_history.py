@@ -11,9 +11,10 @@ CHANGE_TYPE_CREATED = 'CREATED'
 CHANGE_TYPE_UNCHANGED = 'UNCHANGED'
 
 
-def compare_object_history(obj):
+def compare_object_history(obj, include_unchanged=False):
     """
     Compares object state efficiently by iterating form Oldest -> Newest (Single Pass).
+    If include_unchanged is True, returns all versions where object exists.
     """
     manifest = load_manifest()
     if not manifest:
@@ -36,6 +37,7 @@ def compare_object_history(obj):
         curr_data = full_data[obj.name]
 
         details = ""
+        change_type = CHANGE_TYPE_UNCHANGED
 
         if prev_data is None:
             change_type = CHANGE_TYPE_CREATED
@@ -58,10 +60,7 @@ def compare_object_history(obj):
                 change_type = CHANGE_TYPE_MOVED
                 details = "Moved / Transformed"
 
-            else:
-                change_type = CHANGE_TYPE_UNCHANGED
-
-        if change_type != CHANGE_TYPE_UNCHANGED:
+        if change_type != CHANGE_TYPE_UNCHANGED or include_unchanged:
             history.append({
                 'version_id': vid,
                 'change_type': change_type,

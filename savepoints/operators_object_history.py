@@ -22,6 +22,39 @@ class SavePointsObjectHistoryItem(bpy.types.PropertyGroup):
     timestamp: bpy.props.StringProperty()
 
 
+def populate_history_list(context):
+    wm = context.window_manager
+    obj = context.active_object
+
+    if not obj:
+        return
+
+    show_all = wm.savepoints_object_history_show_all
+
+    try:
+        history_data = compare_object_history(obj, include_unchanged=show_all)
+    except Exception as e:
+        print(f"Failed to compute history: {e}")
+        return
+
+    wm.savepoints_object_history.clear()
+
+    for h in history_data:
+        item = wm.savepoints_object_history.add()
+        item.version_id = h['version_id']
+        item.change_type = h['change_type']
+        item.details = h['details']
+        item.note = h['note']
+        item.timestamp = h['timestamp']
+
+    wm.savepoints_object_history_index = -1
+    cleanup_single_object_ghost(obj.name, context)
+
+
+def update_history_view_mode(self, context):
+    populate_history_list(context)
+
+
 class SAVEPOINTS_UL_object_history(bpy.types.UIList):
     """UI List to display object history versions."""
 
@@ -91,36 +124,12 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
         return context.active_object is not None
 
     def invoke(self, context, event):
-        obj = context.active_object
-        wm = context.window_manager
+        context.window_manager.savepoints_object_history_show_all = False
 
-        # Compute history
-        try:
-            history_data = compare_object_history(obj)
-        except Exception as e:
-            self.report({'ERROR'}, f"Failed to compute history: {e}")
-            return {'CANCELLED'}
+        populate_history_list(context)
 
-        # Populate UI List
-        wm.savepoints_object_history.clear()
-
-        if not history_data:
-            self.report({'INFO'}, "No history changes found for this object.")
-            # Still showing the dialog to confirm we checked.
-
-        for h in history_data:
-            item = wm.savepoints_object_history.add()
-            item.version_id = h['version_id']
-            item.change_type = h['change_type']
-            item.details = h['details']
-            item.note = h['note']
-            item.timestamp = h['timestamp']
-
-        # Reset selection (triggers update_ghost_preview via property update if bound correctly)
-        wm.savepoints_object_history_index = -1
-
-        # Explicit cleanup to ensure clean slate
-        cleanup_single_object_ghost(obj.name, context)
+        if len(context.window_manager.savepoints_object_history) == 0:
+            pass
 
         return context.window_manager.invoke_popup(self, width=600)
 
@@ -129,8 +138,11 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
         wm = context.window_manager
         obj = context.active_object
 
-        layout.label(text=f"History for: {obj.name}", icon='OBJECT_DATAMODE')
+        row = layout.row()
+        row.label(text=f"History for: {obj.name}", icon='OBJECT_DATAMODE')
 
+        row.prop(wm, "savepoints_object_history_show_all", text="Show All Versions", toggle=True)
+        layout.separator()
         layout.template_list(
             "SAVEPOINTS_UL_object_history", "",
             wm, "savepoints_object_history",
