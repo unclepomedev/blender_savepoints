@@ -218,3 +218,4 @@ __marimo__/
 **/*.zip
 .DS_Store
 .test_project_history
+.blender_stubs

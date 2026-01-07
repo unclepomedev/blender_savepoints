@@ -10,10 +10,12 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "fake-bpy-module-latest>=20251003",
-    "mypy>=1.18.2",
+    "mypy>=1.18.2", # TODO remove
+    "pyrefly>=0.47.0",
+    "pyright>=1.1.407",
     "pytest>=9.0.1",
     "ruff>=0.14.5",
+    "ty>=0.0.9",  # TODO select
 ]
 
 [tool.pytest.ini_options]
