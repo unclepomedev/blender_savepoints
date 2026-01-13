@@ -3,6 +3,7 @@
 import os
 import subprocess
 import sys
+import threading
 
 import bpy
 
@@ -171,12 +172,22 @@ def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_i
 
     try:
         # Use startupinfo for Windows, close_fds for POSIX
-        subprocess.Popen(
+        p = subprocess.Popen(
             cmd,
             startupinfo=startupinfo,
             close_fds=(os.name == 'posix')
         )
-        print("[SavePoints] MP4 generation started in background...")
+        print(f"[SavePoints] MP4 generation started in background (PID: {p.pid}).")
+
+        def reap_process(proc):
+            try:
+                proc.wait()
+                print(f"[SavePoints] MP4 generation finished (PID: {proc.pid}).")
+            except Exception as e:
+                print(f"[SavePoints] Error reaping MP4 process: {e}")
+
+        threading.Thread(target=reap_process, args=(p,), daemon=True).start()
+
         return True
     except Exception as e:
         print(f"[SavePoints] Failed to start MP4 generation: {e}")

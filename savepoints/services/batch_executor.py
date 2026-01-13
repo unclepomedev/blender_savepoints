@@ -39,6 +39,8 @@ class BatchRenderExecutor:
         Called periodically to check process status and start next task.
         """
         if self.is_cancelled:
+            if self.current_process:
+                self.cancel()
             return {'status': 'CANCELLED'}
 
         # 1. Check existing process
@@ -46,7 +48,8 @@ class BatchRenderExecutor:
             return_code = self.current_process.poll()
 
             if return_code is not None:
-                # --- Task Finished (Success or Failure) ---
+                self.current_process.wait()
+
                 log_path = self.current_log_path
                 version_id = self.current_version_id
 
@@ -158,12 +161,15 @@ class BatchRenderExecutor:
         self.task_queue.clear()
 
         if self.current_process:
-            print(f"[SavePoints] Killing process PID: {self.current_process.pid}")
-            try:
-                self.current_process.kill()
-                self.current_process.wait(timeout=1)
-            except Exception as e:
-                print(f"Error killing process: {e}")
+            if self.current_process.poll() is None:
+                print(f"[SavePoints] Killing process PID: {self.current_process.pid}")
+                try:
+                    self.current_process.kill()
+                    self.current_process.wait(timeout=5)
+                except Exception as e:
+                    print(f"Error killing process: {e}")
+            else:
+                self.current_process.wait()
             self.current_process = None
 
         self._cleanup_current_log()
