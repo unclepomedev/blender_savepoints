@@ -19,6 +19,11 @@ UNSAFE_MODES = {
 }
 
 
+def is_rendering():
+    """Check if a render job is running."""
+    return bpy.app.is_job_running("RENDER")
+
+
 def autosave_timer():
     """Timer function for auto-save."""
     # Check every 5 seconds for responsiveness
@@ -29,7 +34,7 @@ def autosave_timer():
         if context.mode in UNSAFE_MODES:
             return check_interval
 
-        if bpy.app.is_job_running("RENDER"):
+        if is_rendering():
             return check_interval
 
         scene = getattr(context, "scene", None)
