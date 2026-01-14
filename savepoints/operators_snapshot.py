@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .services.asset_path import unmap_snapshot_paths
 from .services.backup import create_backup, HistoryDirectoryUnavailableError
+from .services.fork import make_all_local_and_clear_assets
 from .services.manifest import initialize_history_for_path
 from .services.storage import (
     get_parent_path_from_snapshot,
@@ -89,6 +90,19 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
     bl_label = "Fork (Save as New)"
     bl_options = {'REGISTER', 'UNDO'}
 
+    unbind_linked_assets: bpy.props.BoolProperty(
+        name="Detach from Library (Make Local & Clear Assets)",
+        description="Converts linked data to local and clears asset tags to prevent Asset Browser duplication. Creates a fully independent file (may increase file size).",
+        default=False,
+    )
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(self, "unbind_linked_assets")
+
     def execute(self, context):
         if not bpy.data.filepath:
             return {'CANCELLED'}
@@ -106,18 +120,31 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             self.report({'ERROR'}, "Source and target paths are identical.")
             return {'CANCELLED'}
 
-        # Ensure history directory is created for the new file (so link_history is suppressed)
+        # Ensure history directory is created for the new file
         try:
             initialize_history_for_path(target_path)
         except Exception as e:
             self.report({'WARNING'}, f"History creation failed: {e}")
 
         try:
-            # 1. Save to new location (Blender tries to fix paths, but often fails for Deep -> Shallow move)
+            # 1. Save to new location
             bpy.ops.wm.save_as_mainfile(filepath=str(target_path))
+
+            needs_save = False
+
+            if self.unbind_linked_assets:
+                changed, cleared_count = make_all_local_and_clear_assets()
+                if changed:
+                    self.report({"INFO"}, f"Forked: Detached from library (Cleared {cleared_count} asset marks).")
+                    needs_save = True
+                else:
+                    self.report({'INFO'}, "Forked: No linked assets required unbinding.")
 
             if unmap_snapshot_paths():
                 self.report({'INFO'}, "Fixed relative paths for forked project.")
+                needs_save = True
+
+            if needs_save:
                 bpy.ops.wm.save_mainfile()
 
         except Exception as e:
@@ -126,7 +153,7 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
 
         self.report({'INFO'}, f"Forked to {target_path.name}")
 
-        # Force redraw to remove HUD (no longer in snapshot mode)
+        # Force redraw to remove HUD
         force_redraw_areas(context)
 
         return {'FINISHED'}
