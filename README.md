@@ -32,11 +32,11 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
 - **Easy Restore**: Browse your history in the UI and restore any version with a single click.
 - **Retrieve Objects**: Easily append objects from a specific version without opening the full snapshot.
 - **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
-- **Object History**: **(New!)** Right-click an object to see its version history. Detects changes (Mesh, Movement) and allows you to **access all past states**—even subtle ones like sculpting—via the Ghost overlay.
-- **Batch Timelapse**: **(New!)** Automatically render multiple versions to create an evolution timelapse, with optional **Version ID overlay**.
-- **Context-Aware Rendering**: **(New!)** Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
+- **Object History**: Right-click an object to see its version history. Detects changes (Mesh, Movement) and allows you to **access all past states**—even subtle ones like sculpting—via the Ghost overlay.
+- **Batch Timelapse**: Automatically render multiple versions to create an evolution timelapse, with optional **Version ID overlay**.
+- **Context-Aware Rendering**: Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
   <br>*(Note: Compositor nodes remain as they were in the snapshot.)*
-- **Snapshot Compression**: **(New!)** Option to compress snapshot files. This allows you to trade a slightly longer save time for significantly reduced file sizes. (Default: **Enabled**)
+- **Snapshot Compression**: Option to compress snapshot files. This allows you to trade a slightly longer save time for significantly reduced file sizes. (Default: **Enabled**)
 - **Quick Save**: Option to skip the note dialog for instant saving.
 - **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
 - **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
@@ -66,6 +66,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - You are now in **Snapshot Mode** (indicated by a red border in the viewport).
        - To restore this version as the main file, click **Save as Parent**.
        - To save this snapshot as an entirely separate project, click **Fork (Save as New)**.
+         - **Option**: You can enable **"Detach from Library"** in the popup. This converts all linked data (objects, materials) into local data and clears asset marks, ensuring the new file is fully independent and does not pollute your Asset Browser.
        - To return to your original file without saving changes, click **Return to Parent**.
        - A backup of the previous main file will be saved in the history folder (e.g., `.{YourFileName}_history/{YourFileName}.blend.123456.bak`).
 5. **Auto Save**:
