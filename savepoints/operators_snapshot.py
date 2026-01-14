@@ -5,7 +5,7 @@ from pathlib import Path
 
 from .services.asset_path import unmap_snapshot_paths
 from .services.backup import create_backup, HistoryDirectoryUnavailableError
-from .services.linking import make_all_local_and_clear_assets
+from .services.fork import make_all_local_and_clear_assets
 from .services.manifest import initialize_history_for_path
 from .services.storage import (
     get_parent_path_from_snapshot,
