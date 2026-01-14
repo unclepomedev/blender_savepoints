@@ -3,10 +3,25 @@
 import time
 
 import bpy
-
 from .snapshot import create_snapshot
 from .storage import get_parent_path_from_snapshot
 from .versioning import delete_version_by_id
+
+UNSAFE_MODES = {
+    'SCULPT',
+    'PAINT_VERTEX',
+    'PAINT_WEIGHT',
+    'PAINT_TEXTURE',
+    'PAINT_GPENCIL',
+    'SCULPT_GPENCIL',
+    'SCULPT_CURVES',
+    'EDIT_MESH',
+}
+
+
+def is_rendering():
+    """Check if a render job is running."""
+    return bpy.app.is_job_running("RENDER")
 
 
 def autosave_timer():
@@ -16,6 +31,12 @@ def autosave_timer():
 
     try:
         context = bpy.context
+        if context.mode in UNSAFE_MODES:
+            return check_interval
+
+        if is_rendering():
+            return check_interval
+
         scene = getattr(context, "scene", None)
         if not scene:
             return check_interval
@@ -55,12 +76,15 @@ def autosave_timer():
             return check_interval
 
         # Execute save
-        delete_version_by_id("autosave", use_trash=False)
-        create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)
-        settings.last_autosave_timestamp = str(time.time())
+        try:
+            delete_version_by_id("autosave", use_trash=False)
+            create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)
+            settings.last_autosave_timestamp = str(time.time())
+        except Exception as e:
+            print(f"SavePoints: Auto Save execution failed: {e}")
 
         return check_interval
 
     except Exception as e:
-        print(f"Auto Save failed: {e}")
+        print(f"SavePoints: Auto Save timer error: {e}")
         return check_interval
