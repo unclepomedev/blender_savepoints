@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import bpy
 import json
 import shutil
 from pathlib import Path
@@ -100,3 +101,41 @@ def link_history(source_dir: str | Path, blend_filepath: str) -> str:
         print(f"Warning: Failed to update parent_file in linked manifest: {e}")
 
     return str(target_path)
+
+
+def make_all_local_and_clear_assets():
+    """
+    Make all linked data local AND clear their asset status to prevent
+    Asset Browser duplication (pollution).
+    """
+    try:
+        if bpy.data.libraries:
+            try:
+                bpy.ops.wm.make_local(type='ALL')
+            except (RuntimeError, AttributeError):
+                data_collections = [
+                    bpy.data.objects, bpy.data.meshes, bpy.data.materials,
+                    bpy.data.node_groups, bpy.data.textures, bpy.data.images,
+                    bpy.data.actions, bpy.data.collections
+                ]
+
+                for collection in data_collections:
+                    for data_block in collection:
+                        if data_block.library:
+                            data_block.make_local()
+    except Exception as e:
+        print(f"SavePoints: Error during localization: {e}")
+    check_collections = [
+        bpy.data.objects,
+        bpy.data.materials,
+        bpy.data.node_groups,
+        bpy.data.collections,
+        bpy.data.actions,
+        bpy.data.worlds
+    ]
+
+    for collection in check_collections:
+        for data_block in collection:
+            if data_block.asset_data:
+                data_block.asset_clear()
+                print(f"SavePoints: Cleared asset mark from {data_block.name}")

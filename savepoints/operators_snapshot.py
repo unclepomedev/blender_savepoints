@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .services.asset_path import unmap_snapshot_paths
 from .services.backup import create_backup, HistoryDirectoryUnavailableError
+from .services.linking import make_all_local_and_clear_assets
 from .services.manifest import initialize_history_for_path
 from .services.storage import (
     get_parent_path_from_snapshot,
@@ -89,6 +90,19 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
     bl_label = "Fork (Save as New)"
     bl_options = {'REGISTER', 'UNDO'}
 
+    unbind_linked_assets: bpy.props.BoolProperty(
+        name="Detach from Library (Make Local & Clear Assets)",
+        description="Converts linked data to local and clears asset tags to prevent Asset Browser duplication. Creates a fully independent file (may increase file size).",
+        default=False,
+    )
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
+
+    def draw(self, context):
+        layout = self.layout
+        layout.prop(self, "unbind_linked_assets")
+
     def execute(self, context):
         if not bpy.data.filepath:
             return {'CANCELLED'}
@@ -113,8 +127,12 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             self.report({'WARNING'}, f"History creation failed: {e}")
 
         try:
-            # 1. Save to new location (Blender tries to fix paths, but often fails for Deep -> Shallow move)
+            # Save to new location (Blender tries to fix paths, but often fails for Deep -> Shallow move)
             bpy.ops.wm.save_as_mainfile(filepath=str(target_path))
+
+            if self.unbind_linked_assets:
+                make_all_local_and_clear_assets()
+                self.report({'INFO'}, "Unbound linked assets.")
 
             if unmap_snapshot_paths():
                 self.report({'INFO'}, "Fixed relative paths for forked project.")
