@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "savepoints"
-version = "1.4.2"
+version = "1.4.3"
 name = "SavePoints"
 tagline = "Visual version control, easy restore, and automatic timelapse"
 type = "add-on"
