@@ -74,6 +74,7 @@ SavePoints is a Blender add-on that helps you manage project versions easily. It
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
    - **Note**: Auto-save does not generate thumbnails to avoid rendering interruptions.
+   - **Safety Mode**: To prevent crashes and interruptions, auto-save is **skipped** while you are in interactive modes (e.g., Sculpt, Weight Paint) or rendering. The save is delayed and will automatically trigger shortly after you **exit these modes**.
 6. **Disk Management & Protection**:
    - **Snapshot Compression**: Enabled by default in the General settings. Keep this ON to save disk space, or turn it OFF if you prioritize maximum save speed over file size.
    - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50) excluding locked versions.
