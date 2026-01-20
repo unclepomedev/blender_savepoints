@@ -1,0 +1,41 @@
+name: Daily Build Test
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  test-daily:
+    name: Daily - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen || uv sync
+
+      - name: Setup Just
+        uses: extractions/setup-just@v3
+
+      - name: Setup Blender (Daily)
+        uses: unclepomedev/setup-blup@v0
+        with:
+          blender-version: "daily"
+          daily: true
+          cache: false
+
+      - name: Run Tests
+        shell: bash
+        run: just test-blender
