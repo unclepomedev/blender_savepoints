@@ -8,69 +8,48 @@ However, AI suggestions should be treated as **optional advice**, not mandatory 
 
 ## Testing
 
-This repository includes an end-to-end (E2E) test script to verify the core functionality of the add-on in a headless Blender environment.
+This repository includes end-to-end (E2E) tests to verify the add-on in a headless Blender environment. We use [blup](https://github.com/unclepomedev/blup) to manage Blender versions and execution.
 
-To run the tests:
+### Prerequisites
 
-```bash
+1. Just: [Installation Guide](https://github.com/casey/just)
+2. blup: [Installation Guide](https://github.com/unclepomedev/blup)
+
+### Running Tests
+
+To run the tests, use the `just` command. It will automatically detect the Blender executable via `blup`.
+
+```shell
+# Run tests with the default version (defined in .blender-version or global default)
 just test-blender
+
+# Run tests with a specific version
+just test-blender 4.2.0
 ```
-
-> **Note**: 
-> - Check and configure the `blender_exe` path in `justfile` to match your environment.
-> - [Just](https://github.com/casey/just) is required to run the command.
-
-This script verifies typical use cases and ensures the add-on fails safely (at least to the best of the developer's knowledge).
 
 ### CI Environment
 
-In addition to local testing on macOS and Windows, these E2E tests are automatically executed on Windows and Linux via GitHub Actions.
+Tests are automatically executed on Windows and Linux (plus macOS for daily builds) via GitHub Actions. We use [setup-blup](https://github.com/unclepomedev/setup-blup) to efficiently cache and setup the test environment across different OSs.
 
 
 ```mermaid
 graph TD
-    Start(("Start<br>(Push Tag / PR)"))
+    Start(("Start<br>(Push / PR)"))
 
-    subgraph TestMatrix ["Test Matrix (Parallel Execution)"]
-        direction LR
-        subgraph Linux ["Linux Tests"]
-            direction TB
-            L_42["Blender 4.2"]
-            L_45["Blender 4.5"]
-            L_50["Blender 5.0"]
-        end
-        subgraph Windows ["Windows Tests"]
-            direction TB
-            W_42["Blender 4.2"]
-            W_45["Blender 4.5"]
-            W_50["Blender 5.0"]
-        end
+    subgraph Matrix ["Test Matrix (Parallel Execution)"]
+        direction TB
+        Tests["Run Tests<br>(Linux / Windows / macOS*)"]
     end
 
-    Artifacts[("Artifacts Store<br>(Success Markers)")]
+    Artifacts[("Artifacts Store")]
+    UpdateBadges["Job: update-badges"]
+    Release["Job: build-and-release<br>(Tags only)"]
 
-    UpdateBadges["Job: update-badges<br>(if: always)"]
-    Release["Job: build-and-release<br>(if: success)"]
+    Start --> Tests
+    Tests -- Success --> Artifacts
+    
+    Artifacts --> UpdateBadges
+    Artifacts --> Release
 
-    Start --> L_42 & L_45 & L_50 & W_42 & W_45 & W_50
-
-    L_42 & L_45 & L_50 & W_42 & W_45 & W_50 -.-> Artifacts
-
-    Linux & Windows --> UpdateBadges
-    Linux & Windows --> Release
-
-    Artifacts -.-o UpdateBadges
-
-    classDef trigger fill:#09f,stroke:#333,stroke-width:2px;
-    classDef job fill:#ff9,stroke:#333,stroke-width:2px;
-    classDef release fill:#9f9,stroke:#333,stroke-width:2px;
-    classDef data fill:#eee,stroke:#333,stroke-dasharray: 5 5;
-
-    class Start trigger;
-    class UpdateBadges job;
-    class Release release;
-    class Artifacts data;
-
-    style Linux fill:#f0f0f0,stroke:#ccc
-    style Windows fill:#f0f0f0,stroke:#ccc
+    style Matrix fill:#f9f9f9,stroke:#333,stroke-width:2px
 ```
