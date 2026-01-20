@@ -13,13 +13,14 @@ permissions:
   contents: write
 
 jobs:
-  test-linux:
-    name: Test on Linux - Blender ${{ matrix.blender-version }}
-    runs-on: ubuntu-latest
+  test:
+    name: Test - ${{ matrix.os }} - Blender ${{ matrix.blender-version }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        blender-version: [ "4.2.0", "4.5.0", "5.0.0" ]
+        os: [ubuntu-latest, windows-latest]
+        blender-version: ["4.2.0", "4.5.0", "5.0.0"]
 
     steps:
       - name: Checkout code
@@ -36,121 +37,15 @@ jobs:
       - name: Setup Just
         uses: extractions/setup-just@v3
 
-      - name: Cache Blender
-        id: cache-blender
-        uses: actions/cache@v4
+      - name: Setup Blender with blup
+        uses: unclepomedev/setup-blup@v0
         with:
-          path: blender-bin
-          key: blender-${{ runner.os }}-${{ matrix.blender-version }}
-
-      - name: Download Blender
-        if: steps.cache-blender.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          set -e
-          VER="${{ matrix.blender-version }}"
-          MAJOR_MINOR=${VER%.*}
-          mkdir -p blender-bin
-
-          URL="https://download.blender.org/release/Blender${MAJOR_MINOR}/blender-${VER}-linux-x64.tar.xz"
-          echo "Downloading Blender ${VER} for Linux from: $URL"
-          curl -SL --fail "$URL" -o blender.tar.xz || { echo "Failed to download Blender"; exit 1; }
-          
-          tar -xf blender.tar.xz -C blender-bin --strip-components=1
-          rm blender.tar.xz
-
-      - name: Setup Blender Path
-        shell: bash
-        run: |
-          echo "$PWD/blender-bin" >> $GITHUB_PATH
-          export PATH="$PWD/blender-bin:$PATH"
-          
-          if ! command -v blender &> /dev/null; then
-            echo "::error::blender executable not found in PATH"
-            exit 1
-          fi
-          echo "Blender setup complete."
+          blender-version: ${{ matrix.blender-version }}
+          cache: true
 
       - name: Run Tests
         shell: bash
-        env:
-          BLENDER_EXE: blender
-        run: just test-blender
-
-      - name: Create Success Marker
-        run: touch success-${{ runner.os }}-${{ matrix.blender-version }}
-
-      - name: Upload Success Marker
-        uses: actions/upload-artifact@v4
-        with:
-          name: success-${{ runner.os }}-${{ matrix.blender-version }}
-          path: success-${{ runner.os }}-${{ matrix.blender-version }}
-
-  test-windows:
-    name: Test on Windows - Blender ${{ matrix.blender-version }}
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        blender-version: [ "4.2.0", "4.5.0", "5.0.0" ]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-
-      - name: Install dependencies
-        run: uv sync --frozen || uv sync
-
-      - name: Setup Just
-        uses: extractions/setup-just@v3
-
-      - name: Cache Blender
-        id: cache-blender
-        uses: actions/cache@v4
-        with:
-          path: blender-bin
-          key: blender-windows-${{ matrix.blender-version }}
-
-      - name: Download Blender
-        if: steps.cache-blender.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          set -e
-          VER="${{ matrix.blender-version }}"
-          MAJOR_MINOR=${VER%.*}
-          mkdir -p blender-bin
-
-          URL="https://download.blender.org/release/Blender${MAJOR_MINOR}/blender-${VER}-windows-x64.zip"
-          echo "Downloading Blender ${VER} for Windows from: $URL"
-          curl -SL --fail "$URL" -o blender.zip || { echo "Failed to download Blender"; exit 1; }
-          
-          unzip -q blender.zip -d blender_temp
-          INNER_DIR=$(ls blender_temp | head -n 1)
-          mv blender_temp/"$INNER_DIR"/* blender-bin/
-          rm -rf blender_temp blender.zip
-
-      - name: Setup Blender Path
-        shell: bash
-        run: |
-          echo "$PWD/blender-bin" >> $GITHUB_PATH
-          export PATH="$PWD/blender-bin:$PATH"
-          
-          if ! command -v blender.exe &> /dev/null; then
-            echo "::error::blender.exe executable not found in PATH"
-            exit 1
-          fi
-          echo "Blender setup complete."
-
-      - name: Run Tests
-        shell: bash
-        env:
-          BLENDER_EXE: blender.exe
-        run: just test-blender
+        run: just test-blender ${{ matrix.blender-version }}
 
       - name: Create Success Marker
         shell: bash
@@ -163,7 +58,7 @@ jobs:
           path: success-${{ runner.os }}-${{ matrix.blender-version }}
 
   update-badges:
-    needs: [ test-linux, test-windows ]
+    needs: [test]
     if: always() && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -194,7 +89,7 @@ jobs:
           fi
 
   build-and-release:
-    needs: [ test-linux, test-windows ]
+    needs: [test]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -203,9 +98,11 @@ jobs:
 
       - name: Set output for version name
         id: version
+        shell: bash
         run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: Verify Manifest Version
+        shell: bash
         run: |
           TAG_VERSION=${GITHUB_REF#refs/tags/}
           TAG_VERSION=${TAG_VERSION#v}
