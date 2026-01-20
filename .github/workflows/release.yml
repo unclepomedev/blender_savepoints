@@ -38,7 +38,7 @@ jobs:
         uses: extractions/setup-just@v3
 
       - name: Setup Blender with blup
-        uses: unclepomedev/setup-blup@v0
+        uses: unclepomedev/setup-blup@v0.0.3
         with:
           blender-version: ${{ matrix.blender-version }}
           cache: true
