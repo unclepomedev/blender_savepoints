@@ -47,7 +47,7 @@ class GreasePencilTintModifier(Modifier):
     color_mode: str
     factor: float
     tint_mode: str
-    color: float
+    color: list[float]
     color_ramp: 'ColorRamp'
     object: 'Object'
     radius: float

@@ -16,7 +16,7 @@ class HydraRenderEngine(RenderEngine):
     is_animation: bool
     is_preview: bool
     camera_override: 'Object'
-    layer_override: bool
+    layer_override: list[bool]
     resolution_x: int
     resolution_y: int
     temporary_directory: str

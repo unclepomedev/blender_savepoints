@@ -32,7 +32,7 @@ class SpaceImageEditor(Space):
     scopes: 'Scopes'
     use_image_pin: bool
     sample_histogram: 'Histogram'
-    zoom: float
+    zoom: list[float]
     zoom_percentage: float
     show_repeat: bool
     show_annotation: bool
@@ -42,7 +42,7 @@ class SpaceImageEditor(Space):
     uv_editor: 'SpaceUVEditor'
     mode: str
     ui_mode: str
-    cursor_location: float
+    cursor_location: list[float]
     pivot_point: str
     annotation: 'Annotation'
     use_realtime_update: bool

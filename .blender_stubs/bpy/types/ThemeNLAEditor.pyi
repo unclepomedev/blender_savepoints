@@ -13,18 +13,18 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeNLAEditor(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    grid: float
-    active_action: float
-    active_action_unset: float
-    strips: float
-    strips_selected: float
-    transition_strips: float
-    transition_strips_selected: float
-    meta_strips: float
-    meta_strips_selected: float
-    sound_strips: float
-    sound_strips_selected: float
-    tweak: float
-    tweak_duplicate: float
-    keyframe_border: float
-    keyframe_border_selected: float
+    grid: list[float]
+    active_action: list[float]
+    active_action_unset: list[float]
+    strips: list[float]
+    strips_selected: list[float]
+    transition_strips: list[float]
+    transition_strips_selected: list[float]
+    meta_strips: list[float]
+    meta_strips_selected: list[float]
+    sound_strips: list[float]
+    sound_strips_selected: list[float]
+    tweak: list[float]
+    tweak_duplicate: list[float]
+    keyframe_border: list[float]
+    keyframe_border_selected: list[float]

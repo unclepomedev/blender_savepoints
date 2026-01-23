@@ -107,8 +107,8 @@ class Brush(ID):
     smooth_stroke_radius: int
     smooth_stroke_factor: float
     rate: float
-    color: float
-    secondary_color: float
+    color: list[float]
+    secondary_color: list[float]
     weight: float
     strength: float
     flow: float
@@ -164,10 +164,10 @@ class Brush(ID):
     normal_radius_factor: float
     area_radius_factor: float
     wet_paint_radius_factor: float
-    stencil_pos: float
-    stencil_dimension: float
-    mask_stencil_pos: float
-    mask_stencil_dimension: float
+    stencil_pos: list[float]
+    stencil_dimension: list[float]
+    mask_stencil_pos: list[float]
+    mask_stencil_dimension: list[float]
     sharp_threshold: float
     fill_threshold: float
     blur_kernel_radius: int
@@ -256,8 +256,8 @@ class Brush(ID):
     texture_overlay_alpha: int
     mask_overlay_alpha: int
     cursor_overlay_alpha: int
-    cursor_color_add: float
-    cursor_color_subtract: float
+    cursor_color_add: list[float]
+    cursor_color_subtract: list[float]
     brush_capabilities: 'BrushCapabilities'
     sculpt_capabilities: 'BrushCapabilitiesSculpt'
     image_paint_capabilities: 'BrushCapabilitiesImagePaint'

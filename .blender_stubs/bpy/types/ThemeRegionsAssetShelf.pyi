@@ -11,5 +11,5 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeRegionsAssetShelf(bpy_struct):
-    back: float
-    header_back: float
+    back: list[float]
+    header_back: list[float]

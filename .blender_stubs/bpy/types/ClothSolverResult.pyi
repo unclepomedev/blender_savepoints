@@ -11,7 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ClothSolverResult(bpy_struct):
-    status: str
+    status: set[str]
     max_error: float
     min_error: float
     avg_error: float

@@ -139,7 +139,7 @@ class ParticleSettings(ID):
     tangent_factor: float
     tangent_phase: float
     reactor_factor: float
-    object_align_factor: float
+    object_align_factor: list[float]
     angular_velocity_factor: float
     phase_factor: float
     rotation_factor_random: float

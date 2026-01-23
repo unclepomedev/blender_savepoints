@@ -62,10 +62,10 @@ class Object(ID):
     data: 'ID'
     type: str
     mode: str
-    bound_box: float
+    bound_box: list[float]
     parent: 'Object'
     parent_type: str
-    parent_vertices: int
+    parent_vertices: list[int]
     parent_bone: str
     use_parent_final_indices: bool
     use_camera_lock_parent: bool
@@ -74,33 +74,33 @@ class Object(ID):
     material_slots: bpy_prop_collection['MaterialSlot']
     active_material: 'Material'
     active_material_index: int
-    location: float
-    rotation_quaternion: float
-    rotation_axis_angle: float
-    rotation_euler: float
+    location: list[float]
+    rotation_quaternion: list[float]
+    rotation_axis_angle: list[float]
+    rotation_euler: list[float]
     rotation_mode: str
-    scale: float
-    dimensions: float
-    delta_location: float
-    delta_rotation_euler: float
-    delta_rotation_quaternion: float
-    delta_scale: float
-    lock_location: bool
-    lock_rotation: bool
+    scale: list[float]
+    dimensions: list[float]
+    delta_location: list[float]
+    delta_rotation_euler: list[float]
+    delta_rotation_quaternion: list[float]
+    delta_scale: list[float]
+    lock_location: list[bool]
+    lock_rotation: list[bool]
     lock_rotation_w: bool
     lock_rotations_4d: bool
-    lock_scale: bool
-    matrix_world: float
-    matrix_local: float
-    matrix_basis: float
-    matrix_parent_inverse: float
+    lock_scale: list[bool]
+    matrix_world: list[float]
+    matrix_local: list[float]
+    matrix_basis: list[float]
+    matrix_parent_inverse: list[float]
     modifiers: bpy_prop_collection['Modifier']
     shader_effects: bpy_prop_collection['ShaderFx']
     constraints: bpy_prop_collection['Constraint']
     vertex_groups: bpy_prop_collection['VertexGroup']
     empty_display_type: str
     empty_display_size: float
-    empty_image_offset: float
+    empty_image_offset: list[float]
     image_user: 'ImageUser'
     empty_image_depth: str
     show_empty_image_perspective: bool
@@ -110,7 +110,7 @@ class Object(ID):
     empty_image_side: str
     add_rest_position_attribute: bool
     pass_index: int
-    color: float
+    color: list[float]
     field: 'FieldSettings'
     collision: 'CollisionSettings'
     soft_body: 'SoftBodySettings'

@@ -18,7 +18,7 @@ class BlendImportContextItem(bpy_struct):
     id_type: str
     source_libraries: bpy_prop_collection['BlendImportContextLibrary']
     append_action: str
-    import_info: str
+    import_info: set[str]
     id: 'ID'
     source_library: 'Library'
     library_override_id: 'ID'

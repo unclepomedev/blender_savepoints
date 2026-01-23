@@ -23,11 +23,11 @@ class PoseBone(bpy_struct, _GenericBone):
     bone: 'Bone'
     parent: 'PoseBone'
     child: 'PoseBone'
-    location: float
-    scale: float
-    rotation_quaternion: float
-    rotation_axis_angle: float
-    rotation_euler: float
+    location: list[float]
+    scale: list[float]
+    rotation_quaternion: list[float]
+    rotation_axis_angle: list[float]
+    rotation_euler: list[float]
     rotation_mode: str
     bbone_rollin: float
     bbone_rollout: float
@@ -37,15 +37,15 @@ class PoseBone(bpy_struct, _GenericBone):
     bbone_curveoutz: float
     bbone_easein: float
     bbone_easeout: float
-    bbone_scalein: float
-    bbone_scaleout: float
+    bbone_scalein: list[float]
+    bbone_scaleout: list[float]
     bbone_custom_handle_start: 'PoseBone'
     bbone_custom_handle_end: 'PoseBone'
-    matrix_channel: float
-    matrix_basis: float
-    matrix: float
-    head: float
-    tail: float
+    matrix_channel: list[float]
+    matrix_basis: list[float]
+    matrix: list[float]
+    head: list[float]
+    tail: list[float]
     length: float
     is_in_ik_chain: bool
     lock_ik_x: bool
@@ -69,9 +69,9 @@ class PoseBone(bpy_struct, _GenericBone):
     ik_rotation_weight: float
     ik_linear_weight: float
     custom_shape: 'Object'
-    custom_shape_scale_xyz: float
-    custom_shape_translation: float
-    custom_shape_rotation_euler: float
+    custom_shape_scale_xyz: list[float]
+    custom_shape_translation: list[float]
+    custom_shape_rotation_euler: list[float]
     use_transform_at_custom_shape: bool
     use_transform_around_custom_shape: bool
     use_custom_shape_bone_size: bool
@@ -80,11 +80,11 @@ class PoseBone(bpy_struct, _GenericBone):
     custom_shape_transform: 'PoseBone'
     custom_shape_wire_width: float
     color: 'BoneColor'
-    lock_location: bool
-    lock_rotation: bool
+    lock_location: list[bool]
+    lock_rotation: list[bool]
     lock_rotation_w: bool
     lock_rotations_4d: bool
-    lock_scale: bool
+    lock_scale: list[bool]
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def evaluate_envelope(self, *args, **kwargs) -> Any: ...
     def bbone_segment_index(self, *args, **kwargs) -> Any: ...

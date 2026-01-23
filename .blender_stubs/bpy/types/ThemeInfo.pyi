@@ -13,14 +13,14 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeInfo(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    info_selected: float
-    info_selected_text: float
-    info_error_text: float
-    info_warning_text: float
-    info_info_text: float
-    info_debug: float
-    info_debug_text: float
-    info_property: float
-    info_property_text: float
-    info_operator: float
-    info_operator_text: float
+    info_selected: list[float]
+    info_selected_text: list[float]
+    info_error_text: list[float]
+    info_warning_text: list[float]
+    info_info_text: list[float]
+    info_debug: list[float]
+    info_debug_text: list[float]
+    info_property: list[float]
+    info_property_text: list[float]
+    info_operator: list[float]
+    info_operator_text: list[float]

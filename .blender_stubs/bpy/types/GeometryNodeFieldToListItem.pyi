@@ -13,5 +13,5 @@ from .bpy_struct import bpy_struct
 class GeometryNodeFieldToListItem(bpy_struct):
     name: str
     socket_type: str
-    color: float
+    color: list[float]
     identifier: int

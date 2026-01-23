@@ -49,6 +49,6 @@ class GreasePencilHookModifier(Modifier):
     strength: float
     falloff_type: str
     falloff_radius: float
-    center: float
-    matrix_inverse: float
+    center: list[float]
+    matrix_inverse: list[float]
     use_falloff_uniform: bool

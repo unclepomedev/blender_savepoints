@@ -12,6 +12,6 @@ from .bpy_prop_collection import bpy_prop_collection
 from .PropertyGroup import PropertyGroup
 class OperatorMousePath(PropertyGroup):
     name: str
-    loc: float
+    loc: list[float]
     time: float
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

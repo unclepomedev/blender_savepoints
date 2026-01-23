@@ -13,7 +13,7 @@ from .bpy_struct import bpy_struct
 class AssetShelf(bpy_struct):
     bl_idname: str
     bl_space_type: str
-    bl_options: str
+    bl_options: set[str]
     bl_activate_operator: str
     bl_drag_operator: str
     bl_default_preview_size: int

@@ -42,7 +42,7 @@ class BakeSettings(bpy_struct):
     use_pass_diffuse: bool
     use_pass_glossy: bool
     use_pass_transmission: bool
-    pass_filter: str
+    pass_filter: set[str]
     use_multires: bool
     use_lores_mesh: bool
     displacement_space: str

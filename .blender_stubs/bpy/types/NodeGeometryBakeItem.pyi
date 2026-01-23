@@ -13,6 +13,6 @@ from .bpy_struct import bpy_struct
 class NodeGeometryBakeItem(bpy_struct):
     name: str
     socket_type: str
-    color: float
+    color: list[float]
     attribute_domain: str
     is_attribute: bool

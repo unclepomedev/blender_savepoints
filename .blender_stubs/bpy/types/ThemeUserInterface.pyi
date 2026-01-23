@@ -39,38 +39,38 @@ class ThemeUserInterface(bpy_struct):
     menu_shadow_width: int
     icon_alpha: float
     icon_saturation: float
-    widget_emboss: float
-    editor_border: float
-    editor_outline: float
-    editor_outline_active: float
-    widget_text_cursor: float
+    widget_emboss: list[float]
+    editor_border: list[float]
+    editor_outline: list[float]
+    editor_outline_active: list[float]
+    widget_text_cursor: list[float]
     panel_roundness: float
-    panel_header: float
-    panel_title: float
-    panel_text: float
-    panel_back: float
-    panel_sub_back: float
-    panel_outline: float
-    panel_active: float
-    transparent_checker_primary: float
-    transparent_checker_secondary: float
+    panel_header: list[float]
+    panel_title: list[float]
+    panel_text: list[float]
+    panel_back: list[float]
+    panel_sub_back: list[float]
+    panel_outline: list[float]
+    panel_active: list[float]
+    transparent_checker_primary: list[float]
+    transparent_checker_secondary: list[float]
     transparent_checker_size: int
-    axis_x: float
-    axis_y: float
-    axis_z: float
-    axis_w: float
-    gizmo_hi: float
-    gizmo_primary: float
-    gizmo_secondary: float
-    gizmo_view_align: float
-    gizmo_a: float
-    gizmo_b: float
-    icon_scene: float
-    icon_collection: float
-    icon_object: float
-    icon_object_data: float
-    icon_modifier: float
-    icon_shading: float
-    icon_folder: float
-    icon_autokey: float
+    axis_x: list[float]
+    axis_y: list[float]
+    axis_z: list[float]
+    axis_w: list[float]
+    gizmo_hi: list[float]
+    gizmo_primary: list[float]
+    gizmo_secondary: list[float]
+    gizmo_view_align: list[float]
+    gizmo_a: list[float]
+    gizmo_b: list[float]
+    icon_scene: list[float]
+    icon_collection: list[float]
+    icon_object: list[float]
+    icon_object_data: list[float]
+    icon_modifier: list[float]
+    icon_shading: list[float]
+    icon_folder: list[float]
+    icon_autokey: list[float]
     icon_border_intensity: float

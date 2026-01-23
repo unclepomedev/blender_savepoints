@@ -19,6 +19,6 @@ class NODE_MT_texture_node_distort_swap(SwapNodeMenu, NODE_MT_texture_node_disto
     bl_translation_context: str
     bl_description: str
     bl_owner_id: str
-    bl_options: str
+    bl_options: set[str]
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

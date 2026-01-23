@@ -31,7 +31,7 @@ class SimpleDeformModifier(Modifier):
     origin: 'Object'
     factor: float
     angle: float
-    limits: float
+    limits: list[float]
     lock_x: bool
     lock_y: bool
     lock_z: bool

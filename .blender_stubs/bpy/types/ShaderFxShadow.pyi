@@ -19,15 +19,15 @@ class ShaderFxShadow(ShaderFx):
     show_in_editmode: bool
     show_expanded: bool
     object: 'Object'
-    offset: int
-    scale: float
-    shadow_color: float
+    offset: list[int]
+    scale: list[float]
+    shadow_color: list[float]
     orientation: str
     amplitude: float
     period: float
     phase: float
     rotation: float
-    blur: int
+    blur: list[int]
     samples: int
     use_object: bool
     use_wave: bool

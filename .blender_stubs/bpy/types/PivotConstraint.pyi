@@ -32,5 +32,5 @@ class PivotConstraint(Constraint):
     target: 'Object'
     subtarget: str
     use_relative_location: bool
-    offset: float
+    offset: list[float]
     rotation_range: str

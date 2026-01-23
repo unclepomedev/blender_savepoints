@@ -12,8 +12,8 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 class MetaElement(bpy_struct):
     type: str
-    co: float
-    rotation: float
+    co: list[float]
+    rotation: list[float]
     radius: float
     size_x: float
     size_y: float

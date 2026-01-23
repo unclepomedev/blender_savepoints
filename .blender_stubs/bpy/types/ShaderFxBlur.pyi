@@ -17,7 +17,7 @@ class ShaderFxBlur(ShaderFx):
     show_render: bool
     show_in_editmode: bool
     show_expanded: bool
-    size: float
+    size: list[float]
     samples: int
     rotation: float
     use_dof_mode: bool

@@ -23,7 +23,7 @@ class IMAGE_OT_open_images(Operator):
     bl_translation_context: str
     bl_description: str
     bl_undo_group: str
-    bl_options: str
+    bl_options: set[str]
     bl_cursor_pending: str
     layout: 'UILayout'
     options: 'OperatorOptions'

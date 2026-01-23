@@ -12,5 +12,5 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeSpreadsheet(bpy_struct):
-    row_alternate: float
+    row_alternate: list[float]
     space: 'ThemeSpaceGeneric'

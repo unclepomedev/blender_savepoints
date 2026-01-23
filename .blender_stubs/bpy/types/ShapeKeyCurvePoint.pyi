@@ -11,6 +11,6 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ShapeKeyCurvePoint(bpy_struct):
-    co: float
+    co: list[float]
     tilt: float
     radius: float

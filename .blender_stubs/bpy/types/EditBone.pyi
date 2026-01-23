@@ -17,8 +17,8 @@ class EditBone(bpy_struct, _GenericBone):
     collections: bpy_prop_collection['BoneCollection']
     parent: 'EditBone'
     roll: float
-    head: float
-    tail: float
+    head: list[float]
+    tail: list[float]
     length: float
     name: str
     color: 'BoneColor'
@@ -43,11 +43,11 @@ class EditBone(bpy_struct, _GenericBone):
     bbone_z: float
     bbone_handle_type_start: str
     bbone_custom_handle_start: 'EditBone'
-    bbone_handle_use_scale_start: bool
+    bbone_handle_use_scale_start: list[bool]
     bbone_handle_use_ease_start: bool
     bbone_handle_type_end: str
     bbone_custom_handle_end: 'EditBone'
-    bbone_handle_use_scale_end: bool
+    bbone_handle_use_scale_end: list[bool]
     bbone_handle_use_ease_end: bool
     bbone_rollin: float
     bbone_rollout: float
@@ -59,13 +59,13 @@ class EditBone(bpy_struct, _GenericBone):
     bbone_easein: float
     bbone_easeout: float
     use_scale_easing: bool
-    bbone_scalein: float
-    bbone_scaleout: float
+    bbone_scalein: list[float]
+    bbone_scaleout: list[float]
     hide: bool
     lock: bool
     select: bool
     select_head: bool
     select_tail: bool
-    matrix: float
+    matrix: list[float]
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def align_roll(self, *args, **kwargs) -> Any: ...

@@ -13,25 +13,25 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeSequenceEditor(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    grid: float
-    movie_strip: float
-    movieclip_strip: float
-    image_strip: float
-    scene_strip: float
-    audio_strip: float
-    effect_strip: float
-    transition_strip: float
-    color_strip: float
-    meta_strip: float
-    mask_strip: float
-    text_strip: float
-    active_strip: float
-    selected_strip: float
-    keyframe_border: float
-    keyframe_border_selected: float
-    preview_back: float
-    metadatabg: float
-    metadatatext: float
-    row_alternate: float
-    text_strip_cursor: float
-    selected_text: float
+    grid: list[float]
+    movie_strip: list[float]
+    movieclip_strip: list[float]
+    image_strip: list[float]
+    scene_strip: list[float]
+    audio_strip: list[float]
+    effect_strip: list[float]
+    transition_strip: list[float]
+    color_strip: list[float]
+    meta_strip: list[float]
+    mask_strip: list[float]
+    text_strip: list[float]
+    active_strip: list[float]
+    selected_strip: list[float]
+    keyframe_border: list[float]
+    keyframe_border_selected: list[float]
+    preview_back: list[float]
+    metadatabg: list[float]
+    metadatatext: list[float]
+    row_alternate: list[float]
+    text_strip_cursor: list[float]
+    selected_text: list[float]

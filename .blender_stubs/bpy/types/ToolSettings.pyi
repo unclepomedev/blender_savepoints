@@ -80,9 +80,9 @@ class ToolSettings(bpy_struct):
     snap_angle_increment_2d_precision: float
     snap_angle_increment_3d: float
     snap_angle_increment_3d_precision: float
-    snap_elements: str
-    snap_elements_base: str
-    snap_elements_individual: str
+    snap_elements: set[str]
+    snap_elements_base: set[str]
+    snap_elements_individual: set[str]
     snap_face_nearest_steps: int
     use_snap_to_same_target: bool
     use_snap_anim: bool
@@ -91,11 +91,11 @@ class ToolSettings(bpy_struct):
     use_snap_driver_absolute: bool
     snap_anim_element: str
     use_snap_playhead: bool
-    snap_playhead_element: str
+    snap_playhead_element: set[str]
     snap_playhead_frame_step: int
     snap_playhead_second_step: int
     playhead_snap_distance: int
-    snap_uv_element: str
+    snap_uv_element: set[str]
     snap_target: str
     use_snap_peel_object: bool
     use_snap_backface_culling: bool
@@ -153,10 +153,10 @@ class ToolSettings(bpy_struct):
     use_uv_select_island: bool
     show_uv_local_view: bool
     use_uv_custom_region: bool
-    mesh_select_mode: bool
+    mesh_select_mode: list[bool]
     vertex_group_weight: float
     use_edge_path_live_unwrap: bool
-    normal_vector: float
+    normal_vector: list[float]
     curve_paint_settings: 'CurvePaintSettings'
     statvis: 'MeshStatVis'
     custom_bevel_profile_preset: 'CurveProfile'

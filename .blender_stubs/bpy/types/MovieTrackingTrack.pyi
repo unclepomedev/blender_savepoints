@@ -29,7 +29,7 @@ class MovieTrackingTrack(bpy_struct):
     use_grayscale_preview: bool
     use_alpha_preview: bool
     has_bundle: bool
-    bundle: float
+    bundle: list[float]
     hide: bool
     select: bool
     select_anchor: bool
@@ -37,9 +37,9 @@ class MovieTrackingTrack(bpy_struct):
     select_search: bool
     lock: bool
     use_custom_color: bool
-    color: float
+    color: list[float]
     average_error: float
     annotation: 'Annotation'
     weight: float
     weight_stab: float
-    offset: float
+    offset: list[float]

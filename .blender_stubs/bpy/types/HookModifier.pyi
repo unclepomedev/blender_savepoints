@@ -30,12 +30,12 @@ class HookModifier(Modifier):
     falloff_type: str
     falloff_radius: float
     falloff_curve: 'CurveMapping'
-    center: float
-    matrix_inverse: float
+    center: list[float]
+    matrix_inverse: list[float]
     object: 'Object'
     subtarget: str
     use_falloff_uniform: bool
     vertex_group: str
-    vertex_indices: int
+    vertex_indices: list[int]
     invert_vertex_group: bool
     def vertex_indices_set(self, *args, **kwargs) -> Any: ...

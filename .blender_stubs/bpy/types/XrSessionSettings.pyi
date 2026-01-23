@@ -16,7 +16,7 @@ class XrSessionSettings(bpy_struct):
     shading: 'View3DShading'
     base_pose_type: str
     base_pose_object: 'Object'
-    base_pose_location: float
+    base_pose_location: list[float]
     base_pose_angle: float
     base_scale: float
     show_floor: bool

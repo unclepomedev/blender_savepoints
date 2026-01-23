@@ -11,7 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeRegionsScrubbing(bpy_struct):
-    back: float
-    text: float
-    time_marker: float
-    time_marker_selected: float
+    back: list[float]
+    text: list[float]
+    time_marker: list[float]
+    time_marker_selected: list[float]

@@ -21,7 +21,7 @@ class GreasePencilLayer(GreasePencilTreeNode):
     select: bool
     use_onion_skinning: bool
     use_masks: bool
-    channel_color: float
+    channel_color: list[float]
     next_node: 'GreasePencilTreeNode'
     prev_node: 'GreasePencilTreeNode'
     parent_group: 'GreasePencilLayerGroup'
@@ -29,21 +29,21 @@ class GreasePencilLayer(GreasePencilTreeNode):
     mask_layers: bpy_prop_collection['GreasePencilLayerMask']
     lock_frame: bool
     opacity: float
-    tint_color: float
+    tint_color: list[float]
     tint_factor: float
     radius_offset: float
     use_lights: bool
     pass_index: int
     parent: 'Object'
     parent_bone: str
-    translation: float
-    rotation: float
-    scale: float
+    translation: list[float]
+    rotation: list[float]
+    scale: list[float]
     viewlayer_render: str
     use_viewlayer_masks: bool
     blend_mode: str
     ignore_locked_materials: bool
-    matrix_local: float
-    matrix_parent_inverse: float
+    matrix_local: list[float]
+    matrix_parent_inverse: list[float]
     def get_frame_at(self, *args, **kwargs) -> Any: ...
     def current_frame(self, *args, **kwargs) -> Any: ...

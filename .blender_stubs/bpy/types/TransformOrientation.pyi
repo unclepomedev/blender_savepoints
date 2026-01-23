@@ -11,5 +11,5 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class TransformOrientation(bpy_struct):
-    matrix: float
+    matrix: list[float]
     name: str

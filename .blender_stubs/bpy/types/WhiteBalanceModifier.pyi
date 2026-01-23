@@ -23,5 +23,5 @@ class WhiteBalanceModifier(StripModifier):
     input_mask_strip: 'Strip'
     input_mask_id: 'Mask'
     is_active: bool
-    white_value: float
+    white_value: list[float]
     open_mask_input_panel: bool

@@ -33,7 +33,7 @@ class Sculpt(Paint):
     use_symmetry_feather: bool
     cavity_curve: 'CurveMapping'
     use_cavity: bool
-    tile_offset: float
+    tile_offset: list[float]
     tile_x: bool
     tile_y: bool
     tile_z: bool

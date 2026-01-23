@@ -13,7 +13,7 @@ from .bpy_struct import bpy_struct
 from .ColorRamp import ColorRamp
 from .ParticleSystem import ParticleSystem
 class DynamicPaintBrushSettings(bpy_struct):
-    paint_color: float
+    paint_color: list[float]
     paint_alpha: float
     use_absolute_alpha: bool
     paint_wetness: float

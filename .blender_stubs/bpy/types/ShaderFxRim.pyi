@@ -17,9 +17,9 @@ class ShaderFxRim(ShaderFx):
     show_render: bool
     show_in_editmode: bool
     show_expanded: bool
-    offset: int
-    rim_color: float
-    mask_color: float
+    offset: list[int]
+    rim_color: list[float]
+    mask_color: list[float]
     mode: str
-    blur: int
+    blur: list[int]
     samples: int

@@ -12,14 +12,14 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .Image import Image
 class MaterialGPencilStyle(bpy_struct):
-    color: float
-    fill_color: float
-    mix_color: float
+    color: list[float]
+    fill_color: list[float]
+    mix_color: list[float]
     mix_factor: float
     mix_stroke_factor: float
     texture_angle: float
-    texture_scale: float
-    texture_offset: float
+    texture_scale: list[float]
+    texture_offset: list[float]
     pixel_size: float
     hide: bool
     lock: bool

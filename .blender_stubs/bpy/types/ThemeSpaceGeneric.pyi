@@ -11,10 +11,10 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeSpaceGeneric(bpy_struct):
-    back: float
-    title: float
-    text: float
-    text_hi: float
-    header: float
-    header_text: float
-    header_text_hi: float
+    back: list[float]
+    title: list[float]
+    text: list[float]
+    text_hi: list[float]
+    header: list[float]
+    header_text: list[float]
+    header_text_hi: list[float]

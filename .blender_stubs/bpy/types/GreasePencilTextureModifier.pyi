@@ -41,7 +41,7 @@ class GreasePencilTextureModifier(Modifier):
     uv_scale: float
     alignment_rotation: float
     fill_rotation: float
-    fill_offset: float
+    fill_offset: list[float]
     fill_scale: float
     fit_method: str
     mode: str

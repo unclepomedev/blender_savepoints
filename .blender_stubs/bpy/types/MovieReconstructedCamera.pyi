@@ -12,5 +12,5 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 class MovieReconstructedCamera(bpy_struct):
     frame: int
-    matrix: float
+    matrix: list[float]
     average_error: float

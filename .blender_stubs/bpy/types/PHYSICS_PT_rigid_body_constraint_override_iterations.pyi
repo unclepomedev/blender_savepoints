@@ -26,7 +26,7 @@ class PHYSICS_PT_rigid_body_constraint_override_iterations(PHYSICS_PT_rigidbody_
     bl_space_type: str
     bl_region_type: str
     bl_context: str
-    bl_options: str
+    bl_options: set[str]
     bl_parent_id: str
     bl_ui_units_x: int
     bl_order: int

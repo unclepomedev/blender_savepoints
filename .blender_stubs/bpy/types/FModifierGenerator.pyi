@@ -27,4 +27,4 @@ class FModifierGenerator(FModifier):
     use_additive: bool
     mode: str
     poly_order: int
-    coefficients: float
+    coefficients: list[float]

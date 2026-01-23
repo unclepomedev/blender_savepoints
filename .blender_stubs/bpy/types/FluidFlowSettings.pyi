@@ -14,7 +14,7 @@ from .ParticleSystem import ParticleSystem
 from .Texture import Texture
 class FluidFlowSettings(bpy_struct):
     density: float
-    smoke_color: float
+    smoke_color: list[float]
     fuel_amount: float
     temperature: float
     particle_system: 'ParticleSystem'
@@ -26,7 +26,7 @@ class FluidFlowSettings(bpy_struct):
     velocity_factor: float
     velocity_normal: float
     velocity_random: float
-    velocity_coord: float
+    velocity_coord: list[float]
     volume_density: float
     surface_distance: float
     use_plane_init: bool

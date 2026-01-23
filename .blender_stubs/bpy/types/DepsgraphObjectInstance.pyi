@@ -20,8 +20,8 @@ class DepsgraphObjectInstance(bpy_struct):
     instance_object: 'Object'
     parent: 'Object'
     particle_system: 'ParticleSystem'
-    persistent_id: int
+    persistent_id: list[int]
     random_id: int
-    matrix_world: float
-    orco: float
-    uv: float
+    matrix_world: list[float]
+    orco: list[float]
+    uv: list[float]

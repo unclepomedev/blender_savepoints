@@ -29,7 +29,7 @@ class SplineIKConstraint(Constraint):
     error_rotation: float
     target: 'Object'
     chain_count: int
-    joint_bindings: float
+    joint_bindings: list[float]
     use_chain_offset: bool
     use_even_divisions: bool
     use_curve_radius: bool

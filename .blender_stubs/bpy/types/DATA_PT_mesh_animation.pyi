@@ -28,7 +28,7 @@ class DATA_PT_mesh_animation(MeshButtonsPanel, PropertiesAnimationMixin, Propert
     bl_space_type: str
     bl_region_type: str
     bl_context: str
-    bl_options: str
+    bl_options: set[str]
     bl_parent_id: str
     bl_ui_units_x: int
     bl_order: int

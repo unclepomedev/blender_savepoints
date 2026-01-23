@@ -27,9 +27,9 @@ class UVWarpModifier(Modifier):
     persistent_uid: int
     axis_u: str
     axis_v: str
-    center: float
-    offset: float
-    scale: float
+    center: list[float]
+    offset: list[float]
+    scale: list[float]
     rotation: float
     object_from: 'Object'
     bone_from: str

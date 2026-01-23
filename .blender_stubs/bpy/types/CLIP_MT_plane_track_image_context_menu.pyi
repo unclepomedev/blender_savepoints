@@ -18,6 +18,6 @@ class CLIP_MT_plane_track_image_context_menu(Menu):
     bl_translation_context: str
     bl_description: str
     bl_owner_id: str
-    bl_options: str
+    bl_options: set[str]
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

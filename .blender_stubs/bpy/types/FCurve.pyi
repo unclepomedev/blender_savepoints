@@ -22,7 +22,7 @@ class FCurve(bpy_struct):
     data_path: str
     array_index: int
     color_mode: str
-    color: float
+    color: list[float]
     select: bool
     lock: bool
     mute: bool

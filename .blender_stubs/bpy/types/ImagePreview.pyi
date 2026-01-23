@@ -12,12 +12,12 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 class ImagePreview(bpy_struct):
     is_image_custom: bool
-    image_size: int
-    image_pixels: int
-    image_pixels_float: float
+    image_size: list[int]
+    image_pixels: list[int]
+    image_pixels_float: list[float]
     is_icon_custom: bool
-    icon_size: int
-    icon_pixels: int
-    icon_pixels_float: float
+    icon_size: list[int]
+    icon_pixels: list[int]
+    icon_pixels_float: list[float]
     icon_id: int
     def reload(self, *args, **kwargs) -> Any: ...

@@ -24,7 +24,7 @@ class NODE_OT_connect_to_output(Operator, NodeEditorBase):
     bl_translation_context: str
     bl_description: str
     bl_undo_group: str
-    bl_options: str
+    bl_options: set[str]
     bl_cursor_pending: str
     layout: 'UILayout'
     options: 'OperatorOptions'

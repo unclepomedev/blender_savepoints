@@ -35,7 +35,7 @@ class MeshCacheModifier(Modifier):
     invert_vertex_group: bool
     forward_axis: str
     up_axis: str
-    flip_axis: bool
+    flip_axis: list[bool]
     frame_start: float
     frame_scale: float
     eval_frame: float

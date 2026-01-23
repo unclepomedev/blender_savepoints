@@ -19,15 +19,15 @@ class FluidDomainSettings(bpy_struct):
     effector_group: 'Collection'
     fluid_group: 'Collection'
     force_collection: 'Collection'
-    density_grid: float
-    velocity_grid: float
-    flame_grid: float
-    color_grid: float
-    heat_grid: float
-    temperature_grid: float
-    start_point: float
-    cell_size: float
-    domain_resolution: int
+    density_grid: list[float]
+    velocity_grid: list[float]
+    flame_grid: list[float]
+    color_grid: list[float]
+    heat_grid: list[float]
+    temperature_grid: list[float]
+    start_point: list[float]
+    cell_size: list[float]
+    domain_resolution: list[int]
     additional_res: int
     adapt_margin: int
     adapt_threshold: float
@@ -39,7 +39,7 @@ class FluidDomainSettings(bpy_struct):
     use_collision_border_left: bool
     use_collision_border_top: bool
     use_collision_border_bottom: bool
-    gravity: float
+    gravity: list[float]
     domain_type: str
     delete_in_obstacle: bool
     alpha: float
@@ -54,7 +54,7 @@ class FluidDomainSettings(bpy_struct):
     flame_vorticity: float
     flame_ignition: float
     flame_max_temp: float
-    flame_smoke_color: float
+    flame_smoke_color: list[float]
     noise_strength: float
     noise_pos_scale: float
     noise_time_anim: float
@@ -173,6 +173,6 @@ class FluidDomainSettings(bpy_struct):
     gridlines_color_field: str
     gridlines_lower_bound: float
     gridlines_upper_bound: float
-    gridlines_range_color: float
+    gridlines_range_color: list[float]
     gridlines_cell_filter: str
     velocity_scale: float

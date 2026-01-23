@@ -94,9 +94,9 @@ class View3DOverlay(bpy_struct):
     use_gpencil_show_directions: bool
     use_gpencil_show_material_name: bool
     gpencil_grid_opacity: float
-    gpencil_grid_color: float
-    gpencil_grid_scale: float
-    gpencil_grid_offset: float
+    gpencil_grid_color: list[float]
+    gpencil_grid_scale: list[float]
+    gpencil_grid_offset: list[float]
     gpencil_grid_subdivisions: int
     gpencil_fade_objects: float
     gpencil_fade_layer: float

@@ -26,7 +26,7 @@ class NormalEditModifier(Modifier):
     execution_time: float
     persistent_uid: int
     mode: str
-    offset: float
+    offset: list[float]
     mix_mode: str
     mix_factor: float
     mix_limit: float

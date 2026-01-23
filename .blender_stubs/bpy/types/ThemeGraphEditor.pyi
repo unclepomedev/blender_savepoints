@@ -13,8 +13,8 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeGraphEditor(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    grid: float
-    vertex: float
-    vertex_select: float
-    vertex_active: float
+    grid: list[float]
+    vertex: list[float]
+    vertex_select: list[float]
+    vertex_active: list[float]
     vertex_size: int

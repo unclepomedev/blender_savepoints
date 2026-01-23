@@ -17,12 +17,12 @@ class ShaderFxGlow(ShaderFx):
     show_render: bool
     show_in_editmode: bool
     show_expanded: bool
-    glow_color: float
+    glow_color: list[float]
     opacity: float
-    select_color: float
+    select_color: list[float]
     mode: str
     threshold: float
-    size: float
+    size: list[float]
     samples: int
     use_glow_under: bool
     rotation: float

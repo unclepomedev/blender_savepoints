@@ -19,4 +19,4 @@ class StudioLight(bpy_struct):
     name: str
     path: str
     solid_lights: bpy_prop_collection['UserSolidLight']
-    light_ambient: float
+    light_ambient: list[float]

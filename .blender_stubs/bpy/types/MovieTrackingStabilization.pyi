@@ -20,7 +20,7 @@ class MovieTrackingStabilization(bpy_struct):
     rotation_tracks: bpy_prop_collection['MovieTrackingTrack']
     active_rotation_track_index: int
     anchor_frame: int
-    target_position: float
+    target_position: list[float]
     target_rotation: float
     target_scale: float
     use_autoscale: bool

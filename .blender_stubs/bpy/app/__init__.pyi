@@ -104,7 +104,7 @@ python_args: Any
 render_icon_size = 32
 render_preview_size = 128
 sdl: Any
-tempdir = '/var/folders/zn/vrqg3hq9059c8w8ht1pmpycm0000gn/T/blender_0ZW8su/'
+tempdir = '/var/folders/zn/vrqg3hq9059c8w8ht1pmpycm0000gn/T/blender_8j3sn7/'
 translations: Any
 usd: Any
 use_event_simulate = False

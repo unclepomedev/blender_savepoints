@@ -17,5 +17,5 @@ class SpacePreferences(Space):
     show_region_ui: bool
     filter_type: str
     filter_text: str
-    tab_search_results: bool
+    tab_search_results: list[bool]
     search_filter: str

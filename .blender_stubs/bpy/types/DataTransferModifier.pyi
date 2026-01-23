@@ -31,10 +31,10 @@ class DataTransferModifier(Modifier):
     use_edge_data: bool
     use_loop_data: bool
     use_poly_data: bool
-    data_types_verts: str
-    data_types_edges: str
-    data_types_loops: str
-    data_types_polys: str
+    data_types_verts: set[str]
+    data_types_edges: set[str]
+    data_types_loops: set[str]
+    data_types_polys: set[str]
     vert_mapping: str
     edge_mapping: str
     loop_mapping: str

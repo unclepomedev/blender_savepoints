@@ -11,5 +11,5 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class MeshUVLoop(bpy_struct):
-    uv: float
+    uv: list[float]
     pin_uv: bool

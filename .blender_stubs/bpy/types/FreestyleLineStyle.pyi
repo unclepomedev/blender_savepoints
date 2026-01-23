@@ -49,7 +49,7 @@ class FreestyleLineStyle(ID):
     active_texture: 'Texture'
     active_texture_index: int
     panel: str
-    color: float
+    color: list[float]
     alpha: float
     thickness: float
     thickness_position: str

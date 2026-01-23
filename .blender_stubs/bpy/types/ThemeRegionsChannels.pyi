@@ -11,6 +11,6 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeRegionsChannels(bpy_struct):
-    back: float
-    text: float
-    text_selected: float
+    back: list[float]
+    text: list[float]
+    text_selected: list[float]

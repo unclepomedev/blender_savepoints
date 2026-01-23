@@ -78,8 +78,8 @@ class RenderSettings(bpy_struct):
     use_stamp_memory: bool
     use_stamp_hostname: bool
     stamp_font_size: int
-    stamp_foreground: float
-    stamp_background: float
+    stamp_foreground: list[float]
+    stamp_background: list[float]
     sequencer_gl_preview: str
     use_sequencer_override_scene_strip: bool
     use_single_layer: bool

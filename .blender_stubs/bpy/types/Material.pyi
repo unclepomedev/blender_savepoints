@@ -71,12 +71,12 @@ class Material(ID):
     texture_paint_slots: bpy_prop_collection['TexPaintSlot']
     paint_active_slot: int
     paint_clone_slot: int
-    diffuse_color: float
-    specular_color: float
+    diffuse_color: list[float]
+    specular_color: list[float]
     roughness: float
     specular_intensity: float
     metallic: float
-    line_color: float
+    line_color: list[float]
     line_priority: int
     grease_pencil: 'MaterialGPencilStyle'
     is_grease_pencil: bool

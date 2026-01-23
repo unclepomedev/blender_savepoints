@@ -13,5 +13,5 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeFileBrowser(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    selected_file: float
-    row_alternate: float
+    selected_file: list[float]
+    row_alternate: list[float]

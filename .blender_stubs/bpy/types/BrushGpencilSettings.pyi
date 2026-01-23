@@ -38,7 +38,7 @@ class BrushGpencilSettings(bpy_struct):
     fill_simplify_level: int
     uv_random: float
     hardness: float
-    aspect: float
+    aspect: list[float]
     input_samples: int
     active_smooth_factor: float
     eraser_strength_factor: float

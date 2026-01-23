@@ -32,9 +32,9 @@ class View3DShading(bpy_struct):
     use_studiolight_view_rotation: bool
     color_type: str
     wireframe_color_type: str
-    single_color: float
+    single_color: list[float]
     background_type: str
-    background_color: float
+    background_color: list[float]
     show_shadows: bool
     show_xray: bool
     show_xray_wireframe: bool
@@ -46,7 +46,7 @@ class View3DShading(bpy_struct):
     use_scene_lights_render: bool
     use_scene_world_render: bool
     show_specular_highlight: bool
-    object_outline_color: float
+    object_outline_color: list[float]
     shadow_intensity: float
     render_pass: str
     aov_name: str

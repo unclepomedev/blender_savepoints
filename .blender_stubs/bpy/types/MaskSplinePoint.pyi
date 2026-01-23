@@ -13,9 +13,9 @@ from .bpy_struct import bpy_struct
 from .MaskParent import MaskParent
 from .MaskSplinePointUW import MaskSplinePointUW
 class MaskSplinePoint(bpy_struct):
-    handle_left: float
-    co: float
-    handle_right: float
+    handle_left: list[float]
+    co: list[float]
+    handle_right: list[float]
     handle_type: str
     handle_left_type: str
     handle_right_type: str
