@@ -1,10 +1,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import addon_utils
 import bpy
+
 
 def enable_gpu():
     try:
         preferences = bpy.context.preferences
+        if "cycles" not in preferences.addons:
+            print("Worker: Cycles addon not loaded. Attempting to enable...")
+            addon_utils.enable("cycles", default_set=False)
         cycles_addon = preferences.addons.get('cycles')
         if not cycles_addon:
             print("Worker: Cycles addon not found in preferences (Factory Startup?). Skipping GPU.")

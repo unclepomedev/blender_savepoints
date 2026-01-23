@@ -108,7 +108,6 @@ def update_version_tag(version_id: str, new_tag: str) -> None:
 
 def delete_version_by_id(version_id: str, use_trash: bool = True) -> None:
     """Delete a version from disk and manifest."""
-    # Validate version_id to prevent path traversal
     if not is_safe_filename(version_id):
         print(f"Error: Invalid version ID '{version_id}'. Path traversal detected.")
         return
@@ -169,12 +168,9 @@ def prune_versions(max_keep: int) -> int:
             # Locked versions are always kept and don't consume the quota
             continue
 
-        # Unlocked version
         if unlocked_count < max_keep:
-            # Keep it
             unlocked_count += 1
         else:
-            # Quota exceeded, delete
             ids_to_delete.append(vid)
 
     for vid in ids_to_delete:
@@ -222,7 +218,6 @@ def get_sorted_versions(manifest: dict, newest_first: bool = True, include_autos
     """
     raw_versions = manifest.get("versions", [])
 
-    # 1. Manual versions (v001, v002...)
     manual_versions = [v for v in raw_versions if v.get("id") != "autosave"]
 
     def version_sort_key(v):
@@ -236,7 +231,6 @@ def get_sorted_versions(manifest: dict, newest_first: bool = True, include_autos
     if not include_autosave:
         return manual_versions
 
-    # 2. Handle autosave
     autosave_entry = next((v for v in raw_versions if v.get("id") == "autosave"), None)
 
     if autosave_entry:

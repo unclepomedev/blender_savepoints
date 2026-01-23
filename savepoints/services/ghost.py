@@ -45,17 +45,13 @@ def _cleanup_orphan_libraries():
 
 
 def _remove_ghost_collection(collection: bpy.types.Collection, context: bpy.types.Context) -> None:
-    # 1. Identify objects to remove
     objects_to_remove = [obj for obj in collection.objects]
 
-    # 2. Unlink collection from scene
     if context.scene.collection.children.get(collection.name):
         context.scene.collection.children.unlink(collection)
 
-    # 3. Remove collection data
     bpy.data.collections.remove(collection)
 
-    # 4. Remove objects
     for obj in objects_to_remove:
         try:
             bpy.data.objects.remove(obj, do_unlink=True)
@@ -107,7 +103,6 @@ def _purge_ghost_libraries(version_id: str) -> None:
                 except Exception:
                     pass
 
-        # Now remove the library itself
         try:
             bpy.data.libraries.remove(lib)
         except Exception:

@@ -15,7 +15,6 @@ def _escape_for_applescript(text):
 
 
 def _escape_for_powershell(text):
-    # Escape backtick first, then dollar sign and double quote
     return text.replace('`', '``').replace('$', '`$').replace('"', '`"')
 
 
@@ -75,7 +74,6 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     if not os.path.exists(directory_path):
         return None
 
-    # 1. collect and sort image files
     valid_exts = {'.png', '.jpg', '.jpeg', '.exr', '.tif', '.tiff', '.webp', '.tga', '.bmp'}
     files = [
         f for f in os.listdir(directory_path)
@@ -88,7 +86,6 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
         print("No images found to create timelapse.")
         return None
 
-    # 2. get current file name and determine scene name
     clean_path = directory_path.rstrip(os.sep)
     base_name = os.path.basename(clean_path)
     if not base_name:
@@ -97,14 +94,12 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
 
     new_scene = bpy.data.scenes.new(name=scene_name)
 
-    # 3. scene setup
     current_scene = bpy.context.scene
     new_scene.render.resolution_x = current_scene.render.resolution_x
     new_scene.render.resolution_y = current_scene.render.resolution_y
     new_scene.render.fps = current_scene.render.fps
     new_scene.render.fps_base = current_scene.render.fps_base
 
-    # 4. VSE setup
     if not new_scene.sequence_editor:
         new_scene.sequence_editor_create()
 

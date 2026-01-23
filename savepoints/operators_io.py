@@ -28,7 +28,6 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
             self.report({'ERROR'}, "Save the file first")
             return {'CANCELLED'}
 
-        # Ensure default filename is set correctly
         if not self.filepath:
             filepath = bpy.data.filepath
             stem = Path(filepath).stem
@@ -42,7 +41,6 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
             return {'CANCELLED'}
 
         project_path = Path(bpy.data.filepath)
-        # Get history directory using core utility
         history_dir_str = get_history_dir_for_path(str(project_path))
         history_dir = Path(history_dir_str) if history_dir_str else None
 
@@ -55,14 +53,11 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
         try:
             with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_STORED) as zf:
-                # 1. Add the main .blend file
                 zf.write(project_path, arcname=project_path.name)
 
-                # 2. Add the history directory if it exists
                 if history_dir and history_dir.exists():
-                    # Collect all files to calculate progress
                     files_to_zip = [f for f in history_dir.rglob('*') if f.is_file()]
-                    total_files = len(files_to_zip) + 1  # +1 for main blend file
+                    total_files = len(files_to_zip) + 1
 
                     processed = 1
                     wm.progress_update(int(processed / total_files * 100))
@@ -89,7 +84,7 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
                 context.window.cursor_set("DEFAULT")
 
 
-def menu_func(self, context):
+def menu_func(self, _context):
     self.layout.operator(SAVEPOINTS_OT_export_project_zip.bl_idname, text="SavePoints Project (.zip)")
 
 

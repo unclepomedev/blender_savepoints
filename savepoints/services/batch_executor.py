@@ -43,7 +43,7 @@ class BatchRenderExecutor:
                 self.cancel()
             return {'status': 'CANCELLED'}
 
-        # 1. Check existing process
+        # Check existing process
         if self.current_process:
             return_code = self.current_process.poll()
 
@@ -72,7 +72,7 @@ class BatchRenderExecutor:
                     'progress': (self.current_task_idx, self.total_tasks)
                 }
 
-        # 2. No process running, try to start next
+        # No process running, try to start next
         if self.finished or not self.task_queue:
             self.finished = True
             return {'status': 'FINISHED'}

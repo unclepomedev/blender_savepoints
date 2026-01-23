@@ -26,7 +26,6 @@ def is_rendering():
 
 def autosave_timer():
     """Timer function for auto-save."""
-    # Check every 5 seconds for responsiveness
     check_interval = 5.0
 
     try:
@@ -68,14 +67,12 @@ def autosave_timer():
         if (now - last_save) < interval_sec:
             return check_interval
 
-        # Check if we can save
         if not bpy.data.filepath:
             return check_interval
 
         if get_parent_path_from_snapshot(bpy.data.filepath):
             return check_interval
 
-        # Execute save
         try:
             delete_version_by_id("autosave", use_trash=False)
             create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)

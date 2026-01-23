@@ -24,10 +24,10 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
     force_quick: bpy.props.BoolProperty(name="Force Quick Save", default=False, options={'SKIP_SAVE', 'HIDDEN'})
 
     @classmethod
-    def poll(cls, context):
+    def poll(cls, _context):
         return not bool(get_parent_path_from_snapshot(bpy.data.filepath))
 
-    def invoke(self, context, event):
+    def invoke(self, context, _event):
         settings = context.scene.savepoints_settings
 
         default_note = generate_default_note(context)
@@ -40,7 +40,7 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
         return self.execute(context)
 
-    def draw(self, context):
+    def draw(self, _context):
         layout = self.layout
         layout.prop(self, "note")
 
@@ -58,7 +58,6 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
         create_snapshot(context, new_id_str, self.note)
 
-        # Auto Pruning
         settings = context.scene.savepoints_settings
         if settings.use_limit_versions and settings.max_versions_to_keep > 0:
             deleted = prune_versions(settings.max_versions_to_keep)
@@ -82,13 +81,13 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
         options={'SKIP_SAVE'}
     )
 
-    def draw(self, context):
+    def draw(self, _context):
         layout = self.layout
         row = layout.row()
         row.alignment = 'LEFT'
         row.prop(self, "confirm_save")
 
-    def invoke(self, context, event):
+    def invoke(self, context, _event):
         if bpy.data.is_dirty:
             return context.window_manager.invoke_props_dialog(self)
         return self.execute(context)
@@ -103,7 +102,6 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
         blend_path = find_snapshot_path(item.version_id)
 
         if not blend_path:
-            # Automatically clean up ghost entry
             version_id = item.version_id
             self.report({'WARNING'}, f"Snapshot file not found. Removed version {version_id} from list.")
             delete_version_by_id(version_id)

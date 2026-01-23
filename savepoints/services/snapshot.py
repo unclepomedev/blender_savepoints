@@ -47,19 +47,15 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
 
         obj_count = len(bpy.data.objects)
 
-        # Thumbnail
         thumb_filename = THUMBNAIL_FILENAME
         thumb_path = version_dir / thumb_filename
         if not skip_thumbnail:
             capture_thumbnail(context, str(thumb_path))
 
-        # Save Object Metadata
         save_object_data(version_id, bpy.data.objects)
 
-        # Save Snapshot
         snapshot_path = version_dir / SNAPSHOT_FILENAME
 
-        # Check compression setting
         use_compress = False
         settings = getattr(context.scene, "savepoints_settings", None)
         if settings:
@@ -67,12 +63,10 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
 
         bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path), compress=use_compress)
 
-        # Capture file size
         file_size = 0
         if snapshot_path.exists():
             file_size = snapshot_path.stat().st_size
 
-        # Update Manifest
         add_version_to_manifest(
             manifest,
             version_id,
@@ -83,7 +77,6 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
             file_size=file_size
         )
 
-        # Update UI
         sync_history_to_props(context)
 
 
@@ -99,12 +92,10 @@ def find_snapshot_path(version_id: str) -> Path | None:
     history_dir = Path(history_dir_str)
     version_dir = history_dir / version_id
 
-    # Check primary filename
     snapshot_path = version_dir / SNAPSHOT_FILENAME
     if snapshot_path.exists():
         return snapshot_path
 
-    # Check legacy filename
     legacy_path = version_dir / LEGACY_SNAPSHOT_FILENAME
     if legacy_path.exists():
         return legacy_path

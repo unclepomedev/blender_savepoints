@@ -31,7 +31,7 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
             self.new_note = item.note
         return context.window_manager.invoke_props_dialog(self)
 
-    def draw(self, context):
+    def draw(self, _context):
         layout = self.layout
         layout.prop(self, "new_note")
 
@@ -102,7 +102,6 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
         if not found:
             sync_history_to_props(context)
 
-        # Force UI redraw
         for area in context.window.screen.areas:
             area.tag_redraw()
 

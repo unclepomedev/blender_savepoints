@@ -23,7 +23,7 @@ def resolve_history_path_from_selection(filepath: str | Path, directory: str | P
     """
     selected_path = Path(filepath)
 
-    # Robustness: If user selected the manifest.json file directly, handle it
+    # If user selected the manifest.json file directly, handle it
     if selected_path.name == MANIFEST_NAME:
         return selected_path.parent
 

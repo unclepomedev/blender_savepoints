@@ -128,17 +128,14 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             self.report({'ERROR'}, "Blend file must be saved before batch rendering.")
             return {'CANCELLED'}
 
-        # 1. Setup Phase
         try:
             self._prepare_execution(context)
         except Exception as e:
             self.report({'ERROR'}, str(e))
-            # Cleanup if partially initialized
             if hasattr(self, 'temp_dir') and os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
             return {'CANCELLED'}
 
-        # 2. Start Timer & Modal
         total_tasks = len(self.target_versions)
         self.report({'INFO'}, f"Batch Render Started: {total_tasks} versions.")
         context.window_manager.progress_begin(0, total_tasks)
@@ -146,7 +143,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self._timer = context.window_manager.event_timer_add(0.5, window=context.window)
         context.window_manager.modal_handler_add(self)
 
-        # Initial check
         return self._handle_executor_update(context)
 
     def modal(self, context, event):
@@ -174,7 +170,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         if not os.path.exists(self.worker_script_path):
             raise FileNotFoundError(f"Worker script not found at {self.worker_script_path}")
 
-        # JSON Config
         try:
             render_settings = extract_render_settings(context, dry_run=self.dry_run)
             with open(self.settings_path, 'w') as f:
@@ -185,7 +180,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self.output_dir = get_batch_render_output_dir(dry_run=self.dry_run)
         os.makedirs(self.output_dir, exist_ok=True)
 
-        # Init Executor
         self.executor = BatchRenderExecutor(
             tasks=self.target_versions,
             temp_dir=self.temp_dir,
@@ -236,7 +230,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         if self._timer:
             context.window_manager.event_timer_remove(self._timer)
 
-        # Cleanup Temp
         if hasattr(self, 'temp_dir') and os.path.exists(self.temp_dir):
             try:
                 shutil.rmtree(self.temp_dir)
@@ -269,12 +262,10 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     def _process_timelapse_creation(self, context):
         """Handles VSE creation and Background MP4 generation."""
         try:
-            # 1. VSE Scene
             scene_name = create_vse_timelapse(self.output_dir)
 
             mp4_triggered = False
             if context.scene.savepoints_settings.batch_create_mp4:
-                # 2. Background MP4
                 output_file = os.path.join(self.output_dir, "timelapse.mp4")
                 success = launch_timelapse_mp4_generation(
                     self.output_dir,
@@ -289,7 +280,6 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 else:
                     self.report({'ERROR'}, "Failed to start MP4 generation.")
 
-            # 3. Notification Popup
             if scene_name and not bpy.app.background:
                 count = self.executor.current_task_idx if hasattr(self, 'executor') else 0
                 self._show_timelapse_notification(context, scene_name, mp4_triggered, count)
@@ -302,7 +292,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             traceback.print_exc()
 
     def _show_timelapse_notification(self, context, scene_name, mp4_triggered, count):
-        def draw_notification(self, context):
+        def draw_notification(self, _context):
             layout = self.layout
             layout.label(text=f"Successfully processed {count} versions.")
             layout.separator()

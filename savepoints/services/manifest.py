@@ -54,7 +54,6 @@ def load_manifest(create_if_missing: bool = True) -> dict[str, Any]:
 
                     mutated = _backfill(data)
 
-                    # Optional: persist backfilled fields so UUID stabilizes after first load
                     if mutated:
                         save_manifest(data)
 
@@ -144,7 +143,6 @@ def initialize_history_for_path(target_path: Path) -> None:
             new_history_dir = Path(new_history_dir_str)
             ensure_directory(new_history_dir)
 
-            # Create default manifest
             manifest_path = new_history_dir / MANIFEST_NAME
             if not manifest_path.exists():
                 default_manifest = create_default_manifest_data(str(target_path))
