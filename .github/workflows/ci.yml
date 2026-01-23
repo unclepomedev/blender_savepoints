@@ -19,6 +19,9 @@ jobs:
       - name: Install dev dependencies
         run: uv sync --group dev
 
+      - name: Type Check
+        run: uv run pyright
+
       - name: Lint
         run: uv run ruff check savepoints
 

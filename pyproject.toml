@@ -10,8 +10,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "fake-bpy-module-latest>=20251003",
-    "mypy>=1.18.2",
+    "pyright>=1.1.408",
     "pytest>=9.0.1",
     "ruff>=0.14.5",
 ]
@@ -28,3 +27,15 @@ package = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["savepoints"]
+
+[tool.pyright]
+extraPaths = [".blender_stubs"]
+include = ["savepoints"]
+venvPath = "."
+venv = ".venv"
+
+reportMissingImports = true
+reportUnusedImport = false
+reportInvalidTypeForm = false
+reportAttributeAccessIssue = "none"
+reportArgumentType = "none"
