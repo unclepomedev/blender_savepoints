@@ -2,6 +2,8 @@
 
 import datetime
 import os
+from typing import Any
+
 import bpy
 
 
@@ -31,7 +33,7 @@ def extract_render_settings(context, dry_run=False):
     camera = scene.camera
     img_settings = scene.render.image_settings
 
-    settings = {
+    settings: dict[str, Any] = {
         "resolution_x": render.resolution_x,
         "resolution_y": render.resolution_y,
         "resolution_percentage": render.resolution_percentage,
