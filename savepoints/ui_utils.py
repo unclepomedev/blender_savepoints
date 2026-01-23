@@ -88,7 +88,7 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         settings.active_version_index = new_active_index
 
 
-def force_redraw_areas(context: bpy.types.Context, area_types: set[str] = None) -> None:
+def force_redraw_areas(context: bpy.types.Context, area_types: set[str] | None = None) -> None:
     """
     Force redraw of specific area types to update UI/HUD.
     
