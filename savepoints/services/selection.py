@@ -28,7 +28,8 @@ def preserve_selection():
     finally:
         if bpy.context.mode != 'OBJECT':
             try:
-                if bpy.ops.object.mode_set.poll():
+                poll_func = getattr(bpy.ops.object.mode_set, "poll", None)
+                if poll_func and poll_func():
                     bpy.ops.object.mode_set(mode='OBJECT')
             except Exception as e:
                 print(f"[SavePoints] Warning: Failed to switch to OBJECT mode: {e}")

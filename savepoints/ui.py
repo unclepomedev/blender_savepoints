@@ -206,11 +206,7 @@ def _draw_version_details(layout, settings, context):
 
         if settings.show_preview:
             pcoll = ui_utils.preview_collections.get("main")
-            has_preview = False
             if pcoll and item.version_id in pcoll:
-                has_preview = True
-
-            if has_preview:
                 if context.region:
                     width = context.region.width
                     dynamic_scale = (width - 50) / 20.0
