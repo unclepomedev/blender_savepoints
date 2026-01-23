@@ -43,7 +43,6 @@ reportArgumentType = "none"
 
 [tool.ty.environment]
 extra-paths = [".blender_stubs"]
-python = ".venv"
 python-version = "3.11"
 
 [tool.ty.src]
