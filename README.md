@@ -1,4 +1,4 @@
-# SavePoints
+# SavePoints: Visual History & Timelapse
 
 [![Blender Extensions](https://img.shields.io/badge/Blender_Extensions-Available-F5792A?logo=blender&logoColor=white)](https://extensions.blender.org/add-ons/savepoints/)
 [![License](https://img.shields.io/github/license/unclepomedev/blender_savepoints)](https://github.com/unclepomedev/blender_savepoints/blob/main/LICENSE)
@@ -20,29 +20,28 @@
 
 ---
 
-SavePoints is a Blender add-on that helps you manage project versions easily. It allows you to create snapshots of your current work with automatic thumbnails, making it simple to browse and restore previous states.
+**Save is for recovery.**
 
-## Features
+SavePoints is a version control system that provides a visual UX for fast recovery, and it also has a time-lapse feature that makes saving a little more fun.
 
-- **Incremental Saves**: Automatically generates version IDs (v001, v002, etc.) for each save.
-- **Visual Previews**: Captures a thumbnail of your viewport for every save point.
-- **Detailed Info**: Displays object count and file size for each version.
-- **Notes**: Add custom notes to remember what changed in each version.
-- **Edit Notes**: Update notes for any version directly from the history list.
-- **Easy Restore**: Browse your history in the UI and restore any version with a single click.
-- **Retrieve Objects**: Easily append objects from a specific version without opening the full snapshot.
-- **Ghost Reference**: Overlay a previous version as a wireframe in the 3D viewport to visually compare changes without switching files.
-- **Object History**: Right-click an object to see its version history. Detects changes (Mesh, Movement) and allows you to **access all past states**—even subtle ones like sculpting—via the Ghost overlay.
-- **Batch Timelapse**: Automatically render multiple versions to create an evolution timelapse, with optional **Version ID overlay**.
-- **Context-Aware Rendering**: Applies your **current** camera setup (Position, Lens, Shift), world environment, color management (AgX/Filmic), and render settings to **past** snapshots.
-  <br>*(Note: Compositor nodes remain as they were in the snapshot.)*
-- **Snapshot Compression**: Option to compress snapshot files. This allows you to trade a slightly longer save time for significantly reduced file sizes. (Default: **Enabled**)
-- **Quick Save**: Option to skip the note dialog for instant saving.
-- **Safe Recovery**: Overwrite the main project file with a previous version safely. The original file is automatically backed up in the history folder.
-- **Auto Save**: Automatically saves your work to a dedicated slot at configurable intervals (default 10 min), ensuring you never lose progress.
-- **Disk Management**: Automatically deletes the oldest versions to maintain a manageable history size, while preserving locked versions.
-- **Version Protection**: Lock specific versions to prevent them from being auto-deleted or accidentally removed.
-- **Version Tagging**: Assign tags (Stable, Milestone, Experiment, Bug) to versions and filter the history list to find important snapshots instantly.
+## Why SavePoints?
+
+- **📸 Visual Versioning**: See exactly what each version looks like with automatic thumbnails.
+- **🎬 Timelapse**: Batch render your history using your **current camera angle**. Create evolution videos of your work.
+- **⚡ Shortcuts**: Choose between documentation and speed. Use shortcuts to save with a note, or force-save instantly (`Shift` added) to skip the dialog.
+- **👻 Ghost Overlay**: Overlay a previous version as a wireframe in the viewport to compare changes instantly.
+- **📦 Retrieve Objects**: Need a model you deleted 3 hours ago? Append objects from any snapshot without opening the file. (Right-click any object to inspect its specific timeline.)
+- **🏷️ Tags**: Mark versions as "Stable" or "Milestone" to keep your history organized.
+- **🛡️ Safe & Clean**: Autosaves run in the background without cluttering your list. Restoring a version automatically backs up your current state—zero data loss.
+
+## Table of Contents
+
+- [Usage](#usage)
+- [Note](#-note)
+  - [Batch Rendering Limitations](#batch-rendering-limitations)
+  - [Object History Limitations](#object-history-limitations)
+  - [General Notes](#general-notes)
+- [FAQ / Troubleshooting](#-faq--troubleshooting)
 
 ## Usage
 
