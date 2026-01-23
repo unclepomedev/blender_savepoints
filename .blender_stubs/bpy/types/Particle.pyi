@@ -1,0 +1,33 @@
+# Blender Probe Generated Stub for Blender 5.1.0 Alpha
+# noinspection PyPep8Naming
+# noinspection PyUnresolvedReferences
+# noqa: N801
+# pylint: disable=invalid-name
+
+import sys
+import typing
+from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from .bpy_prop_collection import bpy_prop_collection
+
+from .bpy_struct import bpy_struct
+from .ParticleHairKey import ParticleHairKey
+from .ParticleKey import ParticleKey
+class Particle(bpy_struct):
+    location: float
+    velocity: float
+    angular_velocity: float
+    rotation: float
+    prev_location: float
+    prev_velocity: float
+    prev_angular_velocity: float
+    prev_rotation: float
+    hair_keys: bpy_prop_collection['ParticleHairKey']
+    particle_keys: bpy_prop_collection['ParticleKey']
+    birth_time: float
+    lifetime: float
+    die_time: float
+    size: float
+    is_exist: bool
+    is_visible: bool
+    alive_state: str
+    def uv_on_emitter(self, *args, **kwargs) -> Any: ...

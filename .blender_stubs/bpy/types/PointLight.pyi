@@ -1,0 +1,87 @@
+# Blender Probe Generated Stub for Blender 5.1.0 Alpha
+# noinspection PyPep8Naming
+# noinspection PyUnresolvedReferences
+# noqa: N801
+# pylint: disable=invalid-name
+
+import sys
+import typing
+from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from .bpy_prop_collection import bpy_prop_collection
+
+from .Light import Light
+from .AnimData import AnimData
+from .AssetMetaData import AssetMetaData
+from .ID import ID
+from .IDOverrideLibrary import IDOverrideLibrary
+from .ImagePreview import ImagePreview
+from .Library import Library
+from .LibraryWeakReference import LibraryWeakReference
+from .NodeTree import NodeTree
+class PointLight(Light):
+    name: str
+    name_full: str
+    id_type: str
+    session_uid: int
+    is_evaluated: bool
+    original: 'ID'
+    users: int
+    use_fake_user: bool
+    use_extra_user: bool
+    is_embedded_data: bool
+    is_linked_packed: bool
+    is_missing: bool
+    is_runtime_data: bool
+    is_editable: bool
+    tag: bool
+    is_library_indirect: bool
+    library: 'Library'
+    library_weak_reference: 'LibraryWeakReference'
+    asset_data: 'AssetMetaData'
+    override_library: 'IDOverrideLibrary'
+    preview: 'ImagePreview'
+    type: str
+    use_temperature: bool
+    color: float
+    temperature: float
+    temperature_color: float
+    specular_factor: float
+    diffuse_factor: float
+    transmission_factor: float
+    volume_factor: float
+    use_custom_distance: bool
+    cutoff_distance: float
+    use_shadow: bool
+    exposure: float
+    normalize: bool
+    node_tree: 'NodeTree'
+    use_nodes: bool
+    animation_data: 'AnimData'
+    cycles: 'CyclesLightSettings'
+    use_soft_falloff: bool
+    energy: float
+    shadow_buffer_clip_start: float
+    shadow_soft_size: float
+    shadow_filter_radius: float
+    shadow_maximum_resolution: float
+    use_shadow_jitter: bool
+    shadow_jitter_overblur: float
+    use_absolute_resolution: bool
+    def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
+    def rename(self, *args, **kwargs) -> Any: ...
+    def evaluated_get(self, *args, **kwargs) -> Any: ...
+    def copy(self, *args, **kwargs) -> Any: ...
+    def asset_mark(self, *args, **kwargs) -> Any: ...
+    def asset_clear(self, *args, **kwargs) -> Any: ...
+    def asset_generate_preview(self, *args, **kwargs) -> Any: ...
+    def override_create(self, *args, **kwargs) -> Any: ...
+    def override_hierarchy_create(self, *args, **kwargs) -> Any: ...
+    def user_clear(self, *args, **kwargs) -> Any: ...
+    def user_remap(self, *args, **kwargs) -> Any: ...
+    def make_local(self, *args, **kwargs) -> Any: ...
+    def user_of_id(self, *args, **kwargs) -> Any: ...
+    def animation_data_create(self, *args, **kwargs) -> Any: ...
+    def animation_data_clear(self, *args, **kwargs) -> Any: ...
+    def update_tag(self, *args, **kwargs) -> Any: ...
+    def preview_ensure(self, *args, **kwargs) -> Any: ...
+    def area(self, *args, **kwargs) -> Any: ...
