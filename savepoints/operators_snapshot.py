@@ -32,8 +32,6 @@ class SAVEPOINTS_OT_restore(bpy.types.Operator):
 
         original_path = Path(original_path_str)
 
-        # Verify if we can write to original path
-        # Backup first
         if original_path.exists():
             try:
                 backup_path = create_backup(original_path)
@@ -65,7 +63,7 @@ class SAVEPOINTS_OT_open_parent(bpy.types.Operator):
     bl_label = "Return to Parent"
     bl_options = {'REGISTER', 'UNDO'}
 
-    def execute(self, context):
+    def execute(self, _context):
         parent_path_str = get_parent_path_from_snapshot(bpy.data.filepath)
 
         if not parent_path_str:
@@ -78,7 +76,6 @@ class SAVEPOINTS_OT_open_parent(bpy.types.Operator):
             self.report({'ERROR'}, f"Parent file not found: {parent_path}")
             return {'CANCELLED'}
 
-        # Open the parent file
         # Note: In UI, this might prompt to save changes if modified.
         bpy.ops.wm.open_mainfile(filepath=str(parent_path))
         return {'FINISHED'}
@@ -96,10 +93,10 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
         default=False,
     )
 
-    def invoke(self, context, event):
+    def invoke(self, context, _event):
         return context.window_manager.invoke_props_dialog(self)
 
-    def draw(self, context):
+    def draw(self, _context):
         layout = self.layout
         layout.prop(self, "unbind_linked_assets")
 
@@ -127,7 +124,6 @@ class SAVEPOINTS_OT_fork_version(bpy.types.Operator):
             self.report({'WARNING'}, f"History creation failed: {e}")
 
         try:
-            # 1. Save to new location
             bpy.ops.wm.save_as_mainfile(filepath=str(target_path))
 
             needs_save = False
@@ -172,8 +168,8 @@ class SAVEPOINTS_OT_guard_save(bpy.types.Operator):
             self.report({'WARNING'}, msg)
 
             if not bpy.app.background:
-                def draw_popup(self, context):
-                    layout = self.layout
+                def draw_popup(self_, _context):
+                    layout = self_.layout
                     layout.label(text="Snapshot Mode (Review Mode)")
                     layout.label(text="Please use 'Fork' or 'Save as Parent'.")
 
@@ -181,7 +177,6 @@ class SAVEPOINTS_OT_guard_save(bpy.types.Operator):
 
             return {'CANCELLED'}
 
-        # Normal Save
         try:
             return bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
         except RuntimeError:

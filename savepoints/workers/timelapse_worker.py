@@ -46,13 +46,11 @@ class TimelapseArgs:
         input_dir = args[0]
         output_filepath = args[1]
 
-        # Parse FPS
         try:
             fps = int(args[2]) if len(args) > 2 else 24
         except ValueError:
             fps = 24
 
-        # Parse Burn-in
         burn_in = False
         if len(args) > 3:
             try:
@@ -60,7 +58,6 @@ class TimelapseArgs:
             except Exception:
                 pass
 
-        # Parse Burn-in Position
         burn_in_pos = 'BL'
         if len(args) > 4:
             pos = args[4]
@@ -90,10 +87,8 @@ class BurnInGenerator:
     def generate(self, files, pos):
         """Adds text strips for each frame with the filename."""
 
-        # Calculate layout
         font_size, align_x, align_y, loc_x, loc_y = self._calculate_layout(pos)
 
-        # Add strip for each file
         for i, f_name in enumerate(files):
             self._add_text_strip(i, f_name, font_size, align_x, align_y, loc_x, loc_y)
 
@@ -106,7 +101,6 @@ class BurnInGenerator:
         margin_x = 0.03
         margin_y = 0.05
 
-        # Defaults
         align_x = 'LEFT'
         align_y = 'BOTTOM'
         loc_x = margin_x
@@ -163,7 +157,6 @@ class BurnInGenerator:
             t_strip.shadow_color = (0, 0, 0, 1)
             t_strip.color = (1, 1, 1, 1)
 
-            # Apply alignment
             if hasattr(t_strip, "align_x"):
                 t_strip.align_x = align_x
             elif hasattr(t_strip, "alignment_x"):
@@ -209,19 +202,11 @@ class SceneBuilder:
         first_file_path = os.path.join(self.args.input_dir, files[0])
         self._analyze_image(first_file_path)
 
-        # Setup VSE
         strips = self._setup_vse_editor()
-
-        # Add Image Strips
         total_frames = self._add_image_strips(strips, files)
-
-        # Configure Scene (FPS, Duration, Resolution)
         self._configure_scene_properties(total_frames)
-
-        # Color Management
         self._setup_color_management()
 
-        # Burn-in
         if self.args.burn_in:
             print(f"Adding Burn-in text (Pos: {self.args.burn_in_pos})")
             burn_in_gen = BurnInGenerator(self.scene, strips)
@@ -243,25 +228,20 @@ class SceneBuilder:
         self.first_image_info["ext"] = os.path.splitext(filepath)[1].lower()
 
         try:
-            # Load image temporarily
             tmp_img = bpy.data.images.load(filepath)
 
-            # Resolution
             self.first_image_info["resolution_x"] = tmp_img.size[0]
             self.first_image_info["resolution_y"] = tmp_img.size[1]
 
             # Color Space Heuristics
-            # 1. EXR and HDR are inherently Linear (Scene Referred)
             if self.first_image_info["ext"] in {'.exr', '.hdr'}:
                 self.first_image_info["is_linear"] = True
-            # 2. Check if the image buffer is floating point (e.g. 32bit Float TIFF)
             elif tmp_img.is_float:
                 print(f"Info: Image detected as Floating Point ({self.first_image_info['ext']}). Treating as Linear.")
                 self.first_image_info["is_linear"] = True
             else:
                 self.first_image_info["is_linear"] = False
 
-            # Cleanup
             bpy.data.images.remove(tmp_img)
 
         except Exception as e:
@@ -347,7 +327,6 @@ class Renderer:
     def configure(self):
         self.scene.render.filepath = self.output_filepath
 
-        # Blender 5.0+ Media Type
         try:
             img_settings = self.scene.render.image_settings
             if bpy.app.version >= (5, 0) and hasattr(img_settings, "media_type"):
@@ -355,7 +334,6 @@ class Renderer:
         except Exception as e:
             print(f"Info: Blender 5.0+ media_type check skipped: {e}")
 
-        # Apply Image Settings
         settings = {
             "image_settings": {
                 "file_format": 'FFMPEG',
@@ -384,18 +362,15 @@ class Renderer:
 
 def main():
     try:
-        # 1. Parse Arguments
         args = TimelapseArgs.parse(sys.argv)
         args.log_info()
 
-        # 2. Build Scene
         builder = SceneBuilder(args)
         scene = builder.build()
 
         if not scene:
             sys.exit(1)
 
-        # 3. Configure and Render
         renderer = Renderer(scene, args.output_filepath)
         renderer.configure()
         renderer.execute()

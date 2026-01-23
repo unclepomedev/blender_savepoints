@@ -23,7 +23,7 @@ def _draw_disk_space_alert(layout, check_dir: str | None):
         return
 
     free_space = get_free_disk_space(check_dir)
-    if free_space > 0 and free_space < LOW_DISK_SPACE_THRESHOLD:
+    if 0 < free_space < LOW_DISK_SPACE_THRESHOLD:
         row = layout.row()
         row.alert = True
         row.label(text=f"Low Disk Space: {format_file_size(free_space)}", icon='ERROR')
@@ -40,7 +40,6 @@ class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
             layout.label(text="No Item Selected")
             return
 
-        # List of tags
         tags = [
             ('NONE', "None", 'NONE'),
             ('STABLE', "Stable", 'CHECKMARK'),
@@ -56,7 +55,7 @@ class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
 
 
 class SAVEPOINTS_UL_version_list(bpy.types.UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
+    def draw_item(self, context, layout, _data, item, _icon, _active_data, _active_propname):
         settings = context.scene.savepoints_settings
         if item.version_id != "autosave":
             if settings.is_batch_mode:
@@ -75,7 +74,6 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             layout.label(text=f"{item.version_id} - {item.note} ({item.timestamp})", icon='FILE_BACKUP')
 
         if item.version_id != "autosave":
-            # Tag Menu Button
             tag_icon = 'TAG'
             if item.tag == 'STABLE':
                 tag_icon = 'CHECKMARK'
@@ -143,7 +141,6 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
 def _draw_snapshot_mode(layout, parent_filepath):
     box = layout.box()
     box.label(text="Snapshot Mode", icon='INFO')
-    # Show only filename to keep it short
     filename = os.path.basename(parent_filepath)
     box.label(text=f"Parent: {filename}")
 
@@ -202,7 +199,7 @@ def _draw_history_list(layout, settings):
 
 
 def _draw_version_details(layout, settings, context):
-    if settings.active_version_index >= 0 and len(settings.versions) > settings.active_version_index:
+    if 0 <= settings.active_version_index < len(settings.versions):
         item = settings.versions[settings.active_version_index]
 
         box = layout.box()

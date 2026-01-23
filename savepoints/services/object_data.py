@@ -48,7 +48,6 @@ def extract_object_data(obj, depsgraph=None):
     else:
         data['bbox'] = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 
-    # v_count (Mesh only)
     mesh = obj.data
     if obj.type == 'MESH' and mesh:
         data['v_count'] = len(mesh.vertices)

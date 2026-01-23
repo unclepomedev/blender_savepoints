@@ -55,7 +55,7 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
 
     objects: bpy.props.CollectionProperty(type=RetrieveObjectItem)
 
-    def invoke(self, context, event):
+    def invoke(self, context, _event):
         item = getattr(context, "savepoints_item", None)
         if item:
             version_id = item.version_id
@@ -87,7 +87,7 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
 
         return context.window_manager.invoke_props_dialog(self, width=400)
 
-    def draw(self, context):
+    def draw(self, _context):
         layout = self.layout
         layout.label(text="Select Objects to Retrieve:")
 
@@ -159,7 +159,6 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
             return {'CANCELLED'}
         collection_name = get_ghost_collection_name(version_id)
 
-        # Check if exists
         existing_col = bpy.data.collections.get(collection_name)
 
         if existing_col:

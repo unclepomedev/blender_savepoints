@@ -57,7 +57,6 @@ def _transform_path_to_history(path: str) -> str | None:
 
 
 def _transform_path_from_history(path: str) -> str | None:
-    # Normalize slashes
     path_normalized = path.replace("\\", "/")
     # Check for //../../
     if path_normalized.startswith("//../../"):
@@ -135,7 +134,6 @@ def fix_retrieved_assets(assets) -> int:
     """
     count = 0
     for item in assets:
-        # Check standard filepath
         if hasattr(item, "filepath"):
             current_path = item.filepath
             new_path = _transform_path_from_history(current_path)

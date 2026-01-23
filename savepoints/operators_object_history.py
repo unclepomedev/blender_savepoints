@@ -51,14 +51,14 @@ def populate_history_list(context):
     cleanup_single_object_ghost(obj.name, context)
 
 
-def update_history_view_mode(self, context):
+def update_history_view_mode(_self, context):
     populate_history_list(context)
 
 
 class SAVEPOINTS_UL_object_history(bpy.types.UIList):
     """UI List to display object history versions."""
 
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
+    def draw_item(self, _context, layout, _data, item, _icon, _active_data, _active_propname):
         # Ensure we are in a valid layout mode
         if self.layout_type not in {'DEFAULT', 'COMPACT'}:
             return
@@ -70,14 +70,12 @@ class SAVEPOINTS_UL_object_history(bpy.types.UIList):
         split.label(text=item.version_id)
 
         # --- Column 2: Change Type (25%) ---
-        # Split the remaining 90% by 0.25 -> 22.5% of total
         split_2 = split.split(factor=0.25)
 
         icon_name = CHANGE_TYPE_ICONS.get(item.change_type, 'DOT')
         split_2.label(text=item.change_type, icon=icon_name)
 
         # --- Column 3: Details (Remaining space split) ---
-        # Allocate approx 50% of the remaining space to details
         split_3 = split_2.split(factor=0.5)
         split_3.label(text=item.details)
 
@@ -95,12 +93,10 @@ def update_ghost_preview(self, context):
     idx = wm.savepoints_object_history_index
     history = wm.savepoints_object_history
 
-    # Active object is required for context
     obj = context.active_object
     if not obj:
         return
 
-    # Valid selection: Load ghost
     if 0 <= idx < len(history):
         item = history[idx]
         try:
@@ -108,7 +104,6 @@ def update_ghost_preview(self, context):
         except Exception as e:
             print(f"[SavePoints] Ghost load error for {item.version_id}: {e}")
 
-    # No selection or invalid index: Cleanup ghost
     else:
         cleanup_single_object_ghost(obj.name, context)
 
@@ -123,7 +118,7 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
     def poll(cls, context):
         return context.active_object is not None
 
-    def invoke(self, context, event):
+    def invoke(self, context, _event):
         context.window_manager.savepoints_object_history_show_all = False
 
         populate_history_list(context)
@@ -166,7 +161,7 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
             cleanup_single_object_ghost(obj.name, context)
 
 
-def draw_object_context_menu(self, context):
+def draw_object_context_menu(self, _context):
     layout = self.layout
     layout.operator_context = 'INVOKE_DEFAULT'
     layout.operator(SAVEPOINTS_OT_show_object_history.bl_idname, text="Show Object History", icon='TIME')

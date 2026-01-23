@@ -79,7 +79,6 @@ def get_history_dir_for_path(blend_path: str | None) -> str | None:
         return None
 
     path = Path(blend_path)
-    # parent / .{stem}_history
     history_dir = path.parent / f".{path.stem}{HISTORY_SUFFIX}"
     return str(history_dir)
 
@@ -159,10 +158,8 @@ def get_fork_target_path(snapshot_path: Path) -> Path:
     if not project_root.exists():
         raise FileNotFoundError(f"Project root not found: {project_root}")
 
-    # Calculate filename
     stem = "project"
     if history_dirname.startswith(".") and history_dirname.endswith("_history"):
-        # Extract original stem
         stem = history_dirname[1:-8]  # remove '.' and '_history'
 
     filename = f"{stem}_{version_id}.blend"
@@ -171,7 +168,6 @@ def get_fork_target_path(snapshot_path: Path) -> Path:
     if not target_path.exists():
         return target_path
 
-    # Handle collision with sequential numbering
     counter = 1
     while True:
         filename = f"{stem}_{version_id}_{counter:03d}.blend"
