@@ -13,9 +13,9 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeConsole(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    line_output: float
-    line_input: float
-    line_info: float
-    line_error: float
-    cursor: float
-    select: float
+    line_output: list[float]
+    line_input: list[float]
+    line_info: list[float]
+    line_error: list[float]
+    cursor: list[float]
+    select: list[float]

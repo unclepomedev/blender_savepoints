@@ -16,14 +16,14 @@ class Gizmo(bpy_struct):
     properties: 'GizmoProperties'
     bl_idname: str
     group: 'GizmoGroup'
-    color: float
+    color: list[float]
     alpha: float
-    color_highlight: float
+    color_highlight: list[float]
     alpha_highlight: float
-    matrix_space: float
-    matrix_basis: float
-    matrix_offset: float
-    matrix_world: float
+    matrix_space: list[float]
+    matrix_basis: list[float]
+    matrix_offset: list[float]
+    matrix_world: list[float]
     scale_basis: float
     line_width: float
     select_bias: float

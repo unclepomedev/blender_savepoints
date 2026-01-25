@@ -12,9 +12,9 @@ from .bpy_prop_collection import bpy_prop_collection
 from .PropertyGroup import PropertyGroup
 class OperatorStrokeElement(PropertyGroup):
     name: str
-    location: float
-    mouse: float
-    mouse_event: float
+    location: list[float]
+    mouse: list[float]
+    mouse_event: list[float]
     pressure: float
     size: float
     x_tilt: float

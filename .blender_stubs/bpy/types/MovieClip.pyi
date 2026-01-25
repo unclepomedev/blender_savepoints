@@ -46,8 +46,8 @@ class MovieClip(ID):
     tracking: 'MovieTracking'
     proxy: 'MovieClipProxy'
     use_proxy: bool
-    size: int
-    display_aspect: float
+    size: list[int]
+    display_aspect: list[float]
     source: str
     use_proxy_custom_directory: bool
     annotation: 'Annotation'

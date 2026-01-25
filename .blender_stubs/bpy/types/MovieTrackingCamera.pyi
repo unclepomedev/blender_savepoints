@@ -16,8 +16,8 @@ class MovieTrackingCamera(bpy_struct):
     focal_length: float
     focal_length_pixels: float
     units: str
-    principal_point: float
-    principal_point_pixels: float
+    principal_point: list[float]
+    principal_point_pixels: list[float]
     k1: float
     k2: float
     k3: float

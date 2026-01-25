@@ -39,4 +39,4 @@ class ChildOfConstraint(Constraint):
     use_scale_y: bool
     use_scale_z: bool
     set_inverse_pending: bool
-    inverse_matrix: float
+    inverse_matrix: list[float]

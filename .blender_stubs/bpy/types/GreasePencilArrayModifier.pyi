@@ -44,11 +44,11 @@ class GreasePencilArrayModifier(Modifier):
     open_influence_panel: bool
     count: int
     offset_object: 'Object'
-    constant_offset: float
-    relative_offset: float
-    random_offset: float
-    random_rotation: float
-    random_scale: float
+    constant_offset: list[float]
+    relative_offset: list[float]
+    random_offset: list[float]
+    random_rotation: list[float]
+    random_scale: list[float]
     seed: int
     replace_material: int
     use_constant_offset: bool

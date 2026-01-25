@@ -11,6 +11,6 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class Point(bpy_struct):
-    co: float
+    co: list[float]
     radius: float
     index: int

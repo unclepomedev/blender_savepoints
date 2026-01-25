@@ -11,4 +11,4 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class Float2AttributeValue(bpy_struct):
-    vector: float
+    vector: list[float]

@@ -28,4 +28,4 @@ class RigidBodyObject(bpy_struct):
     restitution: float
     use_margin: bool
     collision_margin: float
-    collision_collections: bool
+    collision_collections: list[bool]

@@ -81,7 +81,7 @@ class Mesh(ID):
     use_mirror_y: bool
     use_mirror_z: bool
     use_mirror_vertex_groups: bool
-    radial_symmetry: int
+    radial_symmetry: list[int]
     has_custom_normals: bool
     texco_mesh: 'Mesh'
     shape_keys: 'Key'
@@ -96,8 +96,8 @@ class Mesh(ID):
     is_editmode: bool
     animation_data: 'AnimData'
     auto_texspace: bool
-    texspace_location: float
-    texspace_size: float
+    texspace_location: list[float]
+    texspace_size: list[float]
     materials: bpy_prop_collection['Material']
     cycles: 'CyclesMeshSettings'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

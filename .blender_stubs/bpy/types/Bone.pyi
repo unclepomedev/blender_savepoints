@@ -40,11 +40,11 @@ class Bone(bpy_struct, _GenericBone):
     bbone_z: float
     bbone_handle_type_start: str
     bbone_custom_handle_start: 'Bone'
-    bbone_handle_use_scale_start: bool
+    bbone_handle_use_scale_start: list[bool]
     bbone_handle_use_ease_start: bool
     bbone_handle_type_end: str
     bbone_custom_handle_end: 'Bone'
-    bbone_handle_use_scale_end: bool
+    bbone_handle_use_scale_end: list[bool]
     bbone_handle_use_ease_end: bool
     bbone_rollin: float
     bbone_rollout: float
@@ -56,15 +56,15 @@ class Bone(bpy_struct, _GenericBone):
     bbone_easein: float
     bbone_easeout: float
     use_scale_easing: bool
-    bbone_scalein: float
-    bbone_scaleout: float
+    bbone_scalein: list[float]
+    bbone_scaleout: list[float]
     hide: bool
-    matrix: float
-    matrix_local: float
-    tail: float
-    tail_local: float
-    head: float
-    head_local: float
+    matrix: list[float]
+    matrix_local: list[float]
+    tail: list[float]
+    tail_local: list[float]
+    head: list[float]
+    head_local: list[float]
     length: float
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def evaluate_envelope(self, *args, **kwargs) -> Any: ...

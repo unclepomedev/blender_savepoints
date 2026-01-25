@@ -19,6 +19,6 @@ class NODE_MT_geometry_node_GEO_CURVE(AddNodeMenu, NODE_MT_gn_curve_base):
     bl_translation_context: str
     bl_description: str
     bl_owner_id: str
-    bl_options: str
+    bl_options: set[str]
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

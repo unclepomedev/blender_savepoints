@@ -41,12 +41,12 @@ class GreasePencilOffsetModifier(Modifier):
     open_general_panel: bool
     open_influence_panel: bool
     offset_mode: str
-    location: float
-    rotation: float
-    scale: float
-    stroke_location: float
-    stroke_rotation: float
-    stroke_scale: float
+    location: list[float]
+    rotation: list[float]
+    scale: list[float]
+    stroke_location: list[float]
+    stroke_rotation: list[float]
+    stroke_scale: list[float]
     seed: int
     stroke_step: int
     stroke_start_offset: int

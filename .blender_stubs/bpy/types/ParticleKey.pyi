@@ -11,8 +11,8 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ParticleKey(bpy_struct):
-    location: float
-    velocity: float
-    rotation: float
-    angular_velocity: float
+    location: list[float]
+    velocity: list[float]
+    rotation: list[float]
+    angular_velocity: list[float]
     time: float

@@ -13,10 +13,10 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeDopeSheet(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    grid: float
-    keyframe_border: float
-    keyframe_border_selected: float
+    grid: list[float]
+    keyframe_border: list[float]
+    keyframe_border_selected: list[float]
     keyframe_scale_factor: float
-    summary: float
-    interpolation_line: float
-    simulated_frames: float
+    summary: list[float]
+    interpolation_line: list[float]
+    simulated_frames: list[float]

@@ -11,18 +11,18 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeWidgetStateColors(bpy_struct):
-    error: float
-    warning: float
-    info: float
-    success: float
-    inner_anim: float
-    inner_anim_sel: float
-    inner_key: float
-    inner_key_sel: float
-    inner_driven: float
-    inner_driven_sel: float
-    inner_overridden: float
-    inner_overridden_sel: float
-    inner_changed: float
-    inner_changed_sel: float
+    error: list[float]
+    warning: list[float]
+    info: list[float]
+    success: list[float]
+    inner_anim: list[float]
+    inner_anim_sel: list[float]
+    inner_key: list[float]
+    inner_key_sel: list[float]
+    inner_driven: list[float]
+    inner_driven_sel: list[float]
+    inner_overridden: list[float]
+    inner_overridden_sel: list[float]
+    inner_changed: list[float]
+    inner_changed_sel: list[float]
     blend: float

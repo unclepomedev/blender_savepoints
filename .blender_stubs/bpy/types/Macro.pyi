@@ -20,7 +20,7 @@ class Macro(bpy_struct):
     bl_translation_context: str
     bl_description: str
     bl_undo_group: str
-    bl_options: str
+    bl_options: set[str]
     bl_cursor_pending: str
     def report(self, *args, **kwargs) -> Any: ...
     def poll(self, *args, **kwargs) -> Any: ...

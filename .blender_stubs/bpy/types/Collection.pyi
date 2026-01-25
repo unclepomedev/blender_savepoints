@@ -41,7 +41,7 @@ class Collection(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    instance_offset: float
+    instance_offset: list[float]
     objects: bpy_prop_collection['Object']
     all_objects: bpy_prop_collection['Object']
     children: bpy_prop_collection['Collection']
@@ -54,7 +54,7 @@ class Collection(ID):
     hide_render: bool
     lineart_usage: str
     lineart_use_intersection_mask: bool
-    lineart_intersection_mask: bool
+    lineart_intersection_mask: list[bool]
     lineart_intersection_priority: int
     use_lineart_intersection_priority: bool
     color_tag: str

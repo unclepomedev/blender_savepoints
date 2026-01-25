@@ -11,9 +11,9 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class View3DCursor(bpy_struct):
-    location: float
-    rotation_quaternion: float
-    rotation_axis_angle: float
-    rotation_euler: float
+    location: list[float]
+    rotation_quaternion: list[float]
+    rotation_axis_angle: list[float]
+    rotation_euler: list[float]
     rotation_mode: str
-    matrix: float
+    matrix: list[float]

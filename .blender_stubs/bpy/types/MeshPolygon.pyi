@@ -11,15 +11,15 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class MeshPolygon(bpy_struct):
-    vertices: int
+    vertices: list[int]
     loop_start: int
     loop_total: int
     material_index: int
     select: bool
     hide: bool
     use_smooth: bool
-    normal: float
-    center: float
+    normal: list[float]
+    center: list[float]
     area: float
     index: int
     def flip(self, *args, **kwargs) -> Any: ...

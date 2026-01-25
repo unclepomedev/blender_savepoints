@@ -11,8 +11,8 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ShapeKeyBezierPoint(bpy_struct):
-    co: float
-    handle_left: float
-    handle_right: float
+    co: list[float]
+    handle_left: list[float]
+    handle_right: list[float]
     tilt: float
     radius: float

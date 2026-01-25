@@ -16,8 +16,8 @@ class MotionPath(bpy_struct):
     frame_start: int
     frame_end: int
     length: int
-    color: float
-    color_post: float
+    color: list[float]
+    color_post: list[float]
     line_thickness: int
     use_bone_head: bool
     is_modified: bool

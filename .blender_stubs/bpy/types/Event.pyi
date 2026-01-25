@@ -31,7 +31,7 @@ class Event(bpy_struct):
     mouse_prev_press_x: int
     mouse_prev_press_y: int
     pressure: float
-    tilt: float
+    tilt: list[float]
     is_tablet: bool
     is_mouse_absolute: bool
     ndof_motion: 'NDOFMotionEventData'

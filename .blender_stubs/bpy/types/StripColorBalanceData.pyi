@@ -12,12 +12,12 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 class StripColorBalanceData(bpy_struct):
     correction_method: str
-    lift: float
-    gamma: float
-    gain: float
-    slope: float
-    offset: float
-    power: float
+    lift: list[float]
+    gamma: list[float]
+    gain: list[float]
+    slope: list[float]
+    offset: list[float]
+    power: list[float]
     invert_lift: bool
     invert_gamma: bool
     invert_gain: bool

@@ -17,11 +17,11 @@ from .NodeSocket import NodeSocket
 from .TexMapping import TexMapping
 class ShaderNodeTexSky(ShaderNode):
     type: str
-    location: float
-    location_absolute: float
+    location: list[float]
+    location_absolute: list[float]
     width: float
     height: float
-    dimensions: float
+    dimensions: list[float]
     name: str
     label: str
     inputs: bpy_prop_collection['NodeSocket']
@@ -30,7 +30,7 @@ class ShaderNodeTexSky(ShaderNode):
     parent: 'Node'
     warning_propagation: str
     use_custom_color: bool
-    color: float
+    color: list[float]
     color_tag: str
     select: bool
     show_options: bool
@@ -61,7 +61,7 @@ class ShaderNodeTexSky(ShaderNode):
     air_density: float
     aerosol_density: float
     ozone_density: float
-    sun_direction: float
+    sun_direction: list[float]
     turbidity: float
     ground_albedo: float
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

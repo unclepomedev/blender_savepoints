@@ -16,13 +16,13 @@ class SpreadsheetRowFilter(bpy_struct):
     column_name: str
     operation: str
     value_float: float
-    value_float2: float
-    value_float3: float
-    value_color: float
+    value_float2: list[float]
+    value_float3: list[float]
+    value_color: list[float]
     value_string: str
     threshold: float
     value_int: int
     value_int8: int
-    value_int2: int
-    value_int3: int
+    value_int2: list[int]
+    value_int3: list[int]
     value_boolean: bool

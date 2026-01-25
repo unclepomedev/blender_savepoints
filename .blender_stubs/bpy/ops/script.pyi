@@ -6,16 +6,16 @@
 
 import typing
 import bpy
-from typing import Any, Optional, Union, Set, Dict
+from typing import Any, Optional, Union
 
-def execute_preset(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, filepath: str = ..., menu_idname: str = ...) -> Set[str]:
+def execute_preset(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, filepath: str = ..., menu_idname: str = ...) -> set[str]:
     """Load a preset"""
     ...
 
-def python_file_run(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, filepath: str = ...) -> Set[str]:
+def python_file_run(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, filepath: str = ...) -> set[str]:
     """Run Python file"""
     ...
 
-def reload(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> Set[str]:
+def reload(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> set[str]:
     """Reload scripts"""
     ...

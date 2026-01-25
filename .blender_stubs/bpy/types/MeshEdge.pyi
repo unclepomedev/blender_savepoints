@@ -11,7 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class MeshEdge(bpy_struct):
-    vertices: int
+    vertices: list[int]
     select: bool
     hide: bool
     use_seam: bool

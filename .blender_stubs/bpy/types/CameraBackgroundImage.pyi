@@ -21,7 +21,7 @@ class CameraBackgroundImage(bpy_struct):
     clip: 'MovieClip'
     image_user: 'ImageUser'
     clip_user: 'MovieClipUser'
-    offset: float
+    offset: list[float]
     scale: float
     rotation: float
     use_flip_x: bool

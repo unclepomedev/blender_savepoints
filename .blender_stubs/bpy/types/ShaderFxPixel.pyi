@@ -17,5 +17,5 @@ class ShaderFxPixel(ShaderFx):
     show_render: bool
     show_in_editmode: bool
     show_expanded: bool
-    size: int
+    size: list[int]
     use_antialiasing: bool

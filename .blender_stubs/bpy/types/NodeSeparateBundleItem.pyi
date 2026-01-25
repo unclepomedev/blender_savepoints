@@ -13,5 +13,5 @@ from .bpy_struct import bpy_struct
 class NodeSeparateBundleItem(bpy_struct):
     name: str
     socket_type: str
-    color: float
+    color: list[float]
     structure_type: str

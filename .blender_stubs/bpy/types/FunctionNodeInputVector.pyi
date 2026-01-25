@@ -15,11 +15,11 @@ from .NodeLink import NodeLink
 from .NodeSocket import NodeSocket
 class FunctionNodeInputVector(FunctionNode):
     type: str
-    location: float
-    location_absolute: float
+    location: list[float]
+    location_absolute: list[float]
     width: float
     height: float
-    dimensions: float
+    dimensions: list[float]
     name: str
     label: str
     inputs: bpy_prop_collection['NodeSocket']
@@ -28,7 +28,7 @@ class FunctionNodeInputVector(FunctionNode):
     parent: 'Node'
     warning_propagation: str
     use_custom_color: bool
-    color: float
+    color: list[float]
     color_tag: str
     select: bool
     show_options: bool
@@ -47,7 +47,7 @@ class FunctionNodeInputVector(FunctionNode):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    vector: float
+    vector: list[float]
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def socket_value_update(self, *args, **kwargs) -> Any: ...
     def is_registered_node_type(self, *args, **kwargs) -> Any: ...

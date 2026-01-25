@@ -20,4 +20,4 @@ class GPencilSculptGuide(bpy_struct):
     angle: float
     angle_snap: float
     spacing: float
-    location: float
+    location: list[float]

@@ -30,5 +30,5 @@ class VolumeDisplaceModifier(Modifier):
     texture: 'Texture'
     texture_map_mode: str
     texture_map_object: 'Object'
-    texture_mid_level: float
+    texture_mid_level: list[float]
     texture_sample_radius: float

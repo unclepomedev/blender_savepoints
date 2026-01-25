@@ -15,7 +15,7 @@ from .AssetShelf import AssetShelf
 class VIEW3D_AST_brush_gpencil_vertex(AssetShelfHiddenByDefault, View3DAssetShelf, AssetShelf):
     bl_idname: str
     bl_space_type: str
-    bl_options: str
+    bl_options: set[str]
     bl_activate_operator: str
     bl_drag_operator: str
     bl_default_preview_size: int

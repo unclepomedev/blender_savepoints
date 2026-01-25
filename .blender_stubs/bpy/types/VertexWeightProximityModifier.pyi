@@ -29,7 +29,7 @@ class VertexWeightProximityModifier(Modifier):
     persistent_uid: int
     vertex_group: str
     proximity_mode: str
-    proximity_geometry: str
+    proximity_geometry: set[str]
     target: 'Object'
     min_dist: float
     max_dist: float

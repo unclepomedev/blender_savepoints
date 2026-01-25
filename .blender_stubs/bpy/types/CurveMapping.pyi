@@ -20,8 +20,8 @@ class CurveMapping(bpy_struct):
     clip_max_y: float
     extend: str
     curves: bpy_prop_collection['CurveMap']
-    black_level: float
-    white_level: float
+    black_level: list[float]
+    white_level: list[float]
     def update(self, *args, **kwargs) -> Any: ...
     def reset_view(self, *args, **kwargs) -> Any: ...
     def initialize(self, *args, **kwargs) -> Any: ...

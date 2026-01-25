@@ -55,7 +55,7 @@ class WindowManager(ID):
     asset_path_dummy: str
     addon_search: str
     addon_filter: str
-    addon_support: str
+    addon_support: set[str]
     poselib_previous_action: 'Action'
     addon_tags: bpy_prop_collection['BlExtDummyGroup']
     extension_tags: bpy_prop_collection['BlExtDummyGroup']

@@ -30,9 +30,9 @@ class ArrayModifier(Modifier):
     fit_length: float
     curve: 'Object'
     use_constant_offset: bool
-    constant_offset_displace: float
+    constant_offset_displace: list[float]
     use_relative_offset: bool
-    relative_offset_displace: float
+    relative_offset_displace: list[float]
     use_merge_vertices: bool
     use_merge_vertices_cap: bool
     merge_threshold: float

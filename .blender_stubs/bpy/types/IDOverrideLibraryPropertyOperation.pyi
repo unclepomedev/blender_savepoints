@@ -13,7 +13,7 @@ from .bpy_struct import bpy_struct
 from .ID import ID
 class IDOverrideLibraryPropertyOperation(bpy_struct):
     operation: str
-    flag: str
+    flag: set[str]
     subitem_reference_name: str
     subitem_local_name: str
     subitem_reference_id: 'ID'

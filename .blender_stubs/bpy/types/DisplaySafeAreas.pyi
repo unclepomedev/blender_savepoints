@@ -11,7 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class DisplaySafeAreas(bpy_struct):
-    title: float
-    action: float
-    title_center: float
-    action_center: float
+    title: list[float]
+    action: list[float]
+    title_center: list[float]
+    action_center: list[float]

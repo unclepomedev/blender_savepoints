@@ -11,7 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeBoneColorSet(bpy_struct):
-    normal: float
-    select: float
-    active: float
+    normal: list[float]
+    select: list[float]
+    active: list[float]
     show_colored_constraints: bool

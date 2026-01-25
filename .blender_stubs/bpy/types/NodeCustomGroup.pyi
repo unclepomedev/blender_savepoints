@@ -15,11 +15,11 @@ from .NodeSocket import NodeSocket
 from .NodeTree import NodeTree
 class NodeCustomGroup(Node):
     type: str
-    location: float
-    location_absolute: float
+    location: list[float]
+    location_absolute: list[float]
     width: float
     height: float
-    dimensions: float
+    dimensions: list[float]
     name: str
     label: str
     inputs: bpy_prop_collection['NodeSocket']
@@ -28,7 +28,7 @@ class NodeCustomGroup(Node):
     parent: 'Node'
     warning_propagation: str
     use_custom_color: bool
-    color: float
+    color: list[float]
     color_tag: str
     select: bool
     show_options: bool

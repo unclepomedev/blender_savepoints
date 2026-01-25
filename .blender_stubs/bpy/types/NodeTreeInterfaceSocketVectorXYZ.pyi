@@ -36,7 +36,7 @@ class NodeTreeInterfaceSocketVectorXYZ(NodeTreeInterfaceSocket):
     bl_socket_idname: str
     subtype: str
     dimensions: int
-    default_value: float
+    default_value: list[float]
     min_value: float
     max_value: float
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

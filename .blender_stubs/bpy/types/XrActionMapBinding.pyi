@@ -18,5 +18,5 @@ class XrActionMapBinding(bpy_struct):
     threshold: float
     axis0_region: str
     axis1_region: str
-    pose_location: float
-    pose_rotation: float
+    pose_location: list[float]
+    pose_rotation: list[float]

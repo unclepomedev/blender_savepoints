@@ -13,7 +13,7 @@ from .bpy_struct import bpy_struct
 class SplinePoint(bpy_struct):
     select: bool
     hide: bool
-    co: float
+    co: list[float]
     weight: float
     tilt: float
     weight_softbody: float

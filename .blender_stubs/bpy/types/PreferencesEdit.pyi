@@ -23,7 +23,7 @@ class PreferencesEdit(bpy_struct):
     auto_keying_mode: str
     use_keyframe_insert_available: bool
     use_auto_keying_warning: bool
-    key_insert_channels: str
+    key_insert_channels: set[str]
     use_auto_keyframe_insert_needed: bool
     use_keyframe_insert_needed: bool
     use_visual_keying: bool
@@ -39,8 +39,8 @@ class PreferencesEdit(bpy_struct):
     grease_pencil_manhattan_distance: int
     grease_pencil_euclidean_distance: int
     grease_pencil_eraser_radius: int
-    grease_pencil_default_color: float
-    sculpt_paint_overlay_color: float
+    grease_pencil_default_color: list[float]
+    sculpt_paint_overlay_color: list[float]
     connect_strips_by_default: bool
     use_duplicate_mesh: bool
     use_duplicate_surface: bool

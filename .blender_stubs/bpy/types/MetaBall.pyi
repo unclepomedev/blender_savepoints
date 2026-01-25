@@ -46,8 +46,8 @@ class MetaBall(ID):
     render_resolution: float
     threshold: float
     use_auto_texspace: bool
-    texspace_location: float
-    texspace_size: float
+    texspace_location: list[float]
+    texspace_size: list[float]
     materials: bpy_prop_collection['Material']
     is_editmode: bool
     animation_data: 'AnimData'

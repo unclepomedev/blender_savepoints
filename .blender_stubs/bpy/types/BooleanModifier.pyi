@@ -35,4 +35,4 @@ class BooleanModifier(Modifier):
     use_self: bool
     use_hole_tolerant: bool
     material_mode: str
-    debug_options: str
+    debug_options: set[str]

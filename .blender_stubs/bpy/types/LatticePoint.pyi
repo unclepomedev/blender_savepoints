@@ -13,7 +13,7 @@ from .bpy_struct import bpy_struct
 from .VertexGroupElement import VertexGroupElement
 class LatticePoint(bpy_struct):
     select: bool
-    co: float
-    co_deform: float
+    co: list[float]
+    co_deform: list[float]
     weight_softbody: float
     groups: bpy_prop_collection['VertexGroupElement']

@@ -11,5 +11,5 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class MotionPathVert(bpy_struct):
-    co: float
+    co: list[float]
     select: bool

@@ -27,6 +27,6 @@ class MeshSequenceCacheModifier(Modifier):
     persistent_uid: int
     cache_file: 'CacheFile'
     object_path: str
-    read_data: str
+    read_data: set[str]
     use_vertex_interpolation: bool
     velocity_scale: float

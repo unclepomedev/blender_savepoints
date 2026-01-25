@@ -13,6 +13,6 @@ from .bpy_struct import bpy_struct
 class UserSolidLight(bpy_struct):
     use: bool
     smooth: float
-    direction: float
-    specular_color: float
-    diffuse_color: float
+    direction: list[float]
+    specular_color: list[float]
+    diffuse_color: list[float]

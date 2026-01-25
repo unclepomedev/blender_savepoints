@@ -13,7 +13,7 @@ from .bpy_struct import bpy_struct
 class ParticleHairKey(bpy_struct):
     time: float
     weight: float
-    co: float
-    co_local: float
+    co: list[float]
+    co_local: list[float]
     def co_object(self, *args, **kwargs) -> Any: ...
     def co_object_set(self, *args, **kwargs) -> Any: ...

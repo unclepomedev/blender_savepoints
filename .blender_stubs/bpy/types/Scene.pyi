@@ -96,7 +96,7 @@ class Scene(ID):
     rigidbody_world: 'RigidBodyWorld'
     tool_settings: 'ToolSettings'
     unit_settings: 'UnitSettings'
-    gravity: float
+    gravity: list[float]
     use_gravity: bool
     render: 'RenderSettings'
     safe_areas: 'DisplaySafeAreas'

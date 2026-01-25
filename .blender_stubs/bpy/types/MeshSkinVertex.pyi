@@ -11,6 +11,6 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class MeshSkinVertex(bpy_struct):
-    radius: float
+    radius: list[float]
     use_root: bool
     use_loose: bool

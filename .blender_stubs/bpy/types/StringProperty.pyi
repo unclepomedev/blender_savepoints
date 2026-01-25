@@ -41,8 +41,8 @@ class StringProperty(Property):
     is_path_supports_templates: bool
     is_deprecated: bool
     deprecated_note: str
-    deprecated_version: int
-    deprecated_removal_version: int
-    tags: str
+    deprecated_version: list[int]
+    deprecated_removal_version: list[int]
+    tags: set[str]
     default: str
     length_max: int

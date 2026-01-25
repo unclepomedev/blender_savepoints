@@ -12,5 +12,5 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 class MovieTrackingPlaneMarker(bpy_struct):
     frame: int
-    corners: float
+    corners: list[float]
     mute: bool

@@ -13,10 +13,10 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeOutliner(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    match: float
-    selected_highlight: float
-    active: float
-    selected_object: float
-    active_object: float
-    edited_object: float
-    row_alternate: float
+    match: list[float]
+    selected_highlight: list[float]
+    active: list[float]
+    selected_object: list[float]
+    active_object: list[float]
+    edited_object: list[float]
+    row_alternate: list[float]

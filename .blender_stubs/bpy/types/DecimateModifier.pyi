@@ -35,5 +35,5 @@ class DecimateModifier(Modifier):
     symmetry_axis: str
     vertex_group_factor: float
     use_dissolve_boundaries: bool
-    delimit: str
+    delimit: set[str]
     face_count: int

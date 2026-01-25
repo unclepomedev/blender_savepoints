@@ -79,9 +79,9 @@ class GreasePencilLineartModifier(Modifier):
     opacity: float
     use_material_mask: bool
     use_material_mask_match: bool
-    use_material_mask_bits: bool
+    use_material_mask_bits: list[bool]
     use_intersection_match: bool
-    use_intersection_mask: bool
+    use_intersection_mask: list[bool]
     use_crease_on_smooth: bool
     use_crease_on_sharp: bool
     use_image_boundary_trimming: bool

@@ -6,32 +6,32 @@
 
 import typing
 import bpy
-from typing import Any, Optional, Union, Set, Dict
+from typing import Any, Optional, Union
 
-def add_row_filter_rule(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> Set[str]:
+def add_row_filter_rule(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> set[str]:
     """Add a filter to remove rows from the displayed data"""
     ...
 
-def change_spreadsheet_data_source(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, component_type: int = ..., attribute_domain_type: int = ...) -> Set[str]:
+def change_spreadsheet_data_source(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, component_type: int = ..., attribute_domain_type: int = ...) -> set[str]:
     """Change visible data source in the spreadsheet"""
     ...
 
-def fit_column(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> Set[str]:
+def fit_column(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> set[str]:
     """Resize a spreadsheet column to the width of the data"""
     ...
 
-def remove_row_filter_rule(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, index: int = ...) -> Set[str]:
+def remove_row_filter_rule(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None, *, index: int = ...) -> set[str]:
     """Remove a row filter from the rules"""
     ...
 
-def reorder_columns(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> Set[str]:
+def reorder_columns(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> set[str]:
     """Change the order of columns"""
     ...
 
-def resize_column(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> Set[str]:
+def resize_column(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> set[str]:
     """Resize a spreadsheet column"""
     ...
 
-def toggle_pin(override_context: Optional[Union[Dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> Set[str]:
+def toggle_pin(override_context: Optional[Union[dict, 'bpy.types.Context']] = None, execution_context: Optional[str] = None, undo: Optional[bool] = None) -> set[str]:
     """Turn on or off pinning"""
     ...

@@ -16,5 +16,5 @@ class StripTransform(bpy_struct):
     offset_x: float
     offset_y: float
     rotation: float
-    origin: float
+    origin: list[float]
     filter: str

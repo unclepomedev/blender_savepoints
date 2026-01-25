@@ -15,5 +15,5 @@ class RenderPass(bpy_struct):
     name: str
     channel_id: str
     channels: int
-    rect: float
+    rect: list[float]
     view_id: int

@@ -41,11 +41,11 @@ class BoolProperty(Property):
     is_path_supports_templates: bool
     is_deprecated: bool
     deprecated_note: str
-    deprecated_version: int
-    deprecated_removal_version: int
-    tags: str
+    deprecated_version: list[int]
+    deprecated_removal_version: list[int]
+    tags: set[str]
     default: bool
-    default_array: bool
+    default_array: list[bool]
     array_length: int
-    array_dimensions: int
+    array_dimensions: list[int]
     is_array: bool

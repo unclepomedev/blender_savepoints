@@ -12,7 +12,7 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .View3DShading import View3DShading
 class SceneDisplay(bpy_struct):
-    light_direction: float
+    light_direction: list[float]
     shadow_shift: float
     shadow_focus: float
     matcap_ssao_distance: float

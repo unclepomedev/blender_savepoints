@@ -13,15 +13,15 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeTextEditor(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    line_numbers: float
-    line_numbers_background: float
-    selected_text: float
-    cursor: float
-    syntax_builtin: float
-    syntax_symbols: float
-    syntax_special: float
-    syntax_preprocessor: float
-    syntax_reserved: float
-    syntax_comment: float
-    syntax_string: float
-    syntax_numbers: float
+    line_numbers: list[float]
+    line_numbers_background: list[float]
+    selected_text: list[float]
+    cursor: list[float]
+    syntax_builtin: list[float]
+    syntax_symbols: list[float]
+    syntax_special: list[float]
+    syntax_preprocessor: list[float]
+    syntax_reserved: list[float]
+    syntax_comment: list[float]
+    syntax_string: list[float]
+    syntax_numbers: list[float]

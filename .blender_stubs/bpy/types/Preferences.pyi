@@ -41,7 +41,7 @@ class Preferences(bpy_struct):
     system: 'PreferencesSystem'
     apps: 'PreferencesApps'
     experimental: 'PreferencesExperimental'
-    version: int
+    version: list[int]
     studio_lights: bpy_prop_collection['StudioLight']
     use_preferences_save: bool
     is_dirty: bool

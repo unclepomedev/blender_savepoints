@@ -11,13 +11,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeWidgetColors(bpy_struct):
-    outline: float
-    outline_sel: float
-    inner: float
-    inner_sel: float
-    item: float
-    text: float
-    text_sel: float
+    outline: list[float]
+    outline_sel: list[float]
+    inner: list[float]
+    inner_sel: list[float]
+    item: list[float]
+    text: list[float]
+    text_sel: list[float]
     show_shaded: bool
     shadetop: int
     shadedown: int

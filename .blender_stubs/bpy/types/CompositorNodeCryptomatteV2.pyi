@@ -18,11 +18,11 @@ from .NodeSocket import NodeSocket
 from .Scene import Scene
 class CompositorNodeCryptomatteV2(CompositorNode):
     type: str
-    location: float
-    location_absolute: float
+    location: list[float]
+    location_absolute: list[float]
     width: float
     height: float
-    dimensions: float
+    dimensions: list[float]
     name: str
     label: str
     inputs: bpy_prop_collection['NodeSocket']
@@ -31,7 +31,7 @@ class CompositorNodeCryptomatteV2(CompositorNode):
     parent: 'Node'
     warning_propagation: str
     use_custom_color: bool
-    color: float
+    color: list[float]
     color_tag: str
     select: bool
     show_options: bool
@@ -54,8 +54,8 @@ class CompositorNodeCryptomatteV2(CompositorNode):
     scene: 'Scene'
     image: 'Image'
     matte_id: str
-    add: float
-    remove: float
+    add: list[float]
+    remove: list[float]
     layer_name: str
     entries: bpy_prop_collection['CryptomatteEntry']
     frame_duration: int

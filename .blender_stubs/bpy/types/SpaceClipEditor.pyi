@@ -62,7 +62,7 @@ class SpaceClipEditor(Space):
     use_grayscale_preview: bool
     show_seconds: bool
     annotation_source: str
-    cursor_location: float
+    cursor_location: list[float]
     pivot_point: str
     show_gizmo: bool
     show_gizmo_navigate: bool

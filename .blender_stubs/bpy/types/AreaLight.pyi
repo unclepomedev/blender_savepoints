@@ -42,9 +42,9 @@ class AreaLight(Light):
     preview: 'ImagePreview'
     type: str
     use_temperature: bool
-    color: float
+    color: list[float]
     temperature: float
-    temperature_color: float
+    temperature_color: list[float]
     specular_factor: float
     diffuse_factor: float
     transmission_factor: float

@@ -48,5 +48,5 @@ class SpaceSequenceEditor(Space):
     preview_overlay: 'SequencerPreviewOverlay'
     timeline_overlay: 'SequencerTimelineOverlay'
     cache_overlay: 'SequencerCacheOverlay'
-    cursor_location: float
+    cursor_location: list[float]
     zoom_percentage: float

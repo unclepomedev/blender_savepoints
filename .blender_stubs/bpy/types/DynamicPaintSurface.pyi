@@ -33,7 +33,7 @@ class DynamicPaintSurface(bpy_struct):
     brush_influence_scale: float
     brush_radius_scale: float
     init_color_type: str
-    init_color: float
+    init_color: list[float]
     init_texture: 'Texture'
     init_layername: str
     effect_ui: str

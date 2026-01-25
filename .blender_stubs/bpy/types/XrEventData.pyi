@@ -16,11 +16,11 @@ class XrEventData(bpy_struct):
     user_path: str
     user_path_other: str
     type: str
-    state: float
-    state_other: float
+    state: list[float]
+    state_other: list[float]
     float_threshold: float
-    controller_location: float
-    controller_rotation: float
-    controller_location_other: float
-    controller_rotation_other: float
+    controller_location: list[float]
+    controller_rotation: list[float]
+    controller_location_other: list[float]
+    controller_rotation_other: list[float]
     bimanual: bool

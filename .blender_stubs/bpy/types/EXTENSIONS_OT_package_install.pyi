@@ -25,7 +25,7 @@ class EXTENSIONS_OT_package_install(Operator, _ExtCmdMixIn):
     bl_translation_context: str
     bl_description: str
     bl_undo_group: str
-    bl_options: str
+    bl_options: set[str]
     bl_cursor_pending: str
     layout: 'UILayout'
     options: 'OperatorOptions'

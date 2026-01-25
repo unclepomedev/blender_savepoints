@@ -20,8 +20,8 @@ class UnifiedPaintSettings(bpy_struct):
     unprojected_size: float
     strength: float
     weight: float
-    color: float
-    secondary_color: float
+    color: list[float]
+    secondary_color: list[float]
     use_color_jitter: bool
     hue_jitter: float
     saturation_jitter: float

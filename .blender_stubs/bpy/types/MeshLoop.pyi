@@ -14,7 +14,7 @@ class MeshLoop(bpy_struct):
     vertex_index: int
     edge_index: int
     index: int
-    normal: float
-    tangent: float
+    normal: list[float]
+    tangent: list[float]
     bitangent_sign: float
-    bitangent: float
+    bitangent: list[float]

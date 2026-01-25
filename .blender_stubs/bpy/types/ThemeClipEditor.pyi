@@ -13,16 +13,16 @@ from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeClipEditor(bpy_struct):
     space: 'ThemeSpaceGeneric'
-    grid: float
-    marker_outline: float
-    marker: float
-    active_marker: float
-    selected_marker: float
-    disabled_marker: float
-    locked_marker: float
-    path_before: float
-    path_after: float
-    path_keyframe_before: float
-    path_keyframe_after: float
-    metadatabg: float
-    metadatatext: float
+    grid: list[float]
+    marker_outline: list[float]
+    marker: list[float]
+    active_marker: list[float]
+    selected_marker: list[float]
+    disabled_marker: list[float]
+    locked_marker: list[float]
+    path_before: list[float]
+    path_after: list[float]
+    path_keyframe_before: list[float]
+    path_keyframe_after: list[float]
+    metadatabg: list[float]
+    metadatatext: list[float]

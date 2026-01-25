@@ -15,9 +15,9 @@ from .Texture import Texture
 class ParticleSettingsTextureSlot(TextureSlot):
     texture: 'Texture'
     name: str
-    offset: float
-    scale: float
-    color: float
+    offset: list[float]
+    scale: list[float]
+    color: list[float]
     blend_type: str
     default_value: float
     output_node: str

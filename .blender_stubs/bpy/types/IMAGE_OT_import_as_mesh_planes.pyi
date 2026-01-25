@@ -28,7 +28,7 @@ class IMAGE_OT_import_as_mesh_planes(AddObjectHelper, ImportHelper, MaterialProp
     bl_translation_context: str
     bl_description: str
     bl_undo_group: str
-    bl_options: str
+    bl_options: set[str]
     bl_cursor_pending: str
     layout: 'UILayout'
     options: 'OperatorOptions'
