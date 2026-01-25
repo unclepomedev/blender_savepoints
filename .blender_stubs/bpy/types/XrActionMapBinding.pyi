@@ -1,0 +1,22 @@
+# Blender Probe Generated Stub for Blender 5.0.1
+# noinspection PyPep8Naming
+# noinspection PyUnresolvedReferences
+# noqa: N801
+# pylint: disable=invalid-name
+
+import sys
+import typing
+from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from .bpy_prop_collection import bpy_prop_collection
+
+from .bpy_struct import bpy_struct
+from .XrComponentPath import XrComponentPath
+class XrActionMapBinding(bpy_struct):
+    name: str
+    profile: str
+    component_paths: bpy_prop_collection['XrComponentPath']
+    threshold: float
+    axis0_region: str
+    axis1_region: str
+    pose_location: float
+    pose_rotation: float

@@ -1,0 +1,24 @@
+# Blender Probe Generated Stub for Blender 5.0.1
+# noinspection PyPep8Naming
+# noinspection PyUnresolvedReferences
+# noqa: N801
+# pylint: disable=invalid-name
+
+import sys
+import typing
+from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from .bpy_prop_collection import bpy_prop_collection
+
+from .bpy_struct import bpy_struct
+class MeshStatVis(bpy_struct):
+    type: str
+    overhang_min: float
+    overhang_max: float
+    overhang_axis: str
+    thickness_min: float
+    thickness_max: float
+    thickness_samples: int
+    distort_min: float
+    distort_max: float
+    sharp_min: float
+    sharp_max: float

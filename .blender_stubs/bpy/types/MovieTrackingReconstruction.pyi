@@ -1,0 +1,17 @@
+# Blender Probe Generated Stub for Blender 5.0.1
+# noinspection PyPep8Naming
+# noinspection PyUnresolvedReferences
+# noqa: N801
+# pylint: disable=invalid-name
+
+import sys
+import typing
+from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from .bpy_prop_collection import bpy_prop_collection
+
+from .bpy_struct import bpy_struct
+from .MovieReconstructedCamera import MovieReconstructedCamera
+class MovieTrackingReconstruction(bpy_struct):
+    is_valid: bool
+    average_error: float
+    cameras: bpy_prop_collection['MovieReconstructedCamera']
