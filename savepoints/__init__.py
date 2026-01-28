@@ -5,7 +5,6 @@ import traceback
 
 import bpy
 from bpy.app.handlers import persistent
-
 from . import hud
 from . import operators_attributes
 from . import operators_core
@@ -46,6 +45,7 @@ classes = (
     operators_object_history.SavePointsObjectHistoryItem,
     operators_object_history.SAVEPOINTS_UL_object_history,
     operators_object_history.SAVEPOINTS_OT_show_object_history,
+    operators_io.SAVEPOINTS_OT_export_project_zip,
     ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
@@ -98,10 +98,10 @@ def auto_remap_paths_handler(dummy):
 
 def register():
     ui_utils.register_previews()
-    hud.register()
-    operators_io.register()
+    hud.register_draw_handler()
     for cls in classes:
         bpy.utils.register_class(cls)
+    operators_io.add_menu()
 
     bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
 
@@ -177,9 +177,9 @@ def unregister():
     if auto_remap_paths_handler in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(auto_remap_paths_handler)
 
+    operators_io.remove_menu()
     ui_utils.unregister_previews()
-    hud.unregister()
-    operators_io.unregister()
+    hud.unregister_draw_handler()
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
 
