@@ -88,8 +88,15 @@ def menu_func(self, _context):
 
 
 def add_menu():
+    try:
+        bpy.types.TOPBAR_MT_file_export.remove(menu_func)
+    except ValueError:
+        pass
     bpy.types.TOPBAR_MT_file_export.append(menu_func)
 
 
 def remove_menu():
-    bpy.types.TOPBAR_MT_file_export.remove(menu_func)
+    try:
+        bpy.types.TOPBAR_MT_file_export.remove(menu_func)
+    except ValueError:
+        pass
