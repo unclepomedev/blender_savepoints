@@ -5,7 +5,6 @@ from pathlib import Path
 
 import bpy
 from bpy_extras.io_utils import ExportHelper
-
 from .services.storage import get_history_dir_for_path
 
 
@@ -88,11 +87,9 @@ def menu_func(self, _context):
     self.layout.operator(SAVEPOINTS_OT_export_project_zip.bl_idname, text="SavePoints Project (.zip)")
 
 
-def register():
-    bpy.utils.register_class(SAVEPOINTS_OT_export_project_zip)
+def add_menu():
     bpy.types.TOPBAR_MT_file_export.append(menu_func)
 
 
-def unregister():
+def remove_menu():
     bpy.types.TOPBAR_MT_file_export.remove(menu_func)
-    bpy.utils.unregister_class(SAVEPOINTS_OT_export_project_zip)

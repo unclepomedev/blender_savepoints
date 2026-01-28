@@ -111,13 +111,13 @@ def draw_hud():
             pass
 
 
-def register():
+def register_draw_handler():
     global _draw_handler
     if _draw_handler is None:
         _draw_handler = bpy.types.SpaceView3D.draw_handler_add(draw_hud, (), "WINDOW", "POST_PIXEL")
 
 
-def unregister():
+def unregister_draw_handler():
     global _draw_handler
     if _draw_handler is not None:
         bpy.types.SpaceView3D.draw_handler_remove(_draw_handler, "WINDOW")

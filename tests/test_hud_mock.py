@@ -115,12 +115,12 @@ class TestHud(unittest.TestCase):
         mock_bpy.types.SpaceView3D.draw_handler_add.return_value = "HANDLER_REF"
 
         # Test Register
-        savepoints.hud.register()
+        savepoints.hud.register_draw_handler()
         mock_bpy.types.SpaceView3D.draw_handler_add.assert_called_once()
         self.assertIsNotNone(savepoints.hud._draw_handler)
 
         # Test Unregister
-        savepoints.hud.unregister()
+        savepoints.hud.unregister_draw_handler()
         mock_bpy.types.SpaceView3D.draw_handler_remove.assert_called_once_with("HANDLER_REF", 'WINDOW')
         self.assertIsNone(savepoints.hud._draw_handler)
 
