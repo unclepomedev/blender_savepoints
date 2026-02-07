@@ -12,10 +12,15 @@ def run_export(json_path: str, output_dir: str, file_prefix: str):
     try:
         with open(json_path, "r", encoding="utf-8") as f:
             settings = json.load(f)
-    except Exception as e:
-        print(f"Failed to load settings: {e}")
+    except Exception as ex:
+        print(f"Failed to load settings: {ex}")
         sys.exit(1)
-    addon_utils.enable("io_scene_gltf2", default_set=False)
+
+    try:
+        addon_utils.enable("io_scene_gltf2", default_set=False)
+    except Exception as ex:
+        print(f"Error: Failed to enable glTF2 addon: {ex}")
+        sys.exit(1)
 
     target_objects = set(settings.get("target_objects", []))
 
