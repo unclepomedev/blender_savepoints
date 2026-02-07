@@ -22,6 +22,7 @@ class BatchRenderExecutor:
         worker_script_path: str,
         blender_bin: str,
         output_suffix: str = "_render",
+        filename_override: str | None = None,
     ):
         self.task_queue = list(tasks)
         self.total_tasks = len(tasks)
@@ -33,6 +34,7 @@ class BatchRenderExecutor:
         self.worker_script_path = worker_script_path
         self.blender_bin = blender_bin
         self.output_suffix = output_suffix
+        self.filename_override = filename_override
 
         self.current_process: subprocess.Popen | None = None
         self.current_version_id: str | None = None
@@ -134,6 +136,10 @@ class BatchRenderExecutor:
             print(f"[SavePoints] Failed to create log file: {e}")
             return False
 
+        output_name = f"{self.current_version_id}{self.output_suffix}"
+        if self.filename_override:
+            output_name = self.filename_override
+
         cmd = [
             self.blender_bin,
             *self.startup_flags,
@@ -143,7 +149,7 @@ class BatchRenderExecutor:
             "--",
             self.settings_path,
             self.output_dir,
-            f"{self.current_version_id}{self.output_suffix}",
+            output_name,
         ]
 
         try:
