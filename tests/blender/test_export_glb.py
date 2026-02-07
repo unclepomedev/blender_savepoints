@@ -49,6 +49,7 @@ class TestExportGLB(SavePointsTestCase):
             v1 = next(v for v in settings.versions if v.note == "V1_Cube")
 
             output_dir = Path(tempfile.mkdtemp())
+            self.addCleanup(lambda d=output_dir: shutil.rmtree(d, ignore_errors=True))
 
             # Prepare settings: select "MyCube"
             export_settings = {"target_objects": ["MyCube"]}
@@ -79,7 +80,7 @@ class TestExportGLB(SavePointsTestCase):
             ]
 
             print(f"Running command: {cmd}")
-            result = subprocess.run(cmd, capture_output=True, text=True)
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
 
             print("STDOUT:", result.stdout)
             print("STDERR:", result.stderr)
@@ -109,15 +110,14 @@ class TestExportGLB(SavePointsTestCase):
                 f"{v1.version_id}_missing",
             ]
 
-            result_missing = subprocess.run(cmd_missing, capture_output=True, text=True)
+            result_missing = subprocess.run(
+                cmd_missing, capture_output=True, text=True, timeout=30
+            )
             # Expect failure because worker exits with 1 if no objects found
             self.assertNotEqual(
                 result_missing.returncode, 0, "Worker should fail when no objects found"
             )
             self.assertIn("No matching objects found", result_missing.stdout)
-
-            # Cleanup
-            shutil.rmtree(output_dir)
 
 
 if __name__ == "__main__":

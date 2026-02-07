@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
+import os
+import shutil
 
 import bpy
 
@@ -86,5 +88,14 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
     def finish(self, context):
         if self._timer:
             context.window_manager.event_timer_remove(self._timer)
+        if (
+            self._executor
+            and self._executor.temp_dir
+            and os.path.exists(self._executor.temp_dir)
+        ):
+            try:
+                shutil.rmtree(self._executor.temp_dir)
+            except Exception as e:
+                print(f"Failed to cleanup temp dir: {e}")
         self._executor = None
         return {"FINISHED"}

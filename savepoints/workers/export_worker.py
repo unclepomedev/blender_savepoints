@@ -5,6 +5,7 @@ import os
 import sys
 
 import bpy
+import addon_utils
 
 
 def run_export(json_path: str, output_dir: str, file_prefix: str):
@@ -14,6 +15,7 @@ def run_export(json_path: str, output_dir: str, file_prefix: str):
     except Exception as e:
         print(f"Failed to load settings: {e}")
         sys.exit(1)
+    addon_utils.enable("io_scene_gltf2", default_set=False)
 
     target_objects = set(settings.get("target_objects", []))
 

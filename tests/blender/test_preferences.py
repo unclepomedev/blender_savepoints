@@ -34,18 +34,6 @@ class TestPreferences(SavePointsTestCase):
                 "Property should exist on class",
             )
 
-        try:
-            bpy.utils.register_class(SavePointsPreferences)
-        except ValueError:
-            # Already registered
-            pass
-
-        try:
-            # Just checking if property exists is good enough for structure check.
-            pass
-        finally:
-            bpy.utils.unregister_class(SavePointsPreferences)
-
     def test_ui_logic(self):
         # Just ensure it imports without error
         pass
