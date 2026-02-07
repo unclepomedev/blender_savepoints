@@ -107,6 +107,14 @@ SavePoints is a version control system that provides a visual UX for fast recove
     - A popup lists detected changes: **Created**, **Moved**, **Minor** (Shape), or **Major** (Vertex Count).
     - **Show All Versions**: Enable this toggle to list *every* snapshot containing the object, even if no changes were detected (marked as **Record**). This ensures you can access internal changes like sculpting or subtle deformations.
     - **Click an entry** to overlay a Ghost Reference of that specific version.
+12. **Background GLB Export**:
+    - *Note*: This feature is optional. Enable **"Enable Background GLB Export"** in the Add-on Preferences to unlock it.
+    - **Select Target Objects**: Select objects in your current scene. SavePoints uses their *names* to identify which objects to export from the past version.
+    - **Select Version**: Click a version in the list.
+    - **Export**:
+        - Set the **Export Path** in the version details panel (below the Checkout button).
+        - Click **Export GLB**.
+    - The export runs in the background, allowing you to keep working.
 
 ## ⚠️ Note
 
