@@ -19,8 +19,11 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints_test_case import SavePointsTestCase
 
-from savepoints.services.batch_render import extract_render_settings, get_worker_script_path, \
-    get_batch_render_output_dir
+from savepoints.services.batch_render import (
+    extract_render_settings,
+    get_worker_script_path,
+    get_batch_render_output_dir,
+)
 from savepoints.services.snapshot import find_snapshot_path
 
 
@@ -42,10 +45,10 @@ class TestBatchRenderFormat(SavePointsTestCase):
             bpy.context.scene.render.resolution_percentage = 100
 
             # Set unconventional format for verification
-            bpy.context.scene.render.image_settings.file_format = 'BMP'
+            bpy.context.scene.render.image_settings.file_format = "BMP"
 
-            bpy.context.scene.render.engine = 'CYCLES'
-            bpy.context.scene.cycles.device = 'CPU'
+            bpy.context.scene.render.engine = "CYCLES"
+            bpy.context.scene.cycles.device = "CPU"
             bpy.context.scene.cycles.samples = 1
 
             if not bpy.context.scene.camera:
@@ -58,22 +61,22 @@ class TestBatchRenderFormat(SavePointsTestCase):
         # --- Step 2: Create History ---
         with self.subTest(step="2. Create History"):
             bpy.ops.mesh.primitive_cube_add()
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V1")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V1")
 
             # We need to save the mainfile so the snapshot is valid
             bpy.ops.wm.save_mainfile()
 
         # --- Step 3: Test SCENE mode (BMP) ---
         with self.subTest(step="3. Test SCENE mode"):
-            self._run_render_test(override_format='SCENE', expected_ext='.bmp')
+            self._run_render_test(override_format="SCENE", expected_ext=".bmp")
 
         # --- Step 4: Test PNG mode ---
         with self.subTest(step="4. Test PNG mode"):
-            self._run_render_test(override_format='PNG', expected_ext='.png')
+            self._run_render_test(override_format="PNG", expected_ext=".png")
 
         # --- Step 5: Test JPEG mode ---
         with self.subTest(step="5. Test JPEG mode"):
-            self._run_render_test(override_format='JPEG', expected_ext='.jpg')
+            self._run_render_test(override_format="JPEG", expected_ext=".jpg")
 
         print("Batch Render Format Test: Completed")
 
@@ -97,7 +100,7 @@ class TestBatchRenderFormat(SavePointsTestCase):
         temp_dir = tempfile.mkdtemp()
         try:
             settings_path = os.path.join(temp_dir, "render_config.json")
-            with open(settings_path, 'w') as f:
+            with open(settings_path, "w") as f:
                 json.dump(render_settings, f)
 
             worker_script_path = get_worker_script_path()
@@ -105,21 +108,24 @@ class TestBatchRenderFormat(SavePointsTestCase):
             blender_bin = bpy.app.binary_path
 
             # Find snapshot
-            versions = [v for v in settings.versions if v.version_id.startswith('v')]
+            versions = [v for v in settings.versions if v.version_id.startswith("v")]
             v = versions[0]
             snapshot_path = find_snapshot_path(v.version_id)
-            self.assertIsNotNone(snapshot_path, f"Snapshot not found for version {v.version_id}")
+            self.assertIsNotNone(
+                snapshot_path, f"Snapshot not found for version {v.version_id}"
+            )
 
             cmd = [
                 blender_bin,
                 "-b",
                 "--factory-startup",
                 str(snapshot_path),
-                "-P", worker_script_path,
+                "-P",
+                worker_script_path,
                 "--",
                 settings_path,
                 str(output_dir),
-                f"{v.version_id}_render_{override_format}"
+                f"{v.version_id}_render_{override_format}",
             ]
 
             subprocess.run(cmd, check=True, capture_output=True)
@@ -130,11 +136,14 @@ class TestBatchRenderFormat(SavePointsTestCase):
         # Verification
         files = list(output_dir.glob(f"*{expected_ext}"))
         print(f"Files found: {[f.name for f in files]}")
-        self.assertTrue(len(files) > 0, f"No files with extension {expected_ext} found for {override_format}")
+        self.assertTrue(
+            len(files) > 0,
+            f"No files with extension {expected_ext} found for {override_format}",
+        )
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

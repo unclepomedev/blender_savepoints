@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestWindowsHiddenFolder(SavePointsTestCase):
-
     def test_ensure_directory_scenario(self):
         """
         Scenario:
@@ -35,8 +34,8 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
             dot_folder = self.test_dir / ".hidden_history_win"
 
             # Mock Windows environment
-            with patch('savepoints.services.storage.sys.platform', 'win32'):
-                with patch('savepoints.services.storage.ctypes') as mock_ctypes:
+            with patch("savepoints.services.storage.sys.platform", "win32"):
+                with patch("savepoints.services.storage.ctypes") as mock_ctypes:
                     # Setup Mock
                     mock_get = MagicMock(return_value=FILE_ATTRIBUTE_DIRECTORY)
                     mock_set = MagicMock()
@@ -60,8 +59,8 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
             normal_folder = self.test_dir / "visible_folder"
 
             # Mock Windows environment
-            with patch('savepoints.services.storage.sys.platform', 'win32'):
-                with patch('savepoints.services.storage.ctypes') as mock_ctypes:
+            with patch("savepoints.services.storage.sys.platform", "win32"):
+                with patch("savepoints.services.storage.ctypes") as mock_ctypes:
                     mock_get = MagicMock(return_value=FILE_ATTRIBUTE_DIRECTORY)
                     mock_set = MagicMock()
 
@@ -82,8 +81,8 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
             dot_folder_linux = self.test_dir / ".hidden_linux"
 
             # Mock Linux environment
-            with patch('savepoints.services.storage.sys.platform', 'linux'):
-                with patch('savepoints.services.storage.ctypes') as mock_ctypes:
+            with patch("savepoints.services.storage.sys.platform", "linux"):
+                with patch("savepoints.services.storage.ctypes") as mock_ctypes:
                     mock_set_attr = MagicMock()
                     mock_ctypes.windll.kernel32.SetFileAttributesW = mock_set_attr
 
@@ -100,7 +99,7 @@ class TestWindowsHiddenFolder(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

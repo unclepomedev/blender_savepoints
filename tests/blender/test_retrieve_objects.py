@@ -17,12 +17,11 @@ from savepoints.services.retrieve import (
     create_retrieve_temp_file,
     get_importable_objects,
     append_objects,
-    delete_retrieve_temp_file
+    delete_retrieve_temp_file,
 )
 
 
 class TestRetrieveObjects(SavePointsTestCase):
-
     def setUp(self):
         super().setUp()
         self.history_dir = self.test_dir / ".test_project_history"
@@ -88,8 +87,8 @@ class TestRetrieveObjects(SavePointsTestCase):
         print("Retrieve Service Workflow Test: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

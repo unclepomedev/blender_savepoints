@@ -36,13 +36,20 @@ class TestAutosaveSkipThumb(SavePointsTestCase):
             print("Step 1: Testing create_snapshot(skip_thumbnail=True)...")
             version_id_no_thumb = "v_no_thumb"
 
-            create_snapshot(context, version_id_no_thumb, "No Thumb", skip_thumbnail=True)
+            create_snapshot(
+                context, version_id_no_thumb, "No Thumb", skip_thumbnail=True
+            )
 
             # Verification: Snapshot exists, but thumbnail does not.
             v_dir = history_dir / version_id_no_thumb
             self.assertTrue(v_dir.exists(), f"Version dir {v_dir} missing")
-            self.assertTrue((v_dir / "snapshot.blend_snapshot").exists(), "Snapshot file missing")
-            self.assertFalse((v_dir / "thumbnail.png").exists(), "Thumbnail exists but should have been skipped")
+            self.assertTrue(
+                (v_dir / "snapshot.blend_snapshot").exists(), "Snapshot file missing"
+            )
+            self.assertFalse(
+                (v_dir / "thumbnail.png").exists(),
+                "Thumbnail exists but should have been skipped",
+            )
 
         # --- Step 2: Default Behavior (Attempt Thumbnail) ---
         with self.subTest(step="2. Default Behavior (Attempt Thumbnail)"):
@@ -56,13 +63,20 @@ class TestAutosaveSkipThumb(SavePointsTestCase):
             # Note: In background/headless mode, thumbnail generation may fail or be skipped internally.
             # We wrap this in try-except to ensure the test fails gracefully if the operator crashes.
             try:
-                create_snapshot(context, version_id_with_thumb, "With Thumb", skip_thumbnail=False)
+                create_snapshot(
+                    context, version_id_with_thumb, "With Thumb", skip_thumbnail=False
+                )
             except Exception as e:
-                self.fail(f"Snapshot creation failed during thumbnail generation step: {e}")
+                self.fail(
+                    f"Snapshot creation failed during thumbnail generation step: {e}"
+                )
 
             v_dir = history_dir / version_id_with_thumb
             self.assertTrue(v_dir.exists(), "Version dir missing for Step 2")
-            self.assertTrue((v_dir / "snapshot.blend_snapshot").exists(), "Snapshot file missing for Step 2")
+            self.assertTrue(
+                (v_dir / "snapshot.blend_snapshot").exists(),
+                "Snapshot file missing for Step 2",
+            )
 
             # Note: We do not strictly assert 'thumbnail.png' exists here because
             # it might not be generated in a headless environment.
@@ -77,13 +91,16 @@ class TestAutosaveSkipThumb(SavePointsTestCase):
 
             autosave_dir = history_dir / "autosave"
             self.assertTrue(autosave_dir.exists(), "Autosave dir not created")
-            self.assertFalse((autosave_dir / "thumbnail.png").exists(), "Autosave SHOULD NOT have thumbnail")
+            self.assertFalse(
+                (autosave_dir / "thumbnail.png").exists(),
+                "Autosave SHOULD NOT have thumbnail",
+            )
 
         print("Autosave/Thumbnail Workflow Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

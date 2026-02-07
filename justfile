@@ -25,3 +25,10 @@ test-blender version='':
     done
 
     echo "✅ All tests passed!"
+
+fmt:
+    uv run ruff format savepoints tests
+
+ty:
+    uv run pyright
+    uv run ty check

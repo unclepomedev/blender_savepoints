@@ -18,7 +18,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestGhostComplex(SavePointsTestCase):
-
     def test_ghost_complex_scenario(self):
         """
         Scenario:
@@ -46,16 +45,16 @@ class TestGhostComplex(SavePointsTestCase):
             bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
             cube = bpy.context.active_object
             cube.name = "Cube_V1"
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v1")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v1")
 
             # Create v2 (Cube moved to 5,0,0)
             cube.location.x = 5.0
             cube.name = "Cube_V2"
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v2")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v2")
 
             # Create v3 (Cube moved to 10,0,0)
             cube.location.x = 10.0
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v3")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v3")
 
             # Verify history created
             history_dir = get_history_dir()
@@ -69,16 +68,25 @@ class TestGhostComplex(SavePointsTestCase):
             bpy.ops.savepoints.toggle_ghost(version_id=v2_id)
 
             # Verify Collections
-            self.assertIn(col_name_v1, bpy.data.collections, "Ghost v1 collection missing")
-            self.assertIn(col_name_v2, bpy.data.collections, "Ghost v2 collection missing")
+            self.assertIn(
+                col_name_v1, bpy.data.collections, "Ghost v1 collection missing"
+            )
+            self.assertIn(
+                col_name_v2, bpy.data.collections, "Ghost v2 collection missing"
+            )
 
             # Verify Libraries
             # We filter libraries to find those pointing to our snapshots
             snapshot_libs = [
-                lib for lib in bpy.data.libraries
+                lib
+                for lib in bpy.data.libraries
                 if "snapshot.blend_snapshot" in lib.filepath
             ]
-            self.assertGreaterEqual(len(snapshot_libs), 2, "Should have at least 2 snapshot libraries loaded")
+            self.assertGreaterEqual(
+                len(snapshot_libs),
+                2,
+                "Should have at least 2 snapshot libraries loaded",
+            )
 
         # --- Step 3: Selective Removal ---
         with self.subTest(step="3. Selective Removal"):
@@ -88,14 +96,28 @@ class TestGhostComplex(SavePointsTestCase):
             bpy.ops.savepoints.toggle_ghost(version_id=v1_id)
 
             # Verify v1 is gone
-            self.assertNotIn(col_name_v1, bpy.data.collections, "Ghost v1 collection should be gone")
+            self.assertNotIn(
+                col_name_v1, bpy.data.collections, "Ghost v1 collection should be gone"
+            )
 
             # Verify v2 is STILL there
-            self.assertIn(col_name_v2, bpy.data.collections, "Ghost v2 collection should still exist")
+            self.assertIn(
+                col_name_v2,
+                bpy.data.collections,
+                "Ghost v2 collection should still exist",
+            )
 
             # Verify Library Cleanup
-            libs_v1 = [l for l in bpy.data.libraries if f"/{v1_id}/" in l.filepath.replace("\\", "/")]
-            libs_v2 = [l for l in bpy.data.libraries if f"/{v2_id}/" in l.filepath.replace("\\", "/")]
+            libs_v1 = [
+                l
+                for l in bpy.data.libraries
+                if f"/{v1_id}/" in l.filepath.replace("\\", "/")
+            ]
+            libs_v2 = [
+                l
+                for l in bpy.data.libraries
+                if f"/{v2_id}/" in l.filepath.replace("\\", "/")
+            ]
 
             self.assertEqual(len(libs_v1), 0, "Ghost v1 library should be cleaned up")
             self.assertGreater(len(libs_v2), 0, "Ghost v2 library should remain")
@@ -123,13 +145,17 @@ class TestGhostComplex(SavePointsTestCase):
                 bpy.ops.savepoints.toggle_ghost(version_id=v3_id)
 
             # Ensure no garbage collection was created
-            self.assertNotIn(col_name_v3, bpy.data.collections, "No collection should be created for missing file")
+            self.assertNotIn(
+                col_name_v3,
+                bpy.data.collections,
+                "No collection should be created for missing file",
+            )
 
         print("Complex Ghost Scenario: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

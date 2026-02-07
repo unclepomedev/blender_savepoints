@@ -51,7 +51,7 @@ def _resize_image_file(image_path: str, max_dim: int = 360) -> None:
 
             img.scale(new_width, new_height)
 
-        img.file_format = 'PNG'
+        img.file_format = "PNG"
         img.save()
 
         bpy.data.images.remove(img)
@@ -81,11 +81,11 @@ def capture_thumbnail(context: bpy.types.Context, filepath: str) -> None:
     old_depth = render.image_settings.color_depth
 
     try:
-        render.image_settings.file_format = 'PNG'
-        render.image_settings.color_mode = 'RGBA'
-        render.image_settings.color_depth = '8'
+        render.image_settings.file_format = "PNG"
+        render.image_settings.color_mode = "RGBA"
+        render.image_settings.color_depth = "8"
 
-        path_stem = path.with_suffix('')  # .../thumbnail
+        path_stem = path.with_suffix("")  # .../thumbnail
         render.filepath = str(path_stem)
 
         try:

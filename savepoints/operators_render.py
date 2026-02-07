@@ -8,10 +8,18 @@ import tempfile
 import bpy
 
 from .services.batch_executor import BatchRenderExecutor
-from .services.batch_render import extract_render_settings, get_worker_script_path, get_batch_render_output_dir, \
-    create_error_log_text_block
-from .services.post_process import open_folder_platform_independent, create_vse_timelapse, send_os_notification, \
-    launch_timelapse_mp4_generation
+from .services.batch_render import (
+    extract_render_settings,
+    get_worker_script_path,
+    get_batch_render_output_dir,
+    create_error_log_text_block,
+)
+from .services.post_process import (
+    open_folder_platform_independent,
+    create_vse_timelapse,
+    send_os_notification,
+    launch_timelapse_mp4_generation,
+)
 from .services.selection import get_selected_versions
 
 
@@ -35,14 +43,14 @@ def _draw_dry_run_info(layout):
     box = layout.box()
     col = box.column(align=True)
     row = col.row()
-    row.alignment = 'CENTER'
-    row.label(text="🚀 DRY RUN MODE", icon='TIME')
+    row.alignment = "CENTER"
+    row.label(text="🚀 DRY RUN MODE", icon="TIME")
     col.separator()
     col.label(text="• Resolution: 25% (Fast)")
     col.label(text="• Samples: 1 + Denoise")
     col.label(text="• Output: JPEG (Quality 70)")
     col.label(text="• Folder: ..._dryrun")
-    box.label(text="Files will be saved for quick review.", icon='INFO')
+    box.label(text="Files will be saved for quick review.", icon="INFO")
 
 
 def _draw_final_render_info(layout, scene, settings):
@@ -50,30 +58,30 @@ def _draw_final_render_info(layout, scene, settings):
     box = layout.box()
     col = box.column(align=True)
     row = col.row()
-    row.alignment = 'CENTER'
-    row.label(text=f"🎬 FINAL RENDER ({count} Versions)", icon='RENDER_STILL')
+    row.alignment = "CENTER"
+    row.label(text=f"🎬 FINAL RENDER ({count} Versions)", icon="RENDER_STILL")
 
     main_settings = scene.render.image_settings
     col.separator()
     sub = col.column(align=True)
     sub.scale_y = 0.8
-    sub.label(text="Output Settings (Inherited):", icon='PREFERENCES')
+    sub.label(text="Output Settings (Inherited):", icon="PREFERENCES")
 
     # Format Display Logic
     fmt = settings.batch_output_format
-    if fmt == 'SCENE':
+    if fmt == "SCENE":
         fmt_label = main_settings.file_format
         details = f"{main_settings.color_mode}, {main_settings.color_depth}-bit"
-        if fmt_label == 'JPEG':
+        if fmt_label == "JPEG":
             details += f", Q:{main_settings.quality}"
-        elif fmt_label == 'PNG':
+        elif fmt_label == "PNG":
             details += f", Comp:{main_settings.compression}%"
     else:
         fmt_label = fmt
         details = "Override Active"
 
     sub.label(text=f"  Format: {fmt_label}")
-    if fmt == 'SCENE':
+    if fmt == "SCENE":
         sub.label(text=f"  Details: {details}")
 
     # Timelapse Settings
@@ -81,7 +89,7 @@ def _draw_final_render_info(layout, scene, settings):
     row = sub.row()
     row.prop(settings, "batch_create_mp4")
     if settings.batch_create_mp4:
-        row.label(text="", icon='FILE_MOVIE')
+        row.label(text="", icon="FILE_MOVIE")
         split = sub.split(factor=0.05)
         split.separator()
         col_sub = split.column(align=True)
@@ -89,7 +97,7 @@ def _draw_final_render_info(layout, scene, settings):
         if settings.batch_burn_in:
             col_sub.prop(settings, "batch_burn_in_pos")
 
-    box.label(text="This may take a while.", icon='INFO')
+    box.label(text="This may take a while.", icon="INFO")
 
 
 class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
@@ -101,22 +109,23 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     - Only data embedded in the blend file (shaders, modifiers, etc.) will be rendered.
     - Addons that generate content at render-time will not function.
     """
+
     bl_idname = "savepoints.batch_render"
     bl_label = "Batch Render Snapshots"
-    bl_options = {'REGISTER'}
+    bl_options = {"REGISTER"}
 
     _timer = None
 
     dry_run: bpy.props.BoolProperty(
         name="Dry Run (Low Quality)",
         description="Render low quality JPEG for quick check (_dryrun suffix)",
-        default=False
+        default=False,
     )
 
     def invoke(self, context, event):
         if event.shift:
             self.dry_run = False
-            self.report({'INFO'}, "🚀 Instant Batch Render Started! (Shift+Click)")
+            self.report({"INFO"}, "🚀 Instant Batch Render Started! (Shift+Click)")
             return self.execute(context)
         return context.window_manager.invoke_props_dialog(self, width=400)
 
@@ -125,19 +134,19 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
     def execute(self, context):
         if not bpy.data.filepath:
-            self.report({'ERROR'}, "Blend file must be saved before batch rendering.")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, "Blend file must be saved before batch rendering.")
+            return {"CANCELLED"}
 
         try:
             self._prepare_execution(context)
         except Exception as e:
-            self.report({'ERROR'}, str(e))
-            if hasattr(self, 'temp_dir') and os.path.exists(self.temp_dir):
+            self.report({"ERROR"}, str(e))
+            if hasattr(self, "temp_dir") and os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
-            return {'CANCELLED'}
+            return {"CANCELLED"}
 
         total_tasks = len(self.target_versions)
-        self.report({'INFO'}, f"Batch Render Started: {total_tasks} versions.")
+        self.report({"INFO"}, f"Batch Render Started: {total_tasks} versions.")
         context.window_manager.progress_begin(0, total_tasks)
 
         self._timer = context.window_manager.event_timer_add(0.5, window=context.window)
@@ -146,14 +155,14 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         return self._handle_executor_update(context)
 
     def modal(self, context, event):
-        if event.type == 'TIMER':
+        if event.type == "TIMER":
             return self._handle_executor_update(context)
-        elif event.type == 'ESC':
+        elif event.type == "ESC":
             self.executor.cancel()
-            self.report({'WARNING'}, "Batch Render Cancelled by User.")
+            self.report({"WARNING"}, "Batch Render Cancelled by User.")
             return self.finish(context)
 
-        return {'PASS_THROUGH'}
+        return {"PASS_THROUGH"}
 
     def _prepare_execution(self, context):
         """Initializes directories, json config, and executor."""
@@ -168,11 +177,13 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self.worker_script_path = get_worker_script_path()
 
         if not os.path.exists(self.worker_script_path):
-            raise FileNotFoundError(f"Worker script not found at {self.worker_script_path}")
+            raise FileNotFoundError(
+                f"Worker script not found at {self.worker_script_path}"
+            )
 
         try:
             render_settings = extract_render_settings(context, dry_run=self.dry_run)
-            with open(self.settings_path, 'w') as f:
+            with open(self.settings_path, "w") as f:
                 json.dump(render_settings, f, indent=4)
         except Exception as e:
             raise Exception(f"Initialization failed: {e}")
@@ -186,41 +197,41 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             output_dir=self.output_dir,
             settings_path=self.settings_path,
             worker_script_path=self.worker_script_path,
-            blender_bin=bpy.app.binary_path
+            blender_bin=bpy.app.binary_path,
         )
 
     def _handle_executor_update(self, context):
         """Delegates update logic to executor and handles status."""
         status_info = self.executor.update()
-        status = status_info.get('status')
+        status = status_info.get("status")
 
-        if status == 'TASK_FINISHED':
+        if status == "TASK_FINISHED":
             self._on_task_finished(context, status_info)
-        elif status == 'SKIPPED':
+        elif status == "SKIPPED":
             self._on_task_skipped(context, status_info)
-        elif status == 'FINISHED':
+        elif status == "FINISHED":
             return self.finish(context)
-        elif status == 'CANCELLED':
+        elif status == "CANCELLED":
             return self.finish(context)
 
-        return {'RUNNING_MODAL'}
+        return {"RUNNING_MODAL"}
 
     def _on_task_finished(self, context, info):
-        vid = info['version_id']
-        if info['return_code'] == 0:
-            self.report({'INFO'}, f"Finished: {vid}")
+        vid = info["version_id"]
+        if info["return_code"] == 0:
+            self.report({"INFO"}, f"Finished: {vid}")
         else:
-            self.report({'ERROR'}, f"Failed: {vid} (Code {info['return_code']})")
-            create_error_log_text_block(vid, info['log_path'])
-            self.report({'WARNING'}, f"Check Text Editor 'Log_{vid}' for details.")
+            self.report({"ERROR"}, f"Failed: {vid} (Code {info['return_code']})")
+            create_error_log_text_block(vid, info["log_path"])
+            self.report({"WARNING"}, f"Check Text Editor 'Log_{vid}' for details.")
 
-        context.window_manager.progress_update(info['progress'][0])
+        context.window_manager.progress_update(info["progress"][0])
         msg = f"SavePoints Batch: Processed {info['progress'][0]}/{info['progress'][1]} versions..."
         context.workspace.status_text_set(msg)
 
     def _on_task_skipped(self, context, info):
-        self.report({'WARNING'}, f"Skipping {info['version_id']}: File not found.")
-        context.window_manager.progress_update(info['progress'][0])
+        self.report({"WARNING"}, f"Skipping {info['version_id']}: File not found.")
+        context.window_manager.progress_update(info["progress"][0])
 
     def finish(self, context):
         # Cleanup UI
@@ -230,7 +241,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         if self._timer:
             context.window_manager.event_timer_remove(self._timer)
 
-        if hasattr(self, 'temp_dir') and os.path.exists(self.temp_dir):
+        if hasattr(self, "temp_dir") and os.path.exists(self.temp_dir):
             try:
                 shutil.rmtree(self.temp_dir)
             except Exception:
@@ -239,25 +250,34 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         # Check Results
         completed_count = 0
         is_cancelled = False
-        if hasattr(self, 'executor'):
+        if hasattr(self, "executor"):
             completed_count = self.executor.current_task_idx
             is_cancelled = self.executor.is_cancelled
 
         if completed_count > 0:
             if is_cancelled:
-                self.report({'WARNING'}, f"Batch Render Interrupted. ({completed_count} completed)")
+                self.report(
+                    {"WARNING"},
+                    f"Batch Render Interrupted. ({completed_count} completed)",
+                )
             else:
-                self.report({'INFO'}, f"Batch Render Complete! ({completed_count} versions)")
+                self.report(
+                    {"INFO"}, f"Batch Render Complete! ({completed_count} versions)"
+                )
 
             open_folder_platform_independent(self.output_dir)
 
             if not self.dry_run and not is_cancelled:
                 self._process_timelapse_creation(context)
-                send_os_notification("SavePoints Batch Render", f"Completed! {completed_count} versions.")
+                send_os_notification(
+                    "SavePoints Batch Render", f"Completed! {completed_count} versions."
+                )
         else:
-            self.report({'WARNING'}, "Batch Render finished but no tasks were completed.")
+            self.report(
+                {"WARNING"}, "Batch Render finished but no tasks were completed."
+            )
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def _process_timelapse_creation(self, context):
         """Handles VSE creation and Background MP4 generation."""
@@ -272,44 +292,53 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                     output_file,
                     context.scene.render.fps,
                     context.scene.savepoints_settings.batch_burn_in,
-                    context.scene.savepoints_settings.batch_burn_in_pos
+                    context.scene.savepoints_settings.batch_burn_in_pos,
                 )
                 if success:
                     mp4_triggered = True
-                    self.report({'INFO'}, "MP4 generation started in background...")
+                    self.report({"INFO"}, "MP4 generation started in background...")
                 else:
-                    self.report({'ERROR'}, "Failed to start MP4 generation.")
+                    self.report({"ERROR"}, "Failed to start MP4 generation.")
 
             if scene_name and not bpy.app.background:
-                count = self.executor.current_task_idx if hasattr(self, 'executor') else 0
-                self._show_timelapse_notification(context, scene_name, mp4_triggered, count)
+                count = (
+                    self.executor.current_task_idx if hasattr(self, "executor") else 0
+                )
+                self._show_timelapse_notification(
+                    context, scene_name, mp4_triggered, count
+                )
             elif not scene_name:
-                self.report({'WARNING'}, "Could not create timelapse scene.")
+                self.report({"WARNING"}, "Could not create timelapse scene.")
 
         except Exception as e:
             print(f"[SavePoints] Post-process error: {e}")
             import traceback
+
             traceback.print_exc()
 
-    def _show_timelapse_notification(self, context, scene_name, mp4_triggered, count):
-        def draw_notification(self, _context):
-            layout = self.layout
+    @staticmethod
+    def _show_timelapse_notification(context, scene_name, mp4_triggered, count):
+        def draw_notification(self_, _context):
+            layout = self_.layout
             layout.label(text=f"Successfully processed {count} versions.")
             layout.separator()
-            layout.label(text="Auto-Timelapse created:", icon='SEQUENCE')
+            layout.label(text="Auto-Timelapse created:", icon="SEQUENCE")
             layout.label(text=f"  Scene: {scene_name}")
-            layout.label(text="  (Switch scene to view playback)", icon='INFO')
+            layout.label(text="  (Switch scene to view playback)", icon="INFO")
 
             if mp4_triggered:
                 layout.separator()
-                layout.label(text="Exporting MP4 in background...", icon='FILE_MOVIE')
-                layout.label(text="Check folder later.", icon='FILE_FOLDER')
+                layout.label(text="Exporting MP4 in background...", icon="FILE_MOVIE")
+                layout.label(text="Check folder later.", icon="FILE_FOLDER")
 
-        context.window_manager.popup_menu(draw_notification, title="Batch Render Complete", icon='CHECKMARK')
+        context.window_manager.popup_menu(
+            draw_notification, title="Batch Render Complete", icon="CHECKMARK"
+        )
 
 
 class SAVEPOINTS_OT_switch_scene(bpy.types.Operator):
     """Switch to the specified scene"""
+
     bl_idname = "savepoints.switch_scene"
     bl_label = "Switch Scene"
 
@@ -317,56 +346,59 @@ class SAVEPOINTS_OT_switch_scene(bpy.types.Operator):
 
     def execute(self, context):
         if self.scene_name not in bpy.data.scenes:
-            self.report({'WARNING'}, f"Scene '{self.scene_name}' not found.")
-            return {'CANCELLED'}
+            self.report({"WARNING"}, f"Scene '{self.scene_name}' not found.")
+            return {"CANCELLED"}
         if not context.window:
-            self.report({'WARNING'}, "Cannot switch scene: No active window found.")
-            return {'CANCELLED'}
+            self.report({"WARNING"}, "Cannot switch scene: No active window found.")
+            return {"CANCELLED"}
         context.window.scene = bpy.data.scenes[self.scene_name]
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_toggle_batch_mode(bpy.types.Operator):
     """Toggle Batch Operation Mode"""
+
     bl_idname = "savepoints.toggle_batch_mode"
     bl_label = "Toggle Batch Mode"
-    bl_options = {'REGISTER'}
+    bl_options = {"REGISTER"}
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
         settings.is_batch_mode = not settings.is_batch_mode
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_select_all(bpy.types.Operator):
     """Select all visible versions for batch operations"""
+
     bl_idname = "savepoints.select_all"
     bl_label = "Select All"
-    bl_options = {'REGISTER'}
+    bl_options = {"REGISTER"}
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
         filter_tag = settings.filter_tag
         for v in settings.versions:
-            if not v.version_id.startswith('v'):
+            if not v.version_id.startswith("v"):
                 continue
             match = True
-            if filter_tag != 'ALL':
+            if filter_tag != "ALL":
                 if v.tag != filter_tag:
                     match = False
             if match:
                 v.selected = True
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_deselect_all(bpy.types.Operator):
     """Deselect all versions"""
+
     bl_idname = "savepoints.deselect_all"
     bl_label = "Deselect All"
-    bl_options = {'REGISTER'}
+    bl_options = {"REGISTER"}
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
         for v in settings.versions:
             v.selected = False
-        return {'FINISHED'}
+        return {"FINISHED"}

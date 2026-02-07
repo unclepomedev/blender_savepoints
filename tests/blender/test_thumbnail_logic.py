@@ -27,16 +27,18 @@ class TestThumbnailLogic(SavePointsTestCase):
         double_ext_path = self.test_dir / "my_thumb.png.png"
 
         # Create the double extension file (Valid PNG)
-        TINY_PNG = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82'
+        TINY_PNG = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
 
-        with open(double_ext_path, 'wb') as f:
+        with open(double_ext_path, "wb") as f:
             f.write(TINY_PNG)
 
         thumbnail._resize_image_file(str(target_path))
 
         # Verify renaming happened
         self.assertTrue(target_path.exists(), "Target file should exist after rename")
-        self.assertFalse(double_ext_path.exists(), "Double extension file should be gone")
+        self.assertFalse(
+            double_ext_path.exists(), "Double extension file should be gone"
+        )
 
         print("Rename logic verified.")
 
@@ -48,9 +50,9 @@ class TestThumbnailLogic(SavePointsTestCase):
         wrong_ext_path = self.test_dir / "recover_test.exr"
 
         # Create a file with .exr extension (content is PNG for simplicity, Blender should handle it after rename)
-        TINY_PNG = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82'
+        TINY_PNG = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
 
-        with open(wrong_ext_path, 'wb') as f:
+        with open(wrong_ext_path, "wb") as f:
             f.write(TINY_PNG)
 
         # Ensure target doesn't exist
@@ -61,14 +63,18 @@ class TestThumbnailLogic(SavePointsTestCase):
         thumbnail._resize_image_file(str(target_path))
 
         # Verify:
-        self.assertFalse(wrong_ext_path.exists(), "Wrong extension file should be moved")
-        self.assertTrue(target_path.exists(), "Target .png file should exist after recovery")
+        self.assertFalse(
+            wrong_ext_path.exists(), "Wrong extension file should be moved"
+        )
+        self.assertTrue(
+            target_path.exists(), "Target .png file should exist after recovery"
+        )
 
         print("Recovery logic verified.")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

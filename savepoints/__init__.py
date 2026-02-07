@@ -55,7 +55,7 @@ addon_keymaps = []
 
 
 @persistent
-def load_handler(dummy):
+def load_handler(_dummy):
     """Sync history when file is loaded."""
     load_object_data.cache_clear()
     max_retries = 20
@@ -63,11 +63,17 @@ def load_handler(dummy):
 
     def _delayed_sync_history():
         context = bpy.context
-        if not context or not context.scene or (not bpy.app.background and not context.view_layer):
+        if (
+            not context
+            or not context.scene
+            or (not bpy.app.background and not context.view_layer)
+        ):
             execution_state["retries"] += 1
 
             if execution_state["retries"] > max_retries:
-                print(f"[SavePoints] Warning: History sync timed out after {max_retries} retries.")
+                print(
+                    f"[SavePoints] Warning: History sync timed out after {max_retries} retries."
+                )
                 return None
 
             return 0.05
@@ -77,7 +83,9 @@ def load_handler(dummy):
 
             if hasattr(context.scene, "savepoints_settings"):
                 # Reset autosave timer on load so autosave doesn't trigger immediately after opening a file
-                context.scene.savepoints_settings.last_autosave_timestamp = str(time.time())
+                context.scene.savepoints_settings.last_autosave_timestamp = str(
+                    time.time()
+                )
         except Exception:
             print("[SavePoints] Error during delayed sync history on load.")
             traceback.print_exc()
@@ -103,7 +111,9 @@ def register():
         bpy.utils.register_class(cls)
     operators_io.add_menu()
 
-    bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(type=properties.SavePointsSettings)
+    bpy.types.Scene.savepoints_settings = bpy.props.PointerProperty(
+        type=properties.SavePointsSettings
+    )
 
     bpy.types.WindowManager.savepoints_object_history = bpy.props.CollectionProperty(
         type=operators_object_history.SavePointsObjectHistoryItem
@@ -115,9 +125,11 @@ def register():
         name="Show All Versions",
         description="Include versions where no changes were detected (e.g. Sculpting)",
         default=False,
-        update=operators_object_history.update_history_view_mode
+        update=operators_object_history.update_history_view_mode,
     )
-    bpy.types.VIEW3D_MT_object_context_menu.append(operators_object_history.draw_object_context_menu)
+    bpy.types.VIEW3D_MT_object_context_menu.append(
+        operators_object_history.draw_object_context_menu
+    )
 
     bpy.app.handlers.load_post.append(load_handler)
     bpy.app.handlers.load_post.append(auto_remap_paths_handler)
@@ -129,15 +141,14 @@ def register():
     wm = bpy.context.window_manager
     kc = wm.keyconfigs.addon
     if kc:
-        km = kc.keymaps.new(name='Window', space_type='EMPTY')
-        is_mac = (sys.platform == 'darwin')
+        km = kc.keymaps.new(name="Window", space_type="EMPTY")
+        is_mac = sys.platform == "darwin"
 
         # ---------------------------------------------------------
         # 1. Standard: Ctrl+Alt+S (Mac: Cmd+Alt+S)
         # ---------------------------------------------------------
         kmi1 = km.keymap_items.new(
-            "savepoints.commit", 'S', 'PRESS',
-            ctrl=(not is_mac), oskey=is_mac, alt=True
+            "savepoints.commit", "S", "PRESS", ctrl=(not is_mac), oskey=is_mac, alt=True
         )
         kmi1.properties.force_quick = False
         addon_keymaps.append((km, kmi1))
@@ -146,8 +157,13 @@ def register():
         # 2. Forced Quick: Ctrl+Alt+Shift+S (Mac: Cmd+Alt+Shift+S)
         # ---------------------------------------------------------
         kmi2 = km.keymap_items.new(
-            "savepoints.commit", 'S', 'PRESS',
-            ctrl=(not is_mac), oskey=is_mac, alt=True, shift=True
+            "savepoints.commit",
+            "S",
+            "PRESS",
+            ctrl=(not is_mac),
+            oskey=is_mac,
+            alt=True,
+            shift=True,
         )
         kmi2.properties.force_quick = True
         addon_keymaps.append((km, kmi2))
@@ -156,8 +172,7 @@ def register():
         # 3. Guard Save: Ctrl+S (Mac: Cmd+S) -> Intercept standard save
         # ---------------------------------------------------------
         kmi_guard = km.keymap_items.new(
-            "savepoints.guard_save", 'S', 'PRESS',
-            ctrl=(not is_mac), oskey=is_mac
+            "savepoints.guard_save", "S", "PRESS", ctrl=(not is_mac), oskey=is_mac
         )
         addon_keymaps.append((km, kmi_guard))
 
@@ -185,7 +200,9 @@ def unregister():
 
     del bpy.types.Scene.savepoints_settings
 
-    bpy.types.VIEW3D_MT_object_context_menu.remove(operators_object_history.draw_object_context_menu)
+    bpy.types.VIEW3D_MT_object_context_menu.remove(
+        operators_object_history.draw_object_context_menu
+    )
     del bpy.types.WindowManager.savepoints_object_history
     del bpy.types.WindowManager.savepoints_object_history_index
     del bpy.types.WindowManager.savepoints_object_history_show_all

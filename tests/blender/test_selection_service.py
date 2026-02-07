@@ -50,7 +50,7 @@ class TestSelectionService(SavePointsTestCase):
         self.assertEqual(len(selected), 2)
 
         # 4. Autosave Check
-        self.assertTrue(selected[0].version_id.startswith('v'))
+        self.assertTrue(selected[0].version_id.startswith("v"))
 
         # 5. Deselect All
         versions[0].selected = False
@@ -62,7 +62,7 @@ class TestSelectionService(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

@@ -8,7 +8,7 @@ from .services.versioning import (
     get_next_version_id,
     delete_version_by_id,
     prune_versions,
-    generate_default_note
+    generate_default_note,
 )
 from .ui_utils import sync_history_to_props
 from .services.retrieve import cleanup_retrieve_temp_files
@@ -16,12 +16,17 @@ from .services.retrieve import cleanup_retrieve_temp_files
 
 class SAVEPOINTS_OT_commit(bpy.types.Operator):
     """Save a new version of the current project"""
+
     bl_idname = "savepoints.commit"
     bl_label = "Save Version"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
-    note: bpy.props.StringProperty(name="Commit Message", default="", options={'SKIP_SAVE'})
-    force_quick: bpy.props.BoolProperty(name="Force Quick Save", default=False, options={'SKIP_SAVE', 'HIDDEN'})
+    note: bpy.props.StringProperty(
+        name="Commit Message", default="", options={"SKIP_SAVE"}
+    )
+    force_quick: bpy.props.BoolProperty(
+        name="Force Quick Save", default=False, options={"SKIP_SAVE", "HIDDEN"}
+    )
 
     @classmethod
     def poll(cls, _context):
@@ -46,8 +51,8 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
     def execute(self, context):
         if not bpy.data.filepath:
-            self.report({'ERROR'}, "Save the project first!")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, "Save the project first!")
+            return {"CANCELLED"}
 
         # Ensure default note is set if empty (especially for non-interactive execution)
         if not self.note:
@@ -64,27 +69,28 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             if deleted > 0:
                 sync_history_to_props(context)
 
-        self.report({'INFO'}, f"Version {new_id_str} saved.")
-        return {'FINISHED'}
+        self.report({"INFO"}, f"Version {new_id_str} saved.")
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_checkout(bpy.types.Operator):
     """Restore selected version"""
+
     bl_idname = "savepoints.checkout"
     bl_label = "Checkout"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     confirm_save: bpy.props.BoolProperty(
         name="Save current changes",
         description="Save current file before opening version",
         default=True,
-        options={'SKIP_SAVE'}
+        options={"SKIP_SAVE"},
     )
 
     def draw(self, _context):
         layout = self.layout
         row = layout.row()
-        row.alignment = 'LEFT'
+        row.alignment = "LEFT"
         row.prop(self, "confirm_save")
 
     def invoke(self, context, _event):
@@ -94,19 +100,24 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
-        if settings.active_version_index < 0 or settings.active_version_index >= len(settings.versions):
-            self.report({'ERROR'}, "No version selected")
-            return {'CANCELLED'}
+        if settings.active_version_index < 0 or settings.active_version_index >= len(
+            settings.versions
+        ):
+            self.report({"ERROR"}, "No version selected")
+            return {"CANCELLED"}
 
         item = settings.versions[settings.active_version_index]
         blend_path = find_snapshot_path(item.version_id)
 
         if not blend_path:
             version_id = item.version_id
-            self.report({'WARNING'}, f"Snapshot file not found. Removed version {version_id} from list.")
+            self.report(
+                {"WARNING"},
+                f"Snapshot file not found. Removed version {version_id} from list.",
+            )
             delete_version_by_id(version_id)
             sync_history_to_props(context)
-            return {'CANCELLED'}
+            return {"CANCELLED"}
 
         # Handle unsaved changes (Interactive only)
         if not bpy.app.background and bpy.data.is_dirty:
@@ -115,42 +126,46 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
                     try:
                         bpy.ops.wm.save_mainfile()
                     except Exception as e:
-                        self.report({'ERROR'}, f"Failed to save current file: {e}")
-                        return {'CANCELLED'}
+                        self.report({"ERROR"}, f"Failed to save current file: {e}")
+                        return {"CANCELLED"}
                 else:
-                    self.report({'ERROR'}, "Current file is not saved. Cannot overwrite.")
-                    return {'CANCELLED'}
+                    self.report(
+                        {"ERROR"}, "Current file is not saved. Cannot overwrite."
+                    )
+                    return {"CANCELLED"}
 
         bpy.ops.wm.open_mainfile(filepath=str(blend_path), check_existing=False)
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_delete(bpy.types.Operator):
     """Delete selected version"""
+
     bl_idname = "savepoints.delete"
     bl_label = "Delete"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
         idx = settings.active_version_index
         if idx < 0 or idx >= len(settings.versions):
-            return {'CANCELLED'}
+            return {"CANCELLED"}
 
         item = settings.versions[idx]
 
         if item.is_protected:
-            self.report({'WARNING'}, f"Cannot delete locked version: {item.version_id}")
-            return {'CANCELLED'}
+            self.report({"WARNING"}, f"Cannot delete locked version: {item.version_id}")
+            return {"CANCELLED"}
 
         delete_version_by_id(item.version_id)
 
         sync_history_to_props(context)
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_refresh(bpy.types.Operator):
     """Refresh list"""
+
     bl_idname = "savepoints.refresh"
     bl_label = "Refresh"
 
@@ -164,4 +179,4 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
             )
 
         sync_history_to_props(context)
-        return {'FINISHED'}
+        return {"FINISHED"}

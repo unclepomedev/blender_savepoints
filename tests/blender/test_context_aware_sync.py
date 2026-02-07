@@ -42,15 +42,17 @@ class TestContextAwareSync(SavePointsTestCase):
         cam_data_src.shift_y = -0.1
         cam_data_src.clip_start = 0.5
         cam_data_src.clip_end = 500.0
-        cam_data_src.sensor_fit = 'VERTICAL'
+        cam_data_src.sensor_fit = "VERTICAL"
 
         # --- Step 2: Extract Settings ---
         settings = extract_render_settings(bpy.context)
 
         extracted_data = settings.get("camera_data")
-        self.assertIsNotNone(extracted_data, "camera_data should be present in settings")
+        self.assertIsNotNone(
+            extracted_data, "camera_data should be present in settings"
+        )
         self.assertEqual(extracted_data["lens"], 85.0)
-        self.assertEqual(extracted_data["sensor_fit"], 'VERTICAL')
+        self.assertEqual(extracted_data["sensor_fit"], "VERTICAL")
 
         # --- Step 3: Apply to Target (Simulate Worker) ---
         # Clear the current camera to force setup_camera to create/assign a new one
@@ -67,7 +69,7 @@ class TestContextAwareSync(SavePointsTestCase):
         self.assertAlmostEqual(cd.shift_y, -0.1)
         self.assertAlmostEqual(cd.clip_start, 0.5)
         self.assertAlmostEqual(cd.clip_end, 500.0)
-        self.assertEqual(cd.sensor_fit, 'VERTICAL')
+        self.assertEqual(cd.sensor_fit, "VERTICAL")
 
         print("Camera Lens Sync Test: Completed")
 
@@ -84,7 +86,7 @@ class TestContextAwareSync(SavePointsTestCase):
         self.scene.collection.objects.link(cam_obj)
         self.scene.camera = cam_obj
 
-        cam_data.type = 'ORTHO'
+        cam_data.type = "ORTHO"
         cam_data.ortho_scale = 12.5
 
         # --- Step 2: Extract & Apply ---
@@ -96,7 +98,7 @@ class TestContextAwareSync(SavePointsTestCase):
 
         # --- Step 3: Verification ---
         new_cam = self.scene.camera
-        self.assertEqual(new_cam.data.type, 'ORTHO')
+        self.assertEqual(new_cam.data.type, "ORTHO")
         self.assertAlmostEqual(new_cam.data.ortho_scale, 12.5)
 
         print("Orthographic Sync Test: Completed")
@@ -113,20 +115,20 @@ class TestContextAwareSync(SavePointsTestCase):
         vs = self.scene.view_settings
 
         try:
-            vs.view_transform = 'AgX'
-            target_view_transform = 'AgX'
-            target_look = 'AgX - High Contrast'
+            vs.view_transform = "AgX"
+            target_view_transform = "AgX"
+            target_look = "AgX - High Contrast"
         except TypeError:
-            vs.view_transform = 'Standard'
-            target_view_transform = 'Standard'
-            target_look = 'High Contrast'
+            vs.view_transform = "Standard"
+            target_view_transform = "Standard"
+            target_look = "High Contrast"
 
         try:
             vs.look = target_look
         except TypeError:
             print(f"Warning: Look '{target_look}' not found. Using 'None'.")
-            vs.look = 'None'
-            target_look = 'None'
+            vs.look = "None"
+            target_look = "None"
 
         vs.exposure = 1.5
         vs.gamma = 2.2
@@ -141,12 +143,12 @@ class TestContextAwareSync(SavePointsTestCase):
 
         # --- Step 3: Reset & Apply ---
         # Reset settings to default to ensure values are actually applied
-        if target_view_transform == 'AgX':
+        if target_view_transform == "AgX":
             try:
-                vs.view_transform = 'Standard'
+                vs.view_transform = "Standard"
             except TypeError:
                 pass
-        vs.look = 'None'
+        vs.look = "None"
         vs.exposure = 0.0
         vs.gamma = 1.0
 
@@ -170,9 +172,14 @@ class TestContextAwareSync(SavePointsTestCase):
 
         # Simulate empty/legacy settings
         empty_settings = {
-            "camera_matrix_world": [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+            "camera_matrix_world": [
+                [1, 0, 0, 0],
+                [0, 1, 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1],
+            ],
             # "camera_data" is missing
-            "view_settings": {}
+            "view_settings": {},
         }
 
         try:
@@ -181,17 +188,22 @@ class TestContextAwareSync(SavePointsTestCase):
         except Exception as e:
             self.fail(f"Setup functions crashed on missing data: {e}")
 
-        self.assertIsNotNone(self.scene.camera, "setup_camera should create a camera when matrix_world is provided")
+        self.assertIsNotNone(
+            self.scene.camera,
+            "setup_camera should create a camera when matrix_world is provided",
+        )
 
         cd = self.scene.camera.data
         self.assertEqual(cd.lens, 50.0, "Default lens should be 50mm")
-        self.assertEqual(cd.sensor_fit, 'AUTO', "Default sensor_fit should be AUTO")
-        self.assertAlmostEqual(cd.clip_start, 0.1, places=5, msg="Default clip_start should be 0.1")
+        self.assertEqual(cd.sensor_fit, "AUTO", "Default sensor_fit should be AUTO")
+        self.assertAlmostEqual(
+            cd.clip_start, 0.1, places=5, msg="Default clip_start should be 0.1"
+        )
         print("Resilience Test: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

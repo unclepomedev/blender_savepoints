@@ -46,7 +46,7 @@ def load_manifest(create_if_missing: bool = True) -> dict[str, Any]:
         path = Path(path_str)
         if path.exists():
             try:
-                with path.open('r', encoding='utf-8') as f:
+                with path.open("r", encoding="utf-8") as f:
                     data = json.load(f)
 
                     if not isinstance(data, dict):
@@ -114,7 +114,7 @@ def save_manifest_to_path(manifest_path: Path, data: dict[str, Any]) -> None:
     """
     try:
         ensure_directory(manifest_path.parent)
-        with manifest_path.open('w', encoding='utf-8') as f:
+        with manifest_path.open("w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
     except Exception as e:
         print(f"Error saving manifest: {e}")

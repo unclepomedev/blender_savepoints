@@ -13,7 +13,7 @@ def add_path(path_str):
 
 
 # 1. Environment Variable
-local_site_packages = os.environ.get('LOCAL_SITE_PACKAGES')
+local_site_packages = os.environ.get("LOCAL_SITE_PACKAGES")
 if local_site_packages:
     add_path(local_site_packages)
 else:

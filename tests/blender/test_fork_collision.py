@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestForkCollision(SavePointsTestCase):
-
     def test_fork_collision_handling(self):
         """
         Scenario:
@@ -32,14 +31,14 @@ class TestForkCollision(SavePointsTestCase):
         # --- Step 1: Create Base Version ---
         with self.subTest(step="1. Create Base Version"):
             bpy.ops.mesh.primitive_cube_add()
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Base Version")
-            self.assertIn('FINISHED', res, "Commit failed")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Base Version")
+            self.assertIn("FINISHED", res, "Commit failed")
 
         # --- Step 2: Checkout ---
         with self.subTest(step="2. Checkout Snapshot"):
             bpy.context.scene.savepoints_settings.active_version_index = 0
             res = bpy.ops.savepoints.checkout()
-            self.assertIn('FINISHED', res, "Checkout failed")
+            self.assertIn("FINISHED", res, "Checkout failed")
 
         # --- Step 3: Simulate Collision 1 ---
         # The default fork name logic is {project_name}_{version_id}.blend
@@ -53,16 +52,19 @@ class TestForkCollision(SavePointsTestCase):
 
         # Execute Fork
         with self.subTest(step="3. Fork with Collision 1"):
-            res = bpy.ops.savepoints.fork_version('EXEC_DEFAULT')
-            self.assertIn('FINISHED', res, "Fork failed")
+            res = bpy.ops.savepoints.fork_version("EXEC_DEFAULT")
+            self.assertIn("FINISHED", res, "Fork failed")
 
             current_path = Path(bpy.data.filepath)
             print(f"Forked to: {current_path.name}")
 
             # Expect incremented name
             expected_name_1 = "test_project_v001_001.blend"
-            self.assertEqual(current_path.name, expected_name_1,
-                             f"Expected {expected_name_1}, got {current_path.name}")
+            self.assertEqual(
+                current_path.name,
+                expected_name_1,
+                f"Expected {expected_name_1}, got {current_path.name}",
+            )
 
         # --- Return to Snapshot Mode for next test ---
         # Fork switches to the new file, so we are no longer in snapshot mode.
@@ -82,22 +84,27 @@ class TestForkCollision(SavePointsTestCase):
         if not collision_path_1.exists():
             collision_path_1.touch()
 
-        print(f"Collision files existing: {collision_path_1.name}, {collision_path_2.name}")
+        print(
+            f"Collision files existing: {collision_path_1.name}, {collision_path_2.name}"
+        )
 
         with self.subTest(step="5. Fork with Collision 2"):
-            res = bpy.ops.savepoints.fork_version('EXEC_DEFAULT')
-            self.assertIn('FINISHED', res, "Fork failed")
+            res = bpy.ops.savepoints.fork_version("EXEC_DEFAULT")
+            self.assertIn("FINISHED", res, "Fork failed")
 
             current_path = Path(bpy.data.filepath)
             print(f"Forked to: {current_path.name}")
 
             expected_name_2 = "test_project_v001_002.blend"
-            self.assertEqual(current_path.name, expected_name_2,
-                             f"Expected {expected_name_2}, got {current_path.name}")
+            self.assertEqual(
+                current_path.name,
+                expected_name_2,
+                f"Expected {expected_name_2}, got {current_path.name}",
+            )
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

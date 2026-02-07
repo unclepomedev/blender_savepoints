@@ -36,16 +36,17 @@ class TestTrashDeletion(SavePointsTestCase):
         version_dir.mkdir()
 
         # Mock manifest
-        fake_manifest = {
-            "versions": [
-                {"id": version_id, "is_protected": False}
-            ]
-        }
+        fake_manifest = {"versions": [{"id": version_id, "is_protected": False}]}
 
         # 2. Patch & Verify
-        with patch("savepoints.services.versioning.load_manifest", return_value=fake_manifest), \
-                patch("savepoints.services.versioning.save_manifest") as mock_save, \
-                patch("savepoints.services.versioning.send2trash") as mock_send2trash:
+        with (
+            patch(
+                "savepoints.services.versioning.load_manifest",
+                return_value=fake_manifest,
+            ),
+            patch("savepoints.services.versioning.save_manifest") as mock_save,
+            patch("savepoints.services.versioning.send2trash") as mock_send2trash,
+        ):
             # Execute
             versioning.delete_version_by_id(version_id)
 
@@ -57,8 +58,8 @@ class TestTrashDeletion(SavePointsTestCase):
             print(f"Verified send2trash called for version: {called_path_arg}")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

@@ -11,11 +11,11 @@ FRAMES_PER_IMAGE = 6
 
 
 def _escape_for_applescript(text):
-    return text.replace('\\', '\\\\').replace('"', '\\"')
+    return text.replace("\\", "\\\\").replace('"', '\\"')
 
 
 def _escape_for_powershell(text):
-    return text.replace('`', '``').replace('$', '`$').replace('"', '`"')
+    return text.replace("`", "``").replace("$", "`$").replace('"', '`"')
 
 
 def send_os_notification(title, message):
@@ -41,8 +41,12 @@ def send_os_notification(title, message):
             start-sleep -m 3000; 
             $icon.dispose();
             """
-            creation_flags = getattr(subprocess, 'CREATE_NO_WINDOW', 0x08000000)
-            subprocess.run(["powershell", "-Command", ps_script], creationflags=creation_flags, check=False)
+            creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+            subprocess.run(
+                ["powershell", "-Command", ps_script],
+                creationflags=creation_flags,
+                check=False,
+            )
 
         elif sys.platform.startswith("linux"):  # Linux
             subprocess.run(["notify-send", title, message], check=False)
@@ -74,9 +78,20 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     if not os.path.exists(directory_path):
         return None
 
-    valid_exts = {'.png', '.jpg', '.jpeg', '.exr', '.tif', '.tiff', '.webp', '.tga', '.bmp'}
+    valid_exts = {
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".exr",
+        ".tif",
+        ".tiff",
+        ".webp",
+        ".tga",
+        ".bmp",
+    }
     files = [
-        f for f in os.listdir(directory_path)
+        f
+        for f in os.listdir(directory_path)
         if os.path.splitext(f)[1].lower() in valid_exts
     ]
 
@@ -105,7 +120,7 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
 
     seq = new_scene.sequence_editor
 
-    if hasattr(seq, 'strips'):
+    if hasattr(seq, "strips"):
         strips_collection = seq.strips
     else:
         strips_collection = seq.sequences
@@ -132,6 +147,7 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     except Exception as e:
         print(f"SavePoints Error creating VSE strip: {e}")
         import traceback
+
         traceback.print_exc()
         return None
 
@@ -140,7 +156,9 @@ def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_i
     """
     Launches the timelapse worker script in a background process to generate an MP4.
     """
-    worker_script = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "workers", "timelapse_worker.py"))
+    worker_script = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "workers", "timelapse_worker.py")
+    )
 
     if not os.path.exists(worker_script):
         print(f"[SavePoints] Error: Timelapse worker not found at {worker_script}")
@@ -150,27 +168,26 @@ def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_i
         bpy.app.binary_path,
         "-b",
         "--factory-startup",
-        "-P", worker_script,
+        "-P",
+        worker_script,
         "--",
         input_dir,
         output_file,
         str(fps),
         str(int(burn_in)),
-        str(burn_in_pos)
+        str(burn_in_pos),
     ]
 
     # Prevent command prompt window on Windows
     startupinfo = None
-    if sys.platform == 'win32':
+    if sys.platform == "win32":
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
     try:
         # Use startupinfo for Windows, close_fds for POSIX
         p = subprocess.Popen(
-            cmd,
-            startupinfo=startupinfo,
-            close_fds=(os.name == 'posix')
+            cmd, startupinfo=startupinfo, close_fds=(os.name == "posix")
         )
         print(f"[SavePoints] MP4 generation started in background (PID: {p.pid}).")
 
@@ -178,8 +195,8 @@ def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_i
             try:
                 proc.wait()
                 print(f"[SavePoints] MP4 generation finished (PID: {proc.pid}).")
-            except Exception as e:
-                print(f"[SavePoints] Error reaping MP4 process: {e}")
+            except Exception as ex:
+                print(f"[SavePoints] Error reaping MP4 process: {ex}")
 
         threading.Thread(target=reap_process, args=(p,), daemon=True).start()
 

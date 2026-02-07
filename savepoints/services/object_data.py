@@ -42,17 +42,17 @@ def extract_object_data(obj, depsgraph=None):
 
     eval_obj = obj.evaluated_get(depsgraph) if depsgraph else obj
 
-    data['matrix'] = _matrix_to_list(eval_obj.matrix_world)
+    data["matrix"] = _matrix_to_list(eval_obj.matrix_world)
     if eval_obj.bound_box and len(eval_obj.bound_box) >= 8:
-        data['bbox'] = _bbox_to_min_max(eval_obj.bound_box)
+        data["bbox"] = _bbox_to_min_max(eval_obj.bound_box)
     else:
-        data['bbox'] = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+        data["bbox"] = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 
     mesh = obj.data
-    if obj.type == 'MESH' and mesh:
-        data['v_count'] = len(mesh.vertices)
+    if obj.type == "MESH" and mesh:
+        data["v_count"] = len(mesh.vertices)
     else:
-        data['v_count'] = 0
+        data["v_count"] = 0
 
     return data
 
@@ -68,7 +68,7 @@ def save_object_data(version_id, objects):
     depsgraph = None
     if bpy.context.view_layer:
         for obj in objects:
-            if obj.mode == 'EDIT':
+            if obj.mode == "EDIT":
                 obj.update_from_editmode()
 
         bpy.context.view_layer.update()
@@ -89,9 +89,9 @@ def save_object_data(version_id, objects):
             continue
 
     try:
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             # Use compact separators to save space
-            json.dump(data_map, f, separators=(',', ':'))
+            json.dump(data_map, f, separators=(",", ":"))
     except Exception as e:
         print(f"[SavePoints] Failed to save object data: {e}")
 
@@ -113,7 +113,7 @@ def load_object_data(version_id):
         return {}
 
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception:
         return {}

@@ -37,19 +37,19 @@ class TestBatchRenderExtras(SavePointsTestCase):
             img_settings = scene.render.image_settings
 
             # Setup specific OPEN_EXR settings
-            img_settings.file_format = 'OPEN_EXR'
-            img_settings.color_depth = '16'
-            img_settings.exr_codec = 'ZIP'
-            img_settings.color_mode = 'RGBA'
+            img_settings.file_format = "OPEN_EXR"
+            img_settings.color_depth = "16"
+            img_settings.exr_codec = "ZIP"
+            img_settings.color_mode = "RGBA"
 
             # Extract
             data = extract_render_settings(bpy.context)
 
             # Verify
-            self.assertEqual(data["image_settings"]["file_format"], 'OPEN_EXR')
-            self.assertEqual(data["image_settings"]["exr_codec"], 'ZIP')
-            self.assertEqual(data["image_settings"]["color_depth"], '16')
-            self.assertEqual(data["image_settings"]["color_mode"], 'RGBA')
+            self.assertEqual(data["image_settings"]["file_format"], "OPEN_EXR")
+            self.assertEqual(data["image_settings"]["exr_codec"], "ZIP")
+            self.assertEqual(data["image_settings"]["color_depth"], "16")
+            self.assertEqual(data["image_settings"]["color_mode"], "RGBA")
 
         # --- Step 2: JPEG Extraction Test ---
         with self.subTest(step="2. JPEG Settings"):
@@ -57,15 +57,15 @@ class TestBatchRenderExtras(SavePointsTestCase):
             img_settings = scene.render.image_settings
 
             # Setup JPEG with Quality
-            img_settings.file_format = 'JPEG'
+            img_settings.file_format = "JPEG"
             img_settings.quality = 45
-            img_settings.color_mode = 'BW'  # Test non-standard color mode for JPEG
+            img_settings.color_mode = "BW"  # Test non-standard color mode for JPEG
 
             data = extract_render_settings(bpy.context)
 
-            self.assertEqual(data["image_settings"]["file_format"], 'JPEG')
+            self.assertEqual(data["image_settings"]["file_format"], "JPEG")
             self.assertEqual(data["image_settings"]["quality"], 45)
-            self.assertEqual(data["image_settings"]["color_mode"], 'BW')
+            self.assertEqual(data["image_settings"]["color_mode"], "BW")
 
         print("Settings Extraction Test: Completed")
 
@@ -90,10 +90,12 @@ class TestBatchRenderExtras(SavePointsTestCase):
         try:
             # --- Step 2: Create Dummy Files ---
             with self.subTest(step="2. Create Dummy Files"):
-                dummy_img = bpy.data.images.new("TempDummy", width=4, height=4, alpha=True)
+                dummy_img = bpy.data.images.new(
+                    "TempDummy", width=4, height=4, alpha=True
+                )
 
                 original_settings = bpy.context.scene.render.image_settings.file_format
-                bpy.context.scene.render.image_settings.file_format = 'PNG'
+                bpy.context.scene.render.image_settings.file_format = "PNG"
 
                 file_names = ["render_001.png", "render_002.png", "render_003.png"]
                 for fname in file_names:
@@ -121,7 +123,7 @@ class TestBatchRenderExtras(SavePointsTestCase):
                 # Check Strip
                 self.assertIsNotNone(new_scene.sequence_editor)
 
-                if hasattr(new_scene.sequence_editor, 'strips'):
+                if hasattr(new_scene.sequence_editor, "strips"):
                     strips = new_scene.sequence_editor.strips
                 else:
                     strips = new_scene.sequence_editor.sequences
@@ -133,7 +135,7 @@ class TestBatchRenderExtras(SavePointsTestCase):
 
                 # Check individual strips
                 for strip in strips:
-                    self.assertEqual(strip.type, 'IMAGE')
+                    self.assertEqual(strip.type, "IMAGE")
                     self.assertEqual(strip.frame_final_duration, FRAMES_PER_IMAGE)
 
         finally:
@@ -155,8 +157,8 @@ class TestBatchRenderExtras(SavePointsTestCase):
 
         # --- Step 1: Create 3 Versions ---
         with self.subTest(step="1. Setup History"):
-            bpy.context.scene.render.engine = 'CYCLES'
-            bpy.context.scene.cycles.device = 'CPU'
+            bpy.context.scene.render.engine = "CYCLES"
+            bpy.context.scene.cycles.device = "CPU"
 
             bpy.context.scene.cycles.samples = 1
             bpy.context.scene.cycles.preview_samples = 1
@@ -177,16 +179,16 @@ class TestBatchRenderExtras(SavePointsTestCase):
 
             # V1
             bpy.ops.mesh.primitive_cube_add()
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V1_Success")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V1_Success")
 
             # V2 (Will be corrupted)
             bpy.context.active_object.location.x += 2
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V2_Fail")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V2_Fail")
             v2_id = bpy.context.scene.savepoints_settings.versions[-1].version_id
 
             # V3
             bpy.context.active_object.location.x += 2
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V3_Success")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V3_Success")
 
             # Save Mainfile
             bpy.ops.wm.save_mainfile()
@@ -202,17 +204,23 @@ class TestBatchRenderExtras(SavePointsTestCase):
         # --- Step 3: Execute Batch Render Loop ---
         with self.subTest(step="3. Execute Loop"):
             settings = bpy.context.scene.savepoints_settings
-            target_versions = [v for v in settings.versions if v.version_id.startswith('v')]
+            target_versions = [
+                v for v in settings.versions if v.version_id.startswith("v")
+            ]
 
             # Setup output
             from savepoints.services.batch_render import get_batch_render_output_dir
+
             output_dir = Path(get_batch_render_output_dir())
             if output_dir.exists():
                 shutil.rmtree(output_dir)
             output_dir.mkdir(parents=True, exist_ok=True)
 
             # Setup Worker
-            from savepoints.services.batch_render import extract_render_settings, get_worker_script_path
+            from savepoints.services.batch_render import (
+                extract_render_settings,
+                get_worker_script_path,
+            )
 
             render_settings = extract_render_settings(bpy.context)
             temp_dir = tempfile.mkdtemp()
@@ -220,7 +228,7 @@ class TestBatchRenderExtras(SavePointsTestCase):
             try:
                 # Config setup
                 settings_path = os.path.join(temp_dir, "render_config.json")
-                with open(settings_path, 'w') as f:
+                with open(settings_path, "w") as f:
                     json.dump(render_settings, f)
 
                 worker_script_path = get_worker_script_path()
@@ -240,11 +248,12 @@ class TestBatchRenderExtras(SavePointsTestCase):
                         "-b",
                         "--factory-startup",
                         cmd_path,
-                        "-P", worker_script_path,
+                        "-P",
+                        worker_script_path,
                         "--",
                         settings_path,
                         str(output_dir),
-                        f"{v.version_id}_resilience"
+                        f"{v.version_id}_resilience",
                     ]
 
                     try:
@@ -263,8 +272,13 @@ class TestBatchRenderExtras(SavePointsTestCase):
             print(f"Generated Files: {file_names}")
 
             self.assertTrue(any("v001" in f for f in file_names), "V1 should succeed")
-            self.assertFalse(any("v002" in f for f in file_names), "V2 should fail (no file)")
-            self.assertTrue(any("v003" in f for f in file_names), "V3 should succeed (resilience works)")
+            self.assertFalse(
+                any("v002" in f for f in file_names), "V2 should fail (no file)"
+            )
+            self.assertTrue(
+                any("v003" in f for f in file_names),
+                "V3 should succeed (resilience works)",
+            )
 
             # Cleanup
             if output_dir.exists():
@@ -274,7 +288,7 @@ class TestBatchRenderExtras(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

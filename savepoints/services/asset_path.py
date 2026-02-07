@@ -4,9 +4,7 @@ from typing import Any, Generator
 
 import bpy
 
-from .storage import (
-    HISTORY_SUFFIX, SNAPSHOT_EXT
-)
+from .storage import HISTORY_SUFFIX, SNAPSHOT_EXT
 
 
 def _get_collections_to_remap():
@@ -66,13 +64,13 @@ def _transform_path_from_history(path: str) -> str | None:
     return None
 
 
-def remap_snapshot_paths(dummy: Any) -> None:
+def remap_snapshot_paths(_: Any) -> None:
     """
     Dynamically fix relative paths when opening a snapshot from the history folder.
     This works in-memory and does not save changes to disk.
 
     Args:
-        dummy: Argument required by the load_post handler (unused).
+        _: Argument required by the load_post handler (unused).
     """
     if not bpy.data.filepath:
         return
@@ -82,7 +80,9 @@ def remap_snapshot_paths(dummy: Any) -> None:
     if not filepath.endswith(SNAPSHOT_EXT) or HISTORY_SUFFIX not in filepath:
         return
 
-    print(f"[SavePoints] Detected snapshot load: {filepath}. Remapping relative paths...")
+    print(
+        f"[SavePoints] Detected snapshot load: {filepath}. Remapping relative paths..."
+    )
 
     for item, attr in _iter_asset_attributes():
         current_path = getattr(item, attr)
@@ -125,7 +125,7 @@ def fix_retrieved_assets(assets) -> int:
     """
     Fix relative paths for a specific list of assets.
     Used by Retrieve Objects to fix paths of newly imported assets.
-    
+
     Args:
         assets: Iterable of Blender ID blocks (Images, Libraries, etc.)
 

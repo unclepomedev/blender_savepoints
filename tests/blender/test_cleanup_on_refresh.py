@@ -40,7 +40,10 @@ class TestCleanupOnRefresh(SavePointsTestCase):
         with self.subTest(step="1. Simulate Leftover Temp File"):
             # Create an empty file to simulate a crash residue or temp file
             temp_file_path.touch()
-            self.assertTrue(temp_file_path.exists(), "Setup failed: Temp file should exist before refresh")
+            self.assertTrue(
+                temp_file_path.exists(),
+                "Setup failed: Temp file should exist before refresh",
+            )
 
         # --- Step 2: Action & Verification (Refresh and Check Deletion) ---
         with self.subTest(step="2. Refresh and Verify Cleanup"):
@@ -52,14 +55,14 @@ class TestCleanupOnRefresh(SavePointsTestCase):
             # Verify the file is gone
             self.assertFalse(
                 temp_file_path.exists(),
-                f"Cleanup failed: Temp file '{RETRIEVE_TEMP_FILENAME}' was NOT deleted after refresh."
+                f"Cleanup failed: Temp file '{RETRIEVE_TEMP_FILENAME}' was NOT deleted after refresh.",
             )
 
         print("Cleanup on Refresh Test: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

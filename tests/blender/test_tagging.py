@@ -17,7 +17,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestTagging(SavePointsTestCase):
-
     def _get_version_from_settings(self, target_id):
         """Helper to retrieve version item from UI list by ID."""
         settings = bpy.context.scene.savepoints_settings
@@ -53,8 +52,8 @@ class TestTagging(SavePointsTestCase):
             bpy.ops.mesh.primitive_cube_add()
 
             # Commit
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Initial")
-            self.assertIn('FINISHED', res, "Commit failed")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Initial")
+            self.assertIn("FINISHED", res, "Commit failed")
 
             # Get Version ID
             settings = bpy.context.scene.savepoints_settings
@@ -67,45 +66,53 @@ class TestTagging(SavePointsTestCase):
             # Verify Default Tag (Should be NONE)
             v_prop = self._get_version_from_settings(version_id)
             self.assertIsNotNone(v_prop, "Version not found in settings")
-            self.assertEqual(v_prop.tag, 'NONE', "Default tag should be NONE")
+            self.assertEqual(v_prop.tag, "NONE", "Default tag should be NONE")
 
         # --- Step 2: Set Tag to STABLE ---
         with self.subTest(step="2. Set Tag STABLE"):
             print(f"Setting tag for {version_id} to STABLE...")
 
-            res = bpy.ops.savepoints.set_tag('EXEC_DEFAULT', version_id=version_id, tag='STABLE')
-            self.assertIn('FINISHED', res, "Set Tag operator failed")
+            res = bpy.ops.savepoints.set_tag(
+                "EXEC_DEFAULT", version_id=version_id, tag="STABLE"
+            )
+            self.assertIn("FINISHED", res, "Set Tag operator failed")
 
             # Verify in UI Props (Immediate update)
             v_prop = self._get_version_from_settings(version_id)
-            self.assertEqual(v_prop.tag, 'STABLE', "UI Property tag not updated to STABLE")
+            self.assertEqual(
+                v_prop.tag, "STABLE", "UI Property tag not updated to STABLE"
+            )
 
             # Verify in Disk Manifest (Persistence)
             v_disk = self._get_version_from_manifest(version_id)
             self.assertIsNotNone(v_disk, "Version missing in manifest")
-            self.assertEqual(v_disk["tag"], 'STABLE', "Manifest tag not persisted as STABLE")
+            self.assertEqual(
+                v_disk["tag"], "STABLE", "Manifest tag not persisted as STABLE"
+            )
 
         # --- Step 3: Set Tag to BUG ---
         with self.subTest(step="3. Set Tag BUG"):
             print(f"Setting tag for {version_id} to BUG...")
 
             # Update tag again to verify overwriting works
-            res = bpy.ops.savepoints.set_tag('EXEC_DEFAULT', version_id=version_id, tag='BUG')
-            self.assertIn('FINISHED', res, "Set Tag operator failed")
+            res = bpy.ops.savepoints.set_tag(
+                "EXEC_DEFAULT", version_id=version_id, tag="BUG"
+            )
+            self.assertIn("FINISHED", res, "Set Tag operator failed")
 
             # Verify in UI Props
             v_prop = self._get_version_from_settings(version_id)
-            self.assertEqual(v_prop.tag, 'BUG', "UI Property tag not updated to BUG")
+            self.assertEqual(v_prop.tag, "BUG", "UI Property tag not updated to BUG")
 
             # Verify in Disk Manifest
             v_disk = self._get_version_from_manifest(version_id)
-            self.assertEqual(v_disk["tag"], 'BUG', "Manifest tag not persisted as BUG")
+            self.assertEqual(v_disk["tag"], "BUG", "Manifest tag not persisted as BUG")
 
         print("Tagging Scenario: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

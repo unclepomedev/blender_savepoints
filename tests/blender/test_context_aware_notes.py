@@ -17,18 +17,17 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestContextAwareNotes(SavePointsTestCase):
-
     def _create_dummy_object(self, obj_type, name):
         """Helper to create and activate an object for testing."""
         # Ensure we are in object mode before adding new objects
-        if bpy.context.object and bpy.context.object.mode != 'OBJECT':
-            bpy.ops.object.mode_set(mode='OBJECT')
+        if bpy.context.object and bpy.context.object.mode != "OBJECT":
+            bpy.ops.object.mode_set(mode="OBJECT")
 
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
-        if obj_type == 'MESH':
+        if obj_type == "MESH":
             bpy.ops.mesh.primitive_cube_add()
-        elif obj_type == 'ARMATURE':
+        elif obj_type == "ARMATURE":
             bpy.ops.object.armature_add()
         else:
             self.fail(f"Unknown object type: {obj_type}")
@@ -44,17 +43,17 @@ class TestContextAwareNotes(SavePointsTestCase):
         # Define test cases: (Mode, Object Name, Expected Note)
         # Note: TEXTURE_PAINT works on Meshes
         cases = [
-            ('OBJECT', "MyCube", "Object: MyCube"),
-            ('EDIT', "EditMesh", "Edit Mesh: EditMesh"),
-            ('SCULPT', "SculptMesh", "Sculpt: SculptMesh"),
-            ('VERTEX_PAINT', "VPMesh", "Vertex Paint: VPMesh"),
-            ('WEIGHT_PAINT', "WPMesh", "Weight Paint: WPMesh"),
-            ('TEXTURE_PAINT', "TPMesh", "Texture Paint: TPMesh"),
+            ("OBJECT", "MyCube", "Object: MyCube"),
+            ("EDIT", "EditMesh", "Edit Mesh: EditMesh"),
+            ("SCULPT", "SculptMesh", "Sculpt: SculptMesh"),
+            ("VERTEX_PAINT", "VPMesh", "Vertex Paint: VPMesh"),
+            ("WEIGHT_PAINT", "WPMesh", "Weight Paint: WPMesh"),
+            ("TEXTURE_PAINT", "TPMesh", "Texture Paint: TPMesh"),
         ]
 
         for mode, name, expected in cases:
             with self.subTest(mode=mode):
-                self._create_dummy_object('MESH', name)
+                self._create_dummy_object("MESH", name)
 
                 # Switch mode
                 try:
@@ -73,13 +72,13 @@ class TestContextAwareNotes(SavePointsTestCase):
         print("Testing Armature Modes...")
 
         cases = [
-            ('EDIT', "EditArmature", "Edit Armature: EditArmature"),
-            ('POSE', "PoseArmature", "Pose: PoseArmature"),
+            ("EDIT", "EditArmature", "Edit Armature: EditArmature"),
+            ("POSE", "PoseArmature", "Pose: PoseArmature"),
         ]
 
         for mode, name, expected in cases:
             with self.subTest(mode=mode):
-                self._create_dummy_object('ARMATURE', name)
+                self._create_dummy_object("ARMATURE", name)
 
                 bpy.ops.object.mode_set(mode=mode)
 
@@ -90,13 +89,13 @@ class TestContextAwareNotes(SavePointsTestCase):
         """Test Particle Edit mode (Requires specific setup)."""
         print("Testing Particle Edit Mode...")
 
-        obj = self._create_dummy_object('MESH', "PartMesh")
+        obj = self._create_dummy_object("MESH", "PartMesh")
 
         # Setup: Need a particle system to enter Particle Edit
-        obj.modifiers.new(name="Particles", type='PARTICLE_SYSTEM')
+        obj.modifiers.new(name="Particles", type="PARTICLE_SYSTEM")
 
         try:
-            bpy.ops.object.mode_set(mode='PARTICLE_EDIT')
+            bpy.ops.object.mode_set(mode="PARTICLE_EDIT")
         except RuntimeError as e:
             self.fail(f"Failed to enter PARTICLE_EDIT: {e}")
 
@@ -107,18 +106,18 @@ class TestContextAwareNotes(SavePointsTestCase):
         """Test behavior when no object is active."""
         print("Testing No Active Object...")
 
-        if bpy.context.object and bpy.context.object.mode != 'OBJECT':
-            bpy.ops.object.mode_set(mode='OBJECT')
+        if bpy.context.object and bpy.context.object.mode != "OBJECT":
+            bpy.ops.object.mode_set(mode="OBJECT")
 
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
         bpy.context.view_layer.objects.active = None
 
         note = generate_default_note(bpy.context)
         self.assertEqual(note, "No Active Object")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

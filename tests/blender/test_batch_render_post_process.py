@@ -20,13 +20,13 @@ from savepoints_test_case import SavePointsTestCase
 from savepoints.services.post_process import (
     create_vse_timelapse,
     open_folder_platform_independent,
-    send_os_notification, _escape_for_powershell,
-    FRAMES_PER_IMAGE
+    send_os_notification,
+    _escape_for_powershell,
+    FRAMES_PER_IMAGE,
 )
 
 
 class TestBatchRenderPostProcess(SavePointsTestCase):
-
     def test_vse_timelapse_generation(self):
         """
         Test if VSE scene is correctly created from a folder of images.
@@ -36,15 +36,15 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         # 1. Setup Dummy Images with VALID PNG HEADER
         # Minimal 1x1 Transparent PNG signature
         valid_png_data = (
-            b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89'
-            b'\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82'
+            b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89"
+            b"\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
         )
 
         temp_dir = tempfile.mkdtemp()
         try:
             for i in range(1, 4):  # 3 frames
                 fname = f"v{i:03d}.png"
-                with open(os.path.join(temp_dir, fname), 'wb') as f:
+                with open(os.path.join(temp_dir, fname), "wb") as f:
                     f.write(valid_png_data)
 
             # 2. Execute
@@ -61,22 +61,31 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
             self.assertIsNotNone(new_scene.sequence_editor)
 
             # API Compatibility Check
-            strips = getattr(new_scene.sequence_editor, 'strips', None)
+            strips = getattr(new_scene.sequence_editor, "strips", None)
             if strips is None:
-                strips = getattr(new_scene.sequence_editor, 'sequences', None)
+                strips = getattr(new_scene.sequence_editor, "sequences", None)
 
             self.assertEqual(len(strips), 3, "Should have exactly 3 strips")
 
             # Check individual strips
             for strip in strips:
-                self.assertEqual(strip.frame_final_duration, FRAMES_PER_IMAGE,
-                                 "Strip duration should match FRAMES_PER_IMAGE")
+                self.assertEqual(
+                    strip.frame_final_duration,
+                    FRAMES_PER_IMAGE,
+                    "Strip duration should match FRAMES_PER_IMAGE",
+                )
 
             # Check scene duration
             expected_duration = 3 * FRAMES_PER_IMAGE
-            self.assertEqual(new_scene.frame_end, expected_duration, "Scene end frame should match total duration")
+            self.assertEqual(
+                new_scene.frame_end,
+                expected_duration,
+                "Scene end frame should match total duration",
+            )
 
-            print(f"  [OK] VSE Scene '{scene_name}' created with {expected_duration} frames.")
+            print(
+                f"  [OK] VSE Scene '{scene_name}' created with {expected_duration} frames."
+            )
 
         finally:
             shutil.rmtree(temp_dir)
@@ -88,7 +97,7 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         print("\nTesting Folder Open (Mocked)...")
 
         # Patching 'bpy.ops.wm' ensures we intercept the call even if path_open is dynamically resolved
-        with patch('bpy.ops.wm') as mock_wm:
+        with patch("bpy.ops.wm") as mock_wm:
             temp_dir = tempfile.mkdtemp()
             try:
                 result = open_folder_platform_independent(temp_dir)
@@ -113,8 +122,10 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         # --- Subtest 1: macOS ---
         with self.subTest("macOS Notification"):
             # Patch subprocess in the target module
-            with patch('sys.platform', 'darwin'), \
-                    patch('savepoints.services.post_process.subprocess') as mock_subprocess:
+            with (
+                patch("sys.platform", "darwin"),
+                patch("savepoints.services.post_process.subprocess") as mock_subprocess,
+            ):
                 send_os_notification(title, message)
 
                 self.assertTrue(mock_subprocess.run.called)
@@ -126,8 +137,10 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         # --- Subtest 2: Windows ---
         with self.subTest("Windows Notification"):
             # Patch subprocess AND inject CREATE_NO_WINDOW constant which is missing on macOS
-            with patch('sys.platform', 'win32'), \
-                    patch('savepoints.services.post_process.subprocess') as mock_subprocess:
+            with (
+                patch("sys.platform", "win32"),
+                patch("savepoints.services.post_process.subprocess") as mock_subprocess,
+            ):
                 # Inject the Windows-only constant into the mock
                 mock_subprocess.CREATE_NO_WINDOW = 0x08000000
 
@@ -139,13 +152,15 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
                 self.assertEqual(command_list[0], "powershell")
 
                 # Verify creationflags was passed using our mocked constant
-                self.assertEqual(kw.get('creationflags'), 0x08000000)
+                self.assertEqual(kw.get("creationflags"), 0x08000000)
                 print("  [OK] Windows logic verified.")
 
         # --- Subtest 3: Linux ---
         with self.subTest("Linux Notification"):
-            with patch('sys.platform', 'linux'), \
-                    patch('savepoints.services.post_process.subprocess') as mock_subprocess:
+            with (
+                patch("sys.platform", "linux"),
+                patch("savepoints.services.post_process.subprocess") as mock_subprocess,
+            ):
                 send_os_notification(title, message)
 
                 self.assertTrue(mock_subprocess.run.called)
@@ -168,10 +183,10 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         self.assertEqual(escaped, 'Hello`"; Write-Host `"Injected')
 
         # Case 2: Variable Expansion & Backticks
-        complex_str = 'Path: $env:TEMP and newline `n'
+        complex_str = "Path: $env:TEMP and newline `n"
         escaped_complex = _escape_for_powershell(complex_str)
         # Expected: Path: `$env:TEMP and newline ``n
-        self.assertEqual(escaped_complex, 'Path: `$env:TEMP and newline ``n')
+        self.assertEqual(escaped_complex, "Path: `$env:TEMP and newline ``n")
 
         print("  [OK] PowerShell escaping logic is secure.")
 
@@ -183,20 +198,22 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
 
         # Setup dummy images
         valid_png_data = (
-            b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89'
-            b'\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82'
+            b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89"
+            b"\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
         )
         temp_dir = tempfile.mkdtemp()
         folder_name = os.path.basename(temp_dir)  # e.g., tmp12345
 
         try:
             fname = "v001.png"
-            with open(os.path.join(temp_dir, fname), 'wb') as f:
+            with open(os.path.join(temp_dir, fname), "wb") as f:
                 f.write(valid_png_data)
 
             # Execute with trailing slash path (e.g., /tmp/tmp12345/)
             path_with_slash = os.path.join(temp_dir, "")
-            scene_name = create_vse_timelapse(path_with_slash, scene_name_suffix="_TestTL")
+            scene_name = create_vse_timelapse(
+                path_with_slash, scene_name_suffix="_TestTL"
+            )
 
             # Verify
             self.assertIsNotNone(scene_name)
@@ -211,7 +228,7 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

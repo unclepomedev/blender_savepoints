@@ -19,7 +19,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestRetentionPolicy(SavePointsTestCase):
-
     def _get_version_ids(self):
         """Helper to get list of version IDs from disk manifest."""
         manifest = load_manifest()
@@ -28,7 +27,9 @@ class TestRetentionPolicy(SavePointsTestCase):
     def _get_version_entry(self, version_id):
         """Helper to get a specific version entry from manifest."""
         manifest = load_manifest()
-        return next((v for v in manifest.get("versions", []) if v["id"] == version_id), None)
+        return next(
+            (v for v in manifest.get("versions", []) if v["id"] == version_id), None
+        )
 
     def test_retention_scenario(self):
         """
@@ -51,13 +52,13 @@ class TestRetentionPolicy(SavePointsTestCase):
 
             # Create 3 versions (v1, v2, v3)
             for i in range(3):
-                bpy.ops.savepoints.commit('EXEC_DEFAULT', note=f"v{i + 1}")
+                bpy.ops.savepoints.commit("EXEC_DEFAULT", note=f"v{i + 1}")
 
             ids = self._get_version_ids()
             self.assertEqual(len(ids), 3, "Expected 3 versions")
 
             # Create 4th -> Should prune oldest (v001)
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v4")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v4")
 
             ids = self._get_version_ids()
             self.assertEqual(len(ids), 3, "Count should remain 3 after pruning")
@@ -69,7 +70,7 @@ class TestRetentionPolicy(SavePointsTestCase):
             settings.use_limit_versions = False
 
             # Create 5th -> Should keep all (3 existing + 1 new = 4)
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v5")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v5")
 
             ids = self._get_version_ids()
             self.assertEqual(len(ids), 4, "Limit disabled: Should hold 4 versions")
@@ -84,17 +85,19 @@ class TestRetentionPolicy(SavePointsTestCase):
             # Create v6 -> Total would be 5. Max 2.
             # Should prune oldest 3 versions (v2, v3, v4).
             # Expected remaining: v6, v5.
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v6")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v6")
 
             ids = self._get_version_ids()
             expected = ["v006", "v005"]
-            self.assertEqual(ids, expected, f"Failed to prune multiple versions. Got: {ids}")
+            self.assertEqual(
+                ids, expected, f"Failed to prune multiple versions. Got: {ids}"
+            )
 
         # --- Step 4: Protected Versions (Quota Exclusion) ---
         with self.subTest(step="4. Protected Versions"):
             settings.use_limit_versions = False
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v7")
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v8")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v7")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v8")
 
             # Lock v8
             set_version_protection("v008", True)
@@ -111,7 +114,7 @@ class TestRetentionPolicy(SavePointsTestCase):
             # Quota 2. Should keep v9 and v7 (newest unlocked).
             # Should prune v6, v5.
             # Total kept: v9, v8(L), v7.
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v9")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v9")
 
             ids = self._get_version_ids()
             self.assertIn("v008", ids, "Locked version must be kept")
@@ -124,7 +127,7 @@ class TestRetentionPolicy(SavePointsTestCase):
 
             # Create v10 -> Pushes v7 out
             # Unlocked: v10, v9. (Count 2). v7 becomes 3rd -> Pruned.
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v10")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v10")
 
             ids = self._get_version_ids()
             self.assertNotIn("v007", ids, "v007 should be pruned now")
@@ -143,7 +146,7 @@ class TestRetentionPolicy(SavePointsTestCase):
             # Current unlocked: v10, v9, v8. (Count 3). Max 2.
             # Next commit (v11) should force re-eval.
 
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="v11")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="v11")
 
             ids = self._get_version_ids()
             # Expected: v11, v10. (v9 and v8 are pruned)
@@ -164,7 +167,9 @@ class TestRetentionPolicy(SavePointsTestCase):
             # The operator poll or execute should prevent this, or it just ignores it.
             # If implementation raises error, we catch it. If it fails silently, we check flag.
             try:
-                bpy.ops.savepoints.toggle_protection('EXEC_DEFAULT', version_id="autosave")
+                bpy.ops.savepoints.toggle_protection(
+                    "EXEC_DEFAULT", version_id="autosave"
+                )
             except RuntimeError:
                 # Operator might be disabled in poll, causing RuntimeError in headless exec
                 pass
@@ -172,13 +177,16 @@ class TestRetentionPolicy(SavePointsTestCase):
             # Verify it is NOT protected
             autosave_entry = self._get_version_entry("autosave")
             self.assertIsNotNone(autosave_entry, "Autosave should exist")
-            self.assertFalse(autosave_entry.get("is_protected", False), "Autosave should not be protectable")
+            self.assertFalse(
+                autosave_entry.get("is_protected", False),
+                "Autosave should not be protectable",
+            )
 
         print("Retention Policy Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

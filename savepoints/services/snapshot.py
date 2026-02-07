@@ -61,7 +61,9 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
         if settings:
             use_compress = settings.use_compression
 
-        bpy.ops.wm.save_as_mainfile(copy=True, filepath=str(snapshot_path), compress=use_compress)
+        bpy.ops.wm.save_as_mainfile(
+            copy=True, filepath=str(snapshot_path), compress=use_compress
+        )
 
         file_size = 0
         if snapshot_path.exists():
@@ -74,7 +76,7 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
             str(Path(folder_name) / thumb_filename),
             str(Path(folder_name) / SNAPSHOT_FILENAME),
             object_count=obj_count,
-            file_size=file_size
+            file_size=file_size,
         )
 
         sync_history_to_props(context)

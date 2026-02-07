@@ -25,7 +25,8 @@ sys.modules["bpy.utils"] = bpy.utils
 sys.modules["bpy.utils.previews"] = bpy.utils.previews
 
 
-class MockImagePreviewCollection: pass
+class MockImagePreviewCollection:
+    pass
 
 
 bpy.utils.previews.ImagePreviewCollection = MockImagePreviewCollection
@@ -35,43 +36,50 @@ sys.modules["bpy.props"] = bpy.props
 sys.modules["bpy.data"] = bpy.data
 
 
-def persistent(func): return func
+def persistent(func):
+    return func
 
 
 bpy.app.handlers.persistent = persistent
 
 
-class MockContext: pass
+class MockContext:
+    pass
 
 
 bpy.types.Context = MockContext
 
 
-class MockOperator: pass
+class MockOperator:
+    pass
 
 
 bpy.types.Operator = MockOperator
 
 
-class MockPanel: pass
+class MockPanel:
+    pass
 
 
 bpy.types.Panel = MockPanel
 
 
-class MockMenu: pass
+class MockMenu:
+    pass
 
 
 bpy.types.Menu = MockMenu
 
 
-class MockPropertyGroup: pass
+class MockPropertyGroup:
+    pass
 
 
 bpy.types.PropertyGroup = MockPropertyGroup
 
 
-class MockUIList: pass
+class MockUIList:
+    pass
 
 
 bpy.types.UIList = MockUIList
@@ -98,13 +106,15 @@ sys.modules["bpy_extras"] = bpy_extras
 sys.modules["bpy_extras.io_utils"] = bpy_extras.io_utils
 
 
-class MockImportHelper: pass
+class MockImportHelper:
+    pass
 
 
 bpy_extras.io_utils.ImportHelper = MockImportHelper
 
 
-class MockExportHelper: pass
+class MockExportHelper:
+    pass
 
 
 bpy_extras.io_utils.ExportHelper = MockExportHelper
@@ -119,7 +129,9 @@ class TestSecurityTraversal(unittest.TestCase):
     @mock.patch("savepoints.services.versioning.get_history_dir")
     @mock.patch("savepoints.services.versioning.load_manifest")
     @mock.patch("savepoints.services.versioning.save_manifest")
-    def test_delete_version_path_traversal_prevention(self, mock_save, mock_load, mock_get_history, mock_send2trash):
+    def test_delete_version_path_traversal_prevention(
+        self, mock_save, mock_load, mock_get_history, mock_send2trash
+    ):
         # Setup temporary directories
         with tempfile.TemporaryDirectory() as tmpdir:
             tmp_path = Path(tmpdir)
@@ -144,14 +156,18 @@ class TestSecurityTraversal(unittest.TestCase):
             delete_version_by_id(malicious_id)
 
             # Verification: send2trash should NOT be called
-            self.assertFalse(mock_send2trash.called, "send2trash should NOT be called for path traversal attempt")
+            self.assertFalse(
+                mock_send2trash.called,
+                "send2trash should NOT be called for path traversal attempt",
+            )
 
     @mock.patch("savepoints.services.versioning.send2trash")
     @mock.patch("savepoints.services.versioning.get_history_dir")
     @mock.patch("savepoints.services.versioning.load_manifest")
     @mock.patch("savepoints.services.versioning.save_manifest")
-    def test_delete_version_rejects_multiple_traversal_patterns(self, mock_save, mock_load, mock_get_history,
-                                                                mock_send2trash):
+    def test_delete_version_rejects_multiple_traversal_patterns(
+        self, mock_save, mock_load, mock_get_history, mock_send2trash
+    ):
         malicious_ids = [
             "../../system",
             "../../../etc",
@@ -168,8 +184,11 @@ class TestSecurityTraversal(unittest.TestCase):
         for malicious_id in malicious_ids:
             mock_send2trash.reset_mock()
             delete_version_by_id(malicious_id)
-            self.assertFalse(mock_send2trash.called, f"send2trash should not be called for: {malicious_id}")
+            self.assertFalse(
+                mock_send2trash.called,
+                f"send2trash should not be called for: {malicious_id}",
+            )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

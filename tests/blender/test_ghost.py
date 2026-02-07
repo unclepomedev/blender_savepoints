@@ -13,11 +13,14 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from savepoints_test_case import SavePointsTestCase
-from savepoints.services.ghost import load_ghost, unload_ghost, get_ghost_collection_name
+from savepoints.services.ghost import (
+    load_ghost,
+    unload_ghost,
+    get_ghost_collection_name,
+)
 
 
 class TestGhost(SavePointsTestCase):
-
     def test_ghost_lifecycle_scenario(self):
         """
         Scenario:
@@ -46,8 +49,8 @@ class TestGhost(SavePointsTestCase):
             bpy.ops.wm.save_mainfile()
 
             # Create version
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Version with Cube")
-            self.assertIn('FINISHED', res, "Commit failed")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Version with Cube")
+            self.assertIn("FINISHED", res, "Commit failed")
 
         # --- Step 2: Modify Current Scene ---
         with self.subTest(step="2. Modify Current Scene"):
@@ -56,7 +59,11 @@ class TestGhost(SavePointsTestCase):
             if cube:
                 bpy.data.objects.remove(cube)
 
-            self.assertNotIn("GhostCube", bpy.data.objects, "Cube should be deleted from current scene")
+            self.assertNotIn(
+                "GhostCube",
+                bpy.data.objects,
+                "Cube should be deleted from current scene",
+            )
 
         # --- Step 3: Load Ghost & Verify Properties ---
         with self.subTest(step="3. Load Ghost"):
@@ -66,15 +73,25 @@ class TestGhost(SavePointsTestCase):
             self.assertGreater(count, 0, "Ghost should load at least one object")
 
             col_name = get_ghost_collection_name(version_id)
-            self.assertIn(col_name, bpy.data.collections, "Ghost collection should exist")
+            self.assertIn(
+                col_name, bpy.data.collections, "Ghost collection should exist"
+            )
 
             ghost_col = bpy.data.collections[col_name]
-            self.assertTrue(len(ghost_col.objects) > 0, "Ghost collection should contain objects")
+            self.assertTrue(
+                len(ghost_col.objects) > 0, "Ghost collection should contain objects"
+            )
 
             # Verify visualization properties (Ghosts should be non-intrusive)
             ghost_obj = ghost_col.objects[0]
-            self.assertEqual(ghost_obj.display_type, 'WIRE', "Ghost object should be displayed as WIRE")
-            self.assertTrue(ghost_obj.hide_select, "Ghost object should be non-selectable")
+            self.assertEqual(
+                ghost_obj.display_type,
+                "WIRE",
+                "Ghost object should be displayed as WIRE",
+            )
+            self.assertTrue(
+                ghost_obj.hide_select, "Ghost object should be non-selectable"
+            )
 
         # --- Step 4: Unload Ghost ---
         with self.subTest(step="4. Unload Ghost"):
@@ -84,19 +101,23 @@ class TestGhost(SavePointsTestCase):
         # --- Step 5: Verify Cleanup ---
         with self.subTest(step="5. Verify Cleanup"):
             col_name = get_ghost_collection_name(version_id)
-            self.assertNotIn(col_name, bpy.data.collections, "Ghost collection should be gone")
+            self.assertNotIn(
+                col_name, bpy.data.collections, "Ghost collection should be gone"
+            )
 
             # Verify no linked libraries left
             # We check if any library path contains our version ID, implying a leak
             for lib in bpy.data.libraries:
                 if lib.filepath and version_id in lib.filepath:
-                    self.fail(f"Library {lib.filepath} was not cleaned up after unloading ghost")
+                    self.fail(
+                        f"Library {lib.filepath} was not cleaned up after unloading ghost"
+                    )
 
         print("Ghost Lifecycle Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

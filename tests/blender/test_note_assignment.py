@@ -18,7 +18,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestNoteAssignment(SavePointsTestCase):
-
     def setUp(self):
         super().setUp()
         # Add a cube for successful note generation context
@@ -29,7 +28,9 @@ class TestNoteAssignment(SavePointsTestCase):
         # We access the unbound method directly from the class
         self.invoke_func = savepoints.operators_core.SAVEPOINTS_OT_commit.invoke
 
-    def _create_mock_context(self, show_dialog=False, active_object=None, simulate_error=False):
+    def _create_mock_context(
+        self, show_dialog=False, active_object=None, simulate_error=False
+    ):
         """Helper to create a MagicMock that behaves like bpy.context"""
         mock_ctx = MagicMock()
 
@@ -38,12 +39,14 @@ class TestNoteAssignment(SavePointsTestCase):
 
         # Mock WindowManager
         # invoke_props_dialog should return 'RUNNING_MODAL' when called
-        mock_ctx.window_manager.invoke_props_dialog.return_value = {'RUNNING_MODAL'}
+        mock_ctx.window_manager.invoke_props_dialog.return_value = {"RUNNING_MODAL"}
 
         # Mock Active Object logic
         if simulate_error:
             # Setup a property that raises RuntimeError when accessed
-            type(mock_ctx).active_object = PropertyMock(side_effect=RuntimeError("Simulated Context Error"))
+            type(mock_ctx).active_object = PropertyMock(
+                side_effect=RuntimeError("Simulated Context Error")
+            )
         else:
             # Normal behavior
             if active_object:
@@ -60,7 +63,7 @@ class TestNoteAssignment(SavePointsTestCase):
         op = MagicMock()
         op.force_quick = force_quick
         op.note = note
-        op.execute.return_value = {'FINISHED'}
+        op.execute.return_value = {"FINISHED"}
 
         return op
 
@@ -71,7 +74,7 @@ class TestNoteAssignment(SavePointsTestCase):
 
         res = self.invoke_func(op, mock_ctx, None)
 
-        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(res, {"FINISHED"})
         self.assertEqual(op.note, "Object: MyCube")
         mock_ctx.window_manager.invoke_props_dialog.assert_not_called()
 
@@ -82,7 +85,7 @@ class TestNoteAssignment(SavePointsTestCase):
 
         res = self.invoke_func(op, mock_ctx, None)
 
-        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(res, {"FINISHED"})
         self.assertEqual(op.note, "Object: MyCube")
         mock_ctx.window_manager.invoke_props_dialog.assert_not_called()
 
@@ -93,7 +96,7 @@ class TestNoteAssignment(SavePointsTestCase):
 
         res = self.invoke_func(op, mock_ctx, None)
 
-        self.assertEqual(res, {'RUNNING_MODAL'})
+        self.assertEqual(res, {"RUNNING_MODAL"})
         self.assertEqual(op.note, "Object: MyCube")
         # Verify dialog was opened
         mock_ctx.window_manager.invoke_props_dialog.assert_called_once_with(op)
@@ -105,13 +108,13 @@ class TestNoteAssignment(SavePointsTestCase):
 
         res = self.invoke_func(op, mock_ctx, None)
 
-        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(res, {"FINISHED"})
         self.assertEqual(op.note, "Explicit Note")
 
     def test_invoke_no_active_object(self):
         """Case: No active object -> 'No Active Object'"""
         # Deselect everything to simulate no active object in real context
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
         bpy.context.view_layer.objects.active = None
 
         mock_ctx = self._create_mock_context(show_dialog=False, active_object=None)
@@ -122,7 +125,7 @@ class TestNoteAssignment(SavePointsTestCase):
 
         res = self.invoke_func(op, mock_ctx, None)
 
-        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(res, {"FINISHED"})
         self.assertEqual(op.note, "No Active Object")
 
     def test_invoke_exception_handling(self):
@@ -132,12 +135,12 @@ class TestNoteAssignment(SavePointsTestCase):
 
         res = self.invoke_func(op, mock_ctx, None)
 
-        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(res, {"FINISHED"})
         self.assertEqual(op.note, "")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

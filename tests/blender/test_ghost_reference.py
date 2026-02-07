@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestGhostReference(SavePointsTestCase):
-
     def test_ghost_reference_scenario(self):
         """
         Scenario:
@@ -40,8 +39,8 @@ class TestGhostReference(SavePointsTestCase):
             cube.name = "OriginalCube"
 
             # Save Snapshot
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note=target_note)
-            self.assertIn('FINISHED', res, "Commit failed")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note=target_note)
+            self.assertIn("FINISHED", res, "Commit failed")
 
             # Explicitly find the version by Note, instead of assuming index 0
             settings = bpy.context.scene.savepoints_settings
@@ -52,7 +51,9 @@ class TestGhostReference(SavePointsTestCase):
                     found_version = v
                     break
 
-            self.assertIsNotNone(found_version, f"Version with note '{target_note}' was not found")
+            self.assertIsNotNone(
+                found_version, f"Version with note '{target_note}' was not found"
+            )
             version_id = found_version.version_id
             print(f"Created version ID: {version_id}")
 
@@ -68,7 +69,7 @@ class TestGhostReference(SavePointsTestCase):
             print(f"Toggling Ghost ON for {version_id}...")
 
             res = bpy.ops.savepoints.toggle_ghost(version_id=version_id)
-            self.assertIn('FINISHED', res)
+            self.assertIn("FINISHED", res)
 
             # Verify Collection Existence
             col_name = f"Ghost_Reference_{version_id}"
@@ -80,8 +81,13 @@ class TestGhostReference(SavePointsTestCase):
             ghost_obj = ghost_col.objects[0]
 
             # Verify Visual Properties (Ghost should be a non-intrusive reference)
-            self.assertEqual(ghost_obj.display_type, 'WIRE', "Ghost object not set to WIRE display")
-            self.assertTrue(ghost_obj.hide_select, "Ghost object is selectable (should be unselectable)")
+            self.assertEqual(
+                ghost_obj.display_type, "WIRE", "Ghost object not set to WIRE display"
+            )
+            self.assertTrue(
+                ghost_obj.hide_select,
+                "Ghost object is selectable (should be unselectable)",
+            )
 
             print(f"Verified Ghost Object: {ghost_obj.name}")
 
@@ -91,17 +97,19 @@ class TestGhostReference(SavePointsTestCase):
 
             # Toggling again should remove it
             res = bpy.ops.savepoints.toggle_ghost(version_id=version_id)
-            self.assertIn('FINISHED', res)
+            self.assertIn("FINISHED", res)
 
             # Verify Cleanup
             col_name = f"Ghost_Reference_{version_id}"
-            self.assertNotIn(col_name, bpy.data.collections, "Ghost collection was not removed")
+            self.assertNotIn(
+                col_name, bpy.data.collections, "Ghost collection was not removed"
+            )
 
         print("Ghost Reference Scenario: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

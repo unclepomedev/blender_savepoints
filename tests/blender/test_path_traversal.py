@@ -32,7 +32,6 @@ class TestPathTraversal(SavePointsTestCase):
             ("v001", True, "Standard version ID"),
             ("autosave", True, "Standard autosave name"),
             ("my-version_1.0", True, "Symbols allowed in filenames"),
-
             # Unsafe cases
             ("..", False, "Parent directory traversal"),
             ("../v001", False, "Traversal with filename"),
@@ -55,19 +54,14 @@ class TestPathTraversal(SavePointsTestCase):
         (traversal_dir / "snapshot.blend_snapshot").touch()
 
         # Attack patterns
-        unsafe_ids = [
-            "../",
-            "../traversal_target",
-            "/absolute/path"
-        ]
+        unsafe_ids = ["../", "../traversal_target", "/absolute/path"]
 
         for unsafe_id in unsafe_ids:
             with self.subTest(unsafe_id=unsafe_id):
                 # Expect None (or check for specific Exception if your implementation raises one)
                 path = find_snapshot_path(unsafe_id)
                 self.assertIsNone(
-                    path,
-                    f"Unsafe ID '{unsafe_id}' should return None, but got: {path}"
+                    path, f"Unsafe ID '{unsafe_id}' should return None, but got: {path}"
                 )
 
     def test_delete_version_traversal(self):
@@ -91,7 +85,9 @@ class TestPathTraversal(SavePointsTestCase):
             pass
 
         # Verify: The victim file must still exist
-        self.assertTrue(victim_dir.exists(), "Target directory was deleted via traversal!")
+        self.assertTrue(
+            victim_dir.exists(), "Target directory was deleted via traversal!"
+        )
         self.assertTrue(victim_file.exists(), "Target file was deleted via traversal!")
 
     def test_create_snapshot_traversal(self):
@@ -112,12 +108,12 @@ class TestPathTraversal(SavePointsTestCase):
         # Verify: The directory outside history must NOT be created
         self.assertFalse(
             target_outside_dir.exists(),
-            "create_snapshot created a directory outside history via traversal!"
+            "create_snapshot created a directory outside history via traversal!",
         )
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

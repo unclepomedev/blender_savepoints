@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestForkUnbindAssets(SavePointsTestCase):
-
     def setUp(self):
         super().setUp()
         self.lib_path = self.test_dir / "lib.blend"
@@ -44,19 +43,24 @@ class TestForkUnbindAssets(SavePointsTestCase):
         Scenario: Fork with unbind_linked_assets=True.
         Verify objects/materials become local AND asset marks are cleared.
         """
-        with bpy.data.libraries.load(str(self.lib_path), link=True) as (data_from, data_to):
+        with bpy.data.libraries.load(str(self.lib_path), link=True) as (
+            data_from,
+            data_to,
+        ):
             data_to.objects = ["LibMonkey"]
 
         monkey_obj = data_to.objects[0]
         bpy.context.scene.collection.objects.link(monkey_obj)
 
-        self.assertTrue(monkey_obj.library, "Setup Error: Object should be linked initially")
+        self.assertTrue(
+            monkey_obj.library, "Setup Error: Object should be linked initially"
+        )
 
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Linked Version")
+        bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Linked Version")
         bpy.context.scene.savepoints_settings.active_version_index = 0
         bpy.ops.savepoints.checkout()
 
-        bpy.ops.savepoints.fork_version('EXEC_DEFAULT', unbind_linked_assets=True)
+        bpy.ops.savepoints.fork_version("EXEC_DEFAULT", unbind_linked_assets=True)
 
         forked_monkey = bpy.data.objects.get("LibMonkey")
         self.assertIsNotNone(forked_monkey)
@@ -66,25 +70,32 @@ class TestForkUnbindAssets(SavePointsTestCase):
         self.assertIsNotNone(forked_mat)
         self.assertIsNone(forked_mat.library, "Material should be local after fork")
 
-        self.assertIsNone(forked_monkey.asset_data, "Monkey asset mark should be cleared")
-        self.assertIsNone(forked_mat.asset_data, "Material asset mark should be cleared")
+        self.assertIsNone(
+            forked_monkey.asset_data, "Monkey asset mark should be cleared"
+        )
+        self.assertIsNone(
+            forked_mat.asset_data, "Material asset mark should be cleared"
+        )
 
     def test_fork_without_unbind_assets(self):
         """
         Scenario: Fork with unbind_linked_assets=False.
         Verify objects remain linked.
         """
-        with bpy.data.libraries.load(str(self.lib_path), link=True) as (data_from, data_to):
+        with bpy.data.libraries.load(str(self.lib_path), link=True) as (
+            data_from,
+            data_to,
+        ):
             data_to.objects = ["LibMonkey"]
 
         monkey_obj = data_to.objects[0]
         bpy.context.scene.collection.objects.link(monkey_obj)
 
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Linked Version")
+        bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Linked Version")
         bpy.context.scene.savepoints_settings.active_version_index = 0
         bpy.ops.savepoints.checkout()
 
-        bpy.ops.savepoints.fork_version('EXEC_DEFAULT', unbind_linked_assets=False)
+        bpy.ops.savepoints.fork_version("EXEC_DEFAULT", unbind_linked_assets=False)
 
         forked_monkey = bpy.data.objects.get("LibMonkey")
         self.assertIsNotNone(forked_monkey)
@@ -95,7 +106,7 @@ class TestForkUnbindAssets(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

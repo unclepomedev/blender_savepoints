@@ -17,7 +17,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestNoAutomaticHistory(SavePointsTestCase):
-
     def test_no_automatic_history_scenario(self):
         """
         Scenario:
@@ -36,7 +35,7 @@ class TestNoAutomaticHistory(SavePointsTestCase):
             # Check immediately after setup/registration
             self.assertFalse(
                 history_dir.exists(),
-                f"History directory created automatically on startup! {history_dir}"
+                f"History directory created automatically on startup! {history_dir}",
             )
 
         # --- Step 2: File Load Simulation ---
@@ -49,7 +48,7 @@ class TestNoAutomaticHistory(SavePointsTestCase):
             # Verify directory still doesn't exist
             self.assertFalse(
                 history_dir.exists(),
-                f"History directory created automatically after file load! {history_dir}"
+                f"History directory created automatically after file load! {history_dir}",
             )
 
         # --- Step 3: Explicit Sync Call ---
@@ -62,14 +61,14 @@ class TestNoAutomaticHistory(SavePointsTestCase):
 
             self.assertFalse(
                 history_dir.exists(),
-                f"History directory created by sync_history_to_props! {history_dir}"
+                f"History directory created by sync_history_to_props! {history_dir}",
             )
 
         print("No Automatic History Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

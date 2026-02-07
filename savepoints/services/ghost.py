@@ -9,13 +9,25 @@ from .storage import (
     get_history_dir,
     SNAPSHOT_FILENAME,
     LEGACY_SNAPSHOT_FILENAME,
-    is_safe_filename
+    is_safe_filename,
 )
 
 _LINKED_DATA_COLLECTIONS = (
-    "objects", "collections", "meshes", "materials", "textures", "images",
-    "armatures", "actions", "curves", "lights", "cameras",
-    "node_groups", "fonts", "cache_files", "movieclips"
+    "objects",
+    "collections",
+    "meshes",
+    "materials",
+    "textures",
+    "images",
+    "armatures",
+    "actions",
+    "curves",
+    "lights",
+    "cameras",
+    "node_groups",
+    "fonts",
+    "cache_files",
+    "movieclips",
 )
 
 
@@ -44,7 +56,9 @@ def _cleanup_orphan_libraries():
                 pass
 
 
-def _remove_ghost_collection(collection: bpy.types.Collection, context: bpy.types.Context) -> None:
+def _remove_ghost_collection(
+    collection: bpy.types.Collection, context: bpy.types.Context
+) -> None:
     objects_to_remove = [obj for obj in collection.objects]
 
     if context.scene.collection.children.get(collection.name):
@@ -61,7 +75,9 @@ def _remove_ghost_collection(collection: bpy.types.Collection, context: bpy.type
 
 def _purge_ghost_libraries(version_id: str) -> None:
     if not is_safe_filename(version_id):
-        print(f"[SavePoints] Security Warning: Invalid version_id detected in purge: {version_id}")
+        print(
+            f"[SavePoints] Security Warning: Invalid version_id detected in purge: {version_id}"
+        )
         return
 
     history_dir_str = get_history_dir()
@@ -96,7 +112,9 @@ def _purge_ghost_libraries(version_id: str) -> None:
             if not collection:
                 continue
 
-            items = [item for item in collection if getattr(item, "library", None) == lib]
+            items = [
+                item for item in collection if getattr(item, "library", None) == lib
+            ]
             for item in items:
                 try:
                     collection.remove(item, do_unlink=True)
@@ -127,7 +145,9 @@ def _load_objects_from_snapshot(path: str) -> list:
     return data_to.objects
 
 
-def _setup_ghost_collection(name: str, objects: list, context: bpy.types.Context) -> int:
+def _setup_ghost_collection(
+    name: str, objects: list, context: bpy.types.Context
+) -> int:
     new_col = bpy.data.collections.new(name)
     context.scene.collection.children.link(new_col)
 
@@ -135,14 +155,16 @@ def _setup_ghost_collection(name: str, objects: list, context: bpy.types.Context
     for obj in objects:
         if obj:
             new_col.objects.link(obj)
-            obj.display_type = 'WIRE'
+            obj.display_type = "WIRE"
             obj.hide_select = True
             obj.show_in_front = False
             count += 1
     return count
 
 
-def load_single_object_ghost(version_id: str, object_name: str, context: bpy.types.Context) -> None:
+def load_single_object_ghost(
+    version_id: str, object_name: str, context: bpy.types.Context
+) -> None:
     cleanup_single_object_ghost(object_name, context)
 
     snapshot_path = find_snapshot_path(version_id)
@@ -151,7 +173,10 @@ def load_single_object_ghost(version_id: str, object_name: str, context: bpy.typ
         return
 
     try:
-        with bpy.data.libraries.load(str(snapshot_path), link=True) as (data_from, data_to):
+        with bpy.data.libraries.load(str(snapshot_path), link=True) as (
+            data_from,
+            data_to,
+        ):
             if object_name in data_from.objects:
                 data_to.objects = [object_name]
             else:
@@ -170,7 +195,7 @@ def load_single_object_ghost(version_id: str, object_name: str, context: bpy.typ
     context.scene.collection.children.link(new_col)
     new_col.objects.link(obj)
 
-    obj.display_type = 'WIRE'
+    obj.display_type = "WIRE"
     obj.hide_select = True
     obj.show_in_front = True
 

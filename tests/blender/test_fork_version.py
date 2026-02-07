@@ -18,7 +18,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestForkVersion(SavePointsTestCase):
-
     def test_fork_version_scenario(self):
         """
         Scenario:
@@ -38,8 +37,8 @@ class TestForkVersion(SavePointsTestCase):
             bpy.context.object.name = "OriginalCube"
 
             # Commit
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Base Version")
-            self.assertIn('FINISHED', res, "Commit failed")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Base Version")
+            self.assertIn("FINISHED", res, "Commit failed")
 
         # --- Step 2: Checkout (Enter Snapshot Mode) ---
         with self.subTest(step="2. Checkout Snapshot"):
@@ -49,19 +48,23 @@ class TestForkVersion(SavePointsTestCase):
             bpy.context.scene.savepoints_settings.active_version_index = 0
 
             res = bpy.ops.savepoints.checkout()
-            self.assertIn('FINISHED', res, "Checkout failed")
+            self.assertIn("FINISHED", res, "Checkout failed")
 
             # Verify we are physically in the snapshot file
             current_path = Path(bpy.data.filepath)
-            self.assertEqual(current_path.name, "snapshot.blend_snapshot", f"Not in snapshot mode: {current_path}")
+            self.assertEqual(
+                current_path.name,
+                "snapshot.blend_snapshot",
+                f"Not in snapshot mode: {current_path}",
+            )
 
         # --- Step 3: Execute Fork ---
         with self.subTest(step="3. Execute Fork"):
             print("Executing Fork...")
 
             # Fork operator should handle file naming automatically (e.g., test_project_v001.blend)
-            res = bpy.ops.savepoints.fork_version('EXEC_DEFAULT')
-            self.assertIn('FINISHED', res, "Fork operator failed")
+            res = bpy.ops.savepoints.fork_version("EXEC_DEFAULT")
+            self.assertIn("FINISHED", res, "Fork operator failed")
 
         # --- Step 4: Verification (File & Content) ---
         with self.subTest(step="4. Verify Forked File"):
@@ -71,19 +74,35 @@ class TestForkVersion(SavePointsTestCase):
             print(f"Current loaded path: {current_loaded_path}")
 
             # A. File Existence & Context Switch
-            self.assertTrue(current_loaded_path.exists(), "Forked file does not exist on disk")
-            self.assertNotEqual(current_loaded_path.name, "snapshot.blend_snapshot",
-                                "Blender is still opening the snapshot file!")
+            self.assertTrue(
+                current_loaded_path.exists(), "Forked file does not exist on disk"
+            )
+            self.assertNotEqual(
+                current_loaded_path.name,
+                "snapshot.blend_snapshot",
+                "Blender is still opening the snapshot file!",
+            )
 
             # The operator typically appends suffix like '_v001' to the original name
-            self.assertIn("test_project", current_loaded_path.name, "Filename seems unrelated to original project")
+            self.assertIn(
+                "test_project",
+                current_loaded_path.name,
+                "Filename seems unrelated to original project",
+            )
 
             # B. Content Verification (Did the Cube survive?)
-            self.assertIn("OriginalCube", bpy.data.objects, "Forked file missing objects from snapshot")
+            self.assertIn(
+                "OriginalCube",
+                bpy.data.objects,
+                "Forked file missing objects from snapshot",
+            )
 
             # C. Snapshot Mode Check (Should be FALSE)
             parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
-            self.assertIsNone(parent_path, "Forked project should be a normal file, but is detected as Snapshot Mode")
+            self.assertIsNone(
+                parent_path,
+                "Forked project should be a normal file, but is detected as Snapshot Mode",
+            )
 
         # --- Step 5: Verification (History Reset) ---
         with self.subTest(step="5. Verify Fresh History"):
@@ -97,22 +116,25 @@ class TestForkVersion(SavePointsTestCase):
 
                 # A. History should be empty (New project starts fresh)
                 versions = manifest.get("versions", [])
-                self.assertEqual(len(versions), 0,
-                                 f"Forked project history should be empty, but has {len(versions)} versions")
+                self.assertEqual(
+                    len(versions),
+                    0,
+                    f"Forked project history should be empty, but has {len(versions)} versions",
+                )
 
                 # B. Parent pointer should point to ITSELF (Current file)
                 manifest_parent = manifest.get("parent_file")
                 self.assertEqual(
                     Path(manifest_parent).resolve(),
                     current_loaded_path.resolve(),
-                    "New manifest 'parent_file' mismatch"
+                    "New manifest 'parent_file' mismatch",
                 )
 
         print("Fork Version Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

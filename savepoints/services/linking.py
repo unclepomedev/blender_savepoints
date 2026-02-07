@@ -4,13 +4,12 @@ import json
 import shutil
 from pathlib import Path
 
-from .storage import (
-    MANIFEST_NAME,
-    to_posix_path, get_history_dir_for_path
-)
+from .storage import MANIFEST_NAME, to_posix_path, get_history_dir_for_path
 
 
-def resolve_history_path_from_selection(filepath: str | Path, directory: str | Path | None = None) -> Path:
+def resolve_history_path_from_selection(
+    filepath: str | Path, directory: str | Path | None = None
+) -> Path:
     """
     Resolve the history directory path from the user's file selection.
 
@@ -56,11 +55,13 @@ def link_history(source_dir: str | Path, blend_filepath: str) -> str:
     manifest_file = source_path / MANIFEST_NAME
 
     if not manifest_file.exists():
-        raise ValueError(f"Invalid folder: {MANIFEST_NAME} not found in {source_path.name}")
+        raise ValueError(
+            f"Invalid folder: {MANIFEST_NAME} not found in {source_path.name}"
+        )
 
     # Validate manifest content
     try:
-        with manifest_file.open('r', encoding='utf-8') as f:
+        with manifest_file.open("r", encoding="utf-8") as f:
             data = json.load(f)
             if not isinstance(data, dict):
                 raise ValueError("Manifest root must be a dictionary")
@@ -89,12 +90,12 @@ def link_history(source_dir: str | Path, blend_filepath: str) -> str:
     try:
         manifest_path = target_path / MANIFEST_NAME
         if manifest_path.exists():
-            with manifest_path.open('r', encoding='utf-8') as f:
+            with manifest_path.open("r", encoding="utf-8") as f:
                 manifest_data = json.load(f)
 
             manifest_data["parent_file"] = to_posix_path(blend_filepath)
 
-            with manifest_path.open('w', encoding='utf-8') as f:
+            with manifest_path.open("w", encoding="utf-8") as f:
                 json.dump(manifest_data, f, indent=4, ensure_ascii=False)
     except Exception as e:
         print(f"Warning: Failed to update parent_file in linked manifest: {e}")

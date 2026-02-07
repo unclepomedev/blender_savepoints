@@ -30,8 +30,8 @@ class TestFilterDeselect(SavePointsTestCase):
         self.v2 = next(v for v in versions if v.note == "V2")
 
         # Setup tags
-        self.v1.tag = 'STABLE'
-        self.v2.tag = 'BUG'
+        self.v1.tag = "STABLE"
+        self.v2.tag = "BUG"
 
     def test_deselect_hidden_items_on_filter_change(self):
         """
@@ -47,7 +47,7 @@ class TestFilterDeselect(SavePointsTestCase):
 
         # 2. Change filter to 'STABLE'
         # This should hide V2 (BUG). The requirement is that hidden items get deselected.
-        self.settings.filter_tag = 'STABLE'
+        self.settings.filter_tag = "STABLE"
 
         # 3. Verify
         self.assertTrue(v1.selected, "V1 (Matching filter) should remain selected")
@@ -63,17 +63,19 @@ class TestFilterDeselect(SavePointsTestCase):
         v1.selected = True
         v2.selected = False
 
-        self.settings.filter_tag = 'BUG'
+        self.settings.filter_tag = "BUG"
 
         # V1 (STABLE) should now be deselected because it's hidden
-        self.assertFalse(v1.selected, "V1 should be deselected when switching to BUG filter")
+        self.assertFalse(
+            v1.selected, "V1 should be deselected when switching to BUG filter"
+        )
 
         # V2 (BUG) is visible, but was not selected. It should remain not selected (unless we wanted auto-select, but requirement says 'deselect hidden')
         self.assertFalse(v2.selected, "V2 should remain unselected")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)
