@@ -54,23 +54,23 @@ mock_bpy.types.Menu = MockMenu
 mock_bpy.types.UIList = MockUIList
 
 # Inject into sys.modules
-sys.modules['bpy'] = mock_bpy
-sys.modules['bpy.app'] = mock_bpy.app
-sys.modules['bpy.app.handlers'] = mock_bpy.app.handlers
-sys.modules['bpy.utils'] = mock_bpy.utils
-sys.modules['bpy.utils.previews'] = mock_bpy.utils.previews
-sys.modules['bpy.props'] = mock_bpy.props
-sys.modules['bpy.types'] = mock_bpy.types
-sys.modules['bpy.ops'] = mock_bpy.ops
-sys.modules['bpy.context'] = mock_bpy.context
+sys.modules["bpy"] = mock_bpy
+sys.modules["bpy.app"] = mock_bpy.app
+sys.modules["bpy.app.handlers"] = mock_bpy.app.handlers
+sys.modules["bpy.utils"] = mock_bpy.utils
+sys.modules["bpy.utils.previews"] = mock_bpy.utils.previews
+sys.modules["bpy.props"] = mock_bpy.props
+sys.modules["bpy.types"] = mock_bpy.types
+sys.modules["bpy.ops"] = mock_bpy.ops
+sys.modules["bpy.context"] = mock_bpy.context
 
 # Mock other blender modules
-sys.modules['gpu'] = MagicMock()
-sys.modules['gpu_extras'] = MagicMock()
-sys.modules['gpu_extras.batch'] = MagicMock()
-sys.modules['bl_ui'] = MagicMock()
-sys.modules['bpy_extras'] = MagicMock()
-sys.modules['bpy_extras.io_utils'] = MagicMock()
+sys.modules["gpu"] = MagicMock()
+sys.modules["gpu_extras"] = MagicMock()
+sys.modules["gpu_extras.batch"] = MagicMock()
+sys.modules["bl_ui"] = MagicMock()
+sys.modules["bpy_extras"] = MagicMock()
+sys.modules["bpy_extras.io_utils"] = MagicMock()
 
 
 # Assign ImportHelper as a class
@@ -78,16 +78,15 @@ class MockImportHelper:
     pass
 
 
-sys.modules['bpy_extras.io_utils'].ImportHelper = MockImportHelper
-sys.modules['bpy_extras.io_utils'].ExportHelper = MockImportHelper
+sys.modules["bpy_extras.io_utils"].ImportHelper = MockImportHelper
+sys.modules["bpy_extras.io_utils"].ExportHelper = MockImportHelper
 
 from savepoints.services.versioning import prune_versions
 
 
 class TestPruningLogic(unittest.TestCase):
-
-    @patch('savepoints.services.versioning.load_manifest')
-    @patch('savepoints.services.versioning.delete_version_by_id')
+    @patch("savepoints.services.versioning.load_manifest")
+    @patch("savepoints.services.versioning.delete_version_by_id")
     def test_prune_versions_sorting(self, mock_delete, mock_load_manifest):
         """
         Verify that versions are sorted by ID (descending) before pruning.
@@ -116,8 +115,8 @@ class TestPruningLogic(unittest.TestCase):
         # Check what was deleted
         mock_delete.assert_called_once_with("v001")
 
-    @patch('savepoints.services.versioning.load_manifest')
-    @patch('savepoints.services.versioning.delete_version_by_id')
+    @patch("savepoints.services.versioning.load_manifest")
+    @patch("savepoints.services.versioning.delete_version_by_id")
     def test_prune_versions_with_protected(self, mock_delete, mock_load_manifest):
         """
         Verify that protected versions are ignored from quota and not deleted.
@@ -143,5 +142,5 @@ class TestPruningLogic(unittest.TestCase):
         mock_delete.assert_called_once_with("v001")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

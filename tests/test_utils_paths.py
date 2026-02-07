@@ -31,63 +31,73 @@ sys.modules["bpy.props"] = bpy.props
 sys.modules["bpy.data"] = bpy.data
 
 
-class MockImagePreviewCollection: pass
+class MockImagePreviewCollection:
+    pass
 
 
 bpy.utils.previews.ImagePreviewCollection = MockImagePreviewCollection
 
 
 # Mock specific attributes used by import time code
-def persistent(func): return func
+def persistent(func):
+    return func
 
 
 bpy.app.handlers.persistent = persistent
 
 
 # Mock basic classes needed for inheritance if any
-class MockPropertyGroup: pass
+class MockPropertyGroup:
+    pass
 
 
 bpy.types.PropertyGroup = MockPropertyGroup
 
 
-class MockOperator: pass
+class MockOperator:
+    pass
 
 
 bpy.types.Operator = MockOperator
 
 
-class MockUIList: pass
+class MockUIList:
+    pass
 
 
 bpy.types.UIList = MockUIList
 
 
-class MockPanel: pass
+class MockPanel:
+    pass
 
 
 bpy.types.Panel = MockPanel
 
 
-class MockMenu: pass
+class MockMenu:
+    pass
 
 
 bpy.types.Menu = MockMenu
 
 
-class MockContext: pass
+class MockContext:
+    pass
 
 
 bpy.types.Context = MockContext
 
 
-class MockObject: pass
+class MockObject:
+    pass
 
 
 bpy.types.Object = MockObject
 
 
-class MockCollection: pass
+class MockCollection:
+    pass
 
 
 bpy.types.Collection = MockCollection
@@ -121,13 +131,15 @@ sys.modules["bpy_extras"] = bpy_extras
 sys.modules["bpy_extras.io_utils"] = bpy_extras.io_utils
 
 
-class MockImportHelper: pass
+class MockImportHelper:
+    pass
 
 
 bpy_extras.io_utils.ImportHelper = MockImportHelper
 
 
-class MockExportHelper: pass
+class MockExportHelper:
+    pass
 
 
 bpy_extras.io_utils.ExportHelper = MockExportHelper
@@ -184,7 +196,7 @@ class TestPathUtils(unittest.TestCase):
         # os.path.dirname of this is 'dir' (the history folder), NOT 'dir/v001'.
 
         # Only run this test on POSIX
-        if os.name == 'nt':
+        if os.name == "nt":
             return
 
         history_dir = "/project/.history"
@@ -202,7 +214,7 @@ class TestPathUtils(unittest.TestCase):
         # Test the fix using from_posix_path
         from savepoints.services.storage import from_posix_path
 
-        if os.name == 'nt':
+        if os.name == "nt":
             # On Windows, both are separators or handled, but let's test logic explicitly
             pass
 
@@ -212,7 +224,7 @@ class TestPathUtils(unittest.TestCase):
         # 1. Normalize the path from manifest
         normalized_path = from_posix_path(windows_blend_path)
 
-        if os.name != 'nt':
+        if os.name != "nt":
             # On POSIX, it should replace backslash with slash
             self.assertEqual(normalized_path, "v001/snapshot.blend_snapshot")
 
@@ -238,7 +250,7 @@ class TestPathUtils(unittest.TestCase):
         mock_context = mock.MagicMock()
 
         # Case 1: Normal file -> poll should be True
-        # We use platform specific separator construction to be safe, 
+        # We use platform specific separator construction to be safe,
         # though the mocked bpy is just a value holder.
         # get_parent_path_from_snapshot uses os.path, so we must match os.sep
 
@@ -247,10 +259,13 @@ class TestPathUtils(unittest.TestCase):
         normal_path = os.path.join(base, filename)
 
         bpy.data.filepath = normal_path
-        self.assertTrue(SAVEPOINTS_OT_commit.poll(mock_context), f"Poll should be True for normal file: {normal_path}")
+        self.assertTrue(
+            SAVEPOINTS_OT_commit.poll(mock_context),
+            f"Poll should be True for normal file: {normal_path}",
+        )
 
         # Case 2: Snapshot file -> poll should be False
-        with mock.patch('savepoints.services.storage.Path') as MockPath:
+        with mock.patch("savepoints.services.storage.Path") as MockPath:
             # 1. create mock path object
             mock_resolved = mock.MagicMock()
             MockPath.return_value.resolve.return_value = mock_resolved
@@ -269,7 +284,9 @@ class TestPathUtils(unittest.TestCase):
 
             # 3. create dir name
             target_history_name = ".MyScene_history"
-            type(mock_hist_dir).name = mock.PropertyMock(return_value=target_history_name)
+            type(mock_hist_dir).name = mock.PropertyMock(
+                return_value=target_history_name
+            )
 
             mock_proj_dir.__truediv__.return_value = "/project/MyScene.blend"
 
@@ -277,9 +294,11 @@ class TestPathUtils(unittest.TestCase):
             snapshot_path = "/project/.MyScene_history/v001/snapshot.blend_snapshot"
             bpy.data.filepath = snapshot_path
 
-            self.assertFalse(SAVEPOINTS_OT_commit.poll(mock_context),
-                             f"Poll should be False for snapshot file: {snapshot_path}")
+            self.assertFalse(
+                SAVEPOINTS_OT_commit.poll(mock_context),
+                f"Poll should be False for snapshot file: {snapshot_path}",
+            )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

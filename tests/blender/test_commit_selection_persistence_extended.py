@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestCommitSelectionPersistenceExtended(SavePointsTestCase):
-
     def test_context_persistence_variants_scenario(self):
         """
         Scenario:
@@ -36,22 +35,24 @@ class TestCommitSelectionPersistenceExtended(SavePointsTestCase):
             armature.name = "TestArmature"
 
             # Enter Pose Mode
-            bpy.ops.object.mode_set(mode='POSE')
-            self.assertEqual(bpy.context.object.mode, 'POSE')
+            bpy.ops.object.mode_set(mode="POSE")
+            self.assertEqual(bpy.context.object.mode, "POSE")
 
             # Commit
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Pose Mode Test")
-            self.assertIn('FINISHED', res, "Commit failed in Pose Mode")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Pose Mode Test")
+            self.assertIn("FINISHED", res, "Commit failed in Pose Mode")
 
             # Verify
             # Re-fetch object to avoid stale reference
             current_obj = bpy.context.active_object
             self.assertIsNotNone(current_obj)
             self.assertEqual(current_obj.name, "TestArmature")
-            self.assertEqual(current_obj.mode, 'POSE', "Failed to return to Pose Mode after commit")
+            self.assertEqual(
+                current_obj.mode, "POSE", "Failed to return to Pose Mode after commit"
+            )
 
             # CLEANUP: Return to Object Mode for next step
-            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.mode_set(mode="OBJECT")
 
         # --- Step 2: Sculpt Mode Persistence ---
         with self.subTest(step="2. Sculpt Mode Persistence"):
@@ -63,28 +64,32 @@ class TestCommitSelectionPersistenceExtended(SavePointsTestCase):
             mesh.name = "SculptMesh"
 
             # Enter Sculpt Mode
-            bpy.ops.object.mode_set(mode='SCULPT')
-            self.assertEqual(bpy.context.object.mode, 'SCULPT')
+            bpy.ops.object.mode_set(mode="SCULPT")
+            self.assertEqual(bpy.context.object.mode, "SCULPT")
 
             # Commit
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Sculpt Mode Test")
-            self.assertIn('FINISHED', res, "Commit failed in Sculpt Mode")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Sculpt Mode Test")
+            self.assertIn("FINISHED", res, "Commit failed in Sculpt Mode")
 
             # Verify
             current_obj = bpy.context.active_object
             self.assertIsNotNone(current_obj)
             self.assertEqual(current_obj.name, "SculptMesh")
-            self.assertEqual(current_obj.mode, 'SCULPT', "Failed to return to Sculpt Mode after commit")
+            self.assertEqual(
+                current_obj.mode,
+                "SCULPT",
+                "Failed to return to Sculpt Mode after commit",
+            )
 
             # CLEANUP: Return to Object Mode for next step
-            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.mode_set(mode="OBJECT")
 
         # --- Step 3: No Selection Persistence ---
         with self.subTest(step="3. No Selection Persistence"):
             print("Testing No Selection...")
 
             # Setup: Deselect everything
-            bpy.ops.object.select_all(action='DESELECT')
+            bpy.ops.object.select_all(action="DESELECT")
             bpy.context.view_layer.objects.active = None
 
             # Verify precondition
@@ -93,18 +98,24 @@ class TestCommitSelectionPersistenceExtended(SavePointsTestCase):
 
             # Commit
             # Ensures the addon handles "None" active object gracefully without crashing
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Empty Selection Test")
-            self.assertIn('FINISHED', res, "Commit failed with no selection")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Empty Selection Test")
+            self.assertIn("FINISHED", res, "Commit failed with no selection")
 
             # Verify
-            self.assertIsNone(bpy.context.active_object, "Active object appeared from nowhere")
-            self.assertEqual(len(bpy.context.selected_objects), 0, "Objects got selected unexpectedly")
+            self.assertIsNone(
+                bpy.context.active_object, "Active object appeared from nowhere"
+            )
+            self.assertEqual(
+                len(bpy.context.selected_objects),
+                0,
+                "Objects got selected unexpectedly",
+            )
 
         print("Context Persistence Variants Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

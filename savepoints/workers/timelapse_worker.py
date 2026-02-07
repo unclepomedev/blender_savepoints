@@ -14,7 +14,18 @@ import render_config  # noqa: E402
 import scene_utils  # noqa: E402
 
 FRAMES_PER_IMAGE = 6
-VALID_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.exr', '.hdr', '.tif', '.tiff', '.webp', '.tga', '.bmp'}
+VALID_EXTENSIONS = {
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".exr",
+    ".hdr",
+    ".tif",
+    ".tiff",
+    ".webp",
+    ".tga",
+    ".bmp",
+}
 
 
 class TimelapseArgs:
@@ -37,7 +48,7 @@ class TimelapseArgs:
             print("Worker Error: No arguments separator '--' found.")
             sys.exit(1)
 
-        args = argv[argv.index("--") + 1:]
+        args = argv[argv.index("--") + 1 :]
 
         if len(args) < 2:
             print("Worker Error: Missing required arguments.")
@@ -58,10 +69,10 @@ class TimelapseArgs:
             except Exception:
                 pass
 
-        burn_in_pos = 'BL'
+        burn_in_pos = "BL"
         if len(args) > 4:
             pos = args[4]
-            if pos in ['TL', 'TR', 'BL', 'BR']:
+            if pos in ["TL", "TR", "BL", "BR"]:
                 burn_in_pos = pos
             else:
                 print(f"Warning: Invalid Burn-in position '{pos}', using default 'BL'.")
@@ -101,33 +112,35 @@ class BurnInGenerator:
         margin_x = 0.03
         margin_y = 0.05
 
-        align_x = 'LEFT'
-        align_y = 'BOTTOM'
+        align_x = "LEFT"
+        align_y = "BOTTOM"
         loc_x = margin_x
         loc_y = margin_y
 
-        if pos == 'TL':
-            align_x = 'LEFT'
-            align_y = 'TOP'
+        if pos == "TL":
+            align_x = "LEFT"
+            align_y = "TOP"
             loc_x = margin_x
             loc_y = 1.0 - margin_y
-        elif pos == 'TR':
-            align_x = 'RIGHT'
-            align_y = 'TOP'
+        elif pos == "TR":
+            align_x = "RIGHT"
+            align_y = "TOP"
             loc_x = 1.0 - margin_x
             loc_y = 1.0 - margin_y
-        elif pos == 'BL':
+        elif pos == "BL":
             # Defaults are correct
             pass
-        elif pos == 'BR':
-            align_x = 'RIGHT'
-            align_y = 'BOTTOM'
+        elif pos == "BR":
+            align_x = "RIGHT"
+            align_y = "BOTTOM"
             loc_x = 1.0 - margin_x
             loc_y = margin_y
 
         return font_size, align_x, align_y, loc_x, loc_y
 
-    def _add_text_strip(self, index, filename, font_size, align_x, align_y, loc_x, loc_y):
+    def _add_text_strip(
+        self, index, filename, font_size, align_x, align_y, loc_x, loc_y
+    ):
         # Prepare text content
         text_content = os.path.splitext(filename)[0]
         if text_content.endswith("_render"):
@@ -138,7 +151,7 @@ class BurnInGenerator:
 
             kwargs = {
                 "name": f"Text_{index}",
-                "type": 'TEXT',
+                "type": "TEXT",
                 "frame_start": start_frame,
                 "channel": 2,
             }
@@ -184,7 +197,7 @@ class SceneBuilder:
             "resolution_x": 1920,
             "resolution_y": 1080,
             "is_linear": False,
-            "ext": ""
+            "ext": "",
         }
 
     def build(self):
@@ -216,7 +229,8 @@ class SceneBuilder:
 
     def _collect_images(self):
         files = [
-            f for f in os.listdir(self.args.input_dir)
+            f
+            for f in os.listdir(self.args.input_dir)
             if os.path.splitext(f)[1].lower() in VALID_EXTENSIONS
         ]
         files.sort()
@@ -234,10 +248,12 @@ class SceneBuilder:
             self.first_image_info["resolution_y"] = tmp_img.size[1]
 
             # Color Space Heuristics
-            if self.first_image_info["ext"] in {'.exr', '.hdr'}:
+            if self.first_image_info["ext"] in {".exr", ".hdr"}:
                 self.first_image_info["is_linear"] = True
             elif tmp_img.is_float:
-                print(f"Info: Image detected as Floating Point ({self.first_image_info['ext']}). Treating as Linear.")
+                print(
+                    f"Info: Image detected as Floating Point ({self.first_image_info['ext']}). Treating as Linear."
+                )
                 self.first_image_info["is_linear"] = True
             else:
                 self.first_image_info["is_linear"] = False
@@ -245,7 +261,9 @@ class SceneBuilder:
             bpy.data.images.remove(tmp_img)
 
         except Exception as e:
-            print(f"Warning: Failed to analyze image {filepath}. Using defaults. Error: {e}")
+            print(
+                f"Warning: Failed to analyze image {filepath}. Using defaults. Error: {e}"
+            )
 
     def _setup_vse_editor(self):
         if not self.scene.sequence_editor:
@@ -271,7 +289,7 @@ class SceneBuilder:
                     name=f"Image_{i}",
                     filepath=f_path,
                     channel=1,
-                    frame_start=current_frame
+                    frame_start=current_frame,
                 )
                 strip.frame_final_duration = FRAMES_PER_IMAGE
                 current_frame += FRAMES_PER_IMAGE
@@ -291,7 +309,7 @@ class SceneBuilder:
         res_settings = {
             "resolution_x": self.first_image_info["resolution_x"],
             "resolution_y": self.first_image_info["resolution_y"],
-            "resolution_percentage": 100
+            "resolution_percentage": 100,
         }
         render_config.apply_render_settings(self.scene, self.scene.render, res_settings)
 
@@ -304,16 +322,14 @@ class SceneBuilder:
 
         if is_linear:
             print(
-                f"Input is {ext} (Linear/Float). Keeping current View Transform: {self.scene.view_settings.view_transform}")
+                f"Input is {ext} (Linear/Float). Keeping current View Transform: {self.scene.view_settings.view_transform}"
+            )
         else:
-            print(f"Input is {ext} (Display Referred). Forcing View Transform to 'Standard'.")
+            print(
+                f"Input is {ext} (Display Referred). Forcing View Transform to 'Standard'."
+            )
 
-            settings = {
-                "view_settings": {
-                    "view_transform": 'Standard',
-                    "look": 'None'
-                }
-            }
+            settings = {"view_settings": {"view_transform": "Standard", "look": "None"}}
             scene_utils.setup_view_settings(self.scene, settings)
 
 
@@ -330,21 +346,18 @@ class Renderer:
         try:
             img_settings = self.scene.render.image_settings
             if bpy.app.version >= (5, 0) and hasattr(img_settings, "media_type"):
-                img_settings.media_type = 'VIDEO'
+                img_settings.media_type = "VIDEO"
         except Exception as e:
             print(f"Info: Blender 5.0+ media_type check skipped: {e}")
 
         settings = {
-            "image_settings": {
-                "file_format": 'FFMPEG',
-                "color_mode": 'RGB'
-            },
+            "image_settings": {"file_format": "FFMPEG", "color_mode": "RGB"},
             "ffmpeg": {
-                "format": 'MPEG4',
-                "codec": 'H264',
-                "constant_rate_factor": 'HIGH',
-                "audio_codec": 'NONE'
-            }
+                "format": "MPEG4",
+                "codec": "H264",
+                "constant_rate_factor": "HIGH",
+                "audio_codec": "NONE",
+            },
         }
 
         render_config.apply_image_settings(self.scene.render, settings)

@@ -17,7 +17,6 @@ from savepoints.services.versioning import set_version_protection
 
 
 class TestPruningOnRefresh(SavePointsTestCase):
-
     def test_pruning_on_refresh(self):
         """
         Scenario:
@@ -37,7 +36,7 @@ class TestPruningOnRefresh(SavePointsTestCase):
 
             # Create 3 versions
             for i in range(3):
-                bpy.ops.savepoints.commit('EXEC_DEFAULT', note=f"Version {i + 1}")
+                bpy.ops.savepoints.commit("EXEC_DEFAULT", note=f"Version {i + 1}")
 
             # Verify 3 versions exist
             self.assertEqual(len(settings.versions), 3, "Should have 3 versions")
@@ -48,14 +47,18 @@ class TestPruningOnRefresh(SavePointsTestCase):
             settings.max_versions_to_keep = 2
 
             print("Executing Refresh...")
-            bpy.ops.savepoints.refresh('EXEC_DEFAULT')
+            bpy.ops.savepoints.refresh("EXEC_DEFAULT")
 
             # Verify versions count
-            self.assertEqual(len(settings.versions), 2, "Should be pruned to 2 versions")
+            self.assertEqual(
+                len(settings.versions), 2, "Should be pruned to 2 versions"
+            )
 
             # Verify the correct versions remain (latest ones)
             remaining_notes = [v.note for v in settings.versions]
-            self.assertNotIn("Version 1", remaining_notes, "Oldest version should be pruned")
+            self.assertNotIn(
+                "Version 1", remaining_notes, "Oldest version should be pruned"
+            )
             self.assertIn("Version 2", remaining_notes)
             self.assertIn("Version 3", remaining_notes)
 
@@ -78,16 +81,20 @@ class TestPruningOnRefresh(SavePointsTestCase):
         settings.max_versions_to_keep = 2
 
         for i in range(3):
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note=f"Version {i + 1}")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note=f"Version {i + 1}")
 
         self.assertEqual(len(settings.versions), 3, "Should have 3 versions")
 
         # --- Step 2: Refresh with limit disabled ---
         print("Executing Refresh (Limit Disabled)...")
-        bpy.ops.savepoints.refresh('EXEC_DEFAULT')
+        bpy.ops.savepoints.refresh("EXEC_DEFAULT")
 
         # --- Step 3: Verify ---
-        self.assertEqual(len(settings.versions), 3, "Should still have 3 versions because limit is disabled")
+        self.assertEqual(
+            len(settings.versions),
+            3,
+            "Should still have 3 versions because limit is disabled",
+        )
 
         print("No Pruning When Disabled Scenario: Completed")
 
@@ -110,7 +117,7 @@ class TestPruningOnRefresh(SavePointsTestCase):
         settings.max_versions_to_keep = 1
 
         # Create Version 1
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Version 1")
+        bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Version 1")
 
         # Lock Version 1
         # Use service function because property setter doesn't sync to disk (manifest)
@@ -119,18 +126,20 @@ class TestPruningOnRefresh(SavePointsTestCase):
         set_version_protection(v1_id, True)
 
         # Create Version 2
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Version 2")
+        bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Version 2")
 
         # --- Execute Refresh ---
         print("Executing Refresh with Locked Item...")
-        bpy.ops.savepoints.refresh('EXEC_DEFAULT')
+        bpy.ops.savepoints.refresh("EXEC_DEFAULT")
 
         # --- Verify ---
         # Logic:
         # Locked(v1) -> Kept unconditionally (does not consume quota)
         # Unlocked(v2) -> Fits within quota (1), so it remains.
 
-        self.assertEqual(len(settings.versions), 2, "Locked version should be ignored from quota")
+        self.assertEqual(
+            len(settings.versions), 2, "Locked version should be ignored from quota"
+        )
         notes = [v.note for v in settings.versions]
         self.assertIn("Version 1", notes, "Locked version 1 should be protected")
         self.assertIn("Version 2", notes, "Newest version 2 should be kept")
@@ -139,7 +148,7 @@ class TestPruningOnRefresh(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

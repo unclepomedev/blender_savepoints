@@ -29,16 +29,20 @@ mock_bpy.app.timers = MagicMock()
 
 
 # Define dummy base classes
-class MockOperator: pass
+class MockOperator:
+    pass
 
 
-class MockPanel: pass
+class MockPanel:
+    pass
 
 
-class MockMenu: pass
+class MockMenu:
+    pass
 
 
-class MockUIList: pass
+class MockUIList:
+    pass
 
 
 mock_bpy.types.Operator = MockOperator
@@ -46,30 +50,31 @@ mock_bpy.types.Panel = MockPanel
 mock_bpy.types.Menu = MockMenu
 mock_bpy.types.UIList = MockUIList
 
-sys.modules['bpy'] = mock_bpy
-sys.modules['bpy.app'] = mock_bpy.app
-sys.modules['bpy.app.handlers'] = mock_bpy.app.handlers
-sys.modules['bpy.utils'] = mock_bpy.utils
-sys.modules['bpy.utils.previews'] = mock_bpy.utils.previews
-sys.modules['bpy.props'] = mock_bpy.props
-sys.modules['bpy.types'] = mock_bpy.types
-sys.modules['bpy.ops'] = mock_bpy.ops
-sys.modules['bpy.context'] = mock_bpy.context
+sys.modules["bpy"] = mock_bpy
+sys.modules["bpy.app"] = mock_bpy.app
+sys.modules["bpy.app.handlers"] = mock_bpy.app.handlers
+sys.modules["bpy.utils"] = mock_bpy.utils
+sys.modules["bpy.utils.previews"] = mock_bpy.utils.previews
+sys.modules["bpy.props"] = mock_bpy.props
+sys.modules["bpy.types"] = mock_bpy.types
+sys.modules["bpy.ops"] = mock_bpy.ops
+sys.modules["bpy.context"] = mock_bpy.context
 
 # Mock other blender modules
-sys.modules['gpu'] = MagicMock()
-sys.modules['gpu_extras'] = MagicMock()
-sys.modules['gpu_extras.batch'] = MagicMock()
-sys.modules['bl_ui'] = MagicMock()
-sys.modules['bpy_extras'] = MagicMock()
-sys.modules['bpy_extras.io_utils'] = MagicMock()
+sys.modules["gpu"] = MagicMock()
+sys.modules["gpu_extras"] = MagicMock()
+sys.modules["gpu_extras.batch"] = MagicMock()
+sys.modules["bl_ui"] = MagicMock()
+sys.modules["bpy_extras"] = MagicMock()
+sys.modules["bpy_extras.io_utils"] = MagicMock()
 
 
-class MockImportHelper: pass
+class MockImportHelper:
+    pass
 
 
-sys.modules['bpy_extras.io_utils'].ImportHelper = MockImportHelper
-sys.modules['bpy_extras.io_utils'].ExportHelper = MockImportHelper  # Added this
+sys.modules["bpy_extras.io_utils"].ImportHelper = MockImportHelper
+sys.modules["bpy_extras.io_utils"].ExportHelper = MockImportHelper  # Added this
 
 from savepoints.services.versioning import get_next_version_id, get_sorted_versions
 
@@ -91,7 +96,7 @@ class TestVersionLimit(unittest.TestCase):
                 {"id": "v10"},
                 {"id": "v999"},
                 {"id": "v1000"},
-                {"id": "v1"}
+                {"id": "v1"},
             ]
         }
 
@@ -109,5 +114,5 @@ class TestVersionLimit(unittest.TestCase):
         self.assertEqual(sorted_versions_asc[-1]["id"], "v1000")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

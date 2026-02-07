@@ -7,17 +7,17 @@ from typing import Any
 
 from send2trash import send2trash
 
-from .manifest import (
-    load_manifest, save_manifest
-)
+from .manifest import load_manifest, save_manifest
 from .storage import (
-    to_posix_path, is_safe_filename,
+    to_posix_path,
+    is_safe_filename,
     get_history_dir,
 )
 
 
 class VersionLimitReachedError(Exception):
     """Exception raised when the maximum version limit is reached."""
+
     pass
 
 
@@ -38,15 +38,15 @@ def get_next_version_id(versions: list[dict]) -> str:
 
 
 def add_version_to_manifest(
-        manifest: dict[str, Any],
-        version_id: str,
-        note: str,
-        thumb_rel_path: str,
-        blend_rel_path: str,
-        object_count: int = 0,
-        file_size: int = 0,
-        is_protected: bool = False,
-        tag: str = "NONE"
+    manifest: dict[str, Any],
+    version_id: str,
+    note: str,
+    thumb_rel_path: str,
+    blend_rel_path: str,
+    object_count: int = 0,
+    file_size: int = 0,
+    is_protected: bool = False,
+    tag: str = "NONE",
 ) -> None:
     """Add a new version entry to the manifest."""
     versions = manifest.get("versions", [])
@@ -155,7 +155,9 @@ def prune_versions(max_keep: int) -> int:
         return 0
 
     manifest = load_manifest()
-    manual_versions = get_sorted_versions(manifest, newest_first=True, include_autosave=False)
+    manual_versions = get_sorted_versions(
+        manifest, newest_first=True, include_autosave=False
+    )
 
     ids_to_delete = []
     unlocked_count = 0
@@ -188,26 +190,28 @@ def generate_default_note(context) -> str:
 
         mode = obj.mode
 
-        if mode == 'EDIT':
+        if mode == "EDIT":
             friendly_mode = f"Edit {obj.type.title()}"
         else:
             mode_map = {
-                'OBJECT': 'Object',
-                'POSE': 'Pose',
-                'SCULPT': 'Sculpt',
-                'VERTEX_PAINT': 'Vertex Paint',
-                'WEIGHT_PAINT': 'Weight Paint',
-                'TEXTURE_PAINT': 'Texture Paint',
-                'PARTICLE_EDIT': 'Particle Edit',
+                "OBJECT": "Object",
+                "POSE": "Pose",
+                "SCULPT": "Sculpt",
+                "VERTEX_PAINT": "Vertex Paint",
+                "WEIGHT_PAINT": "Weight Paint",
+                "TEXTURE_PAINT": "Texture Paint",
+                "PARTICLE_EDIT": "Particle Edit",
             }
-            friendly_mode = mode_map.get(mode, mode.replace('_', ' ').title())
+            friendly_mode = mode_map.get(mode, mode.replace("_", " ").title())
 
         return f"{friendly_mode}: {obj.name}"
     except Exception:
         return ""
 
 
-def get_sorted_versions(manifest: dict, newest_first: bool = True, include_autosave: bool = False) -> list:
+def get_sorted_versions(
+    manifest: dict, newest_first: bool = True, include_autosave: bool = False
+) -> list:
     """
     Returns a sorted list of version dictionaries.
 

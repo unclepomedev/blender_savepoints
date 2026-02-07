@@ -5,13 +5,16 @@ from unittest.mock import MagicMock, patch
 
 
 # Define mock classes at module level (safe as they don't modify global state)
-class MockImportHelper: pass
+class MockImportHelper:
+    pass
 
 
-class MockExportHelper: pass
+class MockExportHelper:
+    pass
 
 
-class MockOperator: pass
+class MockOperator:
+    pass
 
 
 class TestUiSorting(unittest.TestCase):
@@ -52,6 +55,7 @@ class TestUiSorting(unittest.TestCase):
         # importlib.reload is safer if the module was already imported by another test.
         try:
             import savepoints.ui_utils
+
             importlib.reload(savepoints.ui_utils)
             self.ui_utils = savepoints.ui_utils
         except ImportError:
@@ -138,5 +142,5 @@ class TestUiSorting(unittest.TestCase):
         self.assertEqual(created_items[3].version_id, "autosave")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -26,7 +26,7 @@ class TestObjectHistory(SavePointsTestCase):
         bpy.ops.mesh.primitive_cube_add(size=2)
         obj = bpy.context.active_object
         obj.name = "TestCube"
-        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.mode_set(mode="OBJECT")
 
         # --- VERSION 1: Base State ---
         create_snapshot(bpy.context, "v1", "Base", skip_thumbnail=True)
@@ -36,21 +36,21 @@ class TestObjectHistory(SavePointsTestCase):
             meta_path = snap_path.parent / f"v1{OBJECT_DATA_SUFFIX}"
             self.assertTrue(meta_path.exists(), "Metadata file should exist")
 
-            with open(meta_path, 'r', encoding='utf-8') as f:
+            with open(meta_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             self.assertIn("TestCube", data)
             cube_data = data["TestCube"]
 
             # Validate Matrix (16 floats)
-            self.assertIsInstance(cube_data['matrix'], list)
-            self.assertEqual(len(cube_data['matrix']), 16)
-            self.assertIsInstance(cube_data['matrix'][0], (float, int))
+            self.assertIsInstance(cube_data["matrix"], list)
+            self.assertEqual(len(cube_data["matrix"]), 16)
+            self.assertIsInstance(cube_data["matrix"][0], (float, int))
 
             # Validate Bbox (2 points * 3 coords)
-            self.assertIsInstance(cube_data['bbox'], list)
-            self.assertEqual(len(cube_data['bbox']), 2)
-            self.assertEqual(len(cube_data['bbox'][0]), 3)
+            self.assertIsInstance(cube_data["bbox"], list)
+            self.assertEqual(len(cube_data["bbox"]), 2)
+            self.assertEqual(len(cube_data["bbox"][0]), 3)
 
         # --- VERSION 2: Moved (Matrix change) ---
         obj.location.x += 5.0
@@ -58,18 +58,18 @@ class TestObjectHistory(SavePointsTestCase):
         create_snapshot(bpy.context, "v2", "Moved", skip_thumbnail=True)
 
         # --- VERSION 3: Minor (BBox change, same verts) ---
-        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.object.mode_set(mode="EDIT")
         bm = bmesh.from_edit_mesh(obj.data)
         for v in bm.verts:
             v.co.z += 2.0
         bmesh.update_edit_mesh(obj.data)
-        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.mode_set(mode="OBJECT")
         create_snapshot(bpy.context, "v3", "Stretched", skip_thumbnail=True)
 
         # --- VERSION 4: Major (Vert count change) ---
-        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.object.mode_set(mode="EDIT")
         bpy.ops.mesh.subdivide()
-        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.mode_set(mode="OBJECT")
         create_snapshot(bpy.context, "v4", "Subdivided", skip_thumbnail=True)
 
         with self.subTest("Compare History"):
@@ -84,24 +84,24 @@ class TestObjectHistory(SavePointsTestCase):
             # Returns Newest First (v4, v3, v2, v1)
             self.assertEqual(len(history), 4)
 
-            self.assertEqual(history[0]['version_id'], 'v4')
-            self.assertEqual(history[0]['change_type'], 'MAJOR')
+            self.assertEqual(history[0]["version_id"], "v4")
+            self.assertEqual(history[0]["change_type"], "MAJOR")
 
-            self.assertEqual(history[1]['version_id'], 'v3')
-            self.assertEqual(history[1]['change_type'], 'MINOR')
+            self.assertEqual(history[1]["version_id"], "v3")
+            self.assertEqual(history[1]["change_type"], "MINOR")
 
-            self.assertEqual(history[2]['version_id'], 'v2')
-            self.assertEqual(history[2]['change_type'], 'MOVED')
+            self.assertEqual(history[2]["version_id"], "v2")
+            self.assertEqual(history[2]["change_type"], "MOVED")
 
-            self.assertEqual(history[3]['version_id'], 'v1')
-            self.assertEqual(history[3]['change_type'], 'CREATED')
+            self.assertEqual(history[3]["version_id"], "v1")
+            self.assertEqual(history[3]["change_type"], "CREATED")
 
     def test_object_history_with_unchanged(self):
         # 1. Setup - Create Cube
         bpy.ops.mesh.primitive_cube_add(size=2)
         obj = bpy.context.active_object
         obj.name = "TestCubeUnchanged"
-        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.mode_set(mode="OBJECT")
 
         # --- VERSION 1: Base State ---
         create_snapshot(bpy.context, "v1", "Base", skip_thumbnail=True)
@@ -118,28 +118,28 @@ class TestObjectHistory(SavePointsTestCase):
             history = compare_object_history(obj)
             # Should show v3(MOVED) and v1(CREATED). v2 should be hidden.
             self.assertEqual(len(history), 2)
-            self.assertEqual(history[0]['version_id'], 'v3')
-            self.assertEqual(history[0]['change_type'], 'MOVED')
-            self.assertEqual(history[1]['version_id'], 'v1')
-            self.assertEqual(history[1]['change_type'], 'CREATED')
+            self.assertEqual(history[0]["version_id"], "v3")
+            self.assertEqual(history[0]["change_type"], "MOVED")
+            self.assertEqual(history[1]["version_id"], "v1")
+            self.assertEqual(history[1]["change_type"], "CREATED")
 
         with self.subTest("Show All (Include Unchanged)"):
             history = compare_object_history(obj, include_change_not_detected=True)
             # Should show v3, v2, v1
             self.assertEqual(len(history), 3)
 
-            self.assertEqual(history[0]['version_id'], 'v3')
-            self.assertEqual(history[0]['change_type'], 'MOVED')
+            self.assertEqual(history[0]["version_id"], "v3")
+            self.assertEqual(history[0]["change_type"], "MOVED")
 
-            self.assertEqual(history[1]['version_id'], 'v2')
-            self.assertEqual(history[1]['change_type'], 'RECORD')
-            
-            self.assertEqual(history[2]['version_id'], 'v1')
-            self.assertEqual(history[2]['change_type'], 'CREATED')
+            self.assertEqual(history[1]["version_id"], "v2")
+            self.assertEqual(history[1]["change_type"], "RECORD")
+
+            self.assertEqual(history[2]["version_id"], "v1")
+            self.assertEqual(history[2]["change_type"], "CREATED")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

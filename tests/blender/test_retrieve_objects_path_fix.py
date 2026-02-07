@@ -29,7 +29,7 @@ class TestRetrieveObjectsPathFix(SavePointsTestCase):
         # Create Image datablock
         img = bpy.data.images.new("TestImage", width=64, height=64)
         img.filepath = f"//{tex_name}"
-        img.source = 'FILE'
+        img.source = "FILE"
         img.use_fake_user = True
 
         # Save project to establish root
@@ -80,7 +80,7 @@ class TestRetrieveObjectsPathFix(SavePointsTestCase):
         img.filepath = f"//../../{tex_name}"
 
         # Create Object using this image
-        bpy.ops.object.empty_add(type='IMAGE')
+        bpy.ops.object.empty_add(type="IMAGE")
         obj = bpy.context.object
         obj.name = "ImageUser"
         obj.data = img
@@ -93,7 +93,7 @@ class TestRetrieveObjectsPathFix(SavePointsTestCase):
         bpy.ops.wm.save_as_mainfile(filepath=str(retrieve_target))
 
         # Clear current objects
-        bpy.ops.object.select_all(action='SELECT')
+        bpy.ops.object.select_all(action="SELECT")
         bpy.ops.object.delete()
         bpy.data.images.remove(bpy.data.images["TestImage"])  # Clear image
 
@@ -116,15 +116,16 @@ class TestRetrieveObjectsPathFix(SavePointsTestCase):
             # Normalized check
             path_norm = new_img.filepath.replace("\\", "/")
 
-            self.assertEqual(path_norm, f"//{tex_name}",
-                             f"Path was not fixed! Got: {path_norm}")
+            self.assertEqual(
+                path_norm, f"//{tex_name}", f"Path was not fixed! Got: {path_norm}"
+            )
 
         finally:
             retrieve.delete_retrieve_temp_file(temp_path)
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

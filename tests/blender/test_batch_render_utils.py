@@ -50,7 +50,9 @@ class TestBatchRenderUtils(SavePointsTestCase):
         """
         # Force unsaved state
         bpy.ops.wm.read_homefile(use_empty=True)
-        self.assertFalse(bpy.data.filepath, "Filepath should be empty after read_homefile")
+        self.assertFalse(
+            bpy.data.filepath, "Filepath should be empty after read_homefile"
+        )
 
         # Use test_dir to avoid writing to project root
         output_dir = get_batch_render_output_dir(base_path=str(self.test_dir))
@@ -66,7 +68,7 @@ class TestBatchRenderUtils(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

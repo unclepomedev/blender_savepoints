@@ -38,53 +38,64 @@ class TestBatchSelection(SavePointsTestCase):
 
             # Assign tags: V1: STABLE, V2: BUG, V3: STABLE
             if len(versions) >= 3:
-                versions[0].tag = 'STABLE'  # V1
-                versions[1].tag = 'BUG'  # V2
-                versions[2].tag = 'STABLE'  # V3
+                versions[0].tag = "STABLE"  # V1
+                versions[1].tag = "BUG"  # V2
+                versions[2].tag = "STABLE"  # V3
 
         # --- Step 2: Basic Select/Deselect ---
         with self.subTest(step="2. Basic Select/Deselect"):
             # Initial state should be False
             for v in versions:
-                self.assertFalse(v.selected, f"Version {v.version_id} should initially be unselected")
+                self.assertFalse(
+                    v.selected, f"Version {v.version_id} should initially be unselected"
+                )
 
             # Execute select_all operator (Simulate UI button click)
             bpy.ops.savepoints.select_all()
 
             # Verify flags are updated
             for v in versions:
-                if v.version_id.startswith('v'):
-                    self.assertTrue(v.selected, f"{v.version_id} should be selected after Select All")
+                if v.version_id.startswith("v"):
+                    self.assertTrue(
+                        v.selected,
+                        f"{v.version_id} should be selected after Select All",
+                    )
 
             # Execute deselect_all operator
             bpy.ops.savepoints.deselect_all()
 
             # Verify flags are cleared
             for v in versions:
-                self.assertFalse(v.selected, f"{v.version_id} should be unselected after Deselect All")
+                self.assertFalse(
+                    v.selected,
+                    f"{v.version_id} should be unselected after Deselect All",
+                )
 
         # --- Step 3: Select All with Filter ---
         with self.subTest(step="3. Select All with Filter"):
             # Set filter to 'STABLE'
-            settings.filter_tag = 'STABLE'
+            settings.filter_tag = "STABLE"
 
             # Execute select_all (Operator should respect the filter)
             bpy.ops.savepoints.select_all()
 
             # Verification
             self.assertTrue(versions[0].selected, "V1 (Stable) should be selected")
-            self.assertFalse(versions[1].selected, "V2 (Bug) should NOT be selected (hidden by filter)")
+            self.assertFalse(
+                versions[1].selected,
+                "V2 (Bug) should NOT be selected (hidden by filter)",
+            )
             self.assertTrue(versions[2].selected, "V3 (Stable) should be selected")
 
             # Cleanup: Reset filter and selection
-            settings.filter_tag = 'ALL'
+            settings.filter_tag = "ALL"
             bpy.ops.savepoints.deselect_all()
 
         print("Batch Selection UI Operators Test: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

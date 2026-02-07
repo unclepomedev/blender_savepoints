@@ -19,8 +19,11 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints_test_case import SavePointsTestCase
 
-from savepoints.services.batch_render import extract_render_settings, get_worker_script_path, \
-    get_batch_render_output_dir
+from savepoints.services.batch_render import (
+    extract_render_settings,
+    get_worker_script_path,
+    get_batch_render_output_dir,
+)
 from savepoints.services.snapshot import find_snapshot_path
 
 
@@ -39,10 +42,10 @@ class TestBatchRender(SavePointsTestCase):
             bpy.context.scene.render.resolution_x = 32
             bpy.context.scene.render.resolution_y = 32
             bpy.context.scene.render.resolution_percentage = 100
-            bpy.context.scene.render.image_settings.file_format = 'PNG'
+            bpy.context.scene.render.image_settings.file_format = "PNG"
 
-            bpy.context.scene.render.engine = 'CYCLES'
-            bpy.context.scene.cycles.device = 'CPU'
+            bpy.context.scene.render.engine = "CYCLES"
+            bpy.context.scene.cycles.device = "CPU"
             bpy.context.scene.cycles.samples = 1
 
             if not bpy.context.scene.camera:
@@ -55,18 +58,20 @@ class TestBatchRender(SavePointsTestCase):
         # --- Step 2: Create History ---
         with self.subTest(step="2. Create History"):
             bpy.ops.mesh.primitive_cube_add()
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V1_Cube")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V1_Cube")
 
             bpy.ops.mesh.primitive_uv_sphere_add()
             bpy.context.active_object.location.x = 2
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V2_Sphere")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V2_Sphere")
 
         # --- Step 3: Execute Batch Render (Direct Logic Test) ---
         with self.subTest(step="3. Execute Batch Render Logic"):
             bpy.ops.wm.save_mainfile()
 
             settings = bpy.context.scene.savepoints_settings
-            target_versions = [v for v in settings.versions if v.version_id.startswith('v')]
+            target_versions = [
+                v for v in settings.versions if v.version_id.startswith("v")
+            ]
 
             output_dir_str = get_batch_render_output_dir()
             output_dir = Path(output_dir_str)
@@ -81,7 +86,7 @@ class TestBatchRender(SavePointsTestCase):
 
             try:
                 settings_path = os.path.join(temp_dir, "render_config.json")
-                with open(settings_path, 'w') as f:
+                with open(settings_path, "w") as f:
                     json.dump(render_settings, f)
 
                 worker_script_path = get_worker_script_path()
@@ -98,11 +103,12 @@ class TestBatchRender(SavePointsTestCase):
                         "-b",
                         "--factory-startup",
                         str(snapshot_path),
-                        "-P", worker_script_path,
+                        "-P",
+                        worker_script_path,
                         "--",
                         settings_path,
                         str(output_dir),
-                        f"{v.version_id}_render"
+                        f"{v.version_id}_render",
                     ]
 
                     subprocess.run(cmd, check=True, capture_output=True)
@@ -138,8 +144,8 @@ class TestBatchRender(SavePointsTestCase):
             bpy.context.scene.render.resolution_x = 32
             bpy.context.scene.render.resolution_y = 32
             bpy.context.scene.render.resolution_percentage = 100
-            bpy.context.scene.render.engine = 'CYCLES'
-            bpy.context.scene.cycles.device = 'CPU'
+            bpy.context.scene.render.engine = "CYCLES"
+            bpy.context.scene.cycles.device = "CPU"
             bpy.context.scene.cycles.samples = 1
 
         # --- Step 2: Create History with and without Camera ---
@@ -150,19 +156,19 @@ class TestBatchRender(SavePointsTestCase):
                 bpy.context.scene.camera = bpy.context.active_object
 
             bpy.ops.mesh.primitive_cube_add()
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Has_Camera")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Has_Camera")
 
             # v002: Abnormal (No Camera)
             # Delete the camera to simulate a state where it was removed
-            bpy.ops.object.select_all(action='DESELECT')
+            bpy.ops.object.select_all(action="DESELECT")
             for obj in bpy.context.scene.objects:
-                if obj.type == 'CAMERA':
+                if obj.type == "CAMERA":
                     obj.select_set(True)
             bpy.ops.object.delete()
 
             bpy.ops.mesh.primitive_uv_sphere_add()
             bpy.context.active_object.location.x = 2
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="No_Camera_Missing")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="No_Camera_Missing")
 
             # --- CRITICAL STEP ---
             # Restore a camera in the CURRENT scene.
@@ -197,7 +203,7 @@ class TestBatchRender(SavePointsTestCase):
             temp_dir = tempfile.mkdtemp()
             try:
                 settings_path = os.path.join(temp_dir, "render_config.json")
-                with open(settings_path, 'w') as f:
+                with open(settings_path, "w") as f:
                     json.dump(render_settings, f)
 
                 worker_script_path = get_worker_script_path()
@@ -212,21 +218,26 @@ class TestBatchRender(SavePointsTestCase):
                         "-b",
                         "--factory-startup",
                         str(snapshot_path),
-                        "-P", worker_script_path,
+                        "-P",
+                        worker_script_path,
                         "--",
                         settings_path,
                         str(output_dir),
-                        f"{v.version_id}_fallback_test"
+                        f"{v.version_id}_fallback_test",
                     ]
 
                     # Run process. If fallback logic is missing, this should fail (exit code 1)
                     # or produce no output.
                     try:
-                        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+                        result = subprocess.run(
+                            cmd, check=True, capture_output=True, text=True
+                        )
                     except subprocess.CalledProcessError as e:
                         print(f"\n[Worker Stdout]:\n{e.stdout}")
                         print(f"\n[Worker Stderr]:\n{e.stderr}")
-                        self.fail(f"Render failed for {v.version_id}. Fallback logic might be missing.")
+                        self.fail(
+                            f"Render failed for {v.version_id}. Fallback logic might be missing."
+                        )
 
             finally:
                 shutil.rmtree(temp_dir)
@@ -235,7 +246,10 @@ class TestBatchRender(SavePointsTestCase):
             files = list(output_dir.glob("*.png"))  # Assuming PNG default
             print(f"Found files: {[f.name for f in files]}")
 
-            self.assertTrue(len(files) > 0, "No image generated. Fallback camera creation likely failed.")
+            self.assertTrue(
+                len(files) > 0,
+                "No image generated. Fallback camera creation likely failed.",
+            )
 
             if output_dir.exists():
                 shutil.rmtree(output_dir)
@@ -244,7 +258,7 @@ class TestBatchRender(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

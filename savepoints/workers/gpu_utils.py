@@ -10,13 +10,15 @@ def enable_gpu():
         if "cycles" not in preferences.addons:
             print("Worker: Cycles addon not loaded. Attempting to enable...")
             addon_utils.enable("cycles", default_set=False)
-        cycles_addon = preferences.addons.get('cycles')
+        cycles_addon = preferences.addons.get("cycles")
         if not cycles_addon:
-            print("Worker: Cycles addon not found in preferences (Factory Startup?). Skipping GPU.")
+            print(
+                "Worker: Cycles addon not found in preferences (Factory Startup?). Skipping GPU."
+            )
             return False
 
         cycles_prefs = cycles_addon.preferences
-        device_types = ['METAL', 'OPTIX', 'CUDA', 'HIP', 'ONEAPI']
+        device_types = ["METAL", "OPTIX", "CUDA", "HIP", "ONEAPI"]
 
         for dtype in device_types:
             try:

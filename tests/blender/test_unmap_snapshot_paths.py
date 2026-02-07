@@ -17,7 +17,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestUnmapSnapshotPaths(SavePointsTestCase):
-
     def test_unmap_paths_scenario(self):
         """
         Scenario:
@@ -53,8 +52,11 @@ class TestUnmapSnapshotPaths(SavePointsTestCase):
 
             # Expected: The deep relative part is removed/flattened
             expected_path = "//textures/test.png"
-            self.assertEqual(img.filepath, expected_path,
-                             f"Path mismatch. Expected '{expected_path}', got '{img.filepath}'")
+            self.assertEqual(
+                img.filepath,
+                expected_path,
+                f"Path mismatch. Expected '{expected_path}', got '{img.filepath}'",
+            )
 
         # --- Step 3: Idempotency (Stability Check) ---
         with self.subTest(step="3. Idempotency"):
@@ -62,17 +64,23 @@ class TestUnmapSnapshotPaths(SavePointsTestCase):
             # Run it again immediately
             changed = unmap_snapshot_paths()
 
-            self.assertFalse(changed, "Running on already fixed paths should return False")
+            self.assertFalse(
+                changed, "Running on already fixed paths should return False"
+            )
 
             # Ensure path wasn't mangled by double execution
             img = bpy.data.images.get("TestImage")
-            self.assertEqual(img.filepath, "//textures/test.png", "Path should remain stable after re-run")
+            self.assertEqual(
+                img.filepath,
+                "//textures/test.png",
+                "Path should remain stable after re-run",
+            )
 
         print("Unmap Snapshot Paths Scenario: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

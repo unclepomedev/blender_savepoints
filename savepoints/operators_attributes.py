@@ -4,18 +4,19 @@ import bpy
 from .services.versioning import (
     update_version_note,
     update_version_tag,
-    set_version_protection
+    set_version_protection,
 )
 from .ui_utils import sync_history_to_props
 
 
 class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
     """Edit the note of an existing version"""
+
     bl_idname = "savepoints.edit_note"
     bl_label = "Edit Note"
-    bl_options = {'REGISTER'}
+    bl_options = {"REGISTER"}
 
-    version_id: bpy.props.StringProperty(options={'HIDDEN'})
+    version_id: bpy.props.StringProperty(options={"HIDDEN"})
     new_note: bpy.props.StringProperty(name="Note")
 
     def invoke(self, context, event):
@@ -42,13 +43,13 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         else:
             version_id = self.version_id
         if not version_id:
-            return {'CANCELLED'}
+            return {"CANCELLED"}
 
         try:
             update_version_note(version_id, self.new_note)
         except Exception as e:
-            self.report({'ERROR'}, f"Failed to update note: {e}")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, f"Failed to update note: {e}")
+            return {"CANCELLED"}
 
         sync_history_to_props(context)
 
@@ -56,23 +57,24 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         for area in context.window.screen.areas:
             area.tag_redraw()
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
     """Set tag for a version"""
+
     bl_idname = "savepoints.set_tag"
     bl_label = "Set Tag"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
-    version_id: bpy.props.StringProperty(options={'HIDDEN'})
+    version_id: bpy.props.StringProperty(options={"HIDDEN"})
     tag: bpy.props.EnumProperty(
         items=[
-            ('NONE', "None", "", 'NONE', 0),
-            ('STABLE', "Stable", "", 'CHECKMARK', 1),
-            ('MILESTONE', "Milestone", "", 'BOOKMARKS', 2),
-            ('EXPERIMENT', "Experiment", "", 'LAB', 3),
-            ('BUG', "Bug", "", 'ERROR', 4),
+            ("NONE", "None", "", "NONE", 0),
+            ("STABLE", "Stable", "", "CHECKMARK", 1),
+            ("MILESTONE", "Milestone", "", "BOOKMARKS", 2),
+            ("EXPERIMENT", "Experiment", "", "LAB", 3),
+            ("BUG", "Bug", "", "ERROR", 4),
         ]
     )
 
@@ -83,13 +85,13 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
         else:
             version_id = self.version_id
         if not version_id:
-            return {'CANCELLED'}
+            return {"CANCELLED"}
 
         try:
             update_version_tag(version_id, self.tag)
         except Exception as e:
-            self.report({'ERROR'}, f"Failed to set tag: {e}")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, f"Failed to set tag: {e}")
+            return {"CANCELLED"}
 
         # Update UI property directly instead of full sync
         settings = context.scene.savepoints_settings
@@ -105,14 +107,15 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
         for area in context.window.screen.areas:
             area.tag_redraw()
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
     """Toggle protection for a version"""
+
     bl_idname = "savepoints.toggle_protection"
     bl_label = "Toggle Protection"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     version_id: bpy.props.StringProperty()
 
@@ -124,7 +127,7 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
             version_id = self.version_id
 
         if version_id == "autosave":
-            return {'CANCELLED'}
+            return {"CANCELLED"}
 
         settings = context.scene.savepoints_settings
 
@@ -135,9 +138,9 @@ class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
                 break
 
         if not target_item:
-            return {'CANCELLED'}
+            return {"CANCELLED"}
 
         new_state = not target_item.is_protected
         set_version_protection(version_id, new_state)
         target_item.is_protected = new_state
-        return {'FINISHED'}
+        return {"FINISHED"}

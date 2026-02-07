@@ -9,7 +9,7 @@ import bpy
 def preserve_selection():
     """
     Context manager to preserve the current selection state and active object.
-    
+
     Restores:
     - Active Object
     - Selected Objects
@@ -26,11 +26,11 @@ def preserve_selection():
     try:
         yield
     finally:
-        if bpy.context.mode != 'OBJECT':
+        if bpy.context.mode != "OBJECT":
             try:
                 poll_func = getattr(bpy.ops.object.mode_set, "poll", None)
                 if poll_func and poll_func():
-                    bpy.ops.object.mode_set(mode='OBJECT')
+                    bpy.ops.object.mode_set(mode="OBJECT")
             except Exception as e:
                 print(f"[SavePoints] Warning: Failed to switch to OBJECT mode: {e}")
 
@@ -46,12 +46,17 @@ def preserve_selection():
             if name in bpy.data.objects:
                 bpy.data.objects[name].select_set(True)
 
-        if active_name and original_mode != 'OBJECT':
-            if view_layer.objects.active and view_layer.objects.active.name == active_name:
+        if active_name and original_mode != "OBJECT":
+            if (
+                view_layer.objects.active
+                and view_layer.objects.active.name == active_name
+            ):
                 try:
                     bpy.ops.object.mode_set(mode=original_mode)
                 except Exception as e:
-                    print(f"[SavePoints] Warning: Failed to restore mode {original_mode}: {e}")
+                    print(
+                        f"[SavePoints] Warning: Failed to restore mode {original_mode}: {e}"
+                    )
 
 
 def get_selected_versions(settings):
@@ -65,7 +70,4 @@ def get_selected_versions(settings):
     Returns:
         list[SavePointsVersion]: List of selected version items.
     """
-    return [
-        v for v in settings.versions
-        if v.version_id.startswith('v') and v.selected
-    ]
+    return [v for v in settings.versions if v.version_id.startswith("v") and v.selected]

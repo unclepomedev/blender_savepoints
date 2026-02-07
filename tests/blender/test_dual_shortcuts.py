@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestDualShortcuts(SavePointsTestCase):
-
     def setUp(self):
         super().setUp()
         self.OpClass = SAVEPOINTS_OT_commit
@@ -26,7 +25,7 @@ class TestDualShortcuts(SavePointsTestCase):
         """Helper to simulate Blender's Context behavior using MagicMock."""
         context = MagicMock()
         context.scene.savepoints_settings.show_save_dialog = show_dialog
-        context.window_manager.invoke_props_dialog.return_value = {'RUNNING_MODAL'}
+        context.window_manager.invoke_props_dialog.return_value = {"RUNNING_MODAL"}
         return context
 
     def _create_mock_op(self, force_quick=False, note=""):
@@ -34,7 +33,7 @@ class TestDualShortcuts(SavePointsTestCase):
         op = MagicMock()
         op.force_quick = force_quick
         op.note = note
-        op.execute.return_value = {'FINISHED'}
+        op.execute.return_value = {"FINISHED"}
         return op
 
     def test_dual_shortcuts_logic(self):
@@ -48,7 +47,7 @@ class TestDualShortcuts(SavePointsTestCase):
 
         # Mock 'generate_default_note' within savepoints.operators_core module
         # We force it to return "Fixed Auto Note" so we can verify the assignment logic.
-        with patch('savepoints.operators_core.generate_default_note') as mock_gen_note:
+        with patch("savepoints.operators_core.generate_default_note") as mock_gen_note:
             mock_gen_note.return_value = "Fixed Auto Note"
 
             # --- Case 1: Dialog Enabled (force_quick=False) ---
@@ -62,7 +61,7 @@ class TestDualShortcuts(SavePointsTestCase):
                 # Verification:
                 # 1. Logic should assign default note.
                 # 2. Logic should open dialog.
-                self.assertEqual(res, {'RUNNING_MODAL'})
+                self.assertEqual(res, {"RUNNING_MODAL"})
                 self.assertEqual(op.note, "Fixed Auto Note")
                 context.window_manager.invoke_props_dialog.assert_called_once_with(op)
                 op.execute.assert_not_called()
@@ -77,7 +76,7 @@ class TestDualShortcuts(SavePointsTestCase):
                 # Verification:
                 # 1. Logic should assign default note (even for quick save).
                 # 2. Logic should SKIP dialog and execute immediately.
-                self.assertEqual(res, {'FINISHED'})
+                self.assertEqual(res, {"FINISHED"})
                 self.assertEqual(op.note, "Fixed Auto Note")
                 op.execute.assert_called_once_with(context)
                 context.window_manager.invoke_props_dialog.assert_not_called()
@@ -92,7 +91,7 @@ class TestDualShortcuts(SavePointsTestCase):
                 # Verification:
                 # 1. Logic should assign default note.
                 # 2. Logic should SKIP dialog because setting is False.
-                self.assertEqual(res, {'FINISHED'})
+                self.assertEqual(res, {"FINISHED"})
                 self.assertEqual(op.note, "Fixed Auto Note")
                 op.execute.assert_called_once_with(context)
                 context.window_manager.invoke_props_dialog.assert_not_called()
@@ -107,14 +106,14 @@ class TestDualShortcuts(SavePointsTestCase):
 
                 # Verification:
                 # The existing note "User Input" should NOT be replaced by "Fixed Auto Note"
-                self.assertEqual(res, {'RUNNING_MODAL'})
+                self.assertEqual(res, {"RUNNING_MODAL"})
                 self.assertEqual(op.note, "User Input")
 
         print("Dual Shortcuts Logic Test: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

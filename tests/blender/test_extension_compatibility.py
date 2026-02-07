@@ -19,7 +19,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestExtensionCompatibility(SavePointsTestCase):
-
     def _create_manual_history(self):
         """
         Helper: Manually create a history structure with mixed extensions.
@@ -53,7 +52,7 @@ class TestExtensionCompatibility(SavePointsTestCase):
                     "thumbnail": "v001/thumbnail.png",
                     "blend": "v001/snapshot.blend",
                     "object_count": 1,
-                    "file_size": 1024
+                    "file_size": 1024,
                 },
                 {
                     "id": "v002",
@@ -62,9 +61,9 @@ class TestExtensionCompatibility(SavePointsTestCase):
                     "thumbnail": "v002/thumbnail.png",
                     "blend": "v002/snapshot.blend_snapshot",
                     "object_count": 1,
-                    "file_size": 1024
-                }
-            ]
+                    "file_size": 1024,
+                },
+            ],
         }
 
         with open(history_dir / "manifest.json", "w") as f:
@@ -99,7 +98,9 @@ class TestExtensionCompatibility(SavePointsTestCase):
 
             # Verify settings loaded correctly
             settings = bpy.context.scene.savepoints_settings
-            self.assertEqual(len(settings.versions), 2, "Failed to load all versions from manifest")
+            self.assertEqual(
+                len(settings.versions), 2, "Failed to load all versions from manifest"
+            )
 
         # --- Step 2: Checkout Legacy Format (.blend) ---
         with self.subTest(step="2. Checkout Legacy (.blend)"):
@@ -111,12 +112,18 @@ class TestExtensionCompatibility(SavePointsTestCase):
             current_path = Path(bpy.data.filepath)
 
             # Verify filename matches legacy extension
-            self.assertEqual(current_path.name, "snapshot.blend", "Failed to checkout legacy format")
+            self.assertEqual(
+                current_path.name, "snapshot.blend", "Failed to checkout legacy format"
+            )
 
             # Verify parent path detection
             parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
             self.assertTrue(parent_path, "Snapshot mode not detected for .blend file")
-            self.assertEqual(Path(parent_path), self.blend_path, "Incorrect parent path detected for legacy file")
+            self.assertEqual(
+                Path(parent_path),
+                self.blend_path,
+                "Incorrect parent path detected for legacy file",
+            )
 
         # --- Step 3: Return to Parent ---
         with self.subTest(step="3. Return to Parent"):
@@ -124,7 +131,11 @@ class TestExtensionCompatibility(SavePointsTestCase):
 
             bpy.ops.savepoints.open_parent()
 
-            self.assertEqual(Path(bpy.data.filepath), self.blend_path, "Failed to return to parent file")
+            self.assertEqual(
+                Path(bpy.data.filepath),
+                self.blend_path,
+                "Failed to return to parent file",
+            )
 
         # --- Step 4: Checkout New Format (.blend_snapshot) ---
         with self.subTest(step="4. Checkout New Format (.blend_snapshot)"):
@@ -139,17 +150,23 @@ class TestExtensionCompatibility(SavePointsTestCase):
             current_path = Path(bpy.data.filepath)
 
             # Verify filename matches new extension
-            self.assertEqual(current_path.name, "snapshot.blend_snapshot", "Failed to checkout new format")
+            self.assertEqual(
+                current_path.name,
+                "snapshot.blend_snapshot",
+                "Failed to checkout new format",
+            )
 
             # Verify parent path detection
             parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
-            self.assertTrue(parent_path, "Snapshot mode not detected for .blend_snapshot file")
+            self.assertTrue(
+                parent_path, "Snapshot mode not detected for .blend_snapshot file"
+            )
 
         print("Extension Compatibility Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

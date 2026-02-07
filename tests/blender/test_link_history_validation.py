@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestLinkHistoryValidation(SavePointsTestCase):
-
     def test_link_history_validation_scenario(self):
         """
         Scenario:
@@ -38,10 +37,14 @@ class TestLinkHistoryValidation(SavePointsTestCase):
             print("Testing Malformed JSON input...")
 
             bad_json_dir.mkdir()
-            (bad_json_dir / "manifest.json").write_text("{ this is not json }", encoding='utf-8')
+            (bad_json_dir / "manifest.json").write_text(
+                "{ this is not json }", encoding="utf-8"
+            )
 
             # Verify that link_history raises ValueError for invalid JSON syntax
-            with self.assertRaises(ValueError, msg="Malformed JSON should raise ValueError"):
+            with self.assertRaises(
+                ValueError, msg="Malformed JSON should raise ValueError"
+            ):
                 link_history(bad_json_dir, project_path)
 
         # --- Step 2: Test Missing Keys ---
@@ -49,10 +52,12 @@ class TestLinkHistoryValidation(SavePointsTestCase):
             print("Testing Missing Keys input...")
 
             missing_keys_dir.mkdir()
-            (missing_keys_dir / "manifest.json").write_text("{}", encoding='utf-8')
+            (missing_keys_dir / "manifest.json").write_text("{}", encoding="utf-8")
 
             # Verify that link_history raises ValueError for missing schema keys (e.g., 'parent_file')
-            with self.assertRaises(ValueError, msg="Empty JSON should raise ValueError"):
+            with self.assertRaises(
+                ValueError, msg="Empty JSON should raise ValueError"
+            ):
                 link_history(missing_keys_dir, project_path)
 
         # --- Step 3: Test Valid Manifest (Happy Path) ---
@@ -60,12 +65,9 @@ class TestLinkHistoryValidation(SavePointsTestCase):
             print("Testing Valid Manifest input...")
 
             valid_dir.mkdir()
-            valid_manifest = {
-                "versions": [],
-                "parent_file": project_path
-            }
+            valid_manifest = {"versions": [], "parent_file": project_path}
 
-            with (valid_dir / "manifest.json").open('w', encoding='utf-8') as f:
+            with (valid_dir / "manifest.json").open("w", encoding="utf-8") as f:
                 json.dump(valid_manifest, f)
 
             # Execution
@@ -74,24 +76,35 @@ class TestLinkHistoryValidation(SavePointsTestCase):
 
             # Verification
             # 1. Target directory should exist
-            self.assertTrue(target_path.exists(), f"Target history directory not found at: {target_path}")
+            self.assertTrue(
+                target_path.exists(),
+                f"Target history directory not found at: {target_path}",
+            )
 
             # 2. Source directory should be moved (not exist)
-            self.assertFalse(valid_dir.exists(), f"Source directory still exists at: {valid_dir}")
+            self.assertFalse(
+                valid_dir.exists(), f"Source directory still exists at: {valid_dir}"
+            )
 
             # 3. Manifest should be preserved
-            self.assertTrue((target_path / "manifest.json").exists(), "manifest.json not found in target directory")
+            self.assertTrue(
+                (target_path / "manifest.json").exists(),
+                "manifest.json not found in target directory",
+            )
 
             # 4. Directory name check (Should be .test_project_history)
             expected_name = ".test_project_history"
-            self.assertEqual(target_path.name, expected_name,
-                             f"Unexpected target directory name. Expected '{expected_name}', got '{target_path.name}'")
+            self.assertEqual(
+                target_path.name,
+                expected_name,
+                f"Unexpected target directory name. Expected '{expected_name}', got '{target_path.name}'",
+            )
 
         print("Link History Validation Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

@@ -24,15 +24,27 @@ modules = {
 }
 sys.modules.update(modules)
 
+
 # Assign ImportHelper for inheritance
-class MockImportHelper: pass
+class MockImportHelper:
+    pass
+
+
 modules["bpy_extras.io_utils"].ImportHelper = MockImportHelper
 
-class MockExportHelper: pass
+
+class MockExportHelper:
+    pass
+
+
 modules["bpy_extras.io_utils"].ExportHelper = MockExportHelper
 
+
 # Fix for multiple inheritance (metaclass conflict)
-class MockOperator: pass
+class MockOperator:
+    pass
+
+
 modules["bpy"].types.Operator = MockOperator
 
 # Alias for convenience in tests
@@ -88,7 +100,9 @@ class TestHud(unittest.TestCase):
         mock_context = MagicMock()
         mock_context.area.type = "VIEW_3D"
 
-        mock_context.blend_data.filepath = "/path/to/.my_project_history/v001/snapshot.blend_snapshot"
+        mock_context.blend_data.filepath = (
+            "/path/to/.my_project_history/v001/snapshot.blend_snapshot"
+        )
 
         mock_context.region.width = 800
         mock_context.region.height = 600
@@ -121,9 +135,11 @@ class TestHud(unittest.TestCase):
 
         # Test Unregister
         savepoints.hud.unregister_draw_handler()
-        mock_bpy.types.SpaceView3D.draw_handler_remove.assert_called_once_with("HANDLER_REF", 'WINDOW')
+        mock_bpy.types.SpaceView3D.draw_handler_remove.assert_called_once_with(
+            "HANDLER_REF", "WINDOW"
+        )
         self.assertIsNone(savepoints.hud._draw_handler)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

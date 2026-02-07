@@ -8,14 +8,14 @@ from .storage import get_parent_path_from_snapshot
 from .versioning import delete_version_by_id
 
 UNSAFE_MODES = {
-    'SCULPT',
-    'PAINT_VERTEX',
-    'PAINT_WEIGHT',
-    'PAINT_TEXTURE',
-    'PAINT_GPENCIL',
-    'SCULPT_GPENCIL',
-    'SCULPT_CURVES',
-    'EDIT_MESH',
+    "SCULPT",
+    "PAINT_VERTEX",
+    "PAINT_WEIGHT",
+    "PAINT_TEXTURE",
+    "PAINT_GPENCIL",
+    "SCULPT_GPENCIL",
+    "SCULPT_CURVES",
+    "EDIT_MESH",
 }
 
 

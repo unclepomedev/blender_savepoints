@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestMissingFileHandling(SavePointsTestCase):
-
     def test_missing_file_handling_scenario(self):
         """
         Scenario:
@@ -36,18 +35,22 @@ class TestMissingFileHandling(SavePointsTestCase):
         with self.subTest(step="1. Create Version"):
             print("Creating version v001...")
 
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="To be broken")
-            self.assertIn('FINISHED', res, "Commit failed")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="To be broken")
+            self.assertIn("FINISHED", res, "Commit failed")
 
             # Verify snapshot file exists
-            self.assertTrue(snapshot_path.exists(), "Setup failed: Snapshot file was not created.")
+            self.assertTrue(
+                snapshot_path.exists(), "Setup failed: Snapshot file was not created."
+            )
 
         # --- Step 2: Sabotage (Delete File) ---
         with self.subTest(step="2. Sabotage"):
             print("Deleting snapshot file...")
 
             snapshot_path.unlink()
-            self.assertFalse(snapshot_path.exists(), "Failed to delete snapshot file for test")
+            self.assertFalse(
+                snapshot_path.exists(), "Failed to delete snapshot file for test"
+            )
 
         # --- Step 3: Attempt Checkout (Expect Graceful Cleanup) ---
         with self.subTest(step="3. Attempt Checkout"):
@@ -59,12 +62,18 @@ class TestMissingFileHandling(SavePointsTestCase):
             # New behavior: Should NOT raise RuntimeError.
             # Should report WARNING and remove the item.
             # We expect 'CANCELLED' because the checkout didn't happen, but no crash.
-            res = bpy.ops.savepoints.checkout('EXEC_DEFAULT')
-            self.assertIn('CANCELLED', res, "Operator should return CANCELLED for missing file")
+            res = bpy.ops.savepoints.checkout("EXEC_DEFAULT")
+            self.assertIn(
+                "CANCELLED", res, "Operator should return CANCELLED for missing file"
+            )
 
             # Verify cleanup: The broken version should be removed from the list
             settings = bpy.context.scene.savepoints_settings
-            self.assertEqual(len(settings.versions), 0, "Broken version was not removed from the list")
+            self.assertEqual(
+                len(settings.versions),
+                0,
+                "Broken version was not removed from the list",
+            )
 
         # --- Step 4: Verify Safety State ---
         with self.subTest(step="4. Verify Safety"):
@@ -76,14 +85,14 @@ class TestMissingFileHandling(SavePointsTestCase):
             self.assertEqual(
                 current_path,
                 self.blend_path,
-                f"Safety check failed: Filepath changed to {current_path} despite error"
+                f"Safety check failed: Filepath changed to {current_path} despite error",
             )
 
         print("Missing File Handling Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

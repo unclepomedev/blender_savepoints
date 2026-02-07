@@ -26,12 +26,14 @@ def unregister_previews() -> None:
     preview_collections.clear()
 
 
-def _load_item_preview(pcoll: bpy.utils.previews.ImagePreviewCollection, history_dir: str | None, item: Any) -> None:
+def _load_item_preview(
+    pcoll: bpy.utils.previews.ImagePreviewCollection, history_dir: str | None, item: Any
+) -> None:
     if pcoll is not None and history_dir and item.thumbnail_rel_path:
         full_path = os.path.join(history_dir, item.thumbnail_rel_path)
         if os.path.exists(full_path):
             try:
-                pcoll.load(item.version_id, full_path, 'IMAGE')
+                pcoll.load(item.version_id, full_path, "IMAGE")
             except Exception as e:
                 print(f"Failed to load preview for {item.version_id}: {e}")
 
@@ -39,7 +41,7 @@ def _load_item_preview(pcoll: bpy.utils.previews.ImagePreviewCollection, history
 def sync_history_to_props(context: bpy.types.Context) -> None:
     """
     Read manifest and update the scene property group.
-    
+
     Args:
         context: Blender context.
     """
@@ -48,7 +50,9 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
     current_selected_id = None
     if len(settings.versions) > 0 and settings.active_version_index >= 0:
         try:
-            current_selected_id = settings.versions[settings.active_version_index].version_id
+            current_selected_id = settings.versions[
+                settings.active_version_index
+            ].version_id
         except IndexError:
             pass
 
@@ -60,7 +64,9 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         pcoll.clear()
 
     history_dir = get_history_dir()
-    sorted_versions = get_sorted_versions(data, newest_first=True, include_autosave=True)
+    sorted_versions = get_sorted_versions(
+        data, newest_first=True, include_autosave=True
+    )
 
     new_active_index = 0
 
@@ -88,16 +94,18 @@ def sync_history_to_props(context: bpy.types.Context) -> None:
         settings.active_version_index = new_active_index
 
 
-def force_redraw_areas(context: bpy.types.Context, area_types: set[str] | None = None) -> None:
+def force_redraw_areas(
+    context: bpy.types.Context, area_types: set[str] | None = None
+) -> None:
     """
     Force redraw of specific area types to update UI/HUD.
-    
+
     Args:
         context: Blender context.
         area_types: Set of area types to redraw (e.g. {'VIEW_3D'}). Defaults to {'VIEW_3D'}.
     """
     if area_types is None:
-        area_types = {'VIEW_3D'}
+        area_types = {"VIEW_3D"}
 
     if not hasattr(context, "window_manager"):
         return
@@ -112,9 +120,9 @@ def find_3d_view_override(context):
     for window in context.window_manager.windows:
         screen = window.screen
         for area in screen.areas:
-            if area.type == 'VIEW_3D':
+            if area.type == "VIEW_3D":
                 for region in area.regions:
-                    if region.type == 'WINDOW':
+                    if region.type == "WINDOW":
                         return {
                             "window": window,
                             "screen": screen,

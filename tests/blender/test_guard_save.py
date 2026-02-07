@@ -17,7 +17,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestGuardSaveScenario(SavePointsTestCase):
-
     def test_guard_save_flow_scenario(self):
         """
         Scenario:
@@ -51,8 +50,11 @@ class TestGuardSaveScenario(SavePointsTestCase):
             current_mtime = self.blend_path.stat().st_mtime
 
             # It should have saved
-            self.assertNotEqual(initial_mtime, current_mtime,
-                                "Normal .blend file should have been saved (mtime updated)")
+            self.assertNotEqual(
+                initial_mtime,
+                current_mtime,
+                "Normal .blend file should have been saved (mtime updated)",
+            )
 
         # --- Step 2: Snapshot File Block ---
         with self.subTest(step="2. Guard Save on Snapshot File"):
@@ -63,8 +65,10 @@ class TestGuardSaveScenario(SavePointsTestCase):
             bpy.ops.wm.save_as_mainfile(filepath=str(snapshot_path))
 
             # Verify context
-            self.assertTrue(bpy.data.filepath.endswith(".blend_snapshot"),
-                            "Context did not switch to .blend_snapshot")
+            self.assertTrue(
+                bpy.data.filepath.endswith(".blend_snapshot"),
+                "Context did not switch to .blend_snapshot",
+            )
 
             # Get initial mtime
             initial_mtime = snapshot_path.stat().st_mtime
@@ -77,18 +81,23 @@ class TestGuardSaveScenario(SavePointsTestCase):
             res = bpy.ops.savepoints.guard_save()
 
             # Verify Result
-            self.assertIn('CANCELLED', res, "Operator should return CANCELLED on snapshot")
+            self.assertIn(
+                "CANCELLED", res, "Operator should return CANCELLED on snapshot"
+            )
 
             # Verify File was NOT touched
             current_mtime = snapshot_path.stat().st_mtime
-            self.assertEqual(initial_mtime, current_mtime,
-                             "Snapshot file should NOT have been saved (mtime unchanged)")
+            self.assertEqual(
+                initial_mtime,
+                current_mtime,
+                "Snapshot file should NOT have been saved (mtime unchanged)",
+            )
 
         print("Guard Save Scenario: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

@@ -66,7 +66,7 @@ def draw_hud():
             (padding, padding),  # Bottom Left
             (padding, height - padding - text_height),  # Top Left
             (width - padding - text_width, height - padding - text_height),  # Top Right
-            (width - padding - text_width, padding)  # Bottom Right
+            (width - padding - text_width, padding),  # Bottom Right
         ]
 
         for x, y in positions:
@@ -83,10 +83,14 @@ def draw_hud():
         return
 
     coords = [
-        (0, 0), (width, 0),
-        (width, 0), (width, height),
-        (width, height), (0, height),
-        (0, height), (0, 0)
+        (0, 0),
+        (width, 0),
+        (width, 0),
+        (width, height),
+        (width, height),
+        (0, height),
+        (0, height),
+        (0, 0),
     ]
 
     try:
@@ -114,7 +118,9 @@ def draw_hud():
 def register_draw_handler():
     global _draw_handler
     if _draw_handler is None:
-        _draw_handler = bpy.types.SpaceView3D.draw_handler_add(draw_hud, (), "WINDOW", "POST_PIXEL")
+        _draw_handler = bpy.types.SpaceView3D.draw_handler_add(
+            draw_hud, (), "WINDOW", "POST_PIXEL"
+        )
 
 
 def unregister_draw_handler():

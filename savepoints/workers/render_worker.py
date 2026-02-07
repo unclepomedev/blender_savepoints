@@ -18,7 +18,7 @@ import scene_utils  # noqa: E402
 
 def run_render(json_path: str, output_dir: str, file_prefix: str):
     # 1. Load Settings
-    with open(json_path, 'r') as f:
+    with open(json_path, "r") as f:
         settings = json.load(f)
 
     scene = bpy.context.scene
@@ -28,7 +28,7 @@ def run_render(json_path: str, output_dir: str, file_prefix: str):
     render_config.apply_image_settings(render, settings)
 
     # 3. Setup GPU
-    if settings.get("engine") == 'CYCLES':
+    if settings.get("engine") == "CYCLES":
         gpu_utils.enable_gpu()
 
     # 4. Apply Render Config
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     try:
         argv = sys.argv
         if "--" in argv:
-            args = argv[argv.index("--") + 1:]
+            args = argv[argv.index("--") + 1 :]
             if len(args) >= 3:
                 run_render(args[0], args[1], args[2])
             else:

@@ -18,8 +18,11 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from savepoints_test_case import SavePointsTestCase
-from savepoints.services.batch_render import extract_render_settings, get_worker_script_path, \
-    get_batch_render_output_dir
+from savepoints.services.batch_render import (
+    extract_render_settings,
+    get_worker_script_path,
+    get_batch_render_output_dir,
+)
 from savepoints.services.snapshot import find_snapshot_path
 
 
@@ -38,8 +41,10 @@ class TestBatchRenderDryRun(SavePointsTestCase):
             bpy.context.scene.render.resolution_x = 100
             bpy.context.scene.render.resolution_y = 100
             bpy.context.scene.render.resolution_percentage = 100
-            bpy.context.scene.render.image_settings.file_format = 'PNG'  # Start with PNG
-            bpy.context.scene.render.engine = 'CYCLES'
+            bpy.context.scene.render.image_settings.file_format = (
+                "PNG"  # Start with PNG
+            )
+            bpy.context.scene.render.engine = "CYCLES"
             bpy.context.scene.cycles.samples = 128  # High samples initially
 
             if not bpy.context.scene.camera:
@@ -49,22 +54,32 @@ class TestBatchRenderDryRun(SavePointsTestCase):
                 bpy.context.scene.camera.rotation_euler = (0.8, 0, 0)
 
             bpy.ops.mesh.primitive_cube_add()
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="DryRun_Version")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="DryRun_Version")
 
         # --- Step 2: Verify Dry Run Settings Extraction ---
         with self.subTest(step="2. Verify Settings & Path"):
             # Check Directory Name
             output_dir_str = get_batch_render_output_dir(dry_run=True)
             print(f"Dry run output dir: {output_dir_str}")
-            self.assertTrue(output_dir_str.endswith("_dryrun"),
-                            f"Output directory '{output_dir_str}' should end with '_dryrun'")
+            self.assertTrue(
+                output_dir_str.endswith("_dryrun"),
+                f"Output directory '{output_dir_str}' should end with '_dryrun'",
+            )
 
             # Check Render Settings Overrides
             settings = extract_render_settings(bpy.context, dry_run=True)
-            self.assertEqual(settings["output_format_override"], "JPEG", "Format should be forced to JPEG")
-            self.assertEqual(settings["resolution_percentage"], 25, "Resolution should be 25%")
+            self.assertEqual(
+                settings["output_format_override"],
+                "JPEG",
+                "Format should be forced to JPEG",
+            )
+            self.assertEqual(
+                settings["resolution_percentage"], 25, "Resolution should be 25%"
+            )
             self.assertEqual(settings["samples"], 1, "Samples should be reduced to 1")
-            self.assertEqual(settings.get("jpeg_quality"), 70, "JPEG Quality should be 70")
+            self.assertEqual(
+                settings.get("jpeg_quality"), 70, "JPEG Quality should be 70"
+            )
 
         # --- Step 3: Execute Render via Subprocess ---
         with self.subTest(step="3. Execute Worker"):
@@ -72,13 +87,15 @@ class TestBatchRenderDryRun(SavePointsTestCase):
 
             v = bpy.context.scene.savepoints_settings.versions[0]
             snapshot_path = find_snapshot_path(v.version_id)
-            self.assertTrue(snapshot_path and snapshot_path.exists(), "Snapshot file must exist")
+            self.assertTrue(
+                snapshot_path and snapshot_path.exists(), "Snapshot file must exist"
+            )
 
             temp_dir = tempfile.mkdtemp()
             try:
                 # write config
                 settings_path = os.path.join(temp_dir, "dry_run_config.json")
-                with open(settings_path, 'w') as f:
+                with open(settings_path, "w") as f:
                     json.dump(settings, f)
 
                 # write worker
@@ -95,11 +112,12 @@ class TestBatchRenderDryRun(SavePointsTestCase):
                     "-b",
                     "--factory-startup",
                     str(snapshot_path),
-                    "-P", worker_script_path,
+                    "-P",
+                    worker_script_path,
                     "--",
                     settings_path,
                     render_output_dir,
-                    file_prefix
+                    file_prefix,
                 ]
 
                 print(f"Running subprocess: {cmd}")
@@ -113,7 +131,10 @@ class TestBatchRenderDryRun(SavePointsTestCase):
 
                 # Check for JPEG file
                 expected_file = os.path.join(render_output_dir, f"{file_prefix}.jpg")
-                self.assertTrue(os.path.exists(expected_file), f"Expected output file not found: {expected_file}")
+                self.assertTrue(
+                    os.path.exists(expected_file),
+                    f"Expected output file not found: {expected_file}",
+                )
 
                 print(f"Dry run render successful: {expected_file}")
 
@@ -122,7 +143,7 @@ class TestBatchRenderDryRun(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

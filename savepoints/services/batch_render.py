@@ -39,7 +39,9 @@ def extract_render_settings(context, dry_run=False):
         "resolution_percentage": render.resolution_percentage,
         "engine": render.engine,
         "frame_current": scene.frame_current,
-        "camera_matrix_world": [list(row) for row in camera.matrix_world] if camera else [],
+        "camera_matrix_world": [list(row) for row in camera.matrix_world]
+        if camera
+        else [],
         "camera_data": {
             "type": camera.data.type,
             "lens": camera.data.lens,
@@ -51,7 +53,9 @@ def extract_render_settings(context, dry_run=False):
             "shift_y": camera.data.shift_y,
             "clip_start": camera.data.clip_start,
             "clip_end": camera.data.clip_end,
-        } if camera else None,
+        }
+        if camera
+        else None,
         "world_name": scene.world.name if scene.world else None,
         "view_settings": {
             "view_transform": scene.view_settings.view_transform,
@@ -69,12 +73,12 @@ def extract_render_settings(context, dry_run=False):
             "compression": img_settings.compression,
             "quality": img_settings.quality,
             "exr_codec": img_settings.exr_codec,
-        }
+        },
     }
 
-    if render.engine == 'CYCLES':
+    if render.engine == "CYCLES":
         settings["samples"] = scene.cycles.samples
-    elif render.engine in ['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT']:
+    elif render.engine in ["BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"]:
         settings["samples"] = getattr(scene.eevee, "taa_render_samples", 64)
 
     if dry_run:
@@ -83,8 +87,8 @@ def extract_render_settings(context, dry_run=False):
         settings["samples"] = 1
         settings["jpeg_quality"] = 70
         settings["image_settings"]["quality"] = 70
-        settings["image_settings"]["file_format"] = 'JPEG'
-        settings["image_settings"]["color_mode"] = 'RGB'
+        settings["image_settings"]["file_format"] = "JPEG"
+        settings["image_settings"]["color_mode"] = "RGB"
 
     return settings
 
@@ -93,7 +97,9 @@ def get_worker_script_path():
     """
     Returns the absolute path to the worker script file.
     """
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "workers", "render_worker.py"))
+    return os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "workers", "render_worker.py")
+    )
 
 
 def create_error_log_text_block(version_id, log_path):
@@ -113,7 +119,7 @@ def create_error_log_text_block(version_id, log_path):
         return new_text
 
     try:
-        with open(log_path, 'r', encoding='utf-8', errors='replace') as f:
+        with open(log_path, "r", encoding="utf-8", errors="replace") as f:
             log_content = f.read()
             header = f"# SavePoints Batch Render Log\n# Version: {version_id}\n# Path: {log_path}\n{'=' * 40}\n\n"
             new_text.write(header + log_content)

@@ -23,13 +23,13 @@ class TestCompression(SavePointsTestCase):
 
     def is_compressed(self, file_path):
         """Check if file has Gzip or Zstd magic number."""
-        with open(file_path, 'rb') as f:
+        with open(file_path, "rb") as f:
             header = f.read(4)
             # Gzip: 1f 8b
-            if header.startswith(b'\x1f\x8b'):
+            if header.startswith(b"\x1f\x8b"):
                 return True
             # Zstd: 28 b5 2f fd
-            if header == b'\x28\xb5\x2f\xfd':
+            if header == b"\x28\xb5\x2f\xfd":
                 return True
         return False
 
@@ -55,7 +55,9 @@ class TestCompression(SavePointsTestCase):
             try:
                 settings.use_compression = True
             except AttributeError:
-                self.fail("Property 'use_compression' not defined in SavePointsSettings")
+                self.fail(
+                    "Property 'use_compression' not defined in SavePointsSettings"
+                )
 
             version_id_comp = "v_compressed"
             create_snapshot(context, version_id_comp, "Compressed", skip_thumbnail=True)
@@ -65,7 +67,10 @@ class TestCompression(SavePointsTestCase):
 
             self.assertTrue(snap_path.exists(), "Snapshot file missing")
 
-            self.assertTrue(self.is_compressed(snap_path), "File should be compressed (Gzip/Zstd) but is not")
+            self.assertTrue(
+                self.is_compressed(snap_path),
+                "File should be compressed (Gzip/Zstd) but is not",
+            )
             print("Verified: File is compressed.")
 
         # --- Step 2: Uncompressed Snapshot ---
@@ -78,12 +83,14 @@ class TestCompression(SavePointsTestCase):
             snap_path_raw = history_dir / version_id_raw / "snapshot.blend_snapshot"
 
             self.assertTrue(snap_path_raw.exists(), "Snapshot file missing")
-            self.assertFalse(self.is_compressed(snap_path_raw), "File should NOT be compressed")
+            self.assertFalse(
+                self.is_compressed(snap_path_raw), "File should NOT be compressed"
+            )
             print("Verified: File is NOT compressed.")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

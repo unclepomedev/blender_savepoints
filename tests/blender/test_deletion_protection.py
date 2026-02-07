@@ -14,15 +14,18 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from savepoints.services.manifest import load_manifest
-from savepoints.services.versioning import set_version_protection, delete_version_by_id, prune_versions
+from savepoints.services.versioning import (
+    set_version_protection,
+    delete_version_by_id,
+    prune_versions,
+)
 from savepoints_test_case import SavePointsTestCase
 
 
 class TestDeletionProtection(SavePointsTestCase):
-
     def _create_dummy_version(self, note="Dummy"):
         """Helper to create a version and return its data."""
-        bpy.ops.savepoints.commit('EXEC_DEFAULT', note=note)
+        bpy.ops.savepoints.commit("EXEC_DEFAULT", note=note)
         manifest = load_manifest()
         # Assuming the new version is always at index 0 (newest)
         return manifest["versions"][0]
@@ -60,11 +63,13 @@ class TestDeletionProtection(SavePointsTestCase):
             settings.active_version_index = 0
 
             # Attempt delete
-            bpy.ops.savepoints.delete('EXEC_DEFAULT')
+            bpy.ops.savepoints.delete("EXEC_DEFAULT")
 
             # Verify: Should still exist
             current_ids = self._get_all_version_ids()
-            self.assertIn(target_id, current_ids, "Protected version was deleted by Operator!")
+            self.assertIn(
+                target_id, current_ids, "Protected version was deleted by Operator!"
+            )
 
         # --- Step 2: Internal API Protection ---
         with self.subTest(step="2. Protection against Internal API"):
@@ -75,7 +80,9 @@ class TestDeletionProtection(SavePointsTestCase):
 
             # Verify: Should still exist
             current_ids = self._get_all_version_ids()
-            self.assertIn(target_id, current_ids, "Protected version was deleted by internal API!")
+            self.assertIn(
+                target_id, current_ids, "Protected version was deleted by internal API!"
+            )
 
         # --- Step 3: Prune Protection ---
         with self.subTest(step="3. Protection against Pruning"):
@@ -96,11 +103,15 @@ class TestDeletionProtection(SavePointsTestCase):
             current_ids = self._get_all_version_ids()
 
             # Verify: Protected version must persist
-            self.assertIn(target_id, current_ids, "Protected version was deleted by Prune!")
+            self.assertIn(
+                target_id, current_ids, "Protected version was deleted by Prune!"
+            )
 
             # Optional Verify: Pruning actually worked (some fillers should be gone)
             # Depending on implementation, Filler 0 or 1 should be gone.
-            self.assertLess(len(current_ids), 4, "Pruning didn't delete any versions at all")
+            self.assertLess(
+                len(current_ids), 4, "Pruning didn't delete any versions at all"
+            )
 
         # --- Step 4: Unprotect and Delete ---
         with self.subTest(step="4. Unprotect and Delete"):
@@ -114,13 +125,15 @@ class TestDeletionProtection(SavePointsTestCase):
 
             # Verify: Should be gone now
             current_ids = self._get_all_version_ids()
-            self.assertNotIn(target_id, current_ids, "Unprotected version was NOT deleted!")
+            self.assertNotIn(
+                target_id, current_ids, "Unprotected version was NOT deleted!"
+            )
 
         print("Deletion Protection Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

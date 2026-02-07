@@ -9,6 +9,7 @@ from .storage import get_history_dir_for_path, ensure_directory
 
 class HistoryDirectoryUnavailableError(Exception):
     """Raised when the history directory cannot be determined."""
+
     pass
 
 

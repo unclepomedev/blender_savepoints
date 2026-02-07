@@ -16,7 +16,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestCommitSelectionPersistence(SavePointsTestCase):
-
     def test_selection_persistence(self):
         """
         Scenario:
@@ -40,7 +39,7 @@ class TestCommitSelectionPersistence(SavePointsTestCase):
             sphere.name = "SelectedSphere"
 
             # Set selection: Cube Active, Sphere Selected
-            bpy.ops.object.select_all(action='DESELECT')
+            bpy.ops.object.select_all(action="DESELECT")
             cube.select_set(True)
             sphere.select_set(True)
             bpy.context.view_layer.objects.active = cube
@@ -52,15 +51,15 @@ class TestCommitSelectionPersistence(SavePointsTestCase):
         # --- Step 2: Enter Mode ---
         with self.subTest(step="2. Enter Mode"):
             # Enter EDIT mode on the active object (Cube)
-            bpy.ops.object.mode_set(mode='EDIT')
-            self.assertEqual(bpy.context.object.mode, 'EDIT')
+            bpy.ops.object.mode_set(mode="EDIT")
+            self.assertEqual(bpy.context.object.mode, "EDIT")
 
         # --- Step 3: Perform Commit ---
         with self.subTest(step="3. Perform Commit"):
             print("Executing Commit...")
             # Commit usually triggers thumbnail capture (render.opengl) which might reset mode/selection
-            res = bpy.ops.savepoints.commit('EXEC_DEFAULT', note="Testing Persistence")
-            self.assertIn('FINISHED', res, "Commit failed")
+            res = bpy.ops.savepoints.commit("EXEC_DEFAULT", note="Testing Persistence")
+            self.assertIn("FINISHED", res, "Commit failed")
 
         # --- Step 4: Verify Persistence ---
         with self.subTest(step="4. Verify Persistence"):
@@ -69,30 +68,38 @@ class TestCommitSelectionPersistence(SavePointsTestCase):
             # 1. Check Mode
             # Note: In some headless environments, render.opengl might fail or behave differently,
             # but our logic should attempt to restore the mode regardless.
-            self.assertEqual(bpy.context.object.mode, 'EDIT', "Mode was reset after commit")
+            self.assertEqual(
+                bpy.context.object.mode, "EDIT", "Mode was reset after commit"
+            )
 
             # 2. Check Active Object
             # Need to switch to OBJECT mode to check selection reliably if needed,
             # but checking active object name works in EDIT mode too.
-            self.assertEqual(bpy.context.active_object.name, "ActiveCube", "Active object changed")
+            self.assertEqual(
+                bpy.context.active_object.name, "ActiveCube", "Active object changed"
+            )
 
             # 3. Check Selection
             # To check selection of other objects, we might need to be in OBJECT mode or check graph.
             # Let's switch to OBJECT for robust verification.
-            bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.mode_set(mode="OBJECT")
 
             cube = bpy.data.objects["ActiveCube"]
             sphere = bpy.data.objects["SelectedSphere"]
 
             self.assertTrue(cube.select_get(), "ActiveCube lost selection")
             self.assertTrue(sphere.select_get(), "SelectedSphere lost selection")
-            self.assertEqual(bpy.context.view_layer.objects.active, cube, "Active object mismatch in Object Mode")
+            self.assertEqual(
+                bpy.context.view_layer.objects.active,
+                cube,
+                "Active object mismatch in Object Mode",
+            )
 
         print("Selection Persistence Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

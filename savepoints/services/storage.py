@@ -20,9 +20,9 @@ SCHEMA_VERSION = 1
 def to_posix_path(path: str | None) -> str:
     """
     Return the given filesystem path using POSIX-style forward slashes.
-    
+
     If `path` is falsy (`None` or empty), returns an empty string.
-    
+
     Returns:
         str: The path with forward slashes, or an empty string if input was falsy.
     """
@@ -55,7 +55,7 @@ def ensure_directory(path: Path) -> None:
     """
     path.mkdir(parents=True, exist_ok=True)
 
-    if sys.platform == 'win32' and path.name.startswith('.'):
+    if sys.platform == "win32" and path.name.startswith("."):
         try:
             # FILE_ATTRIBUTE_HIDDEN = 0x02
             path_str = str(path)
@@ -103,7 +103,7 @@ def get_parent_path_from_snapshot(blend_path: str | None) -> str | None:
 
         if history_dirname.startswith(".") and history_dirname.endswith(HISTORY_SUFFIX):
             # Extract filename: .my_project_history -> my_project
-            name_without_ext = history_dirname[1:-len(HISTORY_SUFFIX)]
+            name_without_ext = history_dirname[1 : -len(HISTORY_SUFFIX)]
 
             # Parent dir: .../ProjectDir
             project_dir = history_dir.parent
@@ -133,13 +133,13 @@ def get_manifest_path() -> str | None:
 def get_fork_target_path(snapshot_path: Path) -> Path:
     """
     Calculate the target path for a forked version based on the snapshot path.
-    
+
     Args:
         snapshot_path (Path): Path to the snapshot file.
-        
+
     Returns:
         Path: The calculated target path for the fork.
-        
+
     Raises:
         FileNotFoundError: If the project root cannot be determined.
     """
@@ -184,9 +184,9 @@ def format_file_size(size_in_bytes: float | int) -> str:
     except (ValueError, TypeError):
         return "0 B"
 
-    for unit in ['B', 'KB', 'MB', 'GB']:
+    for unit in ["B", "KB", "MB", "GB"]:
         if size < 1024.0:
-            if unit == 'B':
+            if unit == "B":
                 return f"{int(size)} {unit}"
             return f"{size:.1f} {unit}"
         size /= 1024.0

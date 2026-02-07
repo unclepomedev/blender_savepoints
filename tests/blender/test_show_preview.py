@@ -17,7 +17,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestShowPreview(SavePointsTestCase):
-
     def setUp(self):
         super().setUp()
         self.settings = bpy.context.scene.savepoints_settings
@@ -69,7 +68,9 @@ class TestShowPreview(SavePointsTestCase):
 
             fake_collections_dict = {"main": {"v001": mock_preview_image}}
 
-            with patch('savepoints.ui_utils.preview_collections', fake_collections_dict):
+            with patch(
+                "savepoints.ui_utils.preview_collections", fake_collections_dict
+            ):
                 # Case A: Show Preview = OFF
                 self.settings.show_preview = False
                 ui._draw_version_details(layout_mock, self.settings, mock_context)
@@ -90,17 +91,21 @@ class TestShowPreview(SavePointsTestCase):
             mock_preview_image.icon_id = 88888
             fake_collections_dict = {"main": {"v001": mock_preview_image}}
 
-            with patch('savepoints.ui_utils.preview_collections', fake_collections_dict):
+            with patch(
+                "savepoints.ui_utils.preview_collections", fake_collections_dict
+            ):
                 try:
-                    ui._draw_version_details(layout_mock, self.settings, mock_context_headless)
+                    ui._draw_version_details(
+                        layout_mock, self.settings, mock_context_headless
+                    )
                 except AttributeError as e:
                     self.fail(f"UI crashed in headless mode (region=None): {e}")
 
         print("Preview UI Scenario: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

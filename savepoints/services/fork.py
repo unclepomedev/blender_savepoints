@@ -1,5 +1,6 @@
 import bpy
 
+
 def make_all_local_and_clear_assets():
     """
     Make all linked data local AND clear their asset status.
@@ -12,13 +13,18 @@ def make_all_local_and_clear_assets():
     try:
         if bpy.data.libraries:
             try:
-                bpy.ops.wm.make_local(type='ALL')
+                bpy.ops.wm.make_local(type="ALL")
                 has_changed = True
             except (RuntimeError, AttributeError):
                 data_collections = [
-                    bpy.data.objects, bpy.data.meshes, bpy.data.materials,
-                    bpy.data.node_groups, bpy.data.textures, bpy.data.images,
-                    bpy.data.actions, bpy.data.collections
+                    bpy.data.objects,
+                    bpy.data.meshes,
+                    bpy.data.materials,
+                    bpy.data.node_groups,
+                    bpy.data.textures,
+                    bpy.data.images,
+                    bpy.data.actions,
+                    bpy.data.collections,
                 ]
 
                 found_linked = False
@@ -40,7 +46,7 @@ def make_all_local_and_clear_assets():
         bpy.data.node_groups,
         bpy.data.collections,
         bpy.data.actions,
-        bpy.data.worlds
+        bpy.data.worlds,
     ]
 
     for collection in check_collections:

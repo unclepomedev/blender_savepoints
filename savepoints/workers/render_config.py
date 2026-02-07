@@ -1,18 +1,23 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+
 def apply_image_settings(render, settings):
     # A. Inherited settings
     src_img_settings = settings.get("image_settings", {})
     if src_img_settings:
         # File Format
         try:
-            render.image_settings.file_format = src_img_settings.get("file_format", "PNG")
+            render.image_settings.file_format = src_img_settings.get(
+                "file_format", "PNG"
+            )
         except Exception as e:
             print(f"Worker Warning: Failed to set image_settings.file_format: {e}")
 
         # Color Mode
         try:
-            render.image_settings.color_mode = src_img_settings.get("color_mode", "RGBA")
+            render.image_settings.color_mode = src_img_settings.get(
+                "color_mode", "RGBA"
+            )
         except Exception as e:
             print(f"Worker Warning: Failed to set image_settings.color_mode: {e}")
 
@@ -44,23 +49,23 @@ def apply_image_settings(render, settings):
     # B. Overrides (Format Override logic)
     fmt_override = settings.get("output_format_override", "SCENE")
 
-    if fmt_override == 'PNG':
+    if fmt_override == "PNG":
         try:
-            render.image_settings.file_format = 'PNG'
+            render.image_settings.file_format = "PNG"
         except Exception as e:
             print(f"Worker Warning: Failed to override format to PNG: {e}")
 
-    elif fmt_override == 'JPEG':
+    elif fmt_override == "JPEG":
         # Format
         try:
-            render.image_settings.file_format = 'JPEG'
+            render.image_settings.file_format = "JPEG"
         except Exception as e:
             print(f"Worker Warning: Failed to override file_format to JPEG: {e}")
             return
 
         # Color Mode
         try:
-            render.image_settings.color_mode = 'RGB'
+            render.image_settings.color_mode = "RGB"
         except Exception as e:
             print(f"Worker Warning: Failed to set color_mode for JPEG: {e}")
 
@@ -81,17 +86,20 @@ def apply_render_settings(scene, render, settings):
     render.resolution_percentage = settings.get("resolution_percentage", 100)
 
     try:
-        render.engine = settings.get("engine", 'CYCLES')
+        render.engine = settings.get("engine", "CYCLES")
     except Exception as e:
         print(f"Worker Warning: Failed to set render engine: {e}")
 
-    if render.engine == 'CYCLES' and "samples" in settings:
+    if render.engine == "CYCLES" and "samples" in settings:
         try:
             scene.cycles.samples = settings["samples"]
         except Exception as e:
             print(f"Worker Warning: Failed to set Cycles samples: {e}")
 
-    elif render.engine in ['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT'] and "samples" in settings:
+    elif (
+        render.engine in ["BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"]
+        and "samples" in settings
+    ):
         try:
             if hasattr(scene.eevee, "taa_render_samples"):
                 scene.eevee.taa_render_samples = settings["samples"]
@@ -110,24 +118,26 @@ def apply_ffmpeg_settings(render, settings):
 
     # format
     try:
-        render.ffmpeg.format = ffmpeg_data.get("format", 'MPEG4')
+        render.ffmpeg.format = ffmpeg_data.get("format", "MPEG4")
     except Exception as e:
         print(f"Worker Warning: Failed to set ffmpeg.format: {e}")
 
     # codec
     try:
-        render.ffmpeg.codec = ffmpeg_data.get("codec", 'H264')
+        render.ffmpeg.codec = ffmpeg_data.get("codec", "H264")
     except Exception as e:
         print(f"Worker Warning: Failed to set ffmpeg.codec: {e}")
 
     # constant_rate_factor (CRF)
     try:
-        render.ffmpeg.constant_rate_factor = ffmpeg_data.get("constant_rate_factor", 'HIGH')
+        render.ffmpeg.constant_rate_factor = ffmpeg_data.get(
+            "constant_rate_factor", "HIGH"
+        )
     except Exception as e:
         print(f"Worker Warning: Failed to set ffmpeg.constant_rate_factor: {e}")
 
     # audio_codec
     try:
-        render.ffmpeg.audio_codec = ffmpeg_data.get("audio_codec", 'NONE')
+        render.ffmpeg.audio_codec = ffmpeg_data.get("audio_codec", "NONE")
     except Exception as e:
         print(f"Worker Warning: Failed to set ffmpeg.audio_codec: {e}")

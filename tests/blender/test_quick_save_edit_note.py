@@ -17,7 +17,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestQuickSaveEditNote(SavePointsTestCase):
-
     def test_quick_save_and_edit_scenario(self):
         """
         Scenario:
@@ -50,14 +49,16 @@ class TestQuickSaveEditNote(SavePointsTestCase):
             # We use INVOKE because the logic to "Skip Dialog" resides in the invoke() method.
             # We use temp_override to ensure 'generate_default_note' sees the correct active object.
             with bpy.context.temp_override(
-                    active_object=obj,
-                    object=obj,
-                    selected_objects=[obj],
-                    selected_editable_objects=[obj]
+                active_object=obj,
+                object=obj,
+                selected_objects=[obj],
+                selected_editable_objects=[obj],
             ):
-                res = bpy.ops.savepoints.commit('INVOKE_DEFAULT')
+                res = bpy.ops.savepoints.commit("INVOKE_DEFAULT")
 
-            self.assertIn('FINISHED', res, "Quick Save failed (likely stuck in modal or error)")
+            self.assertIn(
+                "FINISHED", res, "Quick Save failed (likely stuck in modal or error)"
+            )
 
         # --- Step 2: Verify Created Version ---
         with self.subTest(step="2. Verify Auto Note"):
@@ -66,14 +67,19 @@ class TestQuickSaveEditNote(SavePointsTestCase):
             manifest = load_manifest()
             versions = manifest.get("versions", [])
 
-            self.assertEqual(len(versions), 1, "Expected exactly 1 version to be created")
+            self.assertEqual(
+                len(versions), 1, "Expected exactly 1 version to be created"
+            )
 
             v1 = versions[0]
-            self.assertEqual(v1['note'], initial_expected_note,
-                             f"Note mismatch. Expected '{initial_expected_note}', got '{v1['note']}'")
+            self.assertEqual(
+                v1["note"],
+                initial_expected_note,
+                f"Note mismatch. Expected '{initial_expected_note}', got '{v1['note']}'",
+            )
 
             # Store ID for next step
-            version_id = v1['id']
+            version_id = v1["id"]
 
         # --- Step 3: Edit Note ---
         with self.subTest(step="3. Edit Note"):
@@ -81,12 +87,10 @@ class TestQuickSaveEditNote(SavePointsTestCase):
 
             # Execute Edit Note using EXEC_DEFAULT (Direct execution, no UI needed)
             res = bpy.ops.savepoints.edit_note(
-                'EXEC_DEFAULT',
-                version_id=version_id,
-                new_note=updated_note_text
+                "EXEC_DEFAULT", version_id=version_id, new_note=updated_note_text
             )
 
-            self.assertIn('FINISHED', res, "Edit Note operator failed")
+            self.assertIn("FINISHED", res, "Edit Note operator failed")
 
         # --- Step 4: Verify Update ---
         with self.subTest(step="4. Verify Note Update"):
@@ -97,15 +101,20 @@ class TestQuickSaveEditNote(SavePointsTestCase):
             v1_updated = manifest["versions"][0]
 
             # Verify integrity
-            self.assertEqual(v1_updated["id"], version_id, "Version ID mismatch (Order changed?)")
-            self.assertEqual(v1_updated["note"], updated_note_text,
-                             f"Note update failed. Expected '{updated_note_text}', got '{v1_updated['note']}'")
+            self.assertEqual(
+                v1_updated["id"], version_id, "Version ID mismatch (Order changed?)"
+            )
+            self.assertEqual(
+                v1_updated["note"],
+                updated_note_text,
+                f"Note update failed. Expected '{updated_note_text}', got '{v1_updated['note']}'",
+            )
 
         print("Quick Save & Edit Note Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

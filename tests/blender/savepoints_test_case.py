@@ -27,7 +27,9 @@ class SavePointsTestCase(unittest.TestCase):
 
         # 2. Create a unique test directory for EACH TEST METHOD
         # Using _testMethodName allows debugging individual test artifacts if they fail
-        self.test_dir = ROOT / "test_temp" / f"{self.__class__.__name__}_{self._testMethodName}"
+        self.test_dir = (
+            ROOT / "test_temp" / f"{self.__class__.__name__}_{self._testMethodName}"
+        )
 
         if self.test_dir.exists():
             shutil.rmtree(self.test_dir)
@@ -50,6 +52,7 @@ class SavePointsTestCase(unittest.TestCase):
         # 0. Clear LRU Cache to prevent cross-test contamination
         # (e.g. load_object_data caches results by version_id)
         from savepoints.services.object_data import load_object_data
+
         load_object_data.cache_clear()
 
         # 1. Unregister the addon

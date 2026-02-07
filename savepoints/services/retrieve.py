@@ -3,6 +3,7 @@
 import os
 import shutil
 from pathlib import Path
+from typing import cast
 
 import bpy
 
@@ -109,7 +110,10 @@ def append_objects(blend_path: Path, object_names: list[str]) -> list[bpy.types.
     appended_objects = []
 
     try:
-        with bpy.data.libraries.load(str(blend_path), link=False) as (data_from, data_to):
+        with bpy.data.libraries.load(str(blend_path), link=False) as (
+            data_from,
+            data_to,
+        ):
             # Filter objects that exist in source
             valid_names = [name for name in object_names if name in data_from.objects]
             data_to.objects = valid_names
@@ -121,8 +125,8 @@ def append_objects(blend_path: Path, object_names: list[str]) -> list[bpy.types.
     collection = bpy.context.view_layer.active_layer_collection.collection
 
     for obj in data_to.objects:
-        obj: bpy.types.Object = obj
         if obj:
+            obj = cast(bpy.types.Object, cast(object, obj))
             if obj.name not in collection.objects:
                 try:
                     collection.objects.link(obj)
@@ -140,7 +144,9 @@ def append_objects(blend_path: Path, object_names: list[str]) -> list[bpy.types.
     new_assets = list(current_assets - existing_assets)
 
     if new_assets:
-        print(f"[SavePoints] Found {len(new_assets)} new assets (dependencies). Fixing paths...")
+        print(
+            f"[SavePoints] Found {len(new_assets)} new assets (dependencies). Fixing paths..."
+        )
         fix_retrieved_assets(new_assets)
 
     return appended_objects
@@ -174,7 +180,9 @@ def cleanup_retrieve_temp_files() -> int:
                         cleaned_count += 1
                         print(f"[SavePoints] Cleaned up legacy temp file: {temp_file}")
                     except OSError as e:
-                        print(f"[SavePoints] Warning: Failed to remove legacy temp file {temp_file}: {e}")
+                        print(
+                            f"[SavePoints] Warning: Failed to remove legacy temp file {temp_file}: {e}"
+                        )
     except Exception as e:
         print(f"[SavePoints] Error during cleanup: {e}")
 

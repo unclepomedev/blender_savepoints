@@ -34,7 +34,9 @@ class TestDiskUsageAlert(SavePointsTestCase):
         mock_usage.free = ten_gb
 
         # Patch shutil in storage module (we will add the import there)
-        with patch("savepoints.services.storage.shutil.disk_usage", return_value=mock_usage) as mock_disk_usage:
+        with patch(
+            "savepoints.services.storage.shutil.disk_usage", return_value=mock_usage
+        ) as mock_disk_usage:
             # Call the function (to be implemented)
             # We pass a dummy path
             free_space = storage.get_free_disk_space("/dummy/path")
@@ -44,8 +46,8 @@ class TestDiskUsageAlert(SavePointsTestCase):
             print("Verified get_free_disk_space returns correct value.")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

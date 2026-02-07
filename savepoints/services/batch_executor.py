@@ -13,8 +13,15 @@ class BatchRenderExecutor:
     Handles process creation, monitoring, and queue management.
     """
 
-    def __init__(self, tasks: list[Any], temp_dir: str, output_dir: str, settings_path: str, worker_script_path: str,
-                 blender_bin: str):
+    def __init__(
+        self,
+        tasks: list[Any],
+        temp_dir: str,
+        output_dir: str,
+        settings_path: str,
+        worker_script_path: str,
+        blender_bin: str,
+    ):
         self.task_queue = list(tasks)
         self.total_tasks = len(tasks)
         self.current_task_idx = 0
@@ -41,7 +48,7 @@ class BatchRenderExecutor:
         if self.is_cancelled:
             if self.current_process:
                 self.cancel()
-            return {'status': 'CANCELLED'}
+            return {"status": "CANCELLED"}
 
         # Check existing process
         if self.current_process:
@@ -58,24 +65,24 @@ class BatchRenderExecutor:
                 self.current_task_idx += 1
 
                 return {
-                    'status': 'TASK_FINISHED',
-                    'version_id': version_id,
-                    'return_code': return_code,
-                    'log_path': log_path,
-                    'progress': (self.current_task_idx, self.total_tasks)
+                    "status": "TASK_FINISHED",
+                    "version_id": version_id,
+                    "return_code": return_code,
+                    "log_path": log_path,
+                    "progress": (self.current_task_idx, self.total_tasks),
                 }
             else:
                 # --- Still Running ---
                 return {
-                    'status': 'RUNNING',
-                    'version_id': self.current_version_id,
-                    'progress': (self.current_task_idx, self.total_tasks)
+                    "status": "RUNNING",
+                    "version_id": self.current_version_id,
+                    "progress": (self.current_task_idx, self.total_tasks),
                 }
 
         # No process running, try to start next
         if self.finished or not self.task_queue:
             self.finished = True
-            return {'status': 'FINISHED'}
+            return {"status": "FINISHED"}
 
         # Get next task
         version = self.task_queue.pop(0)
@@ -85,16 +92,16 @@ class BatchRenderExecutor:
         if not snapshot_path or not snapshot_path.exists():
             self.current_task_idx += 1
             return {
-                'status': 'SKIPPED',
-                'version_id': self.current_version_id,
-                'progress': (self.current_task_idx, self.total_tasks)
+                "status": "SKIPPED",
+                "version_id": self.current_version_id,
+                "progress": (self.current_task_idx, self.total_tasks),
             }
 
         if self._launch_process(snapshot_path):
             return {
-                'status': 'RUNNING',
-                'version_id': self.current_version_id,
-                'progress': (self.current_task_idx, self.total_tasks)
+                "status": "RUNNING",
+                "version_id": self.current_version_id,
+                "progress": (self.current_task_idx, self.total_tasks),
             }
         else:
             error_log = self.current_log_path
@@ -105,11 +112,11 @@ class BatchRenderExecutor:
             self.current_process = None
 
             return {
-                'status': 'TASK_FINISHED',
-                'version_id': failed_id,
-                'return_code': -1,
-                'log_path': error_log,
-                'progress': (self.current_task_idx, self.total_tasks)
+                "status": "TASK_FINISHED",
+                "version_id": failed_id,
+                "return_code": -1,
+                "log_path": error_log,
+                "progress": (self.current_task_idx, self.total_tasks),
             }
 
     def _launch_process(self, snapshot_path) -> bool:
@@ -120,7 +127,7 @@ class BatchRenderExecutor:
         self.current_log_path = os.path.join(self.temp_dir, log_filename)
 
         try:
-            self.current_log_handle = open(self.current_log_path, 'w', encoding='utf-8')
+            self.current_log_handle = open(self.current_log_path, "w", encoding="utf-8")
         except OSError as e:
             print(f"[SavePoints] Failed to create log file: {e}")
             return False
@@ -129,20 +136,21 @@ class BatchRenderExecutor:
             self.blender_bin,
             *self.startup_flags,
             str(snapshot_path),
-            "-P", self.worker_script_path,
+            "-P",
+            self.worker_script_path,
             "--",
             self.settings_path,
             self.output_dir,
-            f"{self.current_version_id}_render"
+            f"{self.current_version_id}_render",
         ]
 
         try:
             self.current_process = subprocess.Popen(
-                cmd,
-                stdout=self.current_log_handle,
-                stderr=self.current_log_handle
+                cmd, stdout=self.current_log_handle, stderr=self.current_log_handle
             )
-            print(f"[SavePoints] Rendering {self.current_version_id} (PID: {self.current_process.pid})")
+            print(
+                f"[SavePoints] Rendering {self.current_version_id} (PID: {self.current_process.pid})"
+            )
             return True
 
         except Exception as e:

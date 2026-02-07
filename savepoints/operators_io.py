@@ -10,6 +10,7 @@ from .services.storage import get_history_dir_for_path
 
 class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
     """Export the current project and its history as a ZIP archive"""
+
     bl_idname = "savepoints.export_project_zip"
     bl_label = "SavePoints Project (.zip)"
     bl_description = "Export current project and history as ZIP"
@@ -18,14 +19,14 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
     filter_glob: bpy.props.StringProperty(
         default="*.zip",
-        options={'HIDDEN'},
+        options={"HIDDEN"},
         maxlen=255,
     )
 
     def invoke(self, context, event):
         if not bpy.data.is_saved:
-            self.report({'ERROR'}, "Save the file first")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, "Save the file first")
+            return {"CANCELLED"}
 
         if not self.filepath:
             filepath = bpy.data.filepath
@@ -36,8 +37,8 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
     def execute(self, context):
         if not bpy.data.is_saved:
-            self.report({'ERROR'}, "Project must be saved before exporting.")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, "Project must be saved before exporting.")
+            return {"CANCELLED"}
 
         project_path = Path(bpy.data.filepath)
         history_dir_str = get_history_dir_for_path(str(project_path))
@@ -51,11 +52,11 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
         wm.progress_begin(0, 100)
 
         try:
-            with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_STORED) as zf:
+            with zipfile.ZipFile(output_zip_path, "w", zipfile.ZIP_STORED) as zf:
                 zf.write(project_path, arcname=project_path.name)
 
                 if history_dir and history_dir.exists():
-                    files_to_zip = [f for f in history_dir.rglob('*') if f.is_file()]
+                    files_to_zip = [f for f in history_dir.rglob("*") if f.is_file()]
                     total_files = len(files_to_zip) + 1
 
                     processed = 1
@@ -70,12 +71,12 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
                         processed += 1
                         wm.progress_update(int(processed / total_files * 100))
 
-            self.report({'INFO'}, f"Exported project to {output_zip_path.name}")
-            return {'FINISHED'}
+            self.report({"INFO"}, f"Exported project to {output_zip_path.name}")
+            return {"FINISHED"}
 
         except Exception as e:
-            self.report({'ERROR'}, f"Export failed: {str(e)}")
-            return {'CANCELLED'}
+            self.report({"ERROR"}, f"Export failed: {str(e)}")
+            return {"CANCELLED"}
 
         finally:
             wm.progress_end()
@@ -84,7 +85,9 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
 
 def menu_func(self, _context):
-    self.layout.operator(SAVEPOINTS_OT_export_project_zip.bl_idname, text="SavePoints Project (.zip)")
+    self.layout.operator(
+        SAVEPOINTS_OT_export_project_zip.bl_idname, text="SavePoints Project (.zip)"
+    )
 
 
 def add_menu():

@@ -26,7 +26,9 @@ class TestTimelapseGen(SavePointsTestCase):
         self.input_dir = os.path.join(self.temp_dir, "input_images")
         os.makedirs(self.input_dir, exist_ok=True)
         self._create_dummy_frames(self.input_dir, count=5)
-        self.worker_script = os.path.join(PROJECT_ROOT, "savepoints", "workers", "timelapse_worker.py")
+        self.worker_script = os.path.join(
+            PROJECT_ROOT, "savepoints", "workers", "timelapse_worker.py"
+        )
 
     def tearDown(self):
         try:
@@ -45,7 +47,7 @@ class TestTimelapseGen(SavePointsTestCase):
 
             file_path = os.path.join(directory, f"v{i:03d}_render.png")
             img.filepath_raw = file_path
-            img.file_format = 'PNG'
+            img.file_format = "PNG"
             img.save()
             bpy.data.images.remove(img)
 
@@ -58,11 +60,12 @@ class TestTimelapseGen(SavePointsTestCase):
             bpy.app.binary_path,
             "-b",
             "--factory-startup",
-            "-P", self.worker_script,
+            "-P",
+            self.worker_script,
             "--",
             self.input_dir,
             output_file,
-            "24"
+            "24",
         ]
 
         self._run_worker(cmd)
@@ -77,11 +80,12 @@ class TestTimelapseGen(SavePointsTestCase):
             bpy.app.binary_path,
             "-b",
             "--factory-startup",
-            "-P", self.worker_script,
+            "-P",
+            self.worker_script,
             "--",
             self.input_dir,
             output_file,
-            "24"
+            "24",
         ]
 
         stdout = self._run_worker(cmd)
@@ -98,13 +102,14 @@ class TestTimelapseGen(SavePointsTestCase):
             bpy.app.binary_path,
             "-b",
             "--factory-startup",
-            "-P", self.worker_script,
+            "-P",
+            self.worker_script,
             "--",
             self.input_dir,
             output_file,
             "24",
             "1",  # Burn-in True
-            "TL"  # Top Left
+            "TL",  # Top Left
         ]
 
         stdout = self._run_worker(cmd)
@@ -138,7 +143,7 @@ class TestTimelapseGen(SavePointsTestCase):
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

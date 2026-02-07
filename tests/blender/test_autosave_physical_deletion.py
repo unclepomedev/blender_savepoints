@@ -38,27 +38,35 @@ class TestAutosavePhysicalDeletion(SavePointsTestCase):
         version_dir = history_dir / version_id
 
         # Mock manifest data
-        fake_manifest = {
-            "versions": [
-                {"id": version_id, "is_protected": False}
-            ]
-        }
+        fake_manifest = {"versions": [{"id": version_id, "is_protected": False}]}
 
         # --- Step 1: Setup Environment ---
         with self.subTest(step="1. Prepare Version Directory"):
             history_dir.mkdir(parents=True, exist_ok=True)
             version_dir.mkdir(exist_ok=True)
-            self.assertTrue(version_dir.exists(), "Setup failed: Version dir should exist.")
+            self.assertTrue(
+                version_dir.exists(), "Setup failed: Version dir should exist."
+            )
 
         # --- Step 2: Execute & Verify ---
         with self.subTest(step="2. Execute Deletion and Verify Mechanics"):
             # Mock get_history_dir to point explicitly to our test history_dir
             # This ensures the function targets the folder we created, regardless of bpy.data.filepath
-            with patch("savepoints.services.versioning.load_manifest", return_value=fake_manifest), \
-                    patch("savepoints.services.versioning.save_manifest"), \
-                    patch("savepoints.services.versioning.get_history_dir", return_value=str(history_dir)), \
-                    patch("savepoints.services.versioning.send2trash") as mock_send2trash:
-                print(f"Executing delete_version_by_id('{version_id}', use_trash=False)...")
+            with (
+                patch(
+                    "savepoints.services.versioning.load_manifest",
+                    return_value=fake_manifest,
+                ),
+                patch("savepoints.services.versioning.save_manifest"),
+                patch(
+                    "savepoints.services.versioning.get_history_dir",
+                    return_value=str(history_dir),
+                ),
+                patch("savepoints.services.versioning.send2trash") as mock_send2trash,
+            ):
+                print(
+                    f"Executing delete_version_by_id('{version_id}', use_trash=False)..."
+                )
 
                 # Execute
                 versioning.delete_version_by_id(version_id, use_trash=False)
@@ -69,7 +77,7 @@ class TestAutosavePhysicalDeletion(SavePointsTestCase):
                 # Verify 2: The directory is physically gone
                 self.assertFalse(
                     version_dir.exists(),
-                    "Physical deletion failed: Directory still exists."
+                    "Physical deletion failed: Directory still exists.",
                 )
 
         print("Physical Deletion Test: Completed")
@@ -100,9 +108,13 @@ class TestAutosavePhysicalDeletion(SavePointsTestCase):
         # --- Step 2: Verify Timer Logic ---
         with self.subTest(step="2. Trigger Timer and Verify Calls"):
             # Mock time to control "now"
-            with patch("savepoints.services.autosave.delete_version_by_id") as mock_delete, \
-                    patch("savepoints.services.autosave.create_snapshot") as mock_create, \
-                    patch("savepoints.services.autosave.time.time", return_value=100000.0):
+            with (
+                patch(
+                    "savepoints.services.autosave.delete_version_by_id"
+                ) as mock_delete,
+                patch("savepoints.services.autosave.create_snapshot") as mock_create,
+                patch("savepoints.services.autosave.time.time", return_value=100000.0),
+            ):
                 print("Executing autosave_timer()...")
                 autosave.autosave_timer()
 
@@ -115,8 +127,8 @@ class TestAutosavePhysicalDeletion(SavePointsTestCase):
         print("Autosave Wiring Test: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

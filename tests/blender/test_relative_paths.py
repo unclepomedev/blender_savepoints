@@ -17,7 +17,6 @@ from savepoints_test_case import SavePointsTestCase
 
 
 class TestRelativePaths(SavePointsTestCase):
-
     def setUp(self):
         super().setUp()
         # SavePointsTestCase creates self.test_dir and self.blend_path
@@ -27,9 +26,10 @@ class TestRelativePaths(SavePointsTestCase):
         self.texture_path = self.test_dir / self.texture_name
 
         # Create a tiny minimal PNG
-        with open(self.texture_path, 'wb') as f:
+        with open(self.texture_path, "wb") as f:
             f.write(
-                b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82')
+                b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x01\x00\x00\x05\x00\x01\r\n-\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
+            )
 
         # Setup Scene
         bpy.ops.mesh.primitive_cube_add()
@@ -79,8 +79,10 @@ class TestRelativePaths(SavePointsTestCase):
 
             # Snapshot is deep in history folder, so path should look up 2 levels
             path_norm = img.filepath.replace("\\", "/")
-            self.assertTrue(path_norm.startswith("//../../"),
-                            f"Snapshot path expected to start with //../../, got: {path_norm}")
+            self.assertTrue(
+                path_norm.startswith("//../../"),
+                f"Snapshot path expected to start with //../../, got: {path_norm}",
+            )
 
         # --- Step 3: Fork Version ---
         with self.subTest(step="3. Execute Fork"):
@@ -101,10 +103,14 @@ class TestRelativePaths(SavePointsTestCase):
 
             # Ideally it returns to "//my_texture.png"
             if path_forked_norm.startswith("//"):
-                self.assertFalse(path_forked_norm.startswith("//../../"),
-                                 "Forked path failed to unmap, still contains ../../")
-                self.assertTrue(path_forked_norm.endswith(self.texture_name),
-                                "Forked path doesn't point to correct texture name")
+                self.assertFalse(
+                    path_forked_norm.startswith("//../../"),
+                    "Forked path failed to unmap, still contains ../../",
+                )
+                self.assertTrue(
+                    path_forked_norm.endswith(self.texture_name),
+                    "Forked path doesn't point to correct texture name",
+                )
 
         print("Fork Relative Paths Scenario: Completed")
 
@@ -134,13 +140,16 @@ class TestRelativePaths(SavePointsTestCase):
             bpy.ops.wm.save_as_mainfile(filepath=str(new_project_path))
 
             # Clean scene
-            bpy.ops.object.select_all(action='SELECT')
+            bpy.ops.object.select_all(action="SELECT")
             bpy.ops.object.delete()
 
         # --- Step 3: Append from Snapshot ---
         with self.subTest(step="3. Append Data"):
             # Manually append to simulate what the retrieve operator does
-            with bpy.data.libraries.load(str(snapshot_path), link=False) as (data_from, data_to):
+            with bpy.data.libraries.load(str(snapshot_path), link=False) as (
+                data_from,
+                data_to,
+            ):
                 if "TexturedCube" in data_from.objects:
                     data_to.objects.append("TexturedCube")
 
@@ -169,8 +178,14 @@ class TestRelativePaths(SavePointsTestCase):
             path_fixed_norm = img.filepath.replace("\\", "/")
             print(f"Path after fix: {path_fixed_norm}")
 
-            self.assertFalse(path_fixed_norm.startswith("//../../"), "Path should not contain deep relative steps")
-            self.assertTrue(path_fixed_norm.endswith(self.texture_name), "Path should point to texture")
+            self.assertFalse(
+                path_fixed_norm.startswith("//../../"),
+                "Path should not contain deep relative steps",
+            )
+            self.assertTrue(
+                path_fixed_norm.endswith(self.texture_name),
+                "Path should point to texture",
+            )
 
         print("Retrieve Unmap Logic Scenario: Completed")
 
@@ -214,7 +229,9 @@ class TestRelativePaths(SavePointsTestCase):
 
             # Verify user count
             self.assertTrue(active_img.users > 0, "Image should have active users")
-            self.assertFalse(active_img.use_fake_user, "Image should not have fake user")
+            self.assertFalse(
+                active_img.use_fake_user, "Image should not have fake user"
+            )
 
             # Save to persist setup
             bpy.ops.wm.save_mainfile()
@@ -235,8 +252,10 @@ class TestRelativePaths(SavePointsTestCase):
             self.assertIsNotNone(img, "ActiveImage missing in snapshot")
 
             path_norm = img.filepath.replace("\\", "/")
-            self.assertTrue(path_norm.startswith("//../../"),
-                            f"Snapshot path expected to start with //../../, got: {path_norm}")
+            self.assertTrue(
+                path_norm.startswith("//../../"),
+                f"Snapshot path expected to start with //../../, got: {path_norm}",
+            )
 
         # --- Step 4: Fork and Verify ---
         with self.subTest(step="4. Fork and Verify"):
@@ -250,14 +269,16 @@ class TestRelativePaths(SavePointsTestCase):
             path_norm = img.filepath.replace("\\", "/")
 
             if path_norm.startswith("//"):
-                self.assertFalse(path_norm.startswith("//../../"), "Path should be unmapped")
+                self.assertFalse(
+                    path_norm.startswith("//../../"), "Path should be unmapped"
+                )
                 self.assertTrue(path_norm.endswith("my_texture.png"))
 
         print("Active User Paths Scenario: Completed")
 
 
-if __name__ == '__main__':
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+if __name__ == "__main__":
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)

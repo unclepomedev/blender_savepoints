@@ -38,39 +38,50 @@ class TestExportZip(SavePointsTestCase):
 
             # Version 1
             bpy.ops.mesh.primitive_cube_add()
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V1")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V1")
 
             # Version 2
             bpy.ops.mesh.primitive_uv_sphere_add()
-            bpy.ops.savepoints.commit('EXEC_DEFAULT', note="V2")
+            bpy.ops.savepoints.commit("EXEC_DEFAULT", note="V2")
 
             # Sanity check: History directory should exist on disk now
             history_dir = self.test_dir / history_dir_name
-            self.assertTrue(history_dir.exists(), "History directory failed to generate during setup")
+            self.assertTrue(
+                history_dir.exists(),
+                "History directory failed to generate during setup",
+            )
 
         # --- Step 2: Execute Export Operator ---
         with self.subTest(step="2. Execute Export"):
             print("Executing Export Operator...")
 
             # Pass filepath explicitly for headless execution
-            res = bpy.ops.savepoints.export_project_zip('EXEC_DEFAULT', filepath=str(output_zip_path))
+            res = bpy.ops.savepoints.export_project_zip(
+                "EXEC_DEFAULT", filepath=str(output_zip_path)
+            )
 
-            self.assertIn('FINISHED', res, "Export operator failed or did not finish")
+            self.assertIn("FINISHED", res, "Export operator failed or did not finish")
             self.assertTrue(output_zip_path.exists(), "Export ZIP file was not created")
 
         # --- Step 3: Verify Zip Content & Compression ---
         with self.subTest(step="3. Verify Zip Content"):
             print("Verifying Zip structure...")
 
-            with zipfile.ZipFile(output_zip_path, 'r') as zf:
+            with zipfile.ZipFile(output_zip_path, "r") as zf:
                 file_list = zf.namelist()
 
                 # 1. Verify Main Blend File
-                self.assertIn("test_project.blend", file_list, "Main blend file missing in zip")
+                self.assertIn(
+                    "test_project.blend", file_list, "Main blend file missing in zip"
+                )
 
                 # 2. Verify Manifest
                 expected_manifest = f"{history_dir_name}/manifest.json"
-                self.assertIn(expected_manifest, file_list, f"Manifest missing in zip: {expected_manifest}")
+                self.assertIn(
+                    expected_manifest,
+                    file_list,
+                    f"Manifest missing in zip: {expected_manifest}",
+                )
 
                 # 3. Verify Snapshot Structure (Loose check for file paths)
                 # We check if path contains 'v001/snapshot' etc.
@@ -86,14 +97,14 @@ class TestExportZip(SavePointsTestCase):
                 self.assertEqual(
                     info.compress_type,
                     zipfile.ZIP_STORED,
-                    f"Compression type is {info.compress_type}, expected ZIP_STORED (0)"
+                    f"Compression type is {info.compress_type}, expected ZIP_STORED (0)",
                 )
 
         print("Export Zip Scenario: Completed")
 
 
 if __name__ == "__main__":
-    result = unittest.main(argv=['first-arg-is-ignored'], exit=False).result
+    result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result
     if not result.wasSuccessful():
         print("\n❌ Tests Failed!")
         sys.exit(1)
