@@ -54,6 +54,10 @@ def create_glb_export_executor(version, object_names, output_dir_raw):
 
     worker_script = get_export_worker_script_path()
 
+    blend_name = "untitled"
+    if bpy.data.filepath:
+        blend_name = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
+
     executor = BatchRenderExecutor(
         tasks=[version],
         temp_dir=temp_dir,
@@ -62,6 +66,7 @@ def create_glb_export_executor(version, object_names, output_dir_raw):
         worker_script_path=worker_script,
         blender_bin=bpy.app.binary_path,
         output_suffix="",  # No suffix, worker adds .glb
+        filename_override=blend_name,
     )
 
     return executor

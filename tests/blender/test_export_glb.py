@@ -1,4 +1,5 @@
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -18,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from savepoints_test_case import SavePointsTestCase
 from savepoints.services.snapshot import find_snapshot_path
+from savepoints.services.export import create_glb_export_executor
 
 
 class TestExportGLB(SavePointsTestCase):
@@ -51,6 +53,23 @@ class TestExportGLB(SavePointsTestCase):
             output_dir = Path(tempfile.mkdtemp())
             self.addCleanup(lambda d=output_dir: shutil.rmtree(d, ignore_errors=True))
 
+            # --- Verify Service Configuration ---
+            # Verify that the service picks up the blend filename
+            executor = create_glb_export_executor(v1, ["MyCube"], str(output_dir))
+            expected_filename = Path(bpy.data.filepath).stem
+            self.assertEqual(
+                executor.filename_override,
+                expected_filename,
+                "Service did not use Blender filename as override",
+            )
+            # Cleanup executor temp
+            if executor.temp_dir and os.path.exists(executor.temp_dir):
+                shutil.rmtree(executor.temp_dir)
+
+            # --- Verify Worker Execution with Custom Name ---
+            # We simulate what the executor would pass (the custom name)
+            custom_name = "MyGameAsset"
+
             # Prepare settings: select "MyCube"
             export_settings = {"target_objects": ["MyCube"]}
 
@@ -76,7 +95,7 @@ class TestExportGLB(SavePointsTestCase):
                 "--",
                 str(settings_path),
                 str(output_dir),
-                v1.version_id,
+                custom_name,  # Passing the custom name here
             ]
 
             print(f"Running command: {cmd}")
@@ -88,8 +107,10 @@ class TestExportGLB(SavePointsTestCase):
             self.assertEqual(result.returncode, 0, "Worker process failed")
 
             # Check output
-            expected_output = output_dir / f"{v1.version_id}.glb"
-            self.assertTrue(expected_output.exists(), "GLB file was not created")
+            expected_output = output_dir / f"{custom_name}.glb"
+            self.assertTrue(
+                expected_output.exists(), "GLB file was not created with custom name"
+            )
 
             # Test missing object warning
             export_settings_missing = {"target_objects": ["NonExistentObject"]}
