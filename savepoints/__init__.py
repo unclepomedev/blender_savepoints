@@ -8,6 +8,7 @@ from bpy.app.handlers import persistent
 from . import hud
 from . import operators_attributes
 from . import operators_core
+from . import operators_export
 from . import operators_io
 from . import operators_object_history
 from . import operators_render
@@ -24,6 +25,7 @@ classes = (
     properties.RetrieveObjectItem,
     properties.SavePointsVersion,
     properties.SavePointsSettings,
+    properties.SavePointsPreferences,
     operators_core.SAVEPOINTS_OT_commit,
     operators_tools.SAVEPOINTS_OT_link_history,
     operators_attributes.SAVEPOINTS_OT_edit_note,
@@ -46,6 +48,7 @@ classes = (
     operators_object_history.SAVEPOINTS_UL_object_history,
     operators_object_history.SAVEPOINTS_OT_show_object_history,
     operators_io.SAVEPOINTS_OT_export_project_zip,
+    operators_export.SAVEPOINTS_OT_export_glb,
     ui.SAVEPOINTS_MT_tag_menu,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,

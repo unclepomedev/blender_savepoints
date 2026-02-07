@@ -276,6 +276,12 @@ def _draw_version_details(layout, settings, context):
             "savepoints.checkout", text="Checkout (Restore)", icon="RECOVER_LAST"
         )
 
+        addon_prefs = context.preferences.addons.get("savepoints")
+        if addon_prefs and addon_prefs.preferences.enable_glb_export:
+            col = layout.column(align=True)
+            col.prop(settings, "glb_export_path")
+            col.operator("savepoints.export_glb", text="Export GLB", icon="EXPORT")
+
 
 def _draw_empty_state(layout):
     box = layout.box()
