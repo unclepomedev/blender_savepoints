@@ -12,7 +12,10 @@ from .bpy_prop_collection import bpy_prop_collection
 from .FunctionNode import FunctionNode
 from .Node import Node
 from .NodeFunctionFormatStringItem import NodeFunctionFormatStringItem
+from .NodeFunctionFormatStringItems import NodeFunctionFormatStringItems
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class FunctionNodeFormatString(FunctionNode):
     type: str
@@ -23,8 +26,8 @@ class FunctionNodeFormatString(FunctionNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -48,7 +51,7 @@ class FunctionNodeFormatString(FunctionNode):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    format_items: bpy_prop_collection['NodeFunctionFormatStringItem']
+    format_items: 'NodeFunctionFormatStringItems'
     active_index: int
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def socket_value_update(self, *args, **kwargs) -> Any: ...

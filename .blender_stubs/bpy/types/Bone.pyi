@@ -12,11 +12,12 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from ._GenericBone import _GenericBone
 from .BoneCollection import BoneCollection
+from .BoneCollectionMemberships import BoneCollectionMemberships
 from .BoneColor import BoneColor
 class Bone(bpy_struct, _GenericBone):
     parent: 'Bone'
     children: bpy_prop_collection['Bone']
-    collections: bpy_prop_collection['BoneCollection']
+    collections: 'BoneCollectionMemberships'
     name: str
     color: 'BoneColor'
     display_type: str

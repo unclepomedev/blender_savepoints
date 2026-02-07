@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .PointCacheItem import PointCacheItem
+from .PointCaches import PointCaches
 class PointCache(bpy_struct):
     frame_start: int
     frame_end: int
@@ -26,4 +27,4 @@ class PointCache(bpy_struct):
     info: str
     use_external: bool
     use_library_path: bool
-    point_caches: bpy_prop_collection['PointCacheItem']
+    point_caches: 'PointCaches'

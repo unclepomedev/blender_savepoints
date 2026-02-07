@@ -12,6 +12,7 @@ from .bpy_prop_collection import bpy_prop_collection
 from .Space import Space
 from .SpreadsheetRowFilter import SpreadsheetRowFilter
 from .SpreadsheetTable import SpreadsheetTable
+from .SpreadsheetTables import SpreadsheetTables
 from .ViewerPath import ViewerPath
 class SpaceSpreadsheet(Space):
     type: str
@@ -29,5 +30,5 @@ class SpaceSpreadsheet(Space):
     geometry_component_type: str
     attribute_domain: str
     object_eval_state: str
-    tables: bpy_prop_collection['SpreadsheetTable']
+    tables: 'SpreadsheetTables'
     row_filters: bpy_prop_collection['SpreadsheetRowFilter']

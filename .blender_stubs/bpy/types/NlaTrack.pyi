@@ -11,8 +11,9 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .NlaStrip import NlaStrip
+from .NlaStrips import NlaStrips
 class NlaTrack(bpy_struct):
-    strips: bpy_prop_collection['NlaStrip']
+    strips: 'NlaStrips'
     is_override_data: bool
     name: str
     active: bool

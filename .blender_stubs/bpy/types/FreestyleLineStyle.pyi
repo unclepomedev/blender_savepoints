@@ -17,10 +17,15 @@ from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .LineStyleAlphaModifier import LineStyleAlphaModifier
+from .LineStyleAlphaModifiers import LineStyleAlphaModifiers
 from .LineStyleColorModifier import LineStyleColorModifier
+from .LineStyleColorModifiers import LineStyleColorModifiers
 from .LineStyleGeometryModifier import LineStyleGeometryModifier
+from .LineStyleGeometryModifiers import LineStyleGeometryModifiers
 from .LineStyleTextureSlot import LineStyleTextureSlot
+from .LineStyleTextureSlots import LineStyleTextureSlots
 from .LineStyleThicknessModifier import LineStyleThicknessModifier
+from .LineStyleThicknessModifiers import LineStyleThicknessModifiers
 from .NodeTree import NodeTree
 from .Texture import Texture
 class FreestyleLineStyle(ID):
@@ -45,7 +50,7 @@ class FreestyleLineStyle(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    texture_slots: bpy_prop_collection['LineStyleTextureSlot']
+    texture_slots: 'LineStyleTextureSlots'
     active_texture: 'Texture'
     active_texture_index: int
     panel: str
@@ -54,10 +59,10 @@ class FreestyleLineStyle(ID):
     thickness: float
     thickness_position: str
     thickness_ratio: float
-    color_modifiers: bpy_prop_collection['LineStyleColorModifier']
-    alpha_modifiers: bpy_prop_collection['LineStyleAlphaModifier']
-    thickness_modifiers: bpy_prop_collection['LineStyleThicknessModifier']
-    geometry_modifiers: bpy_prop_collection['LineStyleGeometryModifier']
+    color_modifiers: 'LineStyleColorModifiers'
+    alpha_modifiers: 'LineStyleAlphaModifiers'
+    thickness_modifiers: 'LineStyleThicknessModifiers'
+    geometry_modifiers: 'LineStyleGeometryModifiers'
     use_chaining: bool
     chaining: str
     rounds: int

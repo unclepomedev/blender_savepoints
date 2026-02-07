@@ -13,6 +13,8 @@ from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
 from .Attribute import Attribute
+from .AttributeGroupPointCloud import AttributeGroupPointCloud
+from .IDMaterials import IDMaterials
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
@@ -42,9 +44,9 @@ class PointCloud(ID):
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
     points: bpy_prop_collection['Point']
-    materials: bpy_prop_collection['Material']
-    attributes: bpy_prop_collection['Attribute']
-    color_attributes: bpy_prop_collection['Attribute']
+    materials: 'IDMaterials'
+    attributes: 'AttributeGroupPointCloud'
+    color_attributes: 'AttributeGroupPointCloud'
     animation_data: 'AnimData'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

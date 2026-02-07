@@ -12,7 +12,9 @@ from .bpy_prop_collection import bpy_prop_collection
 from .CompositorNode import CompositorNode
 from .MovieClip import MovieClip
 from .Node import Node
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class CompositorNodeMovieClip(CompositorNode):
     type: str
@@ -23,8 +25,8 @@ class CompositorNodeMovieClip(CompositorNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str

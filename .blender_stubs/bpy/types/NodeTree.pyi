@@ -19,7 +19,9 @@ from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .Node import Node
 from .NodeLink import NodeLink
+from .NodeLinks import NodeLinks
 from .NodeTreeInterface import NodeTreeInterface
+from .Nodes import Nodes
 class NodeTree(ID):
     name: str
     name_full: str
@@ -47,8 +49,8 @@ class NodeTree(ID):
     view_center: list[float]
     description: str
     animation_data: 'AnimData'
-    nodes: bpy_prop_collection['Node']
-    links: bpy_prop_collection['NodeLink']
+    nodes: 'Nodes'
+    links: 'NodeLinks'
     annotation: 'Annotation'
     type: str
     interface: 'NodeTreeInterface'

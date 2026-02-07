@@ -24,6 +24,7 @@ from .LibraryWeakReference import LibraryWeakReference
 from .Object import Object
 from .ParticleDupliWeight import ParticleDupliWeight
 from .ParticleSettingsTextureSlot import ParticleSettingsTextureSlot
+from .ParticleSettingsTextureSlots import ParticleSettingsTextureSlots
 from .SPHFluidSettings import SPHFluidSettings
 from .Texture import Texture
 class ParticleSettings(ID):
@@ -48,7 +49,7 @@ class ParticleSettings(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    texture_slots: bpy_prop_collection['ParticleSettingsTextureSlot']
+    texture_slots: 'ParticleSettingsTextureSlots'
     active_texture: 'Texture'
     active_texture_index: int
     is_fluid: bool

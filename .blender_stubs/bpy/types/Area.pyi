@@ -10,10 +10,11 @@ from typing import Any, Optional, Union, Sequence, Callable, Iterator
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+from .AreaSpaces import AreaSpaces
 from .Region import Region
 from .Space import Space
 class Area(bpy_struct):
-    spaces: bpy_prop_collection['Space']
+    spaces: 'AreaSpaces'
     regions: bpy_prop_collection['Region']
     show_menus: bool
     type: str

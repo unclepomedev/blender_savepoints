@@ -13,7 +13,9 @@ from .CompositorNode import CompositorNode
 from .ColorManagedDisplaySettings import ColorManagedDisplaySettings
 from .ColorManagedViewSettings import ColorManagedViewSettings
 from .Node import Node
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class CompositorNodeConvertToDisplay(CompositorNode):
     type: str
@@ -24,8 +26,8 @@ class CompositorNodeConvertToDisplay(CompositorNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str

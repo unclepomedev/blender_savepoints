@@ -11,13 +11,14 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ID import ID
+from .IDOverrideLibraryProperties import IDOverrideLibraryProperties
 from .IDOverrideLibraryProperty import IDOverrideLibraryProperty
 class IDOverrideLibrary(bpy_struct):
     reference: 'ID'
     hierarchy_root: 'ID'
     is_in_hierarchy: bool
     is_system_override: bool
-    properties: bpy_prop_collection['IDOverrideLibraryProperty']
+    properties: 'IDOverrideLibraryProperties'
     def operations_update(self, *args, **kwargs) -> Any: ...
     def reset(self, *args, **kwargs) -> Any: ...
     def destroy(self, *args, **kwargs) -> Any: ...

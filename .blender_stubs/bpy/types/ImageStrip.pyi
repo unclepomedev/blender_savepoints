@@ -12,10 +12,13 @@ from .bpy_prop_collection import bpy_prop_collection
 from .Strip import Strip
 from .ColorManagedInputColorspaceSettings import ColorManagedInputColorspaceSettings
 from .RetimingKey import RetimingKey
+from .RetimingKeys import RetimingKeys
 from .Stereo3dFormat import Stereo3dFormat
 from .StripCrop import StripCrop
 from .StripElement import StripElement
+from .StripElements import StripElements
 from .StripModifier import StripModifier
+from .StripModifiers import StripModifiers
 from .StripProxy import StripProxy
 from .StripTransform import StripTransform
 class ImageStrip(Strip):
@@ -40,11 +43,11 @@ class ImageStrip(Strip):
     effect_fader: float
     use_default_fade: bool
     color_tag: str
-    modifiers: bpy_prop_collection['StripModifier']
+    modifiers: 'StripModifiers'
     show_retiming_keys: bool
     directory: str
-    elements: bpy_prop_collection['StripElement']
-    retiming_keys: bpy_prop_collection['RetimingKey']
+    elements: 'StripElements'
+    retiming_keys: 'RetimingKeys'
     use_multiview: bool
     views_format: str
     stereo_3d_format: 'Stereo3dFormat'

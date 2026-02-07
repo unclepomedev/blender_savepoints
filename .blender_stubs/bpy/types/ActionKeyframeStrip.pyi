@@ -11,8 +11,9 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .ActionStrip import ActionStrip
 from .ActionChannelbag import ActionChannelbag
+from .ActionChannelbags import ActionChannelbags
 class ActionKeyframeStrip(ActionStrip):
     type: str
-    channelbags: bpy_prop_collection['ActionChannelbag']
+    channelbags: 'ActionChannelbags'
     def channelbag(self, *args, **kwargs) -> Any: ...
     def key_insert(self, *args, **kwargs) -> Any: ...

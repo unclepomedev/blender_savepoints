@@ -11,9 +11,10 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AnnotationFrame import AnnotationFrame
+from .AnnotationFrames import AnnotationFrames
 class AnnotationLayer(bpy_struct):
     info: str
-    frames: bpy_prop_collection['AnnotationFrame']
+    frames: 'AnnotationFrames'
     active_frame: 'AnnotationFrame'
     annotation_opacity: float
     color: list[float]

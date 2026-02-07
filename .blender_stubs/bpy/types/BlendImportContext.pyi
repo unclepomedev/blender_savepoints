@@ -11,7 +11,8 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .BlendImportContextItem import BlendImportContextItem
+from .BlendImportContextItems import BlendImportContextItems
 class BlendImportContext(bpy_struct):
-    import_items: bpy_prop_collection['BlendImportContextItem']
+    import_items: 'BlendImportContextItems'
     options: set[str]
     process_stage: str

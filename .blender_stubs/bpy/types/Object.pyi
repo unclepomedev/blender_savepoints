@@ -26,10 +26,14 @@ from .Material import Material
 from .MaterialSlot import MaterialSlot
 from .Modifier import Modifier
 from .MotionPath import MotionPath
+from .ObjectConstraints import ObjectConstraints
 from .ObjectDisplay import ObjectDisplay
 from .ObjectLightLinking import ObjectLightLinking
 from .ObjectLineArt import ObjectLineArt
+from .ObjectModifiers import ObjectModifiers
+from .ObjectShaderFx import ObjectShaderFx
 from .ParticleSystem import ParticleSystem
+from .ParticleSystems import ParticleSystems
 from .Pose import Pose
 from .RigidBodyConstraint import RigidBodyConstraint
 from .RigidBodyObject import RigidBodyObject
@@ -37,6 +41,7 @@ from .ShaderFx import ShaderFx
 from .ShapeKey import ShapeKey
 from .SoftBodySettings import SoftBodySettings
 from .VertexGroup import VertexGroup
+from .VertexGroups import VertexGroups
 class Object(ID):
     name: str
     name_full: str
@@ -94,10 +99,10 @@ class Object(ID):
     matrix_local: list[float]
     matrix_basis: list[float]
     matrix_parent_inverse: list[float]
-    modifiers: bpy_prop_collection['Modifier']
-    shader_effects: bpy_prop_collection['ShaderFx']
-    constraints: bpy_prop_collection['Constraint']
-    vertex_groups: bpy_prop_collection['VertexGroup']
+    modifiers: 'ObjectModifiers'
+    shader_effects: 'ObjectShaderFx'
+    constraints: 'ObjectConstraints'
+    vertex_groups: 'VertexGroups'
     empty_display_type: str
     empty_display_size: float
     empty_image_offset: list[float]
@@ -114,7 +119,7 @@ class Object(ID):
     field: 'FieldSettings'
     collision: 'CollisionSettings'
     soft_body: 'SoftBodySettings'
-    particle_systems: bpy_prop_collection['ParticleSystem']
+    particle_systems: 'ParticleSystems'
     rigid_body: 'RigidBodyObject'
     rigid_body_constraint: 'RigidBodyConstraint'
     use_simulation_cache: bool

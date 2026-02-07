@@ -11,7 +11,10 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .ActionLayer import ActionLayer
+from .ActionLayers import ActionLayers
+from .ActionPoseMarkers import ActionPoseMarkers
 from .ActionSlot import ActionSlot
+from .ActionSlots import ActionSlots
 from .AssetMetaData import AssetMetaData
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
@@ -43,9 +46,9 @@ class Action(ID):
     is_empty: bool
     is_action_legacy: bool
     is_action_layered: bool
-    slots: bpy_prop_collection['ActionSlot']
-    layers: bpy_prop_collection['ActionLayer']
-    pose_markers: bpy_prop_collection['TimelineMarker']
+    slots: 'ActionSlots'
+    layers: 'ActionLayers'
+    pose_markers: 'ActionPoseMarkers'
     use_frame_range: bool
     use_cyclic: bool
     frame_start: float

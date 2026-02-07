@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Gizmo import Gizmo
+from .Gizmos import Gizmos
 class GizmoGroup(bpy_struct):
     bl_idname: str
     bl_label: str
@@ -19,7 +20,7 @@ class GizmoGroup(bpy_struct):
     bl_owner_id: str
     bl_options: set[str]
     name: str
-    gizmos: bpy_prop_collection['Gizmo']
+    gizmos: 'Gizmos'
     def poll(self, *args, **kwargs) -> Any: ...
     def setup_keymap(self, *args, **kwargs) -> Any: ...
     def setup(self, *args, **kwargs) -> Any: ...

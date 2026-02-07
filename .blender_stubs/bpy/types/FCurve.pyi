@@ -12,6 +12,8 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .ActionGroup import ActionGroup
 from .Driver import Driver
+from .FCurveKeyframePoints import FCurveKeyframePoints
+from .FCurveModifiers import FCurveModifiers
 from .FCurveSample import FCurveSample
 from .FModifier import FModifier
 from .Keyframe import Keyframe
@@ -31,8 +33,8 @@ class FCurve(bpy_struct):
     is_valid: bool
     is_empty: bool
     sampled_points: bpy_prop_collection['FCurveSample']
-    keyframe_points: bpy_prop_collection['Keyframe']
-    modifiers: bpy_prop_collection['FModifier']
+    keyframe_points: 'FCurveKeyframePoints'
+    modifiers: 'FCurveModifiers'
     def evaluate(self, *args, **kwargs) -> Any: ...
     def update(self, *args, **kwargs) -> Any: ...
     def range(self, *args, **kwargs) -> Any: ...

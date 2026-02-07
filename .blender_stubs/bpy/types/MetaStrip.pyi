@@ -13,8 +13,10 @@ from .Strip import Strip
 from .SequenceTimelineChannel import SequenceTimelineChannel
 from .StripCrop import StripCrop
 from .StripModifier import StripModifier
+from .StripModifiers import StripModifiers
 from .StripProxy import StripProxy
 from .StripTransform import StripTransform
+from .StripsMeta import StripsMeta
 class MetaStrip(Strip):
     name: str
     type: str
@@ -37,9 +39,9 @@ class MetaStrip(Strip):
     effect_fader: float
     use_default_fade: bool
     color_tag: str
-    modifiers: bpy_prop_collection['StripModifier']
+    modifiers: 'StripModifiers'
     show_retiming_keys: bool
-    strips: bpy_prop_collection['Strip']
+    strips: 'StripsMeta'
     channels: bpy_prop_collection['SequenceTimelineChannel']
     use_deinterlace: bool
     alpha_mode: str

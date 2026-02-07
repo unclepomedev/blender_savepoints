@@ -11,8 +11,11 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .GeometryNode import GeometryNode
 from .GeometryNodeFieldToGridItem import GeometryNodeFieldToGridItem
+from .GeometryNodeFieldToGridItems import GeometryNodeFieldToGridItems
 from .Node import Node
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 from .RepeatItem import RepeatItem
 class GeometryNodeFieldToGrid(GeometryNode):
@@ -24,8 +27,8 @@ class GeometryNodeFieldToGrid(GeometryNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -49,7 +52,7 @@ class GeometryNodeFieldToGrid(GeometryNode):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    grid_items: bpy_prop_collection['GeometryNodeFieldToGridItem']
+    grid_items: 'GeometryNodeFieldToGridItems'
     active_index: int
     active_item: 'RepeatItem'
     data_type: str

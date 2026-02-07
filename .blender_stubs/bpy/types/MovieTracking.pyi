@@ -13,18 +13,21 @@ from .bpy_struct import bpy_struct
 from .MovieTrackingCamera import MovieTrackingCamera
 from .MovieTrackingDopesheet import MovieTrackingDopesheet
 from .MovieTrackingObject import MovieTrackingObject
+from .MovieTrackingObjects import MovieTrackingObjects
 from .MovieTrackingPlaneTrack import MovieTrackingPlaneTrack
+from .MovieTrackingPlaneTracks import MovieTrackingPlaneTracks
 from .MovieTrackingReconstruction import MovieTrackingReconstruction
 from .MovieTrackingSettings import MovieTrackingSettings
 from .MovieTrackingStabilization import MovieTrackingStabilization
 from .MovieTrackingTrack import MovieTrackingTrack
+from .MovieTrackingTracks import MovieTrackingTracks
 class MovieTracking(bpy_struct):
     settings: 'MovieTrackingSettings'
     camera: 'MovieTrackingCamera'
-    tracks: bpy_prop_collection['MovieTrackingTrack']
-    plane_tracks: bpy_prop_collection['MovieTrackingPlaneTrack']
+    tracks: 'MovieTrackingTracks'
+    plane_tracks: 'MovieTrackingPlaneTracks'
     stabilization: 'MovieTrackingStabilization'
     reconstruction: 'MovieTrackingReconstruction'
-    objects: bpy_prop_collection['MovieTrackingObject']
+    objects: 'MovieTrackingObjects'
     active_object_index: int
     dopesheet: 'MovieTrackingDopesheet'

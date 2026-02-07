@@ -13,10 +13,12 @@ from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
 from .Attribute import Attribute
+from .AttributeGroupCurves import AttributeGroupCurves
 from .CurvePoint import CurvePoint
 from .CurveSlice import CurveSlice
 from .FloatVectorAttributeValue import FloatVectorAttributeValue
 from .FloatVectorValueReadOnly import FloatVectorValueReadOnly
+from .IDMaterials import IDMaterials
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .IntAttributeValue import IntAttributeValue
@@ -51,7 +53,7 @@ class Curves(ID):
     position_data: bpy_prop_collection['FloatVectorAttributeValue']
     curve_offset_data: bpy_prop_collection['IntAttributeValue']
     normals: bpy_prop_collection['FloatVectorValueReadOnly']
-    materials: bpy_prop_collection['Material']
+    materials: 'IDMaterials'
     surface: 'Object'
     surface_uv_map: str
     use_mirror_x: bool
@@ -60,8 +62,8 @@ class Curves(ID):
     selection_domain: str
     use_sculpt_collision: bool
     surface_collision_distance: float
-    attributes: bpy_prop_collection['Attribute']
-    color_attributes: bpy_prop_collection['Attribute']
+    attributes: 'AttributeGroupCurves'
+    color_attributes: 'AttributeGroupCurves'
     animation_data: 'AnimData'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

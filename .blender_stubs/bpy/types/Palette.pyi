@@ -16,6 +16,7 @@ from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .PaletteColor import PaletteColor
+from .PaletteColors import PaletteColors
 class Palette(ID):
     name: str
     name_full: str
@@ -38,7 +39,7 @@ class Palette(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    colors: bpy_prop_collection['PaletteColor']
+    colors: 'PaletteColors'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

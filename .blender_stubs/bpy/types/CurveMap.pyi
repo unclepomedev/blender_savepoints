@@ -11,5 +11,6 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMapPoint import CurveMapPoint
+from .CurveMapPoints import CurveMapPoints
 class CurveMap(bpy_struct):
-    points: bpy_prop_collection['CurveMapPoint']
+    points: 'CurveMapPoints'

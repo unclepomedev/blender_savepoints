@@ -13,7 +13,9 @@ from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
 from .CacheFileLayer import CacheFileLayer
+from .CacheFileLayers import CacheFileLayers
 from .CacheObjectPath import CacheObjectPath
+from .CacheObjectPaths import CacheObjectPaths
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
@@ -48,10 +50,10 @@ class CacheFile(ID):
     forward_axis: str
     up_axis: str
     scale: float
-    object_paths: bpy_prop_collection['CacheObjectPath']
+    object_paths: 'CacheObjectPaths'
     velocity_name: str
     velocity_unit: str
-    layers: bpy_prop_collection['CacheFileLayer']
+    layers: 'CacheFileLayers'
     active_index: int
     animation_data: 'AnimData'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

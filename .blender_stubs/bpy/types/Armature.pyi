@@ -11,9 +11,12 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
+from .ArmatureBones import ArmatureBones
+from .ArmatureEditBones import ArmatureEditBones
 from .AssetMetaData import AssetMetaData
 from .Bone import Bone
 from .BoneCollection import BoneCollection
+from .BoneCollections import BoneCollections
 from .EditBone import EditBone
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
@@ -42,9 +45,9 @@ class Armature(ID):
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
     animation_data: 'AnimData'
-    bones: bpy_prop_collection['Bone']
-    edit_bones: bpy_prop_collection['EditBone']
-    collections: bpy_prop_collection['BoneCollection']
+    bones: 'ArmatureBones'
+    edit_bones: 'ArmatureEditBones'
+    collections: 'BoneCollections'
     collections_all: bpy_prop_collection['BoneCollection']
     pose_position: str
     display_type: str

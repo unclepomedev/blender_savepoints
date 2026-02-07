@@ -11,7 +11,8 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .XrActionMapItem import XrActionMapItem
+from .XrActionMapItems import XrActionMapItems
 class XrActionMap(bpy_struct):
     name: str
-    actionmap_items: bpy_prop_collection['XrActionMapItem']
+    actionmap_items: 'XrActionMapItems'
     selected_item: int

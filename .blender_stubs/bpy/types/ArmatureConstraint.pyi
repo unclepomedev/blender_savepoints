@@ -10,6 +10,7 @@ from typing import Any, Optional, Union, Sequence, Callable, Iterator
 from .bpy_prop_collection import bpy_prop_collection
 
 from .Constraint import Constraint
+from .ArmatureConstraintTargets import ArmatureConstraintTargets
 from .ConstraintTargetBone import ConstraintTargetBone
 from .Object import Object
 class ArmatureConstraint(Constraint):
@@ -28,7 +29,7 @@ class ArmatureConstraint(Constraint):
     influence: float
     error_location: float
     error_rotation: float
-    targets: bpy_prop_collection['ConstraintTargetBone']
+    targets: 'ArmatureConstraintTargets'
     use_deform_preserve_volume: bool
     use_bone_envelopes: bool
     use_current_location: bool

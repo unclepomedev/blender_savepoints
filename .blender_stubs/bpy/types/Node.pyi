@@ -10,7 +10,9 @@ from typing import Any, Optional, Union, Sequence, Callable, Iterator
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class Node(bpy_struct):
     type: str
@@ -21,8 +23,8 @@ class Node(bpy_struct):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str

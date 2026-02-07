@@ -12,7 +12,10 @@ from .bpy_prop_collection import bpy_prop_collection
 from .GeometryNode import GeometryNode
 from .Node import Node
 from .NodeGeometryBakeItem import NodeGeometryBakeItem
+from .NodeGeometryBakeItems import NodeGeometryBakeItems
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 from .RepeatItem import RepeatItem
 class GeometryNodeBake(GeometryNode):
@@ -24,8 +27,8 @@ class GeometryNodeBake(GeometryNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -49,7 +52,7 @@ class GeometryNodeBake(GeometryNode):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    bake_items: bpy_prop_collection['NodeGeometryBakeItem']
+    bake_items: 'NodeGeometryBakeItems'
     active_index: int
     active_item: 'RepeatItem'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

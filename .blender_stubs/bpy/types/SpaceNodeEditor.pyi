@@ -13,6 +13,7 @@ from .Space import Space
 from .ID import ID
 from .NodeTree import NodeTree
 from .NodeTreePath import NodeTreePath
+from .SpaceNodeEditorPath import SpaceNodeEditorPath
 from .SpaceNodeOverlay import SpaceNodeOverlay
 class SpaceNodeEditor(Space):
     type: str
@@ -27,7 +28,7 @@ class SpaceNodeEditor(Space):
     node_tree_sub_type: str
     id: 'ID'
     id_from: 'ID'
-    path: bpy_prop_collection['NodeTreePath']
+    path: 'SpaceNodeEditorPath'
     node_tree: 'NodeTree'
     edit_tree: 'NodeTree'
     pin: bool

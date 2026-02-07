@@ -11,10 +11,12 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .BezierSplinePoint import BezierSplinePoint
+from .SplineBezierPoints import SplineBezierPoints
 from .SplinePoint import SplinePoint
+from .SplinePoints import SplinePoints
 class Spline(bpy_struct):
-    points: bpy_prop_collection['SplinePoint']
-    bezier_points: bpy_prop_collection['BezierSplinePoint']
+    points: 'SplinePoints'
+    bezier_points: 'SplineBezierPoints'
     tilt_interpolation: str
     radius_interpolation: str
     type: str

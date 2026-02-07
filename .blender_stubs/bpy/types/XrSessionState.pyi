@@ -11,13 +11,14 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .XrActionMap import XrActionMap
+from .XrActionMaps import XrActionMaps
 class XrSessionState(bpy_struct):
     viewer_pose_location: list[float]
     viewer_pose_rotation: list[float]
     navigation_location: list[float]
     navigation_rotation: list[float]
     navigation_scale: float
-    actionmaps: bpy_prop_collection['XrActionMap']
+    actionmaps: 'XrActionMaps'
     active_actionmap: int
     selected_actionmap: int
     def is_running(self, *args, **kwargs) -> Any: ...

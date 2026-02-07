@@ -178,6 +178,29 @@ class Context:
     def temp_override(*args, **kwargs) -> Any: ...
     def type_recast(*args, **kwargs) -> Any: ...
     def values(*args, **kwargs) -> Any: ...
+    # --- Injected Methods ---
+    selected_objects: list[Any]
+    active_object: Any
+    view_layer: Any
+    scene: Any
+    screen: Any
+    area: Any
+    region: Any
+    window: Any
+    window_manager: Any
+    preferences: Any
+    def temp_override(self, window=None, area=None, region=None, **kwargs) -> Any:
+        """
+        **⚠️ Warning (Stub)**:
+        This method is provided by the IDE plugin.
+        """
+        ...
+    def __getattr__(self, name) -> Any:
+        """
+        **⚠️ Warning (Stub)**:
+        This method is provided by the IDE plugin.
+        """
+        ...
 
 FCurveKey: Any
 Iterable: Any
@@ -292,6 +315,14 @@ class Object:
     users_collection: Any
     users_scene: Any
     def values(*args, **kwargs) -> Any: ...
+    # --- Injected Methods ---
+    def select_set(self, state: bool) -> None: ...
+    def select_get(self) -> bool: ...
+    def hide_set(self, state: bool) -> None: ...
+    def hide_get(self) -> bool: ...
+    def hide_viewport_set(self, state: bool) -> None: ...
+    def hide_render_set(self, state: bool) -> None: ...
+    def temp_override(self, window=None, area=None, region=None, **kwargs) -> Any: ...
 
 Optional: Any
 class PoseBone:

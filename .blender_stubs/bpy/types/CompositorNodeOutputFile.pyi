@@ -13,7 +13,10 @@ from .CompositorNode import CompositorNode
 from .ImageFormatSettings import ImageFormatSettings
 from .Node import Node
 from .NodeCompositorFileOutputItem import NodeCompositorFileOutputItem
+from .NodeCompositorFileOutputItems import NodeCompositorFileOutputItems
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class CompositorNodeOutputFile(CompositorNode):
     type: str
@@ -24,8 +27,8 @@ class CompositorNodeOutputFile(CompositorNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -49,7 +52,7 @@ class CompositorNodeOutputFile(CompositorNode):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    file_output_items: bpy_prop_collection['NodeCompositorFileOutputItem']
+    file_output_items: 'NodeCompositorFileOutputItems'
     active_item_index: int
     directory: str
     file_name: str

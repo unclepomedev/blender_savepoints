@@ -11,7 +11,8 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MovieReconstructedCamera import MovieReconstructedCamera
+from .MovieTrackingReconstructedCameras import MovieTrackingReconstructedCameras
 class MovieTrackingReconstruction(bpy_struct):
     is_valid: bool
     average_error: float
-    cameras: bpy_prop_collection['MovieReconstructedCamera']
+    cameras: 'MovieTrackingReconstructedCameras'

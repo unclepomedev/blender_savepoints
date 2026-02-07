@@ -11,8 +11,11 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .NodeInternal import NodeInternal
 from .Node import Node
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSeparateBundleItem import NodeSeparateBundleItem
+from .NodeSeparateBundleItems import NodeSeparateBundleItems
 from .NodeSocket import NodeSocket
 class NodeSeparateBundle(NodeInternal):
     type: str
@@ -23,8 +26,8 @@ class NodeSeparateBundle(NodeInternal):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -48,7 +51,7 @@ class NodeSeparateBundle(NodeInternal):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    bundle_items: bpy_prop_collection['NodeSeparateBundleItem']
+    bundle_items: 'NodeSeparateBundleItems'
     active_index: int
     define_signature: bool
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

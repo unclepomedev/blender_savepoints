@@ -11,12 +11,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveProfilePoint import CurveProfilePoint
+from .CurveProfilePoints import CurveProfilePoints
 class CurveProfile(bpy_struct):
     preset: str
     use_clip: bool
     use_sample_straight_edges: bool
     use_sample_even_lengths: bool
-    points: bpy_prop_collection['CurveProfilePoint']
+    points: 'CurveProfilePoints'
     segments: bpy_prop_collection['CurveProfilePoint']
     def update(self, *args, **kwargs) -> Any: ...
     def reset_view(self, *args, **kwargs) -> Any: ...

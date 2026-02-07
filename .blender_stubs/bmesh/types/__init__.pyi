@@ -58,6 +58,9 @@ class BMEdge:
     smooth: Any
     tag: Any
     verts: Any
+    # --- Injected Methods ---
+    def __getitem__(self, key: 'BMLayerItem') -> Any: ...
+    def __setitem__(self, key: 'BMLayerItem', value: Any) -> None: ...
 
 class BMEdgeSeq:
     """
@@ -144,6 +147,9 @@ class BMFace:
     uv_select: Any
     def uv_select_set(*args, **kwargs) -> Any: ...
     verts: Any
+    # --- Injected Methods ---
+    def __getitem__(self, key: 'BMLayerItem') -> Any: ...
+    def __setitem__(self, key: 'BMLayerItem', value: Any) -> None: ...
 
 class BMFaceSeq:
     """
@@ -296,6 +302,9 @@ class BMLoop:
     uv_select_vert: Any
     def uv_select_vert_set(*args, **kwargs) -> Any: ...
     vert: Any
+    # --- Injected Methods ---
+    def __getitem__(self, key: 'BMLayerItem') -> Any: ...
+    def __setitem__(self, key: 'BMLayerItem', value: Any) -> None: ...
 
 class BMLoopSeq:
     """
@@ -343,6 +352,9 @@ class BMVert:
     select: Any
     def select_set(*args, **kwargs) -> Any: ...
     tag: Any
+    # --- Injected Methods ---
+    def __getitem__(self, key: 'BMLayerItem') -> Any: ...
+    def __setitem__(self, key: 'BMLayerItem', value: Any) -> None: ...
 
 class BMVertSeq:
     """

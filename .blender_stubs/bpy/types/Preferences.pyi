@@ -11,7 +11,9 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Addon import Addon
+from .Addons import Addons
 from .PathCompare import PathCompare
+from .PathCompareCollection import PathCompareCollection
 from .PreferencesApps import PreferencesApps
 from .PreferencesEdit import PreferencesEdit
 from .PreferencesExperimental import PreferencesExperimental
@@ -22,6 +24,7 @@ from .PreferencesKeymap import PreferencesKeymap
 from .PreferencesSystem import PreferencesSystem
 from .PreferencesView import PreferencesView
 from .StudioLight import StudioLight
+from .StudioLights import StudioLights
 from .Theme import Theme
 from .ThemeStyle import ThemeStyle
 class Preferences(bpy_struct):
@@ -29,8 +32,8 @@ class Preferences(bpy_struct):
     app_template: str
     themes: bpy_prop_collection['Theme']
     ui_styles: bpy_prop_collection['ThemeStyle']
-    addons: bpy_prop_collection['Addon']
-    autoexec_paths: bpy_prop_collection['PathCompare']
+    addons: 'Addons'
+    autoexec_paths: 'PathCompareCollection'
     use_recent_searches: bool
     view: 'PreferencesView'
     edit: 'PreferencesEdit'
@@ -42,6 +45,6 @@ class Preferences(bpy_struct):
     apps: 'PreferencesApps'
     experimental: 'PreferencesExperimental'
     version: list[int]
-    studio_lights: bpy_prop_collection['StudioLight']
+    studio_lights: 'StudioLights'
     use_preferences_save: bool
     is_dirty: bool

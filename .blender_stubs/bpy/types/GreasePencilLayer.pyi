@@ -11,8 +11,10 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .GreasePencilTreeNode import GreasePencilTreeNode
 from .GreasePencilFrame import GreasePencilFrame
+from .GreasePencilFrames import GreasePencilFrames
 from .GreasePencilLayerGroup import GreasePencilLayerGroup
 from .GreasePencilLayerMask import GreasePencilLayerMask
+from .GreasePencilLayerMasks import GreasePencilLayerMasks
 from .Object import Object
 class GreasePencilLayer(GreasePencilTreeNode):
     name: str
@@ -25,8 +27,8 @@ class GreasePencilLayer(GreasePencilTreeNode):
     next_node: 'GreasePencilTreeNode'
     prev_node: 'GreasePencilTreeNode'
     parent_group: 'GreasePencilLayerGroup'
-    frames: bpy_prop_collection['GreasePencilFrame']
-    mask_layers: bpy_prop_collection['GreasePencilLayerMask']
+    frames: 'GreasePencilFrames'
+    mask_layers: 'GreasePencilLayerMasks'
     lock_frame: bool
     opacity: float
     tint_color: list[float]

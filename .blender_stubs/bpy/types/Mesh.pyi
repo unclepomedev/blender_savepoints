@@ -13,22 +13,31 @@ from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
 from .Attribute import Attribute
+from .AttributeGroupMesh import AttributeGroupMesh
+from .IDMaterials import IDMaterials
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Key import Key
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
+from .LoopColors import LoopColors
 from .Material import Material
 from .MeshEdge import MeshEdge
+from .MeshEdges import MeshEdges
 from .MeshLoop import MeshLoop
 from .MeshLoopColorLayer import MeshLoopColorLayer
 from .MeshLoopTriangle import MeshLoopTriangle
+from .MeshLoopTriangles import MeshLoopTriangles
+from .MeshLoops import MeshLoops
 from .MeshNormalValue import MeshNormalValue
 from .MeshPolygon import MeshPolygon
+from .MeshPolygons import MeshPolygons
 from .MeshSkinVertexLayer import MeshSkinVertexLayer
 from .MeshUVLoopLayer import MeshUVLoopLayer
 from .MeshVertex import MeshVertex
+from .MeshVertices import MeshVertices
 from .ReadOnlyInteger import ReadOnlyInteger
+from .UVLoopLayers import UVLoopLayers
 class Mesh(ID):
     name: str
     name_full: str
@@ -51,26 +60,26 @@ class Mesh(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    vertices: bpy_prop_collection['MeshVertex']
-    edges: bpy_prop_collection['MeshEdge']
-    loops: bpy_prop_collection['MeshLoop']
-    polygons: bpy_prop_collection['MeshPolygon']
+    vertices: 'MeshVertices'
+    edges: 'MeshEdges'
+    loops: 'MeshLoops'
+    polygons: 'MeshPolygons'
     normals_domain: str
     vertex_normals: bpy_prop_collection['MeshNormalValue']
     polygon_normals: bpy_prop_collection['MeshNormalValue']
     corner_normals: bpy_prop_collection['MeshNormalValue']
-    loop_triangles: bpy_prop_collection['MeshLoopTriangle']
+    loop_triangles: 'MeshLoopTriangles'
     loop_triangle_polygons: bpy_prop_collection['ReadOnlyInteger']
     texture_mesh: 'Mesh'
-    uv_layers: bpy_prop_collection['MeshUVLoopLayer']
+    uv_layers: 'UVLoopLayers'
     uv_layer_clone: 'MeshUVLoopLayer'
     uv_layer_clone_index: int
     uv_layer_stencil: 'MeshUVLoopLayer'
     uv_layer_stencil_index: int
-    vertex_colors: bpy_prop_collection['MeshLoopColorLayer']
+    vertex_colors: 'LoopColors'
     skin_vertices: bpy_prop_collection['MeshSkinVertexLayer']
-    attributes: bpy_prop_collection['Attribute']
-    color_attributes: bpy_prop_collection['Attribute']
+    attributes: 'AttributeGroupMesh'
+    color_attributes: 'AttributeGroupMesh'
     remesh_voxel_size: float
     remesh_voxel_adaptivity: float
     use_remesh_fix_poles: bool
@@ -98,7 +107,7 @@ class Mesh(ID):
     auto_texspace: bool
     texspace_location: list[float]
     texspace_size: list[float]
-    materials: bpy_prop_collection['Material']
+    materials: 'IDMaterials'
     cycles: 'CyclesMeshSettings'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

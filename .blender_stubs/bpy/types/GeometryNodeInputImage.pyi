@@ -12,7 +12,9 @@ from .bpy_prop_collection import bpy_prop_collection
 from .GeometryNode import GeometryNode
 from .Image import Image
 from .Node import Node
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class GeometryNodeInputImage(GeometryNode):
     type: str
@@ -23,8 +25,8 @@ class GeometryNodeInputImage(GeometryNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str

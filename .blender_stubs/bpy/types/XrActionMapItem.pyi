@@ -12,11 +12,13 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .OperatorProperties import OperatorProperties
 from .XrActionMapBinding import XrActionMapBinding
+from .XrActionMapBindings import XrActionMapBindings
 from .XrUserPath import XrUserPath
+from .XrUserPaths import XrUserPaths
 class XrActionMapItem(bpy_struct):
     name: str
     type: str
-    user_paths: bpy_prop_collection['XrUserPath']
+    user_paths: 'XrUserPaths'
     op: str
     op_name: str
     op_properties: 'OperatorProperties'
@@ -30,5 +32,5 @@ class XrActionMapItem(bpy_struct):
     haptic_frequency: float
     haptic_amplitude: float
     haptic_mode: str
-    bindings: bpy_prop_collection['XrActionMapBinding']
+    bindings: 'XrActionMapBindings'
     selected_binding: int

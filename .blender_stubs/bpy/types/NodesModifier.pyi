@@ -12,7 +12,9 @@ from .bpy_prop_collection import bpy_prop_collection
 from .Modifier import Modifier
 from .NodeTree import NodeTree
 from .NodesModifierBake import NodesModifierBake
+from .NodesModifierBakes import NodesModifierBakes
 from .NodesModifierPanel import NodesModifierPanel
+from .NodesModifierPanels import NodesModifierPanels
 from .NodesModifierWarning import NodesModifierWarning
 class NodesModifier(Modifier):
     name: str
@@ -31,8 +33,8 @@ class NodesModifier(Modifier):
     node_group: 'NodeTree'
     bake_directory: str
     bake_target: str
-    bakes: bpy_prop_collection['NodesModifierBake']
-    panels: bpy_prop_collection['NodesModifierPanel']
+    bakes: 'NodesModifierBakes'
+    panels: 'NodesModifierPanels'
     show_group_selector: bool
     show_manage_panel: bool
     node_warnings: bpy_prop_collection['NodesModifierWarning']

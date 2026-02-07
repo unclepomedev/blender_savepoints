@@ -12,7 +12,10 @@ from .bpy_prop_collection import bpy_prop_collection
 from .GeometryNode import GeometryNode
 from .Node import Node
 from .NodeEnumItem import NodeEnumItem
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeMenuSwitchItems import NodeMenuSwitchItems
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class GeometryNodeMenuSwitch(GeometryNode):
     type: str
@@ -23,8 +26,8 @@ class GeometryNodeMenuSwitch(GeometryNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -48,7 +51,7 @@ class GeometryNodeMenuSwitch(GeometryNode):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    enum_items: bpy_prop_collection['NodeEnumItem']
+    enum_items: 'NodeMenuSwitchItems'
     active_index: int
     active_item: 'NodeEnumItem'
     enum_definition: 'Node'

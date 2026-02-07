@@ -13,6 +13,7 @@ from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
 from .CameraBackgroundImage import CameraBackgroundImage
+from .CameraBackgroundImages import CameraBackgroundImages
 from .CameraDOFSettings import CameraDOFSettings
 from .CameraStereoData import CameraStereoData
 from .IDOverrideLibrary import IDOverrideLibrary
@@ -99,7 +100,7 @@ class Camera(ID):
     custom_bytecode: str
     custom_bytecode_hash: str
     dof: 'CameraDOFSettings'
-    background_images: bpy_prop_collection['CameraBackgroundImage']
+    background_images: 'CameraBackgroundImages'
     animation_data: 'AnimData'
     cycles_custom: 'CyclesCustomCameraSettings'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

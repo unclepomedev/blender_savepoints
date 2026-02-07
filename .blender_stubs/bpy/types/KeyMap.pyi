@@ -12,12 +12,13 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .EnumPropertyItem import EnumPropertyItem
 from .KeyMapItem import KeyMapItem
+from .KeyMapItems import KeyMapItems
 class KeyMap(bpy_struct):
     name: str
     bl_owner_id: str
     space_type: str
     region_type: str
-    keymap_items: bpy_prop_collection['KeyMapItem']
+    keymap_items: 'KeyMapItems'
     is_user_modified: bool
     is_modal: bool
     show_expanded_items: bool

@@ -21,6 +21,8 @@ from .DisplaySafeAreas import DisplaySafeAreas
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .KeyingSet import KeyingSet
+from .KeyingSets import KeyingSets
+from .KeyingSetsAll import KeyingSetsAll
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .MovieClip import MovieClip
@@ -32,13 +34,16 @@ from .SceneDisplay import SceneDisplay
 from .SceneEEVEE import SceneEEVEE
 from .SceneGpencil import SceneGpencil
 from .SceneHydra import SceneHydra
+from .SceneObjects import SceneObjects
 from .SequenceEditor import SequenceEditor
 from .TimelineMarker import TimelineMarker
+from .TimelineMarkers import TimelineMarkers
 from .ToolSettings import ToolSettings
 from .TransformOrientationSlot import TransformOrientationSlot
 from .UnitSettings import UnitSettings
 from .View3DCursor import View3DCursor
 from .ViewLayer import ViewLayer
+from .ViewLayers import ViewLayers
 from .World import World
 class Scene(ID):
     name: str
@@ -65,7 +70,7 @@ class Scene(ID):
     camera: 'Object'
     background_set: 'Scene'
     world: 'World'
-    objects: bpy_prop_collection['Object']
+    objects: 'SceneObjects'
     frame_current: int
     frame_subframe: float
     frame_float: float
@@ -91,8 +96,8 @@ class Scene(ID):
     compositing_node_group: 'NodeTree'
     use_nodes: bool
     sequence_editor: 'SequenceEditor'
-    keying_sets: bpy_prop_collection['KeyingSet']
-    keying_sets_all: bpy_prop_collection['KeyingSet']
+    keying_sets: 'KeyingSets'
+    keying_sets_all: 'KeyingSetsAll'
     rigidbody_world: 'RigidBodyWorld'
     tool_settings: 'ToolSettings'
     unit_settings: 'UnitSettings'
@@ -100,7 +105,7 @@ class Scene(ID):
     use_gravity: bool
     render: 'RenderSettings'
     safe_areas: 'DisplaySafeAreas'
-    timeline_markers: bpy_prop_collection['TimelineMarker']
+    timeline_markers: 'TimelineMarkers'
     transform_orientation_slots: bpy_prop_collection['TransformOrientationSlot']
     cursor: 'View3DCursor'
     use_audio: bool
@@ -114,7 +119,7 @@ class Scene(ID):
     view_settings: 'ColorManagedViewSettings'
     display_settings: 'ColorManagedDisplaySettings'
     sequencer_colorspace_settings: 'ColorManagedSequencerColorspaceSettings'
-    view_layers: bpy_prop_collection['ViewLayer']
+    view_layers: 'ViewLayers'
     collection: 'Collection'
     display: 'SceneDisplay'
     eevee: 'SceneEEVEE'

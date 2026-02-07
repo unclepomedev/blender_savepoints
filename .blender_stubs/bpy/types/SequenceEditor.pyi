@@ -12,8 +12,9 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .SequenceTimelineChannel import SequenceTimelineChannel
 from .Strip import Strip
+from .StripsTopLevel import StripsTopLevel
 class SequenceEditor(bpy_struct):
-    strips: bpy_prop_collection['Strip']
+    strips: 'StripsTopLevel'
     strips_all: bpy_prop_collection['Strip']
     meta_stack: bpy_prop_collection['Strip']
     channels: bpy_prop_collection['SequenceTimelineChannel']

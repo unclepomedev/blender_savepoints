@@ -13,6 +13,7 @@ from .Strip import Strip
 from .MovieClip import MovieClip
 from .StripCrop import StripCrop
 from .StripModifier import StripModifier
+from .StripModifiers import StripModifiers
 from .StripTransform import StripTransform
 class MovieClipStrip(Strip):
     name: str
@@ -36,7 +37,7 @@ class MovieClipStrip(Strip):
     effect_fader: float
     use_default_fade: bool
     color_tag: str
-    modifiers: bpy_prop_collection['StripModifier']
+    modifiers: 'StripModifiers'
     show_retiming_keys: bool
     clip: 'MovieClip'
     undistort: bool

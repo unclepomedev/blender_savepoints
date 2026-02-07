@@ -12,8 +12,9 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .KeyConfigPreferences import KeyConfigPreferences
 from .KeyMap import KeyMap
+from .KeyMaps import KeyMaps
 class KeyConfig(bpy_struct):
     name: str
-    keymaps: bpy_prop_collection['KeyMap']
+    keymaps: 'KeyMaps'
     is_user_defined: bool
     preferences: 'KeyConfigPreferences'

@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .RenderPass import RenderPass
+from .RenderPasses import RenderPasses
 class RenderLayer(bpy_struct):
     name: str
     use_solid: bool
@@ -45,5 +46,5 @@ class RenderLayer(bpy_struct):
     use_pass_subsurface_direct: bool
     use_pass_subsurface_indirect: bool
     use_pass_subsurface_color: bool
-    passes: bpy_prop_collection['RenderPass']
+    passes: 'RenderPasses'
     def load_from_file(self, *args, **kwargs) -> Any: ...

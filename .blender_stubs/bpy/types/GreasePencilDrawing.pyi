@@ -11,13 +11,14 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Attribute import Attribute
+from .AttributeGroupGreasePencilDrawing import AttributeGroupGreasePencilDrawing
 from .IntAttributeValue import IntAttributeValue
 class GreasePencilDrawing(bpy_struct):
     type: str
     user_count: int
     curve_offsets: bpy_prop_collection['IntAttributeValue']
-    attributes: bpy_prop_collection['Attribute']
-    color_attributes: bpy_prop_collection['Attribute']
+    attributes: 'AttributeGroupGreasePencilDrawing'
+    color_attributes: 'AttributeGroupGreasePencilDrawing'
     def add_strokes(self, *args, **kwargs) -> Any: ...
     def remove_strokes(self, *args, **kwargs) -> Any: ...
     def resize_strokes(self, *args, **kwargs) -> Any: ...

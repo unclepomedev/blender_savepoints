@@ -11,8 +11,10 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .Strip import Strip
 from .RetimingKey import RetimingKey
+from .RetimingKeys import RetimingKeys
 from .Sound import Sound
 from .StripModifier import StripModifier
+from .StripModifiers import StripModifiers
 class SoundStrip(Strip):
     name: str
     type: str
@@ -35,7 +37,7 @@ class SoundStrip(Strip):
     effect_fader: float
     use_default_fade: bool
     color_tag: str
-    modifiers: bpy_prop_collection['StripModifier']
+    modifiers: 'StripModifiers'
     show_retiming_keys: bool
     sound: 'Sound'
     volume: float
@@ -43,7 +45,7 @@ class SoundStrip(Strip):
     sound_offset: float
     show_waveform: bool
     pitch_correction: bool
-    retiming_keys: bpy_prop_collection['RetimingKey']
+    retiming_keys: 'RetimingKeys'
     animation_offset_start: int
     animation_offset_end: int
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

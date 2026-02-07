@@ -11,9 +11,10 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MaskSpline import MaskSpline
+from .MaskSplines import MaskSplines
 class MaskLayer(bpy_struct):
     name: str
-    splines: bpy_prop_collection['MaskSpline']
+    splines: 'MaskSplines'
     hide: bool
     hide_select: bool
     hide_render: bool

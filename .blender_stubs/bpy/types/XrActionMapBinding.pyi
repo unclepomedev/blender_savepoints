@@ -11,10 +11,11 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .XrComponentPath import XrComponentPath
+from .XrComponentPaths import XrComponentPaths
 class XrActionMapBinding(bpy_struct):
     name: str
     profile: str
-    component_paths: bpy_prop_collection['XrComponentPath']
+    component_paths: 'XrComponentPaths'
     threshold: float
     axis0_region: str
     axis1_region: str

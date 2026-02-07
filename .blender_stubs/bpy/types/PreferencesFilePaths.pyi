@@ -10,7 +10,9 @@ from typing import Any, Optional, Union, Sequence, Callable, Iterator
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+from .AssetLibraryCollection import AssetLibraryCollection
 from .ScriptDirectory import ScriptDirectory
+from .ScriptDirectoryCollection import ScriptDirectoryCollection
 from .UserAssetLibrary import UserAssetLibrary
 class PreferencesFilePaths(bpy_struct):
     show_hidden_files_datablocks: bool
@@ -26,7 +28,7 @@ class PreferencesFilePaths(bpy_struct):
     font_directory: str
     texture_directory: str
     render_output_directory: str
-    script_directories: bpy_prop_collection['ScriptDirectory']
+    script_directories: 'ScriptDirectoryCollection'
     i18n_branches_directory: str
     sound_directory: str
     temporary_directory: str
@@ -41,5 +43,5 @@ class PreferencesFilePaths(bpy_struct):
     auto_save_time: int
     recent_files: int
     file_preview_type: str
-    asset_libraries: bpy_prop_collection['UserAssetLibrary']
+    asset_libraries: 'AssetLibraryCollection'
     active_asset_library: int

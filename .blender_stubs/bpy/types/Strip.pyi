@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .StripModifier import StripModifier
+from .StripModifiers import StripModifiers
 class Strip(bpy_struct):
     name: str
     type: str
@@ -33,7 +34,7 @@ class Strip(bpy_struct):
     effect_fader: float
     use_default_fade: bool
     color_tag: str
-    modifiers: bpy_prop_collection['StripModifier']
+    modifiers: 'StripModifiers'
     show_retiming_keys: bool
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def strip_elem_from_frame(self, *args, **kwargs) -> Any: ...

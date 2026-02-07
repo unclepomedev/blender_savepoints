@@ -13,7 +13,9 @@ from .Curve import Curve
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
 from .CurveProfile import CurveProfile
+from .CurveSplines import CurveSplines
 from .ID import ID
+from .IDMaterials import IDMaterials
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Key import Key
@@ -45,7 +47,7 @@ class SurfaceCurve(Curve):
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
     shape_keys: 'Key'
-    splines: bpy_prop_collection['Spline']
+    splines: 'CurveSplines'
     path_duration: int
     use_path: bool
     use_path_follow: bool
@@ -78,7 +80,7 @@ class SurfaceCurve(Curve):
     use_auto_texspace: bool
     texspace_location: list[float]
     texspace_size: list[float]
-    materials: bpy_prop_collection['Material']
+    materials: 'IDMaterials'
     bevel_factor_start: float
     bevel_factor_end: float
     is_editmode: bool

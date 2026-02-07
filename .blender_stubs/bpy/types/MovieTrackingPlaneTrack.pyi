@@ -12,9 +12,10 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .Image import Image
 from .MovieTrackingPlaneMarker import MovieTrackingPlaneMarker
+from .MovieTrackingPlaneMarkers import MovieTrackingPlaneMarkers
 class MovieTrackingPlaneTrack(bpy_struct):
     name: str
-    markers: bpy_prop_collection['MovieTrackingPlaneMarker']
+    markers: 'MovieTrackingPlaneMarkers'
     select: bool
     use_auto_keying: bool
     image: 'Image'

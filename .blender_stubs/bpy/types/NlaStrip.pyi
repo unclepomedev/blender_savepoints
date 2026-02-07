@@ -14,6 +14,7 @@ from .Action import Action
 from .ActionSlot import ActionSlot
 from .FCurve import FCurve
 from .FModifier import FModifier
+from .NlaStripFCurves import NlaStripFCurves
 class NlaStrip(bpy_struct):
     name: str
     type: str
@@ -37,7 +38,7 @@ class NlaStrip(bpy_struct):
     action_frame_end: float
     repeat: float
     scale: float
-    fcurves: bpy_prop_collection['FCurve']
+    fcurves: 'NlaStripFCurves'
     modifiers: bpy_prop_collection['FModifier']
     strips: bpy_prop_collection['NlaStrip']
     influence: float

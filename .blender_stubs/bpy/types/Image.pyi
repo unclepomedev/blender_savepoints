@@ -19,8 +19,10 @@ from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .PackedFile import PackedFile
 from .RenderSlot import RenderSlot
+from .RenderSlots import RenderSlots
 from .Stereo3dFormat import Stereo3dFormat
 from .UDIMTile import UDIMTile
+from .UDIMTiles import UDIMTiles
 class Image(ID):
     name: str
     name_full: str
@@ -62,8 +64,8 @@ class Image(ID):
     use_generated_float: bool
     generated_color: list[float]
     display_aspect: list[float]
-    render_slots: bpy_prop_collection['RenderSlot']
-    tiles: bpy_prop_collection['UDIMTile']
+    render_slots: 'RenderSlots'
+    tiles: 'UDIMTiles'
     has_data: bool
     depth: int
     size: list[int]

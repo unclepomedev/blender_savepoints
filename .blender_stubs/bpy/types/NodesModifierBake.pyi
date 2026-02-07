@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Node import Node
+from .NodesModifierBakeDataBlocks import NodesModifierBakeDataBlocks
 from .NodesModifierDataBlock import NodesModifierDataBlock
 class NodesModifierBake(bpy_struct):
     directory: str
@@ -22,4 +23,4 @@ class NodesModifierBake(bpy_struct):
     bake_mode: str
     bake_id: int
     node: 'Node'
-    data_blocks: bpy_prop_collection['NodesModifierDataBlock']
+    data_blocks: 'NodesModifierBakeDataBlocks'

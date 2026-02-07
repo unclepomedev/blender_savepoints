@@ -11,5 +11,6 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .DynamicPaintSurface import DynamicPaintSurface
+from .DynamicPaintSurfaces import DynamicPaintSurfaces
 class DynamicPaintCanvasSettings(bpy_struct):
-    canvas_surfaces: bpy_prop_collection['DynamicPaintSurface']
+    canvas_surfaces: 'DynamicPaintSurfaces'

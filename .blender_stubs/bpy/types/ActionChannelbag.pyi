@@ -10,11 +10,13 @@ from typing import Any, Optional, Union, Sequence, Callable, Iterator
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+from .ActionChannelbagFCurves import ActionChannelbagFCurves
+from .ActionChannelbagGroups import ActionChannelbagGroups
 from .ActionGroup import ActionGroup
 from .ActionSlot import ActionSlot
 from .FCurve import FCurve
 class ActionChannelbag(bpy_struct):
     slot_handle: int
     slot: 'ActionSlot'
-    fcurves: bpy_prop_collection['FCurve']
-    groups: bpy_prop_collection['ActionGroup']
+    fcurves: 'ActionChannelbagFCurves'
+    groups: 'ActionChannelbagGroups'

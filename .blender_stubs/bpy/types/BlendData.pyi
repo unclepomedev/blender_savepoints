@@ -13,6 +13,44 @@ from .bpy_struct import bpy_struct
 from .Action import Action
 from .Annotation import Annotation
 from .Armature import Armature
+from .BlendDataActions import BlendDataActions
+from .BlendDataAnnotations import BlendDataAnnotations
+from .BlendDataArmatures import BlendDataArmatures
+from .BlendDataBrushes import BlendDataBrushes
+from .BlendDataCacheFiles import BlendDataCacheFiles
+from .BlendDataCameras import BlendDataCameras
+from .BlendDataCollections import BlendDataCollections
+from .BlendDataCurves import BlendDataCurves
+from .BlendDataFonts import BlendDataFonts
+from .BlendDataGreasePencilsV3 import BlendDataGreasePencilsV3
+from .BlendDataHairCurves import BlendDataHairCurves
+from .BlendDataImages import BlendDataImages
+from .BlendDataLattices import BlendDataLattices
+from .BlendDataLibraries import BlendDataLibraries
+from .BlendDataLights import BlendDataLights
+from .BlendDataLineStyles import BlendDataLineStyles
+from .BlendDataMasks import BlendDataMasks
+from .BlendDataMaterials import BlendDataMaterials
+from .BlendDataMeshes import BlendDataMeshes
+from .BlendDataMetaBalls import BlendDataMetaBalls
+from .BlendDataMovieClips import BlendDataMovieClips
+from .BlendDataNodeTrees import BlendDataNodeTrees
+from .BlendDataObjects import BlendDataObjects
+from .BlendDataPaintCurves import BlendDataPaintCurves
+from .BlendDataPalettes import BlendDataPalettes
+from .BlendDataParticles import BlendDataParticles
+from .BlendDataPointClouds import BlendDataPointClouds
+from .BlendDataProbes import BlendDataProbes
+from .BlendDataScenes import BlendDataScenes
+from .BlendDataScreens import BlendDataScreens
+from .BlendDataSounds import BlendDataSounds
+from .BlendDataSpeakers import BlendDataSpeakers
+from .BlendDataTexts import BlendDataTexts
+from .BlendDataTextures import BlendDataTextures
+from .BlendDataVolumes import BlendDataVolumes
+from .BlendDataWindowManagers import BlendDataWindowManagers
+from .BlendDataWorkSpaces import BlendDataWorkSpaces
+from .BlendDataWorlds import BlendDataWorlds
 from .BlendFileColorspace import BlendFileColorspace
 from .Brush import Brush
 from .CacheFile import CacheFile
@@ -56,44 +94,44 @@ class BlendData(bpy_struct):
     is_saved: bool
     use_autopack: bool
     version: list[int]
-    cameras: bpy_prop_collection['Camera']
-    scenes: bpy_prop_collection['Scene']
-    objects: bpy_prop_collection['Object']
-    materials: bpy_prop_collection['Material']
-    node_groups: bpy_prop_collection['NodeTree']
-    meshes: bpy_prop_collection['Mesh']
-    lights: bpy_prop_collection['Light']
-    libraries: bpy_prop_collection['Library']
-    screens: bpy_prop_collection['Screen']
-    window_managers: bpy_prop_collection['WindowManager']
-    images: bpy_prop_collection['Image']
-    lattices: bpy_prop_collection['Lattice']
-    curves: bpy_prop_collection['Curve']
-    metaballs: bpy_prop_collection['MetaBall']
-    fonts: bpy_prop_collection['VectorFont']
-    textures: bpy_prop_collection['Texture']
-    brushes: bpy_prop_collection['Brush']
-    worlds: bpy_prop_collection['World']
-    collections: bpy_prop_collection['Collection']
+    cameras: 'BlendDataCameras'
+    scenes: 'BlendDataScenes'
+    objects: 'BlendDataObjects'
+    materials: 'BlendDataMaterials'
+    node_groups: 'BlendDataNodeTrees'
+    meshes: 'BlendDataMeshes'
+    lights: 'BlendDataLights'
+    libraries: 'BlendDataLibraries'
+    screens: 'BlendDataScreens'
+    window_managers: 'BlendDataWindowManagers'
+    images: 'BlendDataImages'
+    lattices: 'BlendDataLattices'
+    curves: 'BlendDataCurves'
+    metaballs: 'BlendDataMetaBalls'
+    fonts: 'BlendDataFonts'
+    textures: 'BlendDataTextures'
+    brushes: 'BlendDataBrushes'
+    worlds: 'BlendDataWorlds'
+    collections: 'BlendDataCollections'
     shape_keys: bpy_prop_collection['Key']
-    texts: bpy_prop_collection['Text']
-    speakers: bpy_prop_collection['Speaker']
-    sounds: bpy_prop_collection['Sound']
-    armatures: bpy_prop_collection['Armature']
-    actions: bpy_prop_collection['Action']
-    particles: bpy_prop_collection['ParticleSettings']
-    palettes: bpy_prop_collection['Palette']
-    annotations: bpy_prop_collection['Annotation']
-    grease_pencils: bpy_prop_collection['GreasePencil']
-    movieclips: bpy_prop_collection['MovieClip']
-    masks: bpy_prop_collection['Mask']
-    linestyles: bpy_prop_collection['FreestyleLineStyle']
-    cache_files: bpy_prop_collection['CacheFile']
-    paint_curves: bpy_prop_collection['PaintCurve']
-    workspaces: bpy_prop_collection['WorkSpace']
-    lightprobes: bpy_prop_collection['LightProbe']
-    hair_curves: bpy_prop_collection['Curves']
-    pointclouds: bpy_prop_collection['PointCloud']
-    volumes: bpy_prop_collection['Volume']
+    texts: 'BlendDataTexts'
+    speakers: 'BlendDataSpeakers'
+    sounds: 'BlendDataSounds'
+    armatures: 'BlendDataArmatures'
+    actions: 'BlendDataActions'
+    particles: 'BlendDataParticles'
+    palettes: 'BlendDataPalettes'
+    annotations: 'BlendDataAnnotations'
+    grease_pencils: 'BlendDataGreasePencilsV3'
+    movieclips: 'BlendDataMovieClips'
+    masks: 'BlendDataMasks'
+    linestyles: 'BlendDataLineStyles'
+    cache_files: 'BlendDataCacheFiles'
+    paint_curves: 'BlendDataPaintCurves'
+    workspaces: 'BlendDataWorkSpaces'
+    lightprobes: 'BlendDataProbes'
+    hair_curves: 'BlendDataHairCurves'
+    pointclouds: 'BlendDataPointClouds'
+    volumes: 'BlendDataVolumes'
     colorspace: 'BlendFileColorspace'
     def pack_linked_ids_hierarchy(self, *args, **kwargs) -> Any: ...

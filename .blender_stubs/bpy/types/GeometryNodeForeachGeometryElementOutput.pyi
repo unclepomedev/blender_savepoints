@@ -14,7 +14,12 @@ from .ForeachGeometryElementGenerationItem import ForeachGeometryElementGenerati
 from .ForeachGeometryElementInputItem import ForeachGeometryElementInputItem
 from .ForeachGeometryElementMainItem import ForeachGeometryElementMainItem
 from .Node import Node
+from .NodeGeometryForeachGeometryElementGenerationItems import NodeGeometryForeachGeometryElementGenerationItems
+from .NodeGeometryForeachGeometryElementInputItems import NodeGeometryForeachGeometryElementInputItems
+from .NodeGeometryForeachGeometryElementMainItems import NodeGeometryForeachGeometryElementMainItems
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class GeometryNodeForeachGeometryElementOutput(GeometryNode):
     type: str
@@ -25,8 +30,8 @@ class GeometryNodeForeachGeometryElementOutput(GeometryNode):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -50,9 +55,9 @@ class GeometryNodeForeachGeometryElementOutput(GeometryNode):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    input_items: bpy_prop_collection['ForeachGeometryElementInputItem']
-    main_items: bpy_prop_collection['ForeachGeometryElementMainItem']
-    generation_items: bpy_prop_collection['ForeachGeometryElementGenerationItem']
+    input_items: 'NodeGeometryForeachGeometryElementInputItems'
+    main_items: 'NodeGeometryForeachGeometryElementMainItems'
+    generation_items: 'NodeGeometryForeachGeometryElementGenerationItems'
     active_input_index: int
     active_generation_index: int
     active_main_index: int

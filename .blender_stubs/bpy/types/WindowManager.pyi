@@ -15,6 +15,7 @@ from .AssetMetaData import AssetMetaData
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .KeyConfig import KeyConfig
+from .KeyConfigurations import KeyConfigurations
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .Operator import Operator
@@ -45,7 +46,7 @@ class WindowManager(ID):
     preview: 'ImagePreview'
     operators: bpy_prop_collection['Operator']
     windows: bpy_prop_collection['Window']
-    keyconfigs: bpy_prop_collection['KeyConfig']
+    keyconfigs: 'KeyConfigurations'
     xr_session_settings: 'XrSessionSettings'
     xr_session_state: 'XrSessionState'
     extensions_updates: int

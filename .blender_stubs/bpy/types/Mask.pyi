@@ -17,6 +17,7 @@ from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .MaskLayer import MaskLayer
+from .MaskLayers import MaskLayers
 class Mask(ID):
     name: str
     name_full: str
@@ -39,7 +40,7 @@ class Mask(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    layers: bpy_prop_collection['MaskLayer']
+    layers: 'MaskLayers'
     active_layer_index: int
     frame_start: int
     frame_end: int

@@ -11,10 +11,11 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MaskSplinePoint import MaskSplinePoint
+from .MaskSplinePoints import MaskSplinePoints
 class MaskSpline(bpy_struct):
     offset_mode: str
     weight_interpolation: str
     use_cyclic: bool
     use_fill: bool
     use_self_intersection_check: bool
-    points: bpy_prop_collection['MaskSplinePoint']
+    points: 'MaskSplinePoints'

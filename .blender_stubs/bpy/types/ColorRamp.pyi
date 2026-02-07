@@ -11,8 +11,9 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ColorRampElement import ColorRampElement
+from .ColorRampElements import ColorRampElements
 class ColorRamp(bpy_struct):
-    elements: bpy_prop_collection['ColorRampElement']
+    elements: 'ColorRampElements'
     interpolation: str
     hue_interpolation: str
     color_mode: str

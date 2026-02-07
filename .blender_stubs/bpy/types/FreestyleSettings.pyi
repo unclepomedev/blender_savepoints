@@ -12,8 +12,10 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .FreestyleLineSet import FreestyleLineSet
 from .FreestyleModuleSettings import FreestyleModuleSettings
+from .FreestyleModules import FreestyleModules
+from .Linesets import Linesets
 class FreestyleSettings(bpy_struct):
-    modules: bpy_prop_collection['FreestyleModuleSettings']
+    modules: 'FreestyleModules'
     mode: str
     use_culling: bool
     use_suggestive_contours: bool
@@ -25,4 +27,4 @@ class FreestyleSettings(bpy_struct):
     sphere_radius: float
     kr_derivative_epsilon: float
     crease_angle: float
-    linesets: bpy_prop_collection['FreestyleLineSet']
+    linesets: 'Linesets'

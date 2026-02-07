@@ -12,6 +12,7 @@ from .bpy_prop_collection import bpy_prop_collection
 from .ID import ID
 from .AnimData import AnimData
 from .AnnotationLayer import AnnotationLayer
+from .AnnotationLayers import AnnotationLayers
 from .AssetMetaData import AssetMetaData
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
@@ -39,7 +40,7 @@ class Annotation(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    layers: bpy_prop_collection['AnnotationLayer']
+    layers: 'AnnotationLayers'
     animation_data: 'AnimData'
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

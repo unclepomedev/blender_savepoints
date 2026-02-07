@@ -12,11 +12,13 @@ from .bpy_prop_collection import bpy_prop_collection
 from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
+from .IDMaterials import IDMaterials
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .Material import Material
+from .MetaBallElements import MetaBallElements
 from .MetaElement import MetaElement
 class MetaBall(ID):
     name: str
@@ -40,7 +42,7 @@ class MetaBall(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    elements: bpy_prop_collection['MetaElement']
+    elements: 'MetaBallElements'
     update_method: str
     resolution: float
     render_resolution: float
@@ -48,7 +50,7 @@ class MetaBall(ID):
     use_auto_texspace: bool
     texspace_location: list[float]
     texspace_size: list[float]
-    materials: bpy_prop_collection['Material']
+    materials: 'IDMaterials'
     is_editmode: bool
     animation_data: 'AnimData'
     cycles: 'CyclesMeshSettings'

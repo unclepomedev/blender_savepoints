@@ -12,12 +12,13 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .KeyingSetInfo import KeyingSetInfo
 from .KeyingSetPath import KeyingSetPath
+from .KeyingSetPaths import KeyingSetPaths
 class KeyingSet(bpy_struct):
     bl_idname: str
     bl_label: str
     bl_description: str
     type_info: 'KeyingSetInfo'
-    paths: bpy_prop_collection['KeyingSetPath']
+    paths: 'KeyingSetPaths'
     is_path_absolute: bool
     use_insertkey_override_needed: bool
     use_insertkey_override_visual: bool

@@ -12,8 +12,12 @@ from .bpy_prop_collection import bpy_prop_collection
 from .NodeInternal import NodeInternal
 from .Node import Node
 from .NodeEvaluateClosureInputItem import NodeEvaluateClosureInputItem
+from .NodeEvaluateClosureInputItems import NodeEvaluateClosureInputItems
 from .NodeEvaluateClosureOutputItem import NodeEvaluateClosureOutputItem
+from .NodeEvaluateClosureOutputItems import NodeEvaluateClosureOutputItems
+from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
+from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 class NodeEvaluateClosure(NodeInternal):
     type: str
@@ -24,8 +28,8 @@ class NodeEvaluateClosure(NodeInternal):
     dimensions: list[float]
     name: str
     label: str
-    inputs: bpy_prop_collection['NodeSocket']
-    outputs: bpy_prop_collection['NodeSocket']
+    inputs: 'NodeInputs'
+    outputs: 'NodeOutputs'
     internal_links: bpy_prop_collection['NodeLink']
     parent: 'Node'
     warning_propagation: str
@@ -49,8 +53,8 @@ class NodeEvaluateClosure(NodeInternal):
     bl_height_default: float
     bl_height_min: float
     bl_height_max: float
-    input_items: bpy_prop_collection['NodeEvaluateClosureInputItem']
-    output_items: bpy_prop_collection['NodeEvaluateClosureOutputItem']
+    input_items: 'NodeEvaluateClosureInputItems'
+    output_items: 'NodeEvaluateClosureOutputItems'
     active_input_index: int
     active_output_index: int
     define_signature: bool

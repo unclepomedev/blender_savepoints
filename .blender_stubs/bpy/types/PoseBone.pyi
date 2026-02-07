@@ -16,8 +16,9 @@ from .BoneColor import BoneColor
 from .Constraint import Constraint
 from .MotionPath import MotionPath
 from .Object import Object
+from .PoseBoneConstraints import PoseBoneConstraints
 class PoseBone(bpy_struct, _GenericBone):
-    constraints: bpy_prop_collection['Constraint']
+    constraints: 'PoseBoneConstraints'
     name: str
     motion_path: 'MotionPath'
     bone: 'Bone'

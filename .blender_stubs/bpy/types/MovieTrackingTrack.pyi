@@ -12,6 +12,7 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .Annotation import Annotation
 from .MovieTrackingMarker import MovieTrackingMarker
+from .MovieTrackingMarkers import MovieTrackingMarkers
 class MovieTrackingTrack(bpy_struct):
     name: str
     frames_limit: int
@@ -22,7 +23,7 @@ class MovieTrackingTrack(bpy_struct):
     use_brute: bool
     use_mask: bool
     use_normalization: bool
-    markers: bpy_prop_collection['MovieTrackingMarker']
+    markers: 'MovieTrackingMarkers'
     use_red_channel: bool
     use_green_channel: bool
     use_blue_channel: bool

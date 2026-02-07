@@ -12,6 +12,7 @@ from .bpy_prop_collection import bpy_prop_collection
 from .Strip import Strip
 from .StripCrop import StripCrop
 from .StripModifier import StripModifier
+from .StripModifiers import StripModifiers
 from .StripProxy import StripProxy
 from .StripTransform import StripTransform
 class EffectStrip(Strip):
@@ -36,7 +37,7 @@ class EffectStrip(Strip):
     effect_fader: float
     use_default_fade: bool
     color_tag: str
-    modifiers: bpy_prop_collection['StripModifier']
+    modifiers: 'StripModifiers'
     show_retiming_keys: bool
     use_deinterlace: bool
     alpha_mode: str

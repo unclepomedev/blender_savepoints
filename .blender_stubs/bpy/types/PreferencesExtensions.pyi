@@ -11,7 +11,8 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .UserExtensionRepo import UserExtensionRepo
+from .UserExtensionRepoCollection import UserExtensionRepoCollection
 class PreferencesExtensions(bpy_struct):
     use_online_access_handled: bool
-    repos: bpy_prop_collection['UserExtensionRepo']
+    repos: 'UserExtensionRepoCollection'
     active_repo: int

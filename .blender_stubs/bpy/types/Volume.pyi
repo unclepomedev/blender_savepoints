@@ -12,6 +12,7 @@ from .bpy_prop_collection import bpy_prop_collection
 from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
+from .IDMaterials import IDMaterials
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
@@ -20,6 +21,7 @@ from .Material import Material
 from .PackedFile import PackedFile
 from .VolumeDisplay import VolumeDisplay
 from .VolumeGrid import VolumeGrid
+from .VolumeGrids import VolumeGrids
 from .VolumeRender import VolumeRender
 class Volume(ID):
     name: str
@@ -50,8 +52,8 @@ class Volume(ID):
     frame_duration: int
     frame_offset: int
     sequence_mode: str
-    grids: bpy_prop_collection['VolumeGrid']
-    materials: bpy_prop_collection['Material']
+    grids: 'VolumeGrids'
+    materials: 'IDMaterials'
     display: 'VolumeDisplay'
     render: 'VolumeRender'
     velocity_grid: str

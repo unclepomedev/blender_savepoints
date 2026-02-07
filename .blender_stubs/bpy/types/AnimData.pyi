@@ -12,17 +12,19 @@ from .bpy_prop_collection import bpy_prop_collection
 from .bpy_struct import bpy_struct
 from .Action import Action
 from .ActionSlot import ActionSlot
+from .AnimDataDrivers import AnimDataDrivers
 from .FCurve import FCurve
 from .NlaTrack import NlaTrack
+from .NlaTracks import NlaTracks
 class AnimData(bpy_struct):
-    nla_tracks: bpy_prop_collection['NlaTrack']
+    nla_tracks: 'NlaTracks'
     action: 'Action'
     action_extrapolation: str
     action_blend_type: str
     action_influence: float
     action_tweak_storage: 'Action'
     action_slot_handle_tweak_storage: int
-    drivers: bpy_prop_collection['FCurve']
+    drivers: 'AnimDataDrivers'
     use_nla: bool
     use_tweak_mode: bool
     use_pin: bool

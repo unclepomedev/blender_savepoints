@@ -19,6 +19,8 @@ from .Scene import Scene
 from .Screen import Screen
 from .WorkSpaceTool import WorkSpaceTool
 from .wmOwnerID import wmOwnerID
+from .wmOwnerIDs import wmOwnerIDs
+from .wmTools import wmTools
 class WorkSpace(ID):
     name: str
     name_full: str
@@ -42,8 +44,8 @@ class WorkSpace(ID):
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
     screens: bpy_prop_collection['Screen']
-    owner_ids: bpy_prop_collection['wmOwnerID']
-    tools: bpy_prop_collection['WorkSpaceTool']
+    owner_ids: 'wmOwnerIDs'
+    tools: 'wmTools'
     object_mode: str
     use_pin_scene: bool
     use_filter_by_owner: bool

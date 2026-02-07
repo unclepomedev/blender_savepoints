@@ -12,8 +12,11 @@ from .bpy_prop_collection import bpy_prop_collection
 from .ID import ID
 from .AssetMetaData import AssetMetaData
 from .CollectionChild import CollectionChild
+from .CollectionChildren import CollectionChildren
 from .CollectionExport import CollectionExport
+from .CollectionExports import CollectionExports
 from .CollectionObject import CollectionObject
+from .CollectionObjects import CollectionObjects
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
@@ -42,12 +45,12 @@ class Collection(ID):
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
     instance_offset: list[float]
-    objects: bpy_prop_collection['Object']
+    objects: 'CollectionObjects'
     all_objects: bpy_prop_collection['Object']
-    children: bpy_prop_collection['Collection']
+    children: 'CollectionChildren'
     collection_objects: bpy_prop_collection['CollectionObject']
     collection_children: bpy_prop_collection['CollectionChild']
-    exporters: bpy_prop_collection['CollectionExport']
+    exporters: 'CollectionExports'
     active_exporter_index: int
     hide_select: bool
     hide_viewport: bool

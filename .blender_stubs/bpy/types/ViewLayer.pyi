@@ -11,10 +11,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AOV import AOV
+from .AOVs import AOVs
 from .Depsgraph import Depsgraph
 from .FreestyleSettings import FreestyleSettings
 from .LayerCollection import LayerCollection
+from .LayerObjects import LayerObjects
 from .Lightgroup import Lightgroup
+from .Lightgroups import Lightgroups
 from .Material import Material
 from .Object import Object
 from .ViewLayerEEVEE import ViewLayerEEVEE
@@ -26,10 +29,10 @@ class ViewLayer(bpy_struct):
     samples: int
     pass_alpha_threshold: float
     eevee: 'ViewLayerEEVEE'
-    aovs: bpy_prop_collection['AOV']
+    aovs: 'AOVs'
     active_aov: 'AOV'
     active_aov_index: int
-    lightgroups: bpy_prop_collection['Lightgroup']
+    lightgroups: 'Lightgroups'
     active_lightgroup: 'Lightgroup'
     active_lightgroup_index: int
     use_pass_cryptomatte_object: bool
@@ -71,7 +74,7 @@ class ViewLayer(bpy_struct):
     use_pass_subsurface_color: bool
     layer_collection: 'LayerCollection'
     active_layer_collection: 'LayerCollection'
-    objects: bpy_prop_collection['Object']
+    objects: 'LayerObjects'
     use: bool
     has_export_collections: bool
     use_freestyle: bool

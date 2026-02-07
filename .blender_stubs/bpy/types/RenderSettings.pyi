@@ -14,6 +14,7 @@ from .BakeSettings import BakeSettings
 from .CurveMapping import CurveMapping
 from .FFmpegSettings import FFmpegSettings
 from .ImageFormatSettings import ImageFormatSettings
+from .RenderViews import RenderViews
 from .SceneRenderView import SceneRenderView
 class RenderSettings(bpy_struct):
     image_settings: 'ImageFormatSettings'
@@ -83,7 +84,7 @@ class RenderSettings(bpy_struct):
     sequencer_gl_preview: str
     use_sequencer_override_scene_strip: bool
     use_single_layer: bool
-    views: bpy_prop_collection['SceneRenderView']
+    views: 'RenderViews'
     stereo_views: bpy_prop_collection['SceneRenderView']
     use_multiview: bool
     views_format: str

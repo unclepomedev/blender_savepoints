@@ -13,8 +13,12 @@ from .ID import ID
 from .AnimData import AnimData
 from .AssetMetaData import AssetMetaData
 from .Attribute import Attribute
+from .AttributeGroupGreasePencil import AttributeGroupGreasePencil
 from .GreasePencilLayer import GreasePencilLayer
 from .GreasePencilLayerGroup import GreasePencilLayerGroup
+from .GreasePencilv3LayerGroup import GreasePencilv3LayerGroup
+from .GreasePencilv3Layers import GreasePencilv3Layers
+from .IDMaterials import IDMaterials
 from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
@@ -42,12 +46,12 @@ class GreasePencil(ID):
     asset_data: 'AssetMetaData'
     override_library: 'IDOverrideLibrary'
     preview: 'ImagePreview'
-    attributes: bpy_prop_collection['Attribute']
-    color_attributes: bpy_prop_collection['Attribute']
+    attributes: 'AttributeGroupGreasePencil'
+    color_attributes: 'AttributeGroupGreasePencil'
     animation_data: 'AnimData'
-    materials: bpy_prop_collection['Material']
-    layers: bpy_prop_collection['GreasePencilLayer']
-    layer_groups: bpy_prop_collection['GreasePencilLayerGroup']
+    materials: 'IDMaterials'
+    layers: 'GreasePencilv3Layers'
+    layer_groups: 'GreasePencilv3LayerGroup'
     use_autolock_layers: bool
     stroke_depth_order: str
     ghost_before_range: int

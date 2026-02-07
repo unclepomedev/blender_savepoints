@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .FModifier import FModifier
 from .FModifierEnvelopeControlPoint import FModifierEnvelopeControlPoint
+from .FModifierEnvelopeControlPoints import FModifierEnvelopeControlPoints
 class FModifierEnvelope(FModifier):
     name: str
     type: str
@@ -25,7 +26,7 @@ class FModifierEnvelope(FModifier):
     blend_out: float
     use_influence: bool
     influence: float
-    control_points: bpy_prop_collection['FModifierEnvelopeControlPoint']
+    control_points: 'FModifierEnvelopeControlPoints'
     reference_value: float
     default_min: float
     default_max: float

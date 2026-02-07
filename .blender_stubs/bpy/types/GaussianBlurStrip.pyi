@@ -13,6 +13,7 @@ from .EffectStrip import EffectStrip
 from .Strip import Strip
 from .StripCrop import StripCrop
 from .StripModifier import StripModifier
+from .StripModifiers import StripModifiers
 from .StripProxy import StripProxy
 from .StripTransform import StripTransform
 class GaussianBlurStrip(EffectStrip):
@@ -37,7 +38,7 @@ class GaussianBlurStrip(EffectStrip):
     effect_fader: float
     use_default_fade: bool
     color_tag: str
-    modifiers: bpy_prop_collection['StripModifier']
+    modifiers: 'StripModifiers'
     show_retiming_keys: bool
     use_deinterlace: bool
     alpha_mode: str

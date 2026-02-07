@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ActionStrip import ActionStrip
+from .ActionStrips import ActionStrips
 class ActionLayer(bpy_struct):
     name: str
-    strips: bpy_prop_collection['ActionStrip']
+    strips: 'ActionStrips'

@@ -11,6 +11,7 @@ from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .IDOverrideLibraryPropertyOperation import IDOverrideLibraryPropertyOperation
+from .IDOverrideLibraryPropertyOperations import IDOverrideLibraryPropertyOperations
 class IDOverrideLibraryProperty(bpy_struct):
     rna_path: str
-    operations: bpy_prop_collection['IDOverrideLibraryPropertyOperation']
+    operations: 'IDOverrideLibraryPropertyOperations'
