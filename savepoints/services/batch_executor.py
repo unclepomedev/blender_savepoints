@@ -21,6 +21,7 @@ class BatchRenderExecutor:
         settings_path: str,
         worker_script_path: str,
         blender_bin: str,
+        output_suffix: str = "_render",
     ):
         self.task_queue = list(tasks)
         self.total_tasks = len(tasks)
@@ -31,6 +32,7 @@ class BatchRenderExecutor:
         self.settings_path = settings_path
         self.worker_script_path = worker_script_path
         self.blender_bin = blender_bin
+        self.output_suffix = output_suffix
 
         self.current_process: subprocess.Popen | None = None
         self.current_version_id: str | None = None
@@ -141,7 +143,7 @@ class BatchRenderExecutor:
             "--",
             self.settings_path,
             self.output_dir,
-            f"{self.current_version_id}_render",
+            f"{self.current_version_id}{self.output_suffix}",
         ]
 
         try:

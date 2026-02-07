@@ -150,3 +150,24 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         ],
         default="BL",
     )
+
+    glb_export_path: bpy.props.StringProperty(
+        name="Export Path",
+        description="Directory to export .glb files",
+        default="//",
+        subtype="DIR_PATH",
+    )
+
+
+class SavePointsPreferences(bpy.types.AddonPreferences):
+    bl_idname = "savepoints"
+
+    enable_glb_export: bpy.props.BoolProperty(
+        name="Enable Background GLB Export",
+        description="Enable the experimental background GLB export feature",
+        default=False,
+    )
+
+    def draw(self, _context):
+        layout = self.layout
+        layout.prop(self, "enable_glb_export")
