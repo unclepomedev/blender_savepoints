@@ -16,7 +16,7 @@ import render_config  # noqa: E402
 import scene_utils  # noqa: E402
 
 
-def run_render(json_path, output_dir, file_prefix):
+def run_render(json_path: str, output_dir: str, file_prefix: str):
     # 1. Load Settings
     with open(json_path, 'r') as f:
         settings = json.load(f)
@@ -49,8 +49,8 @@ def run_render(json_path, output_dir, file_prefix):
     try:
         bpy.ops.render.render(write_still=True)
         print("Render Finished Successfully.")
-    except Exception as e:
-        print(f"Render Failed: {e}")
+    except Exception as ex:
+        print(f"Render Failed: {ex}")
         sys.exit(1)
 
 

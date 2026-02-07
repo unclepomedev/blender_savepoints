@@ -84,7 +84,7 @@ class SAVEPOINTS_UL_object_history(bpy.types.UIList):
             split_3.label(text=item.note, icon='TEXT')
 
 
-def update_ghost_preview(self, context):
+def update_ghost_preview(_, context):
     """
     Callback triggered when the history list index changes.
     Loads the ghost overlay for the selected version.
@@ -155,7 +155,8 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
     def cancel(self, context):
         self._cleanup(context)
 
-    def _cleanup(self, context):
+    @staticmethod
+    def _cleanup(context):
         obj = context.active_object
         if obj:
             cleanup_single_object_ghost(obj.name, context)

@@ -66,13 +66,13 @@ def _transform_path_from_history(path: str) -> str | None:
     return None
 
 
-def remap_snapshot_paths(dummy: Any) -> None:
+def remap_snapshot_paths(_: Any) -> None:
     """
     Dynamically fix relative paths when opening a snapshot from the history folder.
     This works in-memory and does not save changes to disk.
 
     Args:
-        dummy: Argument required by the load_post handler (unused).
+        _: Argument required by the load_post handler (unused).
     """
     if not bpy.data.filepath:
         return

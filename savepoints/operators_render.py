@@ -291,9 +291,10 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             import traceback
             traceback.print_exc()
 
-    def _show_timelapse_notification(self, context, scene_name, mp4_triggered, count):
-        def draw_notification(self, _context):
-            layout = self.layout
+    @staticmethod
+    def _show_timelapse_notification(context, scene_name, mp4_triggered, count):
+        def draw_notification(self_, _context):
+            layout = self_.layout
             layout.label(text=f"Successfully processed {count} versions.")
             layout.separator()
             layout.label(text="Auto-Timelapse created:", icon='SEQUENCE')

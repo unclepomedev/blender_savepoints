@@ -121,6 +121,7 @@ def append_objects(blend_path: Path, object_names: list[str]) -> list[bpy.types.
     collection = bpy.context.view_layer.active_layer_collection.collection
 
     for obj in data_to.objects:
+        obj: bpy.types.Object = obj
         if obj:
             if obj.name not in collection.objects:
                 try:

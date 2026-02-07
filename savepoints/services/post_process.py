@@ -178,8 +178,8 @@ def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_i
             try:
                 proc.wait()
                 print(f"[SavePoints] MP4 generation finished (PID: {proc.pid}).")
-            except Exception as e:
-                print(f"[SavePoints] Error reaping MP4 process: {e}")
+            except Exception as ex:
+                print(f"[SavePoints] Error reaping MP4 process: {ex}")
 
         threading.Thread(target=reap_process, args=(p,), daemon=True).start()
 

@@ -55,7 +55,7 @@ addon_keymaps = []
 
 
 @persistent
-def load_handler(dummy):
+def load_handler(_dummy):
     """Sync history when file is loaded."""
     load_object_data.cache_clear()
     max_retries = 20
