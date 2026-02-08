@@ -54,15 +54,15 @@ def write_error_log(message, details):
 
 class PostSaveManager:
     _instance = None
-    _initialized = False
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(PostSaveManager, cls).__new__(cls)
+            cls._instance._initialized = False
         return cls._instance
 
     def __init__(self):
-        if PostSaveManager._initialized:
+        if self._initialized:
             return
         self._timer = None
         self.process = None
@@ -70,7 +70,7 @@ class PostSaveManager:
         self._stderr_file = None
         self._on_success = None
         self._on_error = None
-        PostSaveManager._initialized = True
+        self._initialized = True
 
     @property
     def is_running(self):
