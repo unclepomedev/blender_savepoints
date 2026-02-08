@@ -398,7 +398,7 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
             row = box.row()
             row.label(text="Processing Post-Save Command...", icon="TIME")
             row.operator(
-                operators_core.SAVEPOINTS_OT_cancel_post_save, text="Cancel", icon="X"
+                operators_core.SAVEPOINTS_OT_cancel_post_save.bl_idname, text="Cancel", icon="X"
             )
 
         if not bpy.data.filepath:
