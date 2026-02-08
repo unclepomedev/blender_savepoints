@@ -33,7 +33,7 @@ class TestPostSave(SavePointsTestCase):
                 "msg": "Normal path (no spaces)",
                 "cmd": "echo {filepath}",
                 "ctx": {"filepath": "/tmp/test.blend"},
-                "expect_win": '"/tmp/test.blend"',
+                "expect_win": "/tmp/test.blend",
                 "expect_posix": "/tmp/test.blend",
             },
             {
