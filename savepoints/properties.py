@@ -160,7 +160,7 @@ class SavePointsSettings(bpy.types.PropertyGroup):
 
 
 class SavePointsPreferences(bpy.types.AddonPreferences):
-    bl_idname = __package__
+    bl_idname = __package__ or "savepoints"
 
     enable_glb_export: bpy.props.BoolProperty(
         name="Enable Background GLB Export",
