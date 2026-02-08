@@ -121,6 +121,8 @@ class PostSaveManager:
                 self.process.wait(timeout=1)
             except subprocess.TimeoutExpired:
                 self.process.kill()
+                self.process.wait()
+                print("[SavePoints] Process killed.")
 
             self.process = None
 
