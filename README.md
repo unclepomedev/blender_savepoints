@@ -115,6 +115,11 @@ SavePoints is a version control system that provides a visual UX for fast recove
         - Set the **Export Path** in the version details panel (below the Checkout button).
         - Click **Export GLB**.
     - The export runs in the background, allowing you to keep working.
+13. **Post-Save Command**:
+    - *Note*: This feature is optional. Enable **"Enable Post-Save Command"** in the Add-on Preferences > Automation.
+    - **Automation**: Execute background shell commands immediately after creating a snapshot.
+    - **Integration**: Supports dynamic placeholders (e.g., `{version}`, `{note}`) for seamless integration with asset management pipelines (e.g., `dvc push`, cloud syncing, or NAS backups).
+    - **Error Logging**: If a command fails, detailed logs are output to **`SavePoints_Log.txt`** in Blender's Text Editor.
 
 ## ⚠️ Note
 
