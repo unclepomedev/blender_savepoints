@@ -36,6 +36,21 @@ def format_command(command_template, context_dict):
         return None
 
 
+def write_error_log(message, details):
+    """
+    Helper to write error details to a Blender text block.
+    This manipulates bpy.data (Data Layer), not bpy.ops (UI Layer).
+    """
+    text_name = "SavePoints_Log.txt"
+    text = bpy.data.texts.get(text_name)
+    if not text:
+        text = bpy.data.texts.new(text_name)
+
+    text.clear()
+    text.write(message + "\n\n")
+    text.write(details)
+
+
 class PostSaveManager:
     _instance = None
     _initialized = False
@@ -50,20 +65,33 @@ class PostSaveManager:
             return
         self._timer = None
         self.process = None
+        self._on_success = None
+        self._on_error = None
         PostSaveManager._initialized = True
 
     @property
     def is_running(self):
         return self.process is not None and self.process.poll() is None
 
-    def start_command(self, command_str, context_dict):
+    def start_command(self, command_str, context_dict, on_success=None, on_error=None):
+        """
+        Args:
+            command_str (str): The command to execute.
+            context_dict (dict): Context variables for formatting.
+            on_success (callable): Function(msg) to call on success.
+            on_error (callable): Function(msg, details) to call on error.
+        """
         if self.is_running:
             print("Post-save command already running.")
             return
 
+        self._on_success = on_success
+        self._on_error = on_error
+
         formatted_cmd = format_command(command_str, context_dict)
         if formatted_cmd is None:
-            self._report_error("Command formatting failed. Check placeholders.")
+            if self._on_error:
+                self._on_error("Command formatting failed. Check placeholders.", "")
             return
         print(f"[SavePoints] Starting post-save command: {formatted_cmd}")
 
@@ -79,7 +107,10 @@ class PostSaveManager:
             bpy.app.timers.register(self._monitor_process)
 
         except Exception as e:
-            self._report_error(f"Failed to start command: {e}")
+            msg = f"Failed to start command: {e}"
+            print(msg)
+            if self._on_error:
+                self._on_error(msg, str(e))
             self.process = None
 
     def cancel(self):
@@ -113,49 +144,33 @@ class PostSaveManager:
 
         # Finished
         stdout, stderr = self.process.communicate()
-        if ret_code == 0:
-            self._report_success("Post-save command finished successfully.")
-        else:
-            msg = f"Post-save command failed (Code {ret_code})."
-            self._report_error(msg, details=f"STDOUT:\n{stdout}\nSTDERR:\n{stderr}")
-
-        self.process = None
-
         for window in bpy.context.window_manager.windows:
             for area in window.screen.areas:
                 area.tag_redraw()
 
+        if ret_code == 0:
+            msg = "Post-save command finished successfully."
+            print(msg)
+            if self._on_success:
+                self._on_success(msg)
+        else:
+            msg = f"Post-save command failed (Code {ret_code})."
+            print(msg)
+            details = f"STDOUT:\n{stdout}\nSTDERR:\n{stderr}"
+            if self._on_error:
+                self._on_error(msg, details)
+
+        self.process = None
         return None
 
-    @staticmethod
-    def _report_success(message):
-        print(message)
-        try:
-            bpy.ops.savepoints.report_message(message=message, type="INFO")
-        except Exception as ex:
-            print(f"[SavePoints] report message error: {ex}")
 
-    @staticmethod
-    def _report_error(message, details=""):
-        print(message)
-        if details:
-            print(details)
-            text_name = "SavePoints_Log.txt"
-            text = bpy.data.texts.get(text_name)
-            if not text:
-                text = bpy.data.texts.new(text_name)
-
-            text.clear()
-            text.write(message + "\n\n")
-            text.write(details)
-
-        try:
-            bpy.ops.savepoints.report_message(message=message, type="ERROR")
-        except Exception as ex:
-            print(f"[SavePoints] report message error: {ex}")
-
-
-def trigger_post_save_if_enabled(context, version_id: str, note: str):
+def trigger_post_save_if_enabled(
+    context, version_id: str, note: str, on_success=None, on_error=None
+):
+    """
+    Trigger the post-save command logic.
+    Callbacks are injected to handle UI feedback (to avoid bpy.ops here).
+    """
     addon_prefs = None
     current_package = __package__
     if current_package and ".services" in current_package:
@@ -195,4 +210,6 @@ def trigger_post_save_if_enabled(context, version_id: str, note: str):
         "note": note,
     }
 
-    PostSaveManager().start_command(prefs.post_save_command, ctx_dict)
+    PostSaveManager().start_command(
+        prefs.post_save_command, ctx_dict, on_success=on_success, on_error=on_error
+    )
