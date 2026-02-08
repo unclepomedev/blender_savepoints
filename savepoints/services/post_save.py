@@ -155,9 +155,22 @@ class PostSaveManager:
 
 
 def trigger_post_save_if_enabled(context, version_id: str, note: str):
-    addon_prefs = context.preferences.addons.get(__package__)
+    addon_prefs = None
+    current_package = __package__
+    if current_package and ".services" in current_package:
+        parent_package = current_package.split(".services")[0]
+        addon = context.preferences.addons.get(parent_package)
+        if addon and addon.preferences:
+            addon_prefs = addon
 
     if not addon_prefs:
+        for key, addon in context.preferences.addons.items():
+            if key.endswith("savepoints") and addon.preferences:
+                addon_prefs = addon
+                break
+
+    if not addon_prefs:
+        print("[SavePoints] Error: Could not find active addon preferences.")
         return
 
     prefs = addon_prefs.preferences
