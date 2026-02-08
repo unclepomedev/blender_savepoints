@@ -1,26 +1,38 @@
-SavePoints 是一款 Blender 插件，可以帮助您轻松管理项目版本。它允许您为当前工作创建带有自动缩略图的快照，使浏览和恢复以前的状态变得简单。
+<div align="center">
+  <strong>
+    <a href="README.md">English</a> | 
+    <a href="README.ja.md">日本語</a> | 
+    中文 (Simplified)
+  </strong>
+</div>
+<br>
 
-## 功能 (Features)
+<div id="chinese"></div>
 
-- **Incremental Saves (增量保存)**: 每次保存自动生成版本 ID (v001, v002 等)。
-- **Visual Previews (可视化预览)**: 为每个保存点捕获视口缩略图。
-- **Detailed Info (详细信息)**: 显示每个版本的对象数量和文件大小。
-- **Notes (备注)**: 添加自定义备注以记录每个版本的更改。
-- **Edit Notes (编辑备注)**: 直接从历史列表中更新任何版本的备注。
-- **Easy Restore (轻松恢复)**: 在 UI 中浏览历史记录，单击即可恢复任何版本。
-- **Retrieve Objects (提取对象)**: 轻松从特定版本追加 (append) 对象，无需打开完整的快照。
-- **Ghost Reference (幽灵参考)**: 在 3D 视口中以线框形式叠加以前的版本，以便在不切换文件的情况下直观地比较更改。
-- **Object History (对象历史)**: 右键单击对象即可查看其版本历史。通过 **Show All Versions** 功能，您可以访问所有过去的状态——即使是雕刻等微小的更改——并通过 **Ghost** 叠加进行预览。
-- **Batch Timelapse (批量延时)**: 自动渲染多个版本以创建演变过程的延时摄影，并支持叠加**版本 ID**。
-- **Context-Aware Rendering (上下文感知渲染)**: 将您**当前**的摄像机设置（位置、镜头、移位）、世界环境、色彩管理（AgX/Filmic）以及渲染设置应用于**过去**的快照。
-  <br>*(注意：合成节点仍保持快照时的原样。)*
-- **Snapshot Compression (快照压缩)**: 压缩快照文件的选项。这允许您以稍长的保存时间为代价，显著减小文件大小。（默认：**已启用**）
-- **Quick Save (快速保存)**: 跳过备注对话框以立即保存的选项。
-- **Safe Recovery (安全恢复)**: 安全地用以前的版本覆盖主项目文件。原始文件会自动备份在历史文件夹中。
-- **Auto Save (自动保存)**: 按可配置的时间间隔（默认为 10 分钟）自动将您的工作保存到专用插槽，确保您永远不会丢失进度。
-- **Disk Management (磁盘管理)**: 自动删除最旧的版本以保持可管理的历史记录大小，同时保留锁定的版本。
-- **Version Protection (版本保护)**: 锁定特定版本以防止它们被自动删除或意外移除。
-- **Version Tagging (版本标签)**: 为版本分配标签 (Stable, Milestone, Experiment, Bug) 并筛选历史列表以立即找到重要的快照。
+---
+
+**保存是为了恢复。**
+
+SavePoints 是一个版本控制系统，它为快速恢复提供了可视化的用户体验，同时还具有延时摄影功能，让保存变得更有趣。
+
+## Why SavePoints?
+
+- **📸 Visual Versioning**: 通过自动缩略图确切查看每个版本的样子。
+- **🎬 Timelapse**: 使用**当前相机角度**批量渲染历史记录。创建作品的演变视频。
+- **⚡ Shortcuts**: 在记录和速度之间选择。使用快捷键保存并添加备注，或立即强制保存（添加 `Shift`）以跳过对话框。
+- **👻 Ghost Overlay**: 在视口中以线框形式叠加以前的版本，以便即时比较更改。
+- **📦 Retrieve Objects**: 需要 3 小时前删除的模型吗？无需打开文件即可从任何快照追加对象。（右键单击任何对象以检查其特定时间线。）
+- **🏷️ Tags**: 将版本标记为 "Stable" 或 "Milestone" 以保持历史记录井井有条。
+- **🛡️ Safe & Clean**: 自动保存在后台运行，不会弄乱您的列表。恢复版本会自动备份您的当前状态——零数据丢失。
+
+## Table of Contents
+
+- [使用方法 (Usage)](#使用方法-usage)
+- [注意事项 (Note)](#-注意事项-note)
+  - [批量渲染限制](#批量渲染限制)
+  - [对象历史记录限制 (Object History Limitations)](#对象历史记录限制-object-history-limitations)
+  - [一般注意事项](#一般注意事项)
+- [FAQ / 故障排除](#-faq--故障排除)
 
 ## 使用方法 (Usage)
 
