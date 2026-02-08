@@ -3,6 +3,7 @@
 import shlex
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import bpy
@@ -31,8 +32,8 @@ def format_command(command_template, context_dict):
 
     try:
         return command_template.format(**safe_ctx)
-    except KeyError as ex:
-        print(f"[SavePoints] Error: Missing placeholder {ex} in command template.")
+    except (KeyError, ValueError, IndexError) as ex:
+        print(f"[SavePoints] Error: Invalid command template: {ex}")
         return None
 
 
@@ -65,6 +66,8 @@ class PostSaveManager:
             return
         self._timer = None
         self.process = None
+        self._stdout_file = None
+        self._stderr_file = None
         self._on_success = None
         self._on_error = None
         PostSaveManager._initialized = True
@@ -96,11 +99,14 @@ class PostSaveManager:
         print(f"[SavePoints] Starting post-save command: {formatted_cmd}")
 
         try:
+            self._stdout_file = tempfile.TemporaryFile(mode="w+", encoding="utf-8")
+            self._stderr_file = tempfile.TemporaryFile(mode="w+", encoding="utf-8")
+
             self.process = subprocess.Popen(
                 formatted_cmd,
                 shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=self._stdout_file,
+                stderr=self._stderr_file,
                 text=True,
             )
 
@@ -111,7 +117,7 @@ class PostSaveManager:
             print(msg)
             if self._on_error:
                 self._on_error(msg, str(e))
-            self.process = None
+            self._cleanup()
 
     def cancel(self):
         if self.process:
@@ -124,7 +130,7 @@ class PostSaveManager:
                 self.process.wait()
                 print("[SavePoints] Process killed.")
 
-            self.process = None
+            self._cleanup()
 
             for window in bpy.context.window_manager.windows:
                 for area in window.screen.areas:
@@ -136,6 +142,26 @@ class PostSaveManager:
             return self.process.poll() is not None
         return True
 
+    def _cleanup(self):
+        """Clean up process and file handles"""
+        self.process = None
+
+        if self._stdout_file:
+            try:
+                self._stdout_file.close()
+            except Exception as ex:
+                print(f"[SavePoints] Error closing stdout file: {ex}")
+                pass
+            self._stdout_file = None
+
+        if self._stderr_file:
+            try:
+                self._stderr_file.close()
+            except Exception as ex:
+                print(f"[SavePoints] Error closing stderr file: {ex}")
+                pass
+            self._stderr_file = None
+
     def _monitor_process(self):
         if self.process is None:
             return None  # Stop timer
@@ -144,8 +170,21 @@ class PostSaveManager:
         if ret_code is None:
             return 0.5  # Check again in 0.5 seconds
 
-        # Finished
-        stdout, stderr = self.process.communicate()
+        # Finished - read outputs from temp files
+        stdout = ""
+        stderr = ""
+        try:
+            if self._stdout_file:
+                self._stdout_file.seek(0)
+                stdout = self._stdout_file.read()
+            if self._stderr_file:
+                self._stderr_file.seek(0)
+                stderr = self._stderr_file.read()
+        except Exception as e:
+            stderr += f"\n[Error reading output logs: {e}]"
+
+        self._cleanup()
+
         for window in bpy.context.window_manager.windows:
             for area in window.screen.areas:
                 area.tag_redraw()
@@ -162,7 +201,6 @@ class PostSaveManager:
             if self._on_error:
                 self._on_error(msg, details)
 
-        self.process = None
         return None
 
 
