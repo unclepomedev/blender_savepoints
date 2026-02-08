@@ -20,6 +20,7 @@ from .services.storage import (
     get_free_disk_space,
     format_file_size,
 )
+from .services.post_save import PostSaveManager
 
 LOW_DISK_SPACE_THRESHOLD = 10 * 1024 * 1024 * 1024  # 10 GB
 
@@ -323,7 +324,7 @@ def _draw_version_details(layout, settings, context):
             icon="RECOVER_LAST",
         )
 
-        addon_prefs = context.preferences.addons.get("savepoints")
+        addon_prefs = context.preferences.addons.get(__package__)
         if addon_prefs and addon_prefs.preferences.enable_glb_export:
             col = layout.column(align=True)
             col.prop(settings, "glb_export_path")
@@ -391,6 +392,16 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         settings = scene.savepoints_settings
+
+        if PostSaveManager().is_running:
+            box = layout.box()
+            row = box.row()
+            row.label(text="Processing Post-Save Command...", icon="TIME")
+            row.operator(
+                operators_core.SAVEPOINTS_OT_cancel_post_save.bl_idname,
+                text="Cancel",
+                icon="X",
+            )
 
         if not bpy.data.filepath:
             layout.label(text="Please save the file first.", icon="INFO")

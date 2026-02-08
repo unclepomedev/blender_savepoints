@@ -185,3 +185,18 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
             except Exception as e:
                 self.report({"ERROR"}, f"Failed to load ghost: {e}")
                 return {"CANCELLED"}
+
+
+class SAVEPOINTS_OT_report_message(bpy.types.Operator):
+    """Internal operator to show report messages from background threads/timers"""
+
+    bl_idname = "savepoints.report_message"
+    bl_label = "Report Message"
+    bl_options = {"INTERNAL"}
+
+    message: bpy.props.StringProperty()
+    type: bpy.props.StringProperty(default="INFO")
+
+    def execute(self, context):
+        self.report({self.type}, self.message)
+        return {"FINISHED"}

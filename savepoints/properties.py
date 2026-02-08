@@ -160,7 +160,7 @@ class SavePointsSettings(bpy.types.PropertyGroup):
 
 
 class SavePointsPreferences(bpy.types.AddonPreferences):
-    bl_idname = "savepoints"
+    bl_idname = __package__ or "savepoints"
 
     enable_glb_export: bpy.props.BoolProperty(
         name="Enable Background GLB Export",
@@ -168,6 +168,30 @@ class SavePointsPreferences(bpy.types.AddonPreferences):
         default=False,
     )
 
+    enable_post_save: bpy.props.BoolProperty(
+        name="Enable Post-Save Command",
+        description="Execute a shell command after saving a version",
+        default=False,
+    )
+
+    post_save_command: bpy.props.StringProperty(
+        name="Post-Save Command",
+        description="Shell command to execute. Supports {filepath}, {version}, {history_dir}, {version_dir}, {note}",
+        default="",
+    )
+
     def draw(self, _context):
         layout = self.layout
-        layout.prop(self, "enable_glb_export")
+        box_glb = layout.box()
+        box_glb.prop(self, "enable_glb_export")
+
+        box_cmd = layout.box()
+        box_cmd.prop(self, "enable_post_save")
+        if self.enable_post_save:
+            col = box_cmd.column()
+            col.separator()
+            col.prop(self, "post_save_command", text="Command")
+            col.label(
+                text="Placeholders: {filepath}, {version}, {history_dir}, {version_dir}, {note}",
+                icon="INFO",
+            )
