@@ -160,7 +160,7 @@ class SavePointsSettings(bpy.types.PropertyGroup):
 
 
 class SavePointsPreferences(bpy.types.AddonPreferences):
-    bl_idname = "savepoints"
+    bl_idname = __package__
 
     enable_glb_export: bpy.props.BoolProperty(
         name="Enable Background GLB Export",
@@ -182,13 +182,15 @@ class SavePointsPreferences(bpy.types.AddonPreferences):
 
     def draw(self, _context):
         layout = self.layout
-        layout.prop(self, "enable_glb_export")
+        box_glb = layout.box()
+        box_glb.prop(self, "enable_glb_export")
 
-        box = layout.box()
-        box.prop(self, "enable_post_save")
+        box_cmd = layout.box()
+        box_cmd.prop(self, "enable_post_save")
         if self.enable_post_save:
-            col = box.column()
-            col.prop(self, "post_save_command")
+            col = box_cmd.column()
+            col.separator()
+            col.prop(self, "post_save_command", text="Command")
             col.label(
                 text="Placeholders: {filepath}, {version}, {history_dir}, {version_dir}, {note}",
                 icon="INFO",

@@ -324,7 +324,7 @@ def _draw_version_details(layout, settings, context):
             icon="RECOVER_LAST",
         )
 
-        addon_prefs = context.preferences.addons.get("savepoints")
+        addon_prefs = context.preferences.addons.get(__package__)
         if addon_prefs and addon_prefs.preferences.enable_glb_export:
             col = layout.column(align=True)
             col.prop(settings, "glb_export_path")

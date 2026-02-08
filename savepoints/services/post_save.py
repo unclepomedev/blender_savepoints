@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import shlex
 import subprocess
 import sys
@@ -153,8 +155,7 @@ class PostSaveManager:
 
 
 def trigger_post_save_if_enabled(context, version_id: str, note: str):
-    package_name = __package__.split(".")[0] if __package__ else "savepoints"
-    addon_prefs = context.preferences.addons.get(package_name)
+    addon_prefs = context.preferences.addons.get(__package__)
 
     if not addon_prefs:
         return
