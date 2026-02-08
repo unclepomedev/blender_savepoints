@@ -5,6 +5,14 @@ import os
 import bpy
 
 from . import ui_utils
+from . import (
+    operators_attributes,
+    operators_core,
+    operators_export,
+    operators_render,
+    operators_snapshot,
+    operators_tools,
+)
 from .services.selection import get_selected_versions
 from .services.storage import (
     get_parent_path_from_snapshot,
@@ -54,7 +62,11 @@ class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
         ]
 
         for tag_id, tag_name, tag_icon in tags:
-            op = layout.operator("savepoints.set_tag", text=tag_name, icon=tag_icon)
+            op = layout.operator(
+                operators_attributes.SAVEPOINTS_OT_set_tag.bl_idname,
+                text=tag_name,
+                icon=tag_icon,
+            )
             op.version_id = item.version_id
             op.tag = tag_id
 
@@ -101,12 +113,18 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             layout.menu("SAVEPOINTS_MT_tag_menu", text="", icon=tag_icon)
 
             edit_op = layout.operator(
-                "savepoints.edit_note", text="", icon="GREASEPENCIL", emboss=False
+                operators_attributes.SAVEPOINTS_OT_edit_note.bl_idname,
+                text="",
+                icon="GREASEPENCIL",
+                emboss=False,
             )
             edit_op.version_id = item.version_id
 
             retrieve_op = layout.operator(
-                "savepoints.retrieve_objects", text="", icon="IMPORT", emboss=False
+                operators_tools.SAVEPOINTS_OT_retrieve_objects.bl_idname,
+                text="",
+                icon="IMPORT",
+                emboss=False,
             )
             retrieve_op.version_id = item.version_id
 
@@ -115,7 +133,7 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
             ghost_icon = "ONIONSKIN_ON" if is_ghost_active else "ONIONSKIN_OFF"
 
             ghost_op = layout.operator(
-                "savepoints.toggle_ghost",
+                operators_tools.SAVEPOINTS_OT_toggle_ghost.bl_idname,
                 text="",
                 icon=ghost_icon,
                 emboss=False,
@@ -125,7 +143,10 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
 
             lock_icon = "LOCKED" if item.is_protected else "UNLOCKED"
             op = layout.operator(
-                "savepoints.toggle_protection", text="", icon=lock_icon, emboss=False
+                operators_attributes.SAVEPOINTS_OT_toggle_protection.bl_idname,
+                text="",
+                icon=lock_icon,
+                emboss=False,
             )
             op.version_id = item.version_id
 
@@ -171,9 +192,21 @@ def _draw_snapshot_mode(layout, parent_filepath):
     box.label(text=f"Parent: {filename}")
 
     col = box.column(align=True)
-    col.operator("savepoints.restore", text="Save as Parent", icon="FILE_TICK")
-    col.operator("savepoints.fork_version", text="Fork (Save as New)", icon="DUPLICATE")
-    col.operator("savepoints.open_parent", text="Return to Parent", icon="LOOP_BACK")
+    col.operator(
+        operators_snapshot.SAVEPOINTS_OT_restore.bl_idname,
+        text="Save as Parent",
+        icon="FILE_TICK",
+    )
+    col.operator(
+        operators_snapshot.SAVEPOINTS_OT_fork_version.bl_idname,
+        text="Fork (Save as New)",
+        icon="DUPLICATE",
+    )
+    col.operator(
+        operators_snapshot.SAVEPOINTS_OT_open_parent.bl_idname,
+        text="Return to Parent",
+        icon="LOOP_BACK",
+    )
 
     layout.separator()
     layout.label(text="To view history, restore to parent.")
@@ -181,7 +214,11 @@ def _draw_snapshot_mode(layout, parent_filepath):
 
 def _draw_history_list(layout, settings):
     if not settings.is_batch_mode:
-        layout.operator("savepoints.commit", text="Save Version", icon="FILE_TICK")
+        layout.operator(
+            operators_core.SAVEPOINTS_OT_commit.bl_idname,
+            text="Save Version",
+            icon="FILE_TICK",
+        )
 
         # Check disk space
         history_dir = get_history_dir()
@@ -198,7 +235,7 @@ def _draw_history_list(layout, settings):
 
     icon = "CHECKBOX_HLT" if settings.is_batch_mode else "CHECKBOX_DEHLT"
     row.operator(
-        "savepoints.toggle_batch_mode",
+        operators_render.SAVEPOINTS_OT_toggle_batch_mode.bl_idname,
         text="",
         icon=icon,
         depress=settings.is_batch_mode,
@@ -206,9 +243,15 @@ def _draw_history_list(layout, settings):
 
     if settings.is_batch_mode:
         row = layout.row(align=True)
-        row.operator("savepoints.select_all", text="Select All", icon="CHECKBOX_HLT")
         row.operator(
-            "savepoints.deselect_all", text="Deselect All", icon="CHECKBOX_DEHLT"
+            operators_render.SAVEPOINTS_OT_select_all.bl_idname,
+            text="Select All",
+            icon="CHECKBOX_HLT",
+        )
+        row.operator(
+            operators_render.SAVEPOINTS_OT_deselect_all.bl_idname,
+            text="Deselect All",
+            icon="CHECKBOX_DEHLT",
         )
 
         row = layout.row()
@@ -225,8 +268,10 @@ def _draw_history_list(layout, settings):
     )
 
     col = row.column(align=True)
-    col.operator("savepoints.refresh", text="", icon="FILE_REFRESH")
-    col.operator("savepoints.delete", text="", icon="TRASH")
+    col.operator(
+        operators_core.SAVEPOINTS_OT_refresh.bl_idname, text="", icon="FILE_REFRESH"
+    )
+    col.operator(operators_core.SAVEPOINTS_OT_delete.bl_idname, text="", icon="TRASH")
 
     if settings.is_batch_mode:
         layout.separator()
@@ -236,7 +281,7 @@ def _draw_history_list(layout, settings):
         count = len(get_selected_versions(settings))
 
         row.operator(
-            "savepoints.batch_render",
+            operators_render.SAVEPOINTS_OT_batch_render.bl_idname,
             text=f"Batch Render Selected ({count})",
             icon="RENDER_STILL",
         )
@@ -273,28 +318,38 @@ def _draw_version_details(layout, settings, context):
         box.label(text=f"Objects: {item.object_count} | Size: {item.file_size_display}")
 
         layout.operator(
-            "savepoints.checkout", text="Checkout (Restore)", icon="RECOVER_LAST"
+            operators_core.SAVEPOINTS_OT_checkout.bl_idname,
+            text="Checkout (Restore)",
+            icon="RECOVER_LAST",
         )
 
         addon_prefs = context.preferences.addons.get("savepoints")
         if addon_prefs and addon_prefs.preferences.enable_glb_export:
             col = layout.column(align=True)
             col.prop(settings, "glb_export_path")
-            col.operator("savepoints.export_glb", text="Export GLB", icon="EXPORT")
+            col.operator(
+                operators_export.SAVEPOINTS_OT_export_glb.bl_idname,
+                text="Export GLB",
+                icon="EXPORT",
+            )
 
 
 def _draw_empty_state(layout):
     box = layout.box()
     box.label(text="No history found for this file.")
     box.operator(
-        "savepoints.link_history",
+        operators_tools.SAVEPOINTS_OT_link_history.bl_idname,
         text="Link Existing History Folder",
         icon="FILE_FOLDER",
     )
 
     layout.separator()
     layout.label(text="Or start a new history:")
-    layout.operator("savepoints.commit", text="Create First Version", icon="FILE_TICK")
+    layout.operator(
+        operators_core.SAVEPOINTS_OT_commit.bl_idname,
+        text="Create First Version",
+        icon="FILE_TICK",
+    )
 
     # Check disk space
     check_dir = os.path.dirname(bpy.data.filepath) if bpy.data.filepath else None
