@@ -2,6 +2,8 @@
 
 import bpy
 from .services.manifest import load_manifest
+from .services.post_save import PostSaveManager, trigger_post_save_if_enabled
+from .services.retrieve import cleanup_retrieve_temp_files
 from .services.snapshot import create_snapshot, find_snapshot_path
 from .services.storage import get_parent_path_from_snapshot
 from .services.versioning import (
@@ -11,7 +13,6 @@ from .services.versioning import (
     generate_default_note,
 )
 from .ui_utils import sync_history_to_props
-from .services.retrieve import cleanup_retrieve_temp_files
 
 
 class SAVEPOINTS_OT_commit(bpy.types.Operator):
@@ -70,6 +71,9 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
                 sync_history_to_props(context)
 
         self.report({"INFO"}, f"Version {new_id_str} saved.")
+
+        trigger_post_save_if_enabled(context, new_id_str, self.note)
+
         return {"FINISHED"}
 
 
@@ -179,4 +183,15 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
             )
 
         sync_history_to_props(context)
+        return {"FINISHED"}
+
+
+class SAVEPOINTS_OT_cancel_post_save(bpy.types.Operator):
+    """Cancel running post-save command"""
+
+    bl_idname = "savepoints.cancel_post_save"
+    bl_label = "Cancel Post-Save"
+
+    def execute(self, context):
+        PostSaveManager().cancel()
         return {"FINISHED"}

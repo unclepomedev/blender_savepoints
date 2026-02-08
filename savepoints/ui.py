@@ -20,6 +20,7 @@ from .services.storage import (
     get_free_disk_space,
     format_file_size,
 )
+from .services.post_save import PostSaveManager
 
 LOW_DISK_SPACE_THRESHOLD = 10 * 1024 * 1024 * 1024  # 10 GB
 
@@ -391,6 +392,14 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         settings = scene.savepoints_settings
+
+        if PostSaveManager().is_running:
+            box = layout.box()
+            row = box.row()
+            row.label(text="Processing Post-Save Command...", icon="TIME")
+            row.operator(
+                operators_core.SAVEPOINTS_OT_cancel_post_save, text="Cancel", icon="X"
+            )
 
         if not bpy.data.filepath:
             layout.label(text="Please save the file first.", icon="INFO")

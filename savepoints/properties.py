@@ -168,6 +168,28 @@ class SavePointsPreferences(bpy.types.AddonPreferences):
         default=False,
     )
 
+    enable_post_save: bpy.props.BoolProperty(
+        name="Enable Post-Save Command",
+        description="Execute a shell command after saving a version",
+        default=False,
+    )
+
+    post_save_command: bpy.props.StringProperty(
+        name="Post-Save Command",
+        description="Shell command to execute. Supports {filepath}, {version}, {history_dir}, {version_dir}, {note}",
+        default="",
+    )
+
     def draw(self, _context):
         layout = self.layout
         layout.prop(self, "enable_glb_export")
+
+        box = layout.box()
+        box.prop(self, "enable_post_save")
+        if self.enable_post_save:
+            col = box.column()
+            col.prop(self, "post_save_command")
+            col.label(
+                text="Placeholders: {filepath}, {version}, {history_dir}, {version_dir}, {note}",
+                icon="INFO",
+            )
