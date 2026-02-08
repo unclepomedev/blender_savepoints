@@ -22,7 +22,7 @@ class TestPostSave(SavePointsTestCase):
         if self.manager.process:
             try:
                 self.manager.process.kill()
-            except:
+            except Exception:
                 pass
         self.manager.process = None
         self.manager._timer = None

@@ -20,6 +20,7 @@ def format_command(command_template, context_dict):
         if sys.platform == "win32":
             if not s:
                 return '""'
+            s = s.replace('"', '\\"')
             if any(c in s for c in " &^|<>"):
                 return f'"{s}"'
             return s
