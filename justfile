@@ -32,3 +32,16 @@ fmt:
 ty:
     uv run pyright
     uv run ty check
+
+docs-build:
+    mdbook build docs -d docs/book
+    mdbook build docs/ja -d docs/book/ja
+    mdbook build docs/zh -d docs/book/zh
+
+docs-clean:
+    rm -rf docs/book
+
+docs: docs-clean docs-build
+
+docs-open:
+    open docs/book/index.html

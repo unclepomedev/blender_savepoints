@@ -92,3 +92,5 @@ cython_debug/
 .DS_Store
 .test_project_history
 /target
+
+docs/**/book/
