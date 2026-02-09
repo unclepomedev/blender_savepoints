@@ -106,11 +106,12 @@ SavePoints 是一个版本控制系统，它为快速恢复提供了可视化的
         - 在版本详细信息面板（Checkout 按钮下方）中设置 **Export Path (导出路径)**。
         - 点击 **Export GLB**。
     - 导出在后台运行，您可以继续工作。
+    - **错误日志**: 如果导出失败，日志将输出到 Blender 文本编辑器中的 **`SavePoints_Log.txt`**。
 13. **Post-Save Command (保存后命令)**:
     - *注意*: 此功能为可选功能。请在插件首选项 > Automation 中启用 **"Enable Post-Save Command"**。
     - **自动化**: 在创建快照后立即在后台执行 Shell 命令。
     - **集成**: 支持动态占位符（例如 `{version}`、`{note}`），可与资产管理流程（例如 `dvc push`、云同步或 NAS 备份）无缝集成。
-    - **错误日志**: 如果命令失败，详细日志将输出到 Blender 文本编辑器中的 **`SavePoints_Log.txt`**。
+    - **错误日志**: 如果命令失败，日志将输出到 Blender 文本编辑器中的 **`SavePoints_Log.txt`**。
 
 ## ⚠️ 注意事项 (Note)
 
