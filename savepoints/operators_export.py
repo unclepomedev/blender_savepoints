@@ -4,7 +4,7 @@ import shutil
 
 import bpy
 
-from .services.export import create_glb_export_executor
+from .services.export import create_glb_export_executor, process_export_failure
 
 
 class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
@@ -75,6 +75,7 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
                         self.report(
                             {"ERROR"}, f"Export failed for {status['version_id']}"
                         )
+                        process_export_failure(status)
                     else:
                         self.report(
                             {"INFO"}, f"Exported {status['version_id']} successfully"

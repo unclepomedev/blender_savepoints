@@ -5,6 +5,7 @@ import os
 import tempfile
 import bpy
 from .batch_executor import BatchRenderExecutor
+from .logging import write_error_log
 
 
 def get_export_worker_script_path():
@@ -70,3 +71,22 @@ def create_glb_export_executor(version, object_names, output_dir_raw):
     )
 
     return executor
+
+
+def process_export_failure(status):
+    """
+    Handles export failure by reading the worker log and writing it to the SavePoints log.
+    """
+    log_content = "Log file not found."
+    log_path = status.get("log_path")
+    if log_path and os.path.exists(log_path):
+        try:
+            with open(log_path, "r", encoding="utf-8") as f:
+                log_content = f.read()
+        except Exception as e:
+            log_content = f"Failed to read log file: {e}"
+
+    write_error_log(
+        f"Export failed for version {status['version_id']}",
+        f"Return Code: {status.get('return_code')}\n\nWorker Output:\n{log_content}",
+    )

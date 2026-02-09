@@ -2,10 +2,10 @@
 
 import bpy
 from .services.manifest import load_manifest
+from .services.logging import write_error_log
 from .services.post_save import (
     PostSaveManager,
     trigger_post_save_if_enabled,
-    write_error_log,
 )
 from .services.retrieve import cleanup_retrieve_temp_files
 from .services.snapshot import create_snapshot, find_snapshot_path
