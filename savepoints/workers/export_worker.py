@@ -24,7 +24,8 @@ def run_export(json_path: str, output_dir: str, file_prefix: str):
 
     target_objects = set(settings.get("target_objects", []))
 
-    bpy.ops.object.select_all(action="DESELECT")
+    for obj in bpy.context.selected_objects:
+        obj.select_set(False)
 
     found_objects = []
     missing_objects = []
