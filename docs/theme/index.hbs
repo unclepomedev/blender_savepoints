@@ -15,8 +15,13 @@
         <!-- Custom HTML head -->
         {{> head}}
 
-        <link rel="icon" href="{{ path_to_root }}favicon.png" type="image/png">
-        <link rel="apple-touch-icon" href="{{ path_to_root }}apple-touch-icon.png">
+        {{#if (eq language 'en')}}
+            <link rel="icon" href="favicon.png" type="image/png">
+            <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        {{else}}
+            <link rel="icon" href="../favicon.png" type="image/png">
+            <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+        {{/if}}
         <meta name="description" content="{{ description }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
@@ -163,6 +168,41 @@
                     <h1 class="menu-title">{{ book_title }}</h1>
 
                     <div class="right-buttons">
+
+                        <div style="display: inline-flex; align-items: center; margin-right: 20px;">
+                            <i class="fa fa-globe" style="margin-right: 8px; color: var(--icons);"></i>
+
+                            {{#if (eq language 'en')}}
+                                <a href="index.html"
+                                   title="English"
+                                   style="font-weight: bold; font-size: 14px; text-decoration: underline; color: var(--icons);">EN</a>
+                                <span style="margin: 0 8px; color: var(--icons); opacity: 0.3;">|</span>
+
+                                <a href="ja/index.html"
+                                   title="日本語"
+                                   style="font-weight: bold; font-size: 14px; text-decoration: none; color: var(--icons);">JA</a>
+                                <span style="margin: 0 8px; color: var(--icons); opacity: 0.3;">|</span>
+
+                                <a href="zh/index.html"
+                                   title="中文"
+                                   style="font-weight: bold; font-size: 14px; text-decoration: none; color: var(--icons);">ZH</a>
+
+                            {{else}}
+                                <a href="../index.html"
+                                   title="English"
+                                   style="font-weight: bold; font-size: 14px; text-decoration: none; color: var(--icons);">EN</a>
+                                <span style="margin: 0 8px; color: var(--icons); opacity: 0.3;">|</span>
+
+                                <a href="../ja/index.html"
+                                   title="日本語"
+                                   style="font-weight: bold; font-size: 14px; text-decoration: none; color: var(--icons); {{#if (eq language 'ja')}}text-decoration: underline;{{/if}}">JA</a>
+                                <span style="margin: 0 8px; color: var(--icons); opacity: 0.3;">|</span>
+
+                                <a href="../zh/index.html"
+                                   title="中文"
+                                   style="font-weight: bold; font-size: 14px; text-decoration: none; color: var(--icons); {{#if (eq language 'zh')}}text-decoration: underline;{{/if}}">ZH</a>
+                            {{/if}}
+                        </div>
                         {{#if print_enable}}
                         <a href="{{ path_to_root }}print.html" title="Print this book" aria-label="Print this book">
                             {{fa "solid" "print" "print-button"}}

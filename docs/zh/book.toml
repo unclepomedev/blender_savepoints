@@ -7,6 +7,7 @@ title = "SavePoints 用户手册"
 [output.html]
 git-repository-url = "https://github.com/unclepomedev/blender_savepoints"
 site-url = "/blender_savepoints/zh/"
+theme = "../theme"
 
 [output.html.search]
 enable = true
