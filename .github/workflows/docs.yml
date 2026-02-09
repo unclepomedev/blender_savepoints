@@ -33,7 +33,7 @@ jobs:
         uses: extractions/setup-just@v3
 
       - name: Build with Just
-        run: just doc
+        run: just docs
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
