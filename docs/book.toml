@@ -1,0 +1,14 @@
+[book]
+authors = ["unclepomedev"]
+language = "en"
+src = "src"
+title = "SavePoints Manual"
+
+[output.html]
+git-repository-url = "https://github.com/unclepomedev/blender_savepoints"
+site-url = "/blender_savepoints/"
+
+[output.html.search]
+enable = true
+limit-results = 30
+use-boolean-and = true

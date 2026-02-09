@@ -1,0 +1,14 @@
+[book]
+authors = ["unclepomedev"]
+language = "ja"
+src = "src"
+title = "SavePoints マニュアル"
+
+[output.html]
+git-repository-url = "https://github.com/unclepomedev/blender_savepoints"
+site-url = "/blender_savepoints/ja/"
+
+[output.html.search]
+enable = true
+limit-results = 30
+use-boolean-and = true
