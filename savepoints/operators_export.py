@@ -41,6 +41,7 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
                 version=version,
                 object_names=selected_objects,
                 output_dir_raw=settings.glb_export_path,
+                filename_template=settings.glb_export_filename,
             )
         except ValueError as e:
             self.report({"ERROR"}, str(e))

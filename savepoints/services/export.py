@@ -6,6 +6,7 @@ import tempfile
 import bpy
 from .batch_executor import BatchRenderExecutor
 from .logging import write_error_log
+from .storage import get_project_stem
 
 
 def get_export_worker_script_path():
@@ -18,7 +19,9 @@ def get_export_worker_script_path():
     )
 
 
-def create_glb_export_executor(version, object_names, output_dir_raw):
+def create_glb_export_executor(
+    version, object_names, output_dir_raw, filename_template=""
+):
     """
     Prepares the temporary settings and output directory,
     then initializes and returns a BatchRenderExecutor for GLB export.
@@ -27,6 +30,7 @@ def create_glb_export_executor(version, object_names, output_dir_raw):
         version: The version object (from settings.versions).
         object_names (list[str]): List of object names to export.
         output_dir_raw (str): The output path string (can be relative //).
+        filename_template (str): Optional filename template (supports {version}).
 
     Returns:
         BatchRenderExecutor: The configured executor instance.
@@ -55,9 +59,12 @@ def create_glb_export_executor(version, object_names, output_dir_raw):
 
     worker_script = get_export_worker_script_path()
 
-    blend_name = "untitled"
-    if bpy.data.filepath:
-        blend_name = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
+    blend_name = get_project_stem()
+
+    final_name = blend_name
+    if filename_template:
+        name = filename_template.replace("{version}", version.version_id)
+        final_name = bpy.path.clean_name(name)
 
     executor = BatchRenderExecutor(
         tasks=[version],
@@ -67,7 +74,7 @@ def create_glb_export_executor(version, object_names, output_dir_raw):
         worker_script_path=worker_script,
         blender_bin=bpy.app.binary_path,
         output_suffix="",  # No suffix, worker adds .glb
-        filename_override=blend_name,
+        filename_override=final_name,
     )
 
     return executor

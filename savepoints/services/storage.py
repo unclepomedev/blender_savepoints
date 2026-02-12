@@ -73,6 +73,22 @@ def get_project_path() -> str:
     return bpy.data.filepath
 
 
+def get_project_stem() -> str:
+    """
+    Get the base name (stem) of the current project.
+    If the current file is a snapshot, it returns the parent project's stem.
+    """
+    parent_path = get_parent_path_from_snapshot(bpy.data.filepath)
+
+    if parent_path:
+        return Path(parent_path).stem
+
+    if bpy.data.filepath:
+        return Path(bpy.data.filepath).stem
+
+    return "untitled"
+
+
 def get_history_dir_for_path(blend_path: str | None) -> str | None:
     """Get the history directory path for a given blend file."""
     if not blend_path:
