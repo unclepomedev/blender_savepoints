@@ -62,9 +62,24 @@ class TestExportGLB(SavePointsTestCase):
                 expected_filename,
                 "Service did not use Blender filename as override",
             )
+
+            # Verify Custom Filename Template
+            custom_template = "MyAsset_{version}"
+            executor_custom = create_glb_export_executor(
+                v1, ["MyCube"], str(output_dir), filename_template=custom_template
+            )
+            expected_custom_filename = bpy.path.clean_name(f"MyAsset_{v1.version_id}")
+            self.assertEqual(
+                executor_custom.filename_override,
+                expected_custom_filename,
+                "Service did not use custom filename template correctly",
+            )
+
             # Cleanup executor temp
             if executor.temp_dir and os.path.exists(executor.temp_dir):
                 shutil.rmtree(executor.temp_dir)
+            if executor_custom.temp_dir and os.path.exists(executor_custom.temp_dir):
+                shutil.rmtree(executor_custom.temp_dir)
 
             # --- Verify Worker Execution with Custom Name ---
             # We simulate what the executor would pass (the custom name)

@@ -158,6 +158,12 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         subtype="DIR_PATH",
     )
 
+    glb_export_filename: bpy.props.StringProperty(
+        name="Filename",
+        description="Filename (stem) for the exported .glb file. Default (empty) is .blend filename. Use {version} for version string.",
+        default="",
+    )
+
 
 class SavePointsPreferences(bpy.types.AddonPreferences):
     bl_idname = __package__ or "savepoints"

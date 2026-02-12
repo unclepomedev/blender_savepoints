@@ -19,6 +19,7 @@ from .services.storage import (
     get_history_dir,
     get_free_disk_space,
     format_file_size,
+    get_project_stem,
 )
 from .services.post_save import PostSaveManager
 
@@ -326,9 +327,15 @@ def _draw_version_details(layout, settings, context):
 
         addon_prefs = context.preferences.addons.get(__package__)
         if addon_prefs and addon_prefs.preferences.enable_glb_export:
-            col = layout.column(align=True)
-            col.prop(settings, "glb_export_path")
-            col.operator(
+            box = layout.box()
+            box.label(text="Background GLB Export", icon="EXPORT")
+            box.prop(settings, "glb_export_path")
+            col = box.column(align=True)
+            col.prop(settings, "glb_export_filename")
+            if not settings.glb_export_filename:
+                current_stem = get_project_stem()
+                col.label(text=f"Default: {current_stem}.glb", icon="INFO")
+            box.operator(
                 operators_export.SAVEPOINTS_OT_export_glb.bl_idname,
                 text="Export GLB",
                 icon="EXPORT",

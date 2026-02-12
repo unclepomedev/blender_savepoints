@@ -5,6 +5,7 @@ import os
 from typing import Any
 
 import bpy
+from savepoints.services.storage import get_project_stem
 
 
 def get_batch_render_output_dir(base_path="//", dry_run=False):
@@ -13,10 +14,7 @@ def get_batch_render_output_dir(base_path="//", dry_run=False):
     Format: renders_batch/{blend_name}_{timestamp}
     """
     abs_base = bpy.path.abspath(base_path)
-    if bpy.data.filepath:
-        blend_name = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
-    else:
-        blend_name = "untitled"
+    blend_name = get_project_stem()
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     if dry_run:
