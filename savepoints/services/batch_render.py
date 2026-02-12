@@ -5,7 +5,7 @@ import os
 from typing import Any
 
 import bpy
-from savepoints.services.storage import get_project_stem
+from .storage import get_project_stem
 
 
 def get_batch_render_output_dir(base_path="//", dry_run=False):
