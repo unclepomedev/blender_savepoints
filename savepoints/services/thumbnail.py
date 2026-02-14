@@ -63,6 +63,9 @@ def capture_thumbnail(context: bpy.types.Context, filepath: str) -> None:
     """
     Capture a clean viewport render as a thumbnail.
     """
+    if bpy.app.background:
+        return
+
     path = Path(filepath)
     path.parent.mkdir(parents=True, exist_ok=True)
 
