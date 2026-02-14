@@ -76,6 +76,7 @@ def extract_render_settings(context, dry_run=False):
 
     if render.engine == "CYCLES":
         settings["samples"] = scene.cycles.samples
+        settings["cycles_device"] = scene.cycles.device
     elif render.engine in ["BLENDER_EEVEE", "BLENDER_EEVEE_NEXT"]:
         settings["samples"] = getattr(scene.eevee, "taa_render_samples", 64)
 

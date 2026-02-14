@@ -32,7 +32,8 @@ def enable_gpu():
                 if active_devices:
                     print(f"Worker: Activated GPU ({dtype}): {active_devices}")
                     return True
-            except Exception:
+            except Exception as e:
+                print(f"Worker: Failed to activate GPU ({dtype}): {e}")
                 continue
         print("Worker: No compatible GPU found or failed to activate. Using CPU.")
         return False

@@ -226,6 +226,20 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
         finally:
             shutil.rmtree(temp_dir)
 
+    def test_vse_timelapse_no_images(self):
+        """
+        Test that FileNotFoundError is raised when no images are found.
+        """
+        print("\nTesting VSE Timelapse No Images...")
+        temp_dir = tempfile.mkdtemp()
+        try:
+            # No images created
+            with self.assertRaises(FileNotFoundError):
+                create_vse_timelapse(temp_dir)
+            print("  [OK] FileNotFoundError raised correctly.")
+        finally:
+            shutil.rmtree(temp_dir)
+
 
 if __name__ == "__main__":
     result = unittest.main(argv=["first-arg-is-ignored"], exit=False).result

@@ -76,7 +76,7 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     Returns the scene name if successful, None otherwise.
     """
     if not os.path.exists(directory_path):
-        return None
+        raise FileNotFoundError(f"Directory not found: {directory_path}")
 
     valid_exts = {
         ".png",
@@ -98,8 +98,7 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     files.sort()
 
     if not files:
-        print("No images found to create timelapse.")
-        return None
+        raise FileNotFoundError("No images found to create timelapse.")
 
     clean_path = directory_path.rstrip(os.sep)
     base_name = os.path.basename(clean_path)
@@ -125,31 +124,23 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     else:
         strips_collection = seq.sequences
 
-    try:
-        current_frame = 1
+    current_frame = 1
 
-        for i, f_name in enumerate(files):
-            f_path = os.path.join(directory_path, f_name)
+    for i, f_name in enumerate(files):
+        f_path = os.path.join(directory_path, f_name)
 
-            strip = strips_collection.new_image(
-                name=f"Timelapse_Image_{i}",
-                filepath=f_path,
-                channel=1,
-                frame_start=current_frame,
-            )
-            strip.frame_final_duration = FRAMES_PER_IMAGE
-            current_frame += FRAMES_PER_IMAGE
+        strip = strips_collection.new_image(
+            name=f"Timelapse_Image_{i}",
+            filepath=f_path,
+            channel=1,
+            frame_start=current_frame,
+        )
+        strip.frame_final_duration = FRAMES_PER_IMAGE
+        current_frame += FRAMES_PER_IMAGE
 
-        new_scene.frame_end = current_frame - 1
+    new_scene.frame_end = current_frame - 1
 
-        return new_scene.name
-
-    except Exception as e:
-        print(f"SavePoints Error creating VSE strip: {e}")
-        import traceback
-
-        traceback.print_exc()
-        return None
+    return new_scene.name
 
 
 def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_in_pos):
