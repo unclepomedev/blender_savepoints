@@ -51,7 +51,26 @@ def _execute_render_task(scene, output_dir, file_prefix):
     # Fallback Save
     ext = render.file_extension
     if not ext:
-        ext = ".jpg"
+        fmt = render.image_settings.file_format
+        if fmt == "PNG":
+            ext = ".png"
+        elif "EXR" in fmt:
+            ext = ".exr"
+        elif fmt == "JPEG":
+            ext = ".jpg"
+        elif fmt == "TIFF":
+            ext = ".tif"
+        elif fmt in ["TARGA", "TARGA_RAW"]:
+            ext = ".tga"
+        elif fmt == "BMP":
+            ext = ".bmp"
+        elif fmt == "WEBP":
+            ext = ".webp"
+        else:
+            ext = ".png"
+            print(
+                f"Worker Warning: Could not determine extension for format '{fmt}'. Defaulting to .png"
+            )
 
     target_path = os.path.join(output_dir, f"{file_prefix}{ext}")
     try:

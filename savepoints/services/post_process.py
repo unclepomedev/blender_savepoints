@@ -73,7 +73,8 @@ def open_folder_platform_independent(directory_path):
 def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     """
     Creates a new Scene, imports rendered images into VSE.
-    Returns the scene name if successful, None otherwise.
+    Returns the scene name if success.
+    Raises FileNotFoundError if the directory or images are missing.
     """
     if not os.path.exists(directory_path):
         raise FileNotFoundError(f"Directory not found: {directory_path}")
