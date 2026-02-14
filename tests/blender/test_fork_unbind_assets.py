@@ -38,6 +38,18 @@ class TestForkUnbindAssets(SavePointsTestCase):
         bpy.ops.wm.read_factory_settings()
         bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
 
+        # Re-enable savepoints addon after factory reset
+        import addon_utils
+        import savepoints
+
+        try:
+            addon_utils.enable("savepoints", default_set=True)
+        except Exception:
+            try:
+                savepoints.register()
+            except (ValueError, RuntimeError):
+                pass
+
     def test_fork_with_unbind_assets(self):
         """
         Scenario: Fork with unbind_linked_assets=True.
