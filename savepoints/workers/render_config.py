@@ -141,3 +141,38 @@ def apply_ffmpeg_settings(render, settings):
         render.ffmpeg.audio_codec = ffmpeg_data.get("audio_codec", "NONE")
     except Exception as e:
         print(f"Worker Warning: Failed to set ffmpeg.audio_codec: {e}")
+
+
+def sanitize_render_settings(scene):
+    """
+    Ensures render settings are valid for headless execution.
+    Fixes common issues like missing composite nodes or VSE hijacking.
+    """
+    render = scene.render
+
+    # Force extension usage to ensure consistency
+    render.use_file_extension = True
+    # Ensure Sequencer doesn't hijack render if empty
+    render.use_sequencer = False
+
+    # Check for Compositor issues
+    if render.use_compositing:
+        node_tree = getattr(scene, "compositing_node_group", None)
+
+        if node_tree is None:
+            node_tree = getattr(scene, "node_tree", None)
+
+        if not node_tree:
+            print("Warning: use_compositing is True but no node tree found.")
+            print("Action: Disabling use_compositing.")
+            render.use_compositing = False
+        else:
+            has_composite = any(n.type == "COMPOSITE" for n in node_tree.nodes)
+            if not has_composite:
+                print(
+                    "Warning: use_compositing is True but no Composite node found in the node tree."
+                )
+                print(
+                    "Action: Disabling use_compositing to ensure standard render output."
+                )
+                render.use_compositing = False

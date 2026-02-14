@@ -73,10 +73,11 @@ def open_folder_platform_independent(directory_path):
 def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     """
     Creates a new Scene, imports rendered images into VSE.
-    Returns the scene name if successful, None otherwise.
+    Returns the scene name if success.
+    Raises FileNotFoundError if the directory or images are missing.
     """
     if not os.path.exists(directory_path):
-        return None
+        raise FileNotFoundError(f"Directory not found: {directory_path}")
 
     valid_exts = {
         ".png",
@@ -98,8 +99,7 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     files.sort()
 
     if not files:
-        print("No images found to create timelapse.")
-        return None
+        raise FileNotFoundError("No images found to create timelapse.")
 
     clean_path = directory_path.rstrip(os.sep)
     base_name = os.path.basename(clean_path)
@@ -145,11 +145,17 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
         return new_scene.name
 
     except Exception as e:
+        if new_scene:
+            try:
+                bpy.data.scenes.remove(new_scene)
+                print(f"[SavePoints] Cleaned up orphaned scene: {scene_name}")
+            except Exception as cleanup_error:
+                print(f"[SavePoints] Failed to clean up scene: {cleanup_error}")
+
         print(f"SavePoints Error creating VSE strip: {e}")
         import traceback
-
         traceback.print_exc()
-        return None
+        raise
 
 
 def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_in_pos):

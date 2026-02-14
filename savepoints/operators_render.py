@@ -307,14 +307,22 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 self._show_timelapse_notification(
                     context, scene_name, mp4_triggered, count
                 )
-            elif not scene_name:
-                self.report({"WARNING"}, "Could not create timelapse scene.")
 
         except Exception as e:
-            print(f"[SavePoints] Post-process error: {e}")
             import traceback
 
+            error_msg = f"{e}\n\n{traceback.format_exc()}"
+            print(f"[SavePoints] Post-process error: {e}")
             traceback.print_exc()
+
+            text_name = "Log_Batch_Timelapse_Error"
+            if text_name in bpy.data.texts:
+                bpy.data.texts.remove(bpy.data.texts[text_name])
+
+            new_text = bpy.data.texts.new(name=text_name)
+            new_text.write(error_msg)
+
+            self.report({"ERROR"}, f"Timelapse Error. Check '{text_name}'")
 
     @staticmethod
     def _show_timelapse_notification(context, scene_name, mp4_triggered, count):
