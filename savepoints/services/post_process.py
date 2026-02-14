@@ -125,23 +125,37 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
     else:
         strips_collection = seq.sequences
 
-    current_frame = 1
+    try:
+        current_frame = 1
 
-    for i, f_name in enumerate(files):
-        f_path = os.path.join(directory_path, f_name)
+        for i, f_name in enumerate(files):
+            f_path = os.path.join(directory_path, f_name)
 
-        strip = strips_collection.new_image(
-            name=f"Timelapse_Image_{i}",
-            filepath=f_path,
-            channel=1,
-            frame_start=current_frame,
-        )
-        strip.frame_final_duration = FRAMES_PER_IMAGE
-        current_frame += FRAMES_PER_IMAGE
+            strip = strips_collection.new_image(
+                name=f"Timelapse_Image_{i}",
+                filepath=f_path,
+                channel=1,
+                frame_start=current_frame,
+            )
+            strip.frame_final_duration = FRAMES_PER_IMAGE
+            current_frame += FRAMES_PER_IMAGE
 
-    new_scene.frame_end = current_frame - 1
+        new_scene.frame_end = current_frame - 1
 
-    return new_scene.name
+        return new_scene.name
+
+    except Exception as e:
+        if new_scene:
+            try:
+                bpy.data.scenes.remove(new_scene)
+                print(f"[SavePoints] Cleaned up orphaned scene: {scene_name}")
+            except Exception as cleanup_error:
+                print(f"[SavePoints] Failed to clean up scene: {cleanup_error}")
+
+        print(f"SavePoints Error creating VSE strip: {e}")
+        import traceback
+        traceback.print_exc()
+        raise
 
 
 def launch_timelapse_mp4_generation(input_dir, output_file, fps, burn_in, burn_in_pos):
