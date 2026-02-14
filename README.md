@@ -107,6 +107,24 @@ SavePoints is a version control system that provides a visual UX for fast recove
     - A popup lists detected changes: **Created**, **Moved**, **Minor** (Shape), or **Major** (Vertex Count).
     - **Show All Versions**: Enable this toggle to list *every* snapshot containing the object, even if no changes were detected (marked as **Record**). This ensures you can access internal changes like sculpting or subtle deformations.
     - **Click an entry** to overlay a Ghost Reference of that specific version.
+12. **Background GLB Export**:
+    - *Note*: This feature is optional. Enable **"Enable Background GLB Export"** in the Add-on Preferences to unlock it.
+    - **Select Target Objects**: Select objects in your current scene. SavePoints uses their *names* to identify which objects to export from the past version.
+    - **Select Version**: Click a version in the list.
+    - **Export**:
+        - Set the **Export Path** in the version details panel (below the Checkout button).
+        - **Filename**: Optionally set a custom filename.
+            - Default: Uses the original `.blend` filename.
+            - Placeholder: Use `{version}` to include the version ID (e.g., `MyProp_{version}`).
+            - *Note*: The `.glb` extension is automatically appended. If you enter `A.glb`, the result will be `A.glb.glb`.
+        - Click **Export GLB**.
+    - The export runs in the background, allowing you to keep working.
+    - **Error Logging**: If the export fails, error logs are output to **`SavePoints_Log.txt`** in Blender's Text Editor.
+13. **Post-Save Command**:
+    - *Note*: This feature is optional. Enable **"Enable Post-Save Command"** in the Add-on Preferences > Automation.
+    - **Automation**: Execute background shell commands immediately after creating a snapshot.
+    - **Integration**: Supports dynamic placeholders (e.g., `{version}`, `{note}`) for seamless integration with asset management pipelines (e.g., `dvc push`, cloud syncing, or NAS backups).
+    - **Error Logging**: If a command fails, error logs are output to **`SavePoints_Log.txt`** in Blender's Text Editor.
 
 ## ⚠️ Note
 
