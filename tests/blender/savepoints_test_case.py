@@ -42,11 +42,17 @@ class SavePointsTestCase(unittest.TestCase):
         bpy.ops.wm.save_as_mainfile(filepath=str(self.blend_path))
 
         # 5. Register the addon
+        import addon_utils
+
         try:
-            savepoints.register()
-        except (ValueError, RuntimeError):
-            # Already registered
-            pass
+            addon_utils.enable("savepoints", default_set=True)
+        except Exception as e:
+            print(f"[Setup] Warning: Failed to enable addon via addon_utils: {e}")
+            # Fallback to manual registration if enable failed
+            try:
+                savepoints.register()
+            except (ValueError, RuntimeError):
+                pass
 
     def tearDown(self):
         # 0. Clear LRU Cache to prevent cross-test contamination
@@ -56,6 +62,13 @@ class SavePointsTestCase(unittest.TestCase):
         load_object_data.cache_clear()
 
         # 1. Unregister the addon
+        import addon_utils
+
+        try:
+            addon_utils.disable("savepoints", default_set=True)
+        except Exception:
+            pass
+
         try:
             savepoints.unregister()
         except Exception:
