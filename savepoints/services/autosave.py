@@ -39,12 +39,16 @@ class AutoSaveManager:
         return self.settings.use_auto_save
 
     def get_last_save_time(self):
+        if not self.settings:
+            return 0.0
         try:
             return float(self.settings.last_autosave_timestamp)
         except ValueError:
             return 0.0
 
     def initialize_timestamp(self, now):
+        if not self.settings:
+            return False
         if self.get_last_save_time() == 0.0:
             self.settings.last_autosave_timestamp = str(now)
             return True
@@ -63,6 +67,9 @@ class AutoSaveManager:
                     area.tag_redraw()
 
     def update_warning(self, now):
+        if not self.settings:
+            return
+
         last_save = self.get_last_save_time()
         interval_min = max(1, self.settings.auto_save_interval)
 
@@ -81,6 +88,9 @@ class AutoSaveManager:
                 self._tag_redraw()
 
     def can_save(self, now):
+        if not self.settings:
+            return False
+
         if self.context.mode in UNSAFE_MODES:
             return False
 
@@ -97,6 +107,9 @@ class AutoSaveManager:
         return True
 
     def execute_save(self):
+        if not self.settings:
+            return
+
         try:
             delete_version_by_id("autosave", use_trash=False)
             create_snapshot(self.context, "autosave", "Auto Save", skip_thumbnail=True)

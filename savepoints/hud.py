@@ -54,7 +54,7 @@ class HUDManager:
         if parent_path:
             return "SNAPSHOT MODE (REVIEW MODE)", (1.0, 0.3, 0.3, 1.0)  # Red
 
-        if show_warning:
+        if show_warning and self.settings:
             return (
                 self.settings.autosave_warning_message,
                 (1.0, 0.6, 0.0, 1.0),
