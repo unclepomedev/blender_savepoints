@@ -24,64 +24,129 @@ def is_rendering():
     return bpy.app.is_job_running("RENDER")
 
 
-def autosave_timer():
-    """Timer function for auto-save."""
-    check_interval = 5.0
+class AutoSaveManager:
+    def __init__(self, context):
+        self.context = context
+        self.check_interval = 5.0
+        self.scene = getattr(context, "scene", None)
+        self.settings = (
+            getattr(self.scene, "savepoints_settings", None) if self.scene else None
+        )
 
-    try:
-        context = bpy.context
-        if context.mode in UNSAFE_MODES:
-            return check_interval
+    def should_run(self):
+        if not self.scene or not self.settings:
+            return False
+        return self.settings.use_auto_save
+
+    def get_last_save_time(self):
+        if not self.settings:
+            return 0.0
+        try:
+            return float(self.settings.last_autosave_timestamp)
+        except ValueError:
+            return 0.0
+
+    def initialize_timestamp(self, now):
+        if not self.settings:
+            return False
+        if self.get_last_save_time() == 0.0:
+            self.settings.last_autosave_timestamp = str(now)
+            return True
+        return False
+
+    @staticmethod
+    def is_snapshot_mode():
+        if not bpy.data.filepath:
+            return False
+        return bool(get_parent_path_from_snapshot(bpy.data.filepath))
+
+    def _tag_redraw(self):
+        for window in self.context.window_manager.windows:
+            for area in window.screen.areas:
+                if area.type == "VIEW_3D":
+                    area.tag_redraw()
+
+    def update_warning(self, now):
+        if not self.settings:
+            return
+
+        last_save = self.get_last_save_time()
+        interval_min = max(1, self.settings.auto_save_interval)
+
+        minutes_since_save = (now - last_save) / 60.0
+        threshold_minutes = max(15, interval_min + 5)
+
+        should_warn = bpy.data.is_dirty and minutes_since_save > threshold_minutes
+
+        if should_warn:
+            self.settings.show_autosave_warning = True
+            self.settings.autosave_warning_message = f"Not auto-saved for {int(minutes_since_save)} min. Switch to Object Mode."
+            self._tag_redraw()
+        else:
+            if self.settings.show_autosave_warning:
+                self.settings.show_autosave_warning = False
+                self._tag_redraw()
+
+    def can_save(self, now):
+        if not self.settings:
+            return False
+
+        if self.context.mode in UNSAFE_MODES:
+            return False
 
         if is_rendering():
-            return check_interval
+            return False
 
-        scene = getattr(context, "scene", None)
-        if not scene:
-            return check_interval
-
-        settings = getattr(scene, "savepoints_settings", None)
-        if not settings:
-            return check_interval
-
-        if not settings.use_auto_save:
-            return check_interval
-
-        interval_min = settings.auto_save_interval
-        if interval_min < 1:
-            interval_min = 1
-
+        last_save = self.get_last_save_time()
+        interval_min = max(1, self.settings.auto_save_interval)
         interval_sec = interval_min * 60.0
 
-        now = time.time()
-        try:
-            last_save = float(settings.last_autosave_timestamp)
-        except ValueError:
-            last_save = 0.0
-
-        # If last_save is 0 (initial), set it to now so we don't save immediately
-        if last_save == 0.0:
-            settings.last_autosave_timestamp = str(now)
-            return check_interval
-
         if (now - last_save) < interval_sec:
-            return check_interval
+            return False
 
-        if not bpy.data.filepath:
-            return check_interval
+        return True
 
-        if get_parent_path_from_snapshot(bpy.data.filepath):
-            return check_interval
+    def execute_save(self):
+        if not self.settings:
+            return
 
         try:
             delete_version_by_id("autosave", use_trash=False)
-            create_snapshot(context, "autosave", "Auto Save", skip_thumbnail=True)
-            settings.last_autosave_timestamp = str(time.time())
+            create_snapshot(self.context, "autosave", "Auto Save", skip_thumbnail=True)
+            self.settings.last_autosave_timestamp = str(time.time())
+            # Clear warning if save successful
+            self.settings.show_autosave_warning = False
         except Exception as e:
             print(f"SavePoints: Auto Save execution failed: {e}")
 
-        return check_interval
+    def process(self):
+        try:
+            if not self.should_run():
+                return self.check_interval
 
-    except Exception as e:
-        print(f"SavePoints: Auto Save timer error: {e}")
-        return check_interval
+            now = time.time()
+
+            if self.initialize_timestamp(now):
+                return self.check_interval
+
+            if not bpy.data.filepath:
+                return self.check_interval
+
+            if self.is_snapshot_mode():
+                return self.check_interval
+
+            self.update_warning(now)
+
+            if self.can_save(now):
+                self.execute_save()
+
+            return self.check_interval
+        except Exception as e:
+            print(f"SavePoints: Auto Save timer error: {e}")
+            return self.check_interval
+
+
+def autosave_timer():
+    """Timer function for auto-save."""
+    manager = AutoSaveManager(bpy.context)
+    return manager.process()

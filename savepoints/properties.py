@@ -108,6 +108,16 @@ class SavePointsSettings(bpy.types.PropertyGroup):
     )
     last_autosave_timestamp: bpy.props.StringProperty(default="0.0")
 
+    show_autosave_warning: bpy.props.BoolProperty(
+        name="Show Autosave Warning",
+        default=False,
+    )
+
+    autosave_warning_message: bpy.props.StringProperty(
+        name="Autosave Warning Message",
+        default="",
+    )
+
     is_batch_mode: bpy.props.BoolProperty(
         name="Batch Mode",
         description="Toggle batch operation mode",
