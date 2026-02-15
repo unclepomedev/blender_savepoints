@@ -6,9 +6,10 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class NodesModifierPanel(bpy_struct):
     is_open: bool
+    """Whether the panel is expanded or closed"""

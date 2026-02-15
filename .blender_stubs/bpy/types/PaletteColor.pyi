@@ -6,11 +6,11 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class PaletteColor(bpy_struct):
-    color: list[float]
-    strength: float
-    weight: float
+    color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]
+    strength: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
+    weight: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]

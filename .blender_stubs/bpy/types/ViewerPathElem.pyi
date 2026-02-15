@@ -6,10 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ViewerPathElem(bpy_struct):
-    type: str
-    ui_name: str
+    @property
+    def type(self) -> Literal['ID', 'MODIFIER', 'GROUP_NODE', 'SIMULATION_ZONE', 'VIEWER_NODE', 'REPEAT_ZONE', 'FOREACH_GEOMETRY_ELEMENT_ZONE', 'EVALUATE_CLOSURE']:
+        """Type of the path element"""
+        ...
+    @property
+    def ui_name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name that can be displayed in the UI for this element"""
+        ...

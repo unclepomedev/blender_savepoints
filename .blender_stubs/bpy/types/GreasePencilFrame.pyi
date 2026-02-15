@@ -6,13 +6,19 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .GreasePencilDrawing import GreasePencilDrawing
 class GreasePencilFrame(bpy_struct):
-    drawing: 'GreasePencilDrawing'
-    frame_number: int
+    drawing: Annotated[Optional['GreasePencilDrawing'], "is_animatable=False"]
+    """A Grease Pencil drawing"""
+    @property
+    def frame_number(self) -> Annotated[int, "step=1"]:
+        """The frame number in the scene"""
+        ...
     select: bool
-    keyframe_type: str
+    """Frame Selection in the Dope Sheet"""
+    keyframe_type: Annotated[Literal['KEYFRAME', 'BREAKDOWN', 'MOVING_HOLD', 'EXTREME', 'JITTER', 'GENERATED'], "is_animatable=False"]
+    """Type of keyframe"""

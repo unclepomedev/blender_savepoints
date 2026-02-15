@@ -6,10 +6,12 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .UILayout import UILayout
 class UIPieMenu(bpy_struct):
-    layout: 'UILayout'
+    @property
+    def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
+        ...

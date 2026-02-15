@@ -6,14 +6,18 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Object import Object
 class LayerObjects(bpy_struct):
-    active: 'Object'
-    selected: bpy_prop_collection['Object']
+    active: Annotated[Optional['Object'], "is_animatable=False"]
+    """Active object for this layer"""
+    @property
+    def selected(self) -> Annotated[bpy_prop_collection['Object'], "is_animatable=False"]:
+        """All the selected objects of this layer"""
+        ...
     def __contains__(self, key: Union[str, int]) -> bool: ...
     def __iter__(self) -> Iterator['Object']: ...
     def __getitem__(self, key: Union[str, int]) -> 'Object': ...

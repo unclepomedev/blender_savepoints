@@ -6,10 +6,14 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class CryptomatteEntry(bpy_struct):
-    encoded_hash: float
-    name: str
+    @property
+    def encoded_hash(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        ...
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        ...

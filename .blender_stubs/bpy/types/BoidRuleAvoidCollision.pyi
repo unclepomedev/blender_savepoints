@@ -6,15 +6,23 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .BoidRule import BoidRule
 class BoidRuleAvoidCollision(BoidRule):
-    name: str
-    type: str
+    name: Annotated[str, "is_animatable=False"]
+    """Boid rule name"""
+    @property
+    def type(self) -> Literal['GOAL', 'AVOID', 'AVOID_COLLISION', 'SEPARATE', 'FLOCK', 'FOLLOW_LEADER', 'AVERAGE_SPEED', 'FIGHT']:
+        ...
     use_in_air: bool
+    """Use rule when boid is flying"""
     use_on_land: bool
+    """Use rule when boid is on land"""
     use_avoid: bool
+    """Avoid collision with other boids"""
     use_avoid_collision: bool
-    look_ahead: float
+    """Avoid collision with deflector objects"""
+    look_ahead: Annotated[float, "step=10.0", "precision=3"]
+    """Time to look ahead in seconds"""

@@ -6,13 +6,14 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .GreasePencilLayerGroup import GreasePencilLayerGroup
 class GreasePencilv3LayerGroup(bpy_struct):
-    active: 'GreasePencilLayerGroup'
+    active: Annotated[Optional['GreasePencilLayerGroup'], "is_animatable=False"]
+    """Active Grease Pencil layer group"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def move(self, *args, **kwargs) -> Any: ...

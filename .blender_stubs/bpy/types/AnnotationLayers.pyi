@@ -6,14 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AnnotationLayer import AnnotationLayer
 class AnnotationLayers(bpy_struct):
-    active_index: int
-    active_note: str
+    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+    """Index of active annotation layer"""
+    active_note: Literal['DEFAULT']
+    """Note/Layer to add annotation strokes to"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

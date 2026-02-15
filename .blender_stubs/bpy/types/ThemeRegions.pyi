@@ -6,7 +6,7 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
@@ -15,7 +15,15 @@ from .ThemeRegionsChannels import ThemeRegionsChannels
 from .ThemeRegionsScrubbing import ThemeRegionsScrubbing
 from .ThemeRegionsSidebars import ThemeRegionsSidebars
 class ThemeRegions(bpy_struct):
-    asset_shelf: 'ThemeRegionsAssetShelf'
-    channels: 'ThemeRegionsChannels'
-    scrubbing: 'ThemeRegionsScrubbing'
-    sidebars: 'ThemeRegionsSidebars'
+    @property
+    def asset_shelf(self) -> Annotated['ThemeRegionsAssetShelf', "is_animatable=False"]:
+        ...
+    @property
+    def channels(self) -> Annotated['ThemeRegionsChannels', "is_animatable=False"]:
+        ...
+    @property
+    def scrubbing(self) -> Annotated['ThemeRegionsScrubbing', "is_animatable=False"]:
+        ...
+    @property
+    def sidebars(self) -> Annotated['ThemeRegionsSidebars', "is_animatable=False"]:
+        ...

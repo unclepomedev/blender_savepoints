@@ -6,7 +6,7 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
@@ -14,11 +14,26 @@ from .Attribute import Attribute
 from .AttributeGroupGreasePencilDrawing import AttributeGroupGreasePencilDrawing
 from .IntAttributeValue import IntAttributeValue
 class GreasePencilDrawing(bpy_struct):
-    type: str
-    user_count: int
-    curve_offsets: bpy_prop_collection['IntAttributeValue']
-    attributes: 'AttributeGroupGreasePencilDrawing'
-    color_attributes: 'AttributeGroupGreasePencilDrawing'
+    @property
+    def type(self) -> Literal['DRAWING', 'REFERENCE']:
+        """Drawing type"""
+        ...
+    @property
+    def user_count(self) -> Annotated[int, "step=1"]:
+        """The number of keyframes this drawing is used by"""
+        ...
+    @property
+    def curve_offsets(self) -> Annotated[bpy_prop_collection['IntAttributeValue'], "is_animatable=False"]:
+        """Offset indices of the first point of each curve"""
+        ...
+    @property
+    def attributes(self) -> Annotated['AttributeGroupGreasePencilDrawing', "is_animatable=False"]:
+        """Geometry attributes"""
+        ...
+    @property
+    def color_attributes(self) -> Annotated['AttributeGroupGreasePencilDrawing', "is_animatable=False"]:
+        """Geometry color attributes"""
+        ...
     def add_strokes(self, *args, **kwargs) -> Any: ...
     def remove_strokes(self, *args, **kwargs) -> Any: ...
     def resize_strokes(self, *args, **kwargs) -> Any: ...

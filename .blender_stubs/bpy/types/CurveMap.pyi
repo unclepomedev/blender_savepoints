@@ -6,11 +6,13 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMapPoint import CurveMapPoint
 from .CurveMapPoints import CurveMapPoints
 class CurveMap(bpy_struct):
-    points: 'CurveMapPoints'
+    @property
+    def points(self) -> Annotated['CurveMapPoints', "is_animatable=False"]:
+        ...

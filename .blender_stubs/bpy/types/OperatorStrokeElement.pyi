@@ -6,19 +6,24 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .PropertyGroup import PropertyGroup
 class OperatorStrokeElement(PropertyGroup):
-    name: str
-    location: list[float]
-    mouse: list[float]
-    mouse_event: list[float]
-    pressure: float
-    size: float
-    x_tilt: float
-    y_tilt: float
-    time: float
+    name: Annotated[str, "is_animatable=False"]
+    """Unique name used in the code and scripting"""
+    location: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+    mouse: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+    mouse_event: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+    pressure: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Tablet pressure"""
+    size: Annotated[float, "step=10.0", "precision=3"]
+    """Brush size in screen space"""
+    x_tilt: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Pen tilt from left (-1.0) to right (+1.0)"""
+    y_tilt: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Pen tilt from backward (-1.0) to forward (+1.0)"""
+    time: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
     is_start: bool
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

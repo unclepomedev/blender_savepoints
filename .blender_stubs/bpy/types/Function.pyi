@@ -6,16 +6,37 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Property import Property
 class Function(bpy_struct):
-    identifier: str
-    description: str
-    parameters: bpy_prop_collection['Property']
-    is_registered: bool
-    is_registered_optional: bool
-    use_self: bool
-    use_self_type: bool
+    @property
+    def identifier(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique name used in the code and scripting"""
+        ...
+    @property
+    def description(self) -> Annotated[str, "is_animatable=False"]:
+        """Description of the Function's purpose"""
+        ...
+    @property
+    def parameters(self) -> Annotated[bpy_prop_collection['Property'], "is_animatable=False"]:
+        """Parameters for the function"""
+        ...
+    @property
+    def is_registered(self) -> bool:
+        """Function is registered as callback as part of type registration"""
+        ...
+    @property
+    def is_registered_optional(self) -> bool:
+        """Function is optionally registered as callback part of type registration"""
+        ...
+    @property
+    def use_self(self) -> bool:
+        """Function does not pass itself as an argument (becomes a static method in Python)"""
+        ...
+    @property
+    def use_self_type(self) -> bool:
+        """Function passes itself type as an argument (becomes a class method in Python if use_self is false)"""
+        ...

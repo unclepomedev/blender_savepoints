@@ -6,7 +6,7 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
@@ -14,33 +14,71 @@ from .Annotation import Annotation
 from .MovieTrackingMarker import MovieTrackingMarker
 from .MovieTrackingMarkers import MovieTrackingMarkers
 class MovieTrackingTrack(bpy_struct):
-    name: str
-    frames_limit: int
-    pattern_match: str
-    margin: int
-    motion_model: str
-    correlation_min: float
-    use_brute: bool
+    name: Annotated[str, "is_animatable=False"]
+    """Unique name of track"""
+    frames_limit: Annotated[int, "step=1", "is_animatable=False"]
+    """Every tracking cycle, this number of frames are tracked"""
+    pattern_match: Annotated[Literal['KEYFRAME', 'PREV_FRAME'], "is_animatable=False"]
+    """Track pattern from given frame when tracking marker to next frame"""
+    margin: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]
+    """Distance from image boundary at which marker stops tracking"""
+    motion_model: Annotated[Literal['Perspective', 'Affine', 'LocRotScale', 'LocScale', 'LocRot', 'Loc'], "is_animatable=False"]
+    """Default motion model to use for tracking"""
+    correlation_min: Annotated[float, "step=0.05000000074505806", "precision=3", "is_animatable=False"]
+    """Minimal value of correlation between matched pattern and reference that is still treated as successful tracking"""
+    use_brute: Annotated[bool, "is_animatable=False"]
+    """Use a brute-force translation only pre-track before refinement"""
     use_mask: bool
-    use_normalization: bool
-    markers: 'MovieTrackingMarkers'
-    use_red_channel: bool
-    use_green_channel: bool
-    use_blue_channel: bool
-    use_grayscale_preview: bool
-    use_alpha_preview: bool
-    has_bundle: bool
-    bundle: list[float]
-    hide: bool
+    """Use a Grease Pencil data-block as a mask to use only specified areas of pattern when tracking"""
+    use_normalization: Annotated[bool, "is_animatable=False"]
+    """Normalize light intensities while tracking (slower)"""
+    @property
+    def markers(self) -> Annotated['MovieTrackingMarkers', "is_animatable=False"]:
+        """Collection of markers in track"""
+        ...
+    use_red_channel: Annotated[bool, "is_animatable=False"]
+    """Use red channel from footage for tracking"""
+    use_green_channel: Annotated[bool, "is_animatable=False"]
+    """Use green channel from footage for tracking"""
+    use_blue_channel: Annotated[bool, "is_animatable=False"]
+    """Use blue channel from footage for tracking"""
+    use_grayscale_preview: Annotated[bool, "is_animatable=False"]
+    """Display what the tracking algorithm sees in the preview"""
+    use_alpha_preview: Annotated[bool, "is_animatable=False"]
+    """Apply track's mask on displaying preview"""
+    @property
+    def has_bundle(self) -> bool:
+        """True if track has a valid bundle"""
+        ...
+    @property
+    def bundle(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]:
+        """Position of bundle reconstructed from this track"""
+        ...
+    hide: Annotated[bool, "is_animatable=False"]
+    """Track is hidden"""
     select: bool
+    """Track is selected"""
     select_anchor: bool
+    """Track's anchor point is selected"""
     select_pattern: bool
+    """Track's pattern area is selected"""
     select_search: bool
-    lock: bool
-    use_custom_color: bool
-    color: list[float]
-    average_error: float
-    annotation: 'Annotation'
-    weight: float
-    weight_stab: float
-    offset: list[float]
+    """Track's search area is selected"""
+    lock: Annotated[bool, "is_animatable=False"]
+    """Track is locked and all changes to it are disabled"""
+    use_custom_color: Annotated[bool, "is_animatable=False"]
+    """Use custom color instead of theme-defined"""
+    color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of the track in the Movie Clip Editor and the 3D viewport after a solve"""
+    @property
+    def average_error(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Average error of re-projection"""
+        ...
+    annotation: Annotated[Optional['Annotation'], "is_animatable=False"]
+    """Annotation data for this track"""
+    weight: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Influence of this track on a final solution"""
+    weight_stab: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Influence of this track on 2D stabilization"""
+    offset: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]
+    """Offset of track from the parenting point"""

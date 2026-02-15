@@ -6,7 +6,7 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .Strip import Strip
@@ -16,38 +16,70 @@ from .Sound import Sound
 from .StripModifier import StripModifier
 from .StripModifiers import StripModifiers
 class SoundStrip(Strip):
-    name: str
-    type: str
+    name: Annotated[str, "is_animatable=False"]
+    @property
+    def type(self) -> Literal['IMAGE', 'META', 'SCENE', 'MOVIE', 'MOVIECLIP', 'MASK', 'SOUND', 'CROSS', 'ADD', 'SUBTRACT', 'ALPHA_OVER', 'ALPHA_UNDER', 'GAMMA_CROSS', 'MULTIPLY', 'WIPE', 'GLOW', 'COLOR', 'SPEED', 'MULTICAM', 'ADJUSTMENT', 'GAUSSIAN_BLUR', 'TEXT', 'COLORMIX']:
+        ...
     select: bool
     select_left_handle: bool
     select_right_handle: bool
     mute: bool
-    lock: bool
-    frame_final_duration: int
-    frame_duration: int
-    frame_start: float
-    frame_final_start: int
-    frame_final_end: int
-    frame_offset_start: float
-    frame_offset_end: float
-    channel: int
+    """Disable strip so that it cannot be viewed in the output"""
+    lock: Annotated[bool, "is_animatable=False"]
+    """Lock strip so that it cannot be transformed"""
+    frame_final_duration: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
+    """The length of the contents of this strip after the handles are applied"""
+    @property
+    def frame_duration(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]:
+        """The length of the contents of this strip before the handles are applied"""
+        ...
+    frame_start: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=100.0", "precision=0", "is_animatable=False"]
+    """X position where the strip begins"""
+    frame_final_start: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
+    """Start frame displayed in the sequence editor after offsets are applied, setting this is equivalent to moving the handle, not the actual start frame"""
+    frame_final_end: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
+    """End frame displayed in the sequence editor after offsets are applied"""
+    frame_offset_start: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=100.0", "precision=0"]
+    frame_offset_end: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=100.0", "precision=0"]
+    channel: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+    """Y position of the sequence strip"""
     use_linear_modifiers: bool
-    blend_type: str
-    blend_alpha: float
-    effect_fader: float
+    """Calculate modifiers in linear space instead of sequencer's space"""
+    blend_type: Literal['REPLACE', 'CROSS', 'DARKEN', 'MULTIPLY', 'BURN', 'LINEAR_BURN', 'LIGHTEN', 'SCREEN', 'DODGE', 'ADD', 'OVERLAY', 'SOFT_LIGHT', 'HARD_LIGHT', 'VIVID_LIGHT', 'LINEAR_LIGHT', 'PIN_LIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUBTRACT', 'HUE', 'SATURATION', 'COLOR', 'VALUE', 'ALPHA_OVER', 'ALPHA_UNDER', 'GAMMA_CROSS']
+    """Method for controlling how the strip combines with other strips"""
+    blend_alpha: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Percentage of how much the strip's colors affect other strips"""
+    effect_fader: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=3"]
+    """Custom fade value"""
     use_default_fade: bool
-    color_tag: str
-    modifiers: 'StripModifiers'
+    """Fade effect using the built-in default (usually makes the transition as long as the effect strip)"""
+    color_tag: Literal['NONE', 'COLOR_01', 'COLOR_02', 'COLOR_03', 'COLOR_04', 'COLOR_05', 'COLOR_06', 'COLOR_07', 'COLOR_08', 'COLOR_09']
+    """Color tag for a strip"""
+    @property
+    def modifiers(self) -> Annotated['StripModifiers', "is_animatable=False"]:
+        """Modifiers affecting this strip"""
+        ...
     show_retiming_keys: bool
-    sound: 'Sound'
-    volume: float
-    pan: float
-    sound_offset: float
+    """Show retiming keys, so they can be moved"""
+    sound: Annotated[Optional['Sound'], "is_animatable=False"]
+    """Sound data-block used by this strip"""
+    volume: Annotated[float, "step=10.0", "precision=3"]
+    """Playback volume of the sound"""
+    pan: Annotated[float, "step=1.0", "precision=2"]
+    """Playback panning of the sound (only for Mono sources)"""
+    sound_offset: Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=1.0", "precision=3", "is_animatable=False"]
+    """Offset of the sound from the beginning of the strip, expressed in seconds"""
     show_waveform: bool
+    """Display the audio waveform inside the strip"""
     pitch_correction: bool
-    retiming_keys: 'RetimingKeys'
-    animation_offset_start: int
-    animation_offset_end: int
+    """Maintain the original pitch of the audio when changing playback speed"""
+    @property
+    def retiming_keys(self) -> Annotated['RetimingKeys', "is_animatable=False"]:
+        ...
+    animation_offset_start: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+    """Animation start offset (trim start)"""
+    animation_offset_end: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+    """Animation end offset (trim end)"""
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def strip_elem_from_frame(self, *args, **kwargs) -> Any: ...
     def swap(self, *args, **kwargs) -> Any: ...

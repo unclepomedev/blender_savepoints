@@ -6,17 +6,24 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMapping import CurveMapping
 class ParticleBrush(bpy_struct):
-    size: int
-    strength: float
-    count: int
-    steps: int
-    puff_mode: str
-    use_puff_volume: bool
-    length_mode: str
-    curve: 'CurveMapping'
+    size: Annotated[int, "subtype='PIXEL'", "step=10", "is_animatable=False"]
+    """Radius of the brush in pixels"""
+    strength: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]
+    """Brush strength"""
+    count: Annotated[int, "step=10", "is_animatable=False"]
+    """Particle count"""
+    steps: Annotated[int, "step=10", "is_animatable=False"]
+    """Brush steps"""
+    puff_mode: Annotated[Literal['ADD', 'SUB'], "is_animatable=False"]
+    use_puff_volume: Annotated[bool, "is_animatable=False"]
+    """Apply puff to unselected end-points (helps maintain hair volume when puffing root)"""
+    length_mode: Annotated[Literal['GROW', 'SHRINK'], "is_animatable=False"]
+    @property
+    def curve(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
+        ...

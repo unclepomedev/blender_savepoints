@@ -6,7 +6,7 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
@@ -15,25 +15,45 @@ from .RenderSettings import RenderSettings
 class RenderEngine(bpy_struct):
     is_animation: bool
     is_preview: bool
-    camera_override: 'Object'
-    layer_override: list[bool]
-    resolution_x: int
-    resolution_y: int
-    temporary_directory: str
-    render: 'RenderSettings'
+    @property
+    def camera_override(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        ...
+    layer_override: Annotated[list[bool], "subtype='LAYER_MEMBER'"]
+    @property
+    def resolution_x(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+        ...
+    @property
+    def resolution_y(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+        ...
+    @property
+    def temporary_directory(self) -> Annotated[str, "is_animatable=False"]:
+        ...
+    @property
+    def render(self) -> Annotated[Optional['RenderSettings'], "is_animatable=False"]:
+        ...
     use_highlight_tiles: bool
-    bl_idname: str
-    bl_label: str
+    bl_idname: Annotated[str, "is_animatable=False"]
+    bl_label: Annotated[str, "is_animatable=False"]
     bl_use_preview: bool
+    """Render engine supports being used for rendering previews of materials, lights and worlds"""
     bl_use_postprocess: bool
+    """Apply compositing on render results"""
     bl_use_eevee_viewport: bool
+    """Uses EEVEE for viewport shading in Material Preview shading mode"""
     bl_use_custom_freestyle: bool
+    """Handles freestyle rendering on its own, instead of delegating it to EEVEE"""
     bl_use_image_save: bool
+    """Save images/movie to disk while rendering an animation. Disabling image saving is only supported when bl_use_postprocess is also disabled."""
     bl_use_gpu_context: bool
+    """Enable OpenGL context for the render method, for engines that render using OpenGL"""
     bl_use_shading_nodes_custom: bool
+    """Don't expose Cycles and EEVEE shading nodes in the node editor user interface, so separate nodes can be used instead"""
     bl_use_spherical_stereo: bool
+    """Support spherical stereo camera models"""
     bl_use_stereo_viewport: bool
+    """Support rendering stereo 3D viewport"""
     bl_use_materialx: bool
+    """Use MaterialX for exporting materials to Hydra"""
     def update(self, *args, **kwargs) -> Any: ...
     def render(self, *args, **kwargs) -> Any: ...
     def render_frame_finish(self, *args, **kwargs) -> Any: ...

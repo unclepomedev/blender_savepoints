@@ -6,10 +6,13 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CollectionLightLinking import CollectionLightLinking
 class CollectionChild(bpy_struct):
-    light_linking: 'CollectionLightLinking'
+    @property
+    def light_linking(self) -> Annotated['CollectionLightLinking', "is_animatable=False"]:
+        """Light linking settings of the collection object"""
+        ...

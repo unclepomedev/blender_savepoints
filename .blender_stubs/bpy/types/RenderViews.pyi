@@ -6,14 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .SceneRenderView import SceneRenderView
 class RenderViews(bpy_struct):
-    active_index: int
-    active: 'SceneRenderView'
+    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+    """Active index in render view array"""
+    active: Annotated['SceneRenderView', "is_animatable=False"]
+    """Active Render View"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

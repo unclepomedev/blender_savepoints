@@ -6,7 +6,7 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
@@ -20,45 +20,126 @@ from .NodeTree import NodeTree
 from .WorldLighting import WorldLighting
 from .WorldMistSettings import WorldMistSettings
 class World(ID):
-    name: str
-    name_full: str
-    id_type: str
-    session_uid: int
-    is_evaluated: bool
-    original: 'ID'
-    users: int
+    name: Annotated[str, "is_animatable=False"]
+    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name_full(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name, including library one if any"""
+        ...
+    @property
+    def id_type(self) -> Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD']:
+        """Type identifier of this data-block"""
+        ...
+    @property
+    def session_uid(self) -> Annotated[int, "step=1"]:
+        """A session-wide unique identifier for the data block that remains the same across renames and internal reallocations, unchanged when reloading the file"""
+        ...
+    @property
+    def is_evaluated(self) -> bool:
+        """Whether this ID is runtime-only, evaluated data-block, or actual data from .blend file"""
+        ...
+    @property
+    def original(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
+        """Actual data-block from .blend file (Main database) that generated that evaluated one"""
+        ...
+    @property
+    def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Number of times this data-block is referenced"""
+        ...
     use_fake_user: bool
+    """Save this data-block even if it has no users"""
     use_extra_user: bool
-    is_embedded_data: bool
-    is_linked_packed: bool
-    is_missing: bool
+    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def is_embedded_data(self) -> bool:
+        """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
+        ...
+    @property
+    def is_linked_packed(self) -> bool:
+        """This data-block is linked and packed into the .blend file"""
+        ...
+    @property
+    def is_missing(self) -> bool:
+        """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
+        ...
     is_runtime_data: bool
-    is_editable: bool
+    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_editable(self) -> bool:
+        """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
+        ...
     tag: bool
-    is_library_indirect: bool
-    library: 'Library'
-    library_weak_reference: 'LibraryWeakReference'
-    asset_data: 'AssetMetaData'
-    override_library: 'IDOverrideLibrary'
-    preview: 'ImagePreview'
-    animation_data: 'AnimData'
-    use_eevee_finite_volume: bool
-    color: list[float]
-    light_settings: 'WorldLighting'
-    mist_settings: 'WorldMistSettings'
-    node_tree: 'NodeTree'
-    use_nodes: bool
-    lightgroup: str
-    probe_resolution: str
-    sun_threshold: float
-    sun_angle: float
+    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def is_library_indirect(self) -> bool:
+        """Is this ID block linked indirectly"""
+        ...
+    @property
+    def library(self) -> Annotated[Optional['Library'], "is_animatable=False"]:
+        """Library file the data-block is linked from"""
+        ...
+    @property
+    def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
+        """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
+        ...
+    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
+    """Additional data for an asset data-block"""
+    @property
+    def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
+        """Library override data"""
+        ...
+    @property
+    def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
+        """Preview image and icon of this data-block (always None if not supported for this type of data)"""
+        ...
+    @property
+    def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
+        """Animation data for this data-block"""
+        ...
+    use_eevee_finite_volume: Annotated[bool, "is_animatable=False"]
+    """The world's volume used to be rendered by EEVEE Legacy. Conversion is needed for it to render properly."""
+    color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
+    """Color of the background"""
+    @property
+    def light_settings(self) -> Annotated['WorldLighting', "is_animatable=False"]:
+        """World lighting settings"""
+        ...
+    @property
+    def mist_settings(self) -> Annotated['WorldMistSettings', "is_animatable=False"]:
+        """World mist settings"""
+        ...
+    @property
+    def node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
+        """Node tree for node based worlds"""
+        ...
+    use_nodes: Annotated[bool, "is_animatable=False"]
+    """Use shader nodes to render the world"""
+    lightgroup: Annotated[str, "is_animatable=False"]
+    """Lightgroup that the world belongs to"""
+    probe_resolution: Literal['128', '256', '512', '1024', '2048', '4096']
+    """Resolution when baked to a texture"""
+    sun_threshold: Annotated[float, "step=10.0", "precision=3"]
+    """If non-zero, the maximum value for world contribution that will be recorded inside the world light probe. The excess contribution is converted to a sun light. This reduces the light bleeding caused by very bright light sources."""
+    sun_angle: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
+    """Angular diameter of the Sun as seen from the Earth"""
     use_sun_shadow: bool
-    sun_shadow_maximum_resolution: float
-    sun_shadow_filter_radius: float
+    """Enable sun shadow casting"""
+    sun_shadow_maximum_resolution: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.05000000074505806", "precision=4"]
+    """Maximum size of a shadow map pixel. Higher values use less memory at the cost of shadow quality."""
+    sun_shadow_filter_radius: Annotated[float, "step=1.0", "precision=2"]
+    """Blur shadow aliasing using Percentage Closer Filtering"""
     use_sun_shadow_jitter: bool
-    sun_shadow_jitter_overblur: float
-    cycles: 'CyclesWorldSettings'
-    cycles_visibility: 'CyclesVisibilitySettings'
+    """Enable jittered soft shadows to increase shadow precision (disabled in viewport unless enabled in the render settings). Has a high performance impact."""
+    sun_shadow_jitter_overblur: Annotated[float, "subtype='PERCENTAGE'", "step=10.0", "precision=0"]
+    """Apply shadow tracing to each jittered sample to reduce under-sampling artifacts"""
+    @property
+    def cycles(self) -> Annotated[Optional['CyclesWorldSettings'], "is_animatable=False"]:
+        """Cycles world settings"""
+        ...
+    @property
+    def cycles_visibility(self) -> Annotated[Optional['CyclesVisibilitySettings'], "is_animatable=False"]:
+        """Cycles visibility settings"""
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

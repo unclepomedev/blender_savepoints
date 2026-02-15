@@ -6,21 +6,35 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeInfo(bpy_struct):
-    space: 'ThemeSpaceGeneric'
-    info_selected: list[float]
-    info_selected_text: list[float]
-    info_error_text: list[float]
-    info_warning_text: list[float]
-    info_info_text: list[float]
-    info_debug: list[float]
-    info_debug_text: list[float]
-    info_property: list[float]
-    info_property_text: list[float]
-    info_operator: list[float]
-    info_operator_text: list[float]
+    @property
+    def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
+        """Settings for space"""
+        ...
+    info_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Background color of selected line"""
+    info_selected_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Text color of selected line"""
+    info_error_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Foreground color of Error icon"""
+    info_warning_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Foreground color of Warning icon"""
+    info_info_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Foreground color of Info icon"""
+    info_debug: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Background color of Debug icon"""
+    info_debug_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Foreground color of Debug icon"""
+    info_property: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Background color of Property icon"""
+    info_property_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Foreground color of Property icon"""
+    info_operator: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Background color of Operator icon"""
+    info_operator_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Foreground color of Operator icon"""

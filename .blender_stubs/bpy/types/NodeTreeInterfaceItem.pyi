@@ -6,13 +6,25 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .NodeTreeInterfacePanel import NodeTreeInterfacePanel
 class NodeTreeInterfaceItem(bpy_struct):
-    item_type: str
-    parent: 'NodeTreeInterfacePanel'
-    position: int
-    index: int
+    @property
+    def item_type(self) -> Literal['SOCKET', 'PANEL']:
+        """Type of interface item"""
+        ...
+    @property
+    def parent(self) -> Annotated[Optional['NodeTreeInterfacePanel'], "is_animatable=False"]:
+        """Panel that contains the item"""
+        ...
+    @property
+    def position(self) -> Annotated[int, "step=1"]:
+        """Position of the item in its parent panel"""
+        ...
+    @property
+    def index(self) -> Annotated[int, "step=1"]:
+        """Global index of the item among all items in the interface"""
+        ...

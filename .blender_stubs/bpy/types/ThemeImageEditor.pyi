@@ -6,32 +6,35 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeImageEditor(bpy_struct):
-    space: 'ThemeSpaceGeneric'
-    grid: list[float]
-    vertex: list[float]
-    vertex_select: list[float]
-    vertex_size: int
-    face: list[float]
-    face_select: list[float]
-    face_mode_select: list[float]
-    facedot_size: int
-    editmesh_active: list[float]
-    wire_edit: list[float]
-    edge_width: int
-    edge_select: list[float]
-    scope_back: list[float]
-    preview_stitch_face: list[float]
-    preview_stitch_edge: list[float]
-    preview_stitch_vert: list[float]
-    preview_stitch_stitchable: list[float]
-    preview_stitch_unstitchable: list[float]
-    preview_stitch_active: list[float]
-    uv_shadow: list[float]
-    metadatabg: list[float]
-    metadatatext: list[float]
+    @property
+    def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
+        """Settings for space"""
+        ...
+    grid: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex_size: Annotated[int, "subtype='PIXEL'", "step=1"]
+    face: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    face_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    face_mode_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    facedot_size: Annotated[int, "subtype='PIXEL'", "step=1"]
+    editmesh_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    wire_edit: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    edge_width: Annotated[int, "subtype='PIXEL'", "step=1"]
+    edge_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    scope_back: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    preview_stitch_face: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    preview_stitch_edge: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    preview_stitch_vert: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    preview_stitch_stitchable: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    preview_stitch_unstitchable: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    preview_stitch_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    uv_shadow: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    metadatabg: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    metadatatext: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

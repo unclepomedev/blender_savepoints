@@ -6,10 +6,12 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class SpaceDopeSheetOverlay(bpy_struct):
     show_overlays: bool
+    """Display overlays"""
     show_scene_strip_range: bool
+    """When using scene time synchronization in the sequence editor, display the range of the current scene strip"""

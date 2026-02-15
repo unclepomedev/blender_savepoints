@@ -6,22 +6,25 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeTextEditor(bpy_struct):
-    space: 'ThemeSpaceGeneric'
-    line_numbers: list[float]
-    line_numbers_background: list[float]
-    selected_text: list[float]
-    cursor: list[float]
-    syntax_builtin: list[float]
-    syntax_symbols: list[float]
-    syntax_special: list[float]
-    syntax_preprocessor: list[float]
-    syntax_reserved: list[float]
-    syntax_comment: list[float]
-    syntax_string: list[float]
-    syntax_numbers: list[float]
+    @property
+    def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
+        """Settings for space"""
+        ...
+    line_numbers: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    line_numbers_background: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    selected_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    cursor: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_builtin: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_symbols: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_special: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_preprocessor: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_reserved: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_comment: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_string: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    syntax_numbers: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

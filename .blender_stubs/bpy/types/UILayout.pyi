@@ -6,24 +6,34 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class UILayout(bpy_struct):
     active: bool
     active_default: bool
+    """When true, an operator button defined after this will be activated when pressing return(use with popup dialogs)"""
     activate_init: bool
-    operator_context: str
+    """When true, buttons defined in popups will be activated on first display (use so you can type into a field without having to click on it first)"""
+    operator_context: Literal['INVOKE_DEFAULT', 'INVOKE_REGION_WIN', 'INVOKE_REGION_CHANNELS', 'INVOKE_REGION_PREVIEW', 'INVOKE_AREA', 'INVOKE_SCREEN', 'EXEC_DEFAULT', 'EXEC_REGION_WIN', 'EXEC_REGION_CHANNELS', 'EXEC_REGION_PREVIEW', 'EXEC_AREA', 'EXEC_SCREEN']
+    """Typically set to 'INVOKE_REGION_WIN', except some cases in :class:`bpy.types.Menu` when it's set to 'EXEC_REGION_WIN'."""
     enabled: bool
+    """When false, this (sub)layout is grayed out"""
     alert: bool
-    alignment: str
-    direction: str
-    scale_x: float
-    scale_y: float
-    ui_units_x: float
-    ui_units_y: float
-    emboss: str
+    alignment: Literal['EXPAND', 'LEFT', 'CENTER', 'RIGHT']
+    @property
+    def direction(self) -> Literal['HORIZONTAL', 'VERTICAL']:
+        ...
+    scale_x: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    """Scale factor along the X for items in this (sub)layout"""
+    scale_y: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    """Scale factor along the Y for items in this (sub)layout"""
+    ui_units_x: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    """Fixed size along the X for items in this (sub)layout"""
+    ui_units_y: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    """Fixed size along the Y for items in this (sub)layout"""
+    emboss: Literal['NORMAL', 'NONE', 'PULLDOWN_MENU', 'PIE_MENU', 'NONE_OR_STATUS']
     use_property_split: bool
     use_property_decorate: bool
     def row(self, *args, **kwargs) -> Any: ...

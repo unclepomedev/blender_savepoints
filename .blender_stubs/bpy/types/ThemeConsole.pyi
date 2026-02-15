@@ -6,16 +6,19 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeConsole(bpy_struct):
-    space: 'ThemeSpaceGeneric'
-    line_output: list[float]
-    line_input: list[float]
-    line_info: list[float]
-    line_error: list[float]
-    cursor: list[float]
-    select: list[float]
+    @property
+    def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
+        """Settings for space"""
+        ...
+    line_output: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    line_input: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    line_info: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    line_error: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    cursor: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

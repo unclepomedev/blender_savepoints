@@ -6,13 +6,14 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CacheFileLayer import CacheFileLayer
 class CacheFileLayers(bpy_struct):
-    active: 'CacheFileLayer'
+    active: Annotated[Optional['CacheFileLayer'], "is_animatable=False"]
+    """Active layer of the CacheFile"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

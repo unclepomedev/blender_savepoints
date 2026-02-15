@@ -6,10 +6,12 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ViewerPathElem import ViewerPathElem
 class ViewerPath(bpy_struct):
-    path: bpy_prop_collection['ViewerPathElem']
+    @property
+    def path(self) -> Annotated[bpy_prop_collection['ViewerPathElem'], "is_animatable=False"]:
+        ...

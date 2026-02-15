@@ -6,14 +6,20 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .PackedFile import PackedFile
 class ImagePackedFile(bpy_struct):
-    packed_file: 'PackedFile'
-    filepath: str
-    view: int
-    tile_number: int
+    @property
+    def packed_file(self) -> Annotated[Optional['PackedFile'], "is_animatable=False"]:
+        ...
+    filepath: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
+    @property
+    def view(self) -> Annotated[int, "step=1"]:
+        ...
+    @property
+    def tile_number(self) -> Annotated[int, "step=1"]:
+        ...
     def save(self, *args, **kwargs) -> Any: ...

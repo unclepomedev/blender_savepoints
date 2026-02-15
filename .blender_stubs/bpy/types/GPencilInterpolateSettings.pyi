@@ -6,10 +6,13 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMapping import CurveMapping
 class GPencilInterpolateSettings(bpy_struct):
-    interpolation_curve: 'CurveMapping'
+    @property
+    def interpolation_curve(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
+        """Custom curve to control 'sequence' interpolation between Grease Pencil frames"""
+        ...

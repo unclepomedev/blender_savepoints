@@ -6,11 +6,19 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class Timer(bpy_struct):
-    time_step: float
-    time_delta: float
-    time_duration: float
+    @property
+    def time_step(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        ...
+    @property
+    def time_delta(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Time since last step in seconds"""
+        ...
+    @property
+    def time_duration(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Time since the timer started seconds"""
+        ...

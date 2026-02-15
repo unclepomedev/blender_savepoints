@@ -6,7 +6,7 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .Curve import Curve
@@ -28,97 +28,233 @@ from .TextBox import TextBox
 from .TextCharacterFormat import TextCharacterFormat
 from .VectorFont import VectorFont
 class TextCurve(Curve):
-    name: str
-    name_full: str
-    id_type: str
-    session_uid: int
-    is_evaluated: bool
-    original: 'ID'
-    users: int
+    name: Annotated[str, "is_animatable=False"]
+    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name_full(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name, including library one if any"""
+        ...
+    @property
+    def id_type(self) -> Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD']:
+        """Type identifier of this data-block"""
+        ...
+    @property
+    def session_uid(self) -> Annotated[int, "step=1"]:
+        """A session-wide unique identifier for the data block that remains the same across renames and internal reallocations, unchanged when reloading the file"""
+        ...
+    @property
+    def is_evaluated(self) -> bool:
+        """Whether this ID is runtime-only, evaluated data-block, or actual data from .blend file"""
+        ...
+    @property
+    def original(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
+        """Actual data-block from .blend file (Main database) that generated that evaluated one"""
+        ...
+    @property
+    def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Number of times this data-block is referenced"""
+        ...
     use_fake_user: bool
+    """Save this data-block even if it has no users"""
     use_extra_user: bool
-    is_embedded_data: bool
-    is_linked_packed: bool
-    is_missing: bool
+    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def is_embedded_data(self) -> bool:
+        """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
+        ...
+    @property
+    def is_linked_packed(self) -> bool:
+        """This data-block is linked and packed into the .blend file"""
+        ...
+    @property
+    def is_missing(self) -> bool:
+        """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
+        ...
     is_runtime_data: bool
-    is_editable: bool
+    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_editable(self) -> bool:
+        """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
+        ...
     tag: bool
-    is_library_indirect: bool
-    library: 'Library'
-    library_weak_reference: 'LibraryWeakReference'
-    asset_data: 'AssetMetaData'
-    override_library: 'IDOverrideLibrary'
-    preview: 'ImagePreview'
-    shape_keys: 'Key'
-    splines: 'CurveSplines'
-    path_duration: int
+    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def is_library_indirect(self) -> bool:
+        """Is this ID block linked indirectly"""
+        ...
+    @property
+    def library(self) -> Annotated[Optional['Library'], "is_animatable=False"]:
+        """Library file the data-block is linked from"""
+        ...
+    @property
+    def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
+        """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
+        ...
+    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
+    """Additional data for an asset data-block"""
+    @property
+    def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
+        """Library override data"""
+        ...
+    @property
+    def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
+        """Preview image and icon of this data-block (always None if not supported for this type of data)"""
+        ...
+    @property
+    def shape_keys(self) -> Annotated[Optional['Key'], "is_animatable=False"]:
+        ...
+    @property
+    def splines(self) -> Annotated['CurveSplines', "is_animatable=False"]:
+        """Collection of splines in this curve data object"""
+        ...
+    path_duration: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]
+    """The number of frames that are needed to traverse the path, defining the maximum value for the 'Evaluation Time' setting"""
     use_path: bool
+    """Enable the curve to become a translation path"""
     use_path_follow: bool
+    """Make curve path children rotate along the path"""
     use_path_clamp: bool
+    """Clamp the curve path children so they cannot travel past the start/end point of the curve"""
     use_stretch: bool
+    """Option for curve-deform: make deformed child stretch along entire path"""
     use_deform_bounds: bool
+    """Option for curve-deform: Use the mesh bounds to clamp the deformation"""
     use_radius: bool
-    bevel_mode: str
-    bevel_profile: 'CurveProfile'
-    bevel_resolution: int
-    offset: float
-    extrude: float
-    bevel_depth: float
-    resolution_u: int
-    resolution_v: int
-    render_resolution_u: int
-    render_resolution_v: int
-    eval_time: float
-    bevel_object: 'Object'
-    taper_object: 'Object'
-    dimensions: str
-    fill_mode: str
-    twist_mode: str
-    taper_radius_mode: str
-    bevel_factor_mapping_start: str
-    bevel_factor_mapping_end: str
-    twist_smooth: float
+    """Option for paths and curve-deform: apply the curve radius to objects following it and to deformed objects"""
+    bevel_mode: Literal['ROUND', 'OBJECT', 'PROFILE']
+    """Determine how to build the curve's bevel geometry"""
+    @property
+    def bevel_profile(self) -> Annotated[Optional['CurveProfile'], "is_animatable=False"]:
+        """The path for the curve's custom profile"""
+        ...
+    bevel_resolution: Annotated[int, "step=1"]
+    """The number of segments in each quarter-circle of the bevel"""
+    offset: Annotated[float, "subtype=''", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
+    """Distance to move the curve parallel to its normals"""
+    extrude: Annotated[float, "subtype=''", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
+    """Length of the depth added in the local Z direction along the curve, perpendicular to its normals"""
+    bevel_depth: Annotated[float, "subtype=''", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
+    """Radius of the bevel geometry, not including extrusion"""
+    resolution_u: Annotated[int, "step=1", "is_animatable=False"]
+    """Number of computed points in the U direction between every pair of control points"""
+    resolution_v: Annotated[int, "step=1", "is_animatable=False"]
+    """The number of computed points in the V direction between every pair of control points"""
+    render_resolution_u: Annotated[int, "step=1"]
+    """Surface resolution in U direction used while rendering (zero uses preview resolution)"""
+    render_resolution_v: Annotated[int, "step=1"]
+    """Surface resolution in V direction used while rendering (zero uses preview resolution)"""
+    eval_time: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
+    """Parametric position along the length of the curve that Objects 'following' it should be at (position is evaluated by dividing by the 'Path Length' value)"""
+    bevel_object: Annotated[Optional['Object'], "is_animatable=False"]
+    """The name of the Curve object that defines the bevel shape"""
+    taper_object: Annotated[Optional['Object'], "is_animatable=False"]
+    """Curve object name that defines the taper (width)"""
+    dimensions: Literal['2D', '3D']
+    """Select 2D or 3D curve type"""
+    fill_mode: Literal['FULL', 'BACK', 'FRONT', 'HALF']
+    """Mode of filling curve"""
+    twist_mode: Literal['Z_UP', 'MINIMUM', 'TANGENT']
+    """The type of tilt calculation for 3D Curves"""
+    taper_radius_mode: Literal['OVERRIDE', 'MULTIPLY', 'ADD']
+    """Determine how the effective radius of the spline point is computed when a taper object is specified"""
+    bevel_factor_mapping_start: Literal['RESOLUTION', 'SEGMENTS', 'SPLINE']
+    """Determine how the geometry start factor is mapped to a spline"""
+    bevel_factor_mapping_end: Literal['RESOLUTION', 'SEGMENTS', 'SPLINE']
+    """Determine how the geometry end factor is mapped to a spline"""
+    twist_smooth: Annotated[float, "step=1.0", "precision=2"]
+    """Smoothing iteration for tangents"""
     use_fill_caps: bool
+    """Fill caps for beveled curves"""
     use_map_taper: bool
+    """Map effect of the taper object to the beveled part of the curve"""
     use_auto_texspace: bool
-    texspace_location: list[float]
-    texspace_size: list[float]
-    materials: 'IDMaterials'
-    bevel_factor_start: float
-    bevel_factor_end: float
-    is_editmode: bool
-    animation_data: 'AnimData'
-    cycles: 'CyclesMeshSettings'
-    align_x: str
-    align_y: str
-    overflow: str
-    size: float
-    small_caps_scale: float
-    space_line: float
-    space_word: float
-    space_character: float
-    shear: float
-    offset_x: float
-    offset_y: float
-    underline_position: float
-    underline_height: float
-    text_boxes: bpy_prop_collection['TextBox']
-    active_textbox: int
-    family: str
-    body: str
-    body_format: bpy_prop_collection['TextCharacterFormat']
-    follow_curve: 'Object'
-    font: 'VectorFont'
-    font_bold: 'VectorFont'
-    font_italic: 'VectorFont'
-    font_bold_italic: 'VectorFont'
-    edit_format: 'TextCharacterFormat'
+    """Adjust active object's texture space automatically when transforming object"""
+    texspace_location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]
+    texspace_size: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+    @property
+    def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
+        ...
+    bevel_factor_start: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Define where along the spline the curve geometry starts (0 for the beginning, 1 for the end)"""
+    bevel_factor_end: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Define where along the spline the curve geometry ends (0 for the beginning, 1 for the end)"""
+    @property
+    def is_editmode(self) -> bool:
+        """True when used in editmode"""
+        ...
+    @property
+    def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
+        """Animation data for this data-block"""
+        ...
+    @property
+    def cycles(self) -> Annotated[Optional['CyclesMeshSettings'], "is_animatable=False"]:
+        """Cycles mesh settings"""
+        ...
+    align_x: Literal['LEFT', 'CENTER', 'RIGHT', 'JUSTIFY', 'FLUSH']
+    """Text horizontal alignment from the object or text box center"""
+    align_y: Literal['TOP', 'TOP_BASELINE', 'CENTER', 'BOTTOM_BASELINE', 'BOTTOM']
+    """Text vertical alignment from the object center"""
+    overflow: Literal['NONE', 'SCALE', 'TRUNCATE']
+    """Handle the text behavior when it does not fit in the text boxes"""
+    size: Annotated[float, "step=1.0", "precision=3"]
+    small_caps_scale: Annotated[float, "step=1.0", "precision=2"]
+    """Scale of small capitals"""
+    space_line: Annotated[float, "step=10.0", "precision=3"]
+    space_word: Annotated[float, "step=10.0", "precision=3"]
+    space_character: Annotated[float, "step=10.0", "precision=3"]
+    shear: Annotated[float, "step=10.0", "precision=3"]
+    """Italic angle of the characters"""
+    offset_x: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    """Horizontal offset from the object origin"""
+    offset_y: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    """Vertical offset from the object origin"""
+    underline_position: Annotated[float, "step=10.0", "precision=3"]
+    """Vertical position of underline"""
+    underline_height: Annotated[float, "step=10.0", "precision=3"]
+    @property
+    def text_boxes(self) -> Annotated[bpy_prop_collection['TextBox'], "is_animatable=False"]:
+        ...
+    active_textbox: Annotated[int, "step=1"]
+    family: Annotated[str, "is_animatable=False"]
+    """Use objects as font characters (give font objects a common name followed by the character they represent, eg. 'family-a', 'family-b', etc, set this setting to 'family-', and turn on Vertex Instancing)"""
+    body: Annotated[str, "is_animatable=False"]
+    """Content of this text object"""
+    @property
+    def body_format(self) -> Annotated[bpy_prop_collection['TextCharacterFormat'], "is_animatable=False"]:
+        """Stores the style of each character"""
+        ...
+    follow_curve: Annotated[Optional['Object'], "is_animatable=False"]
+    """Curve deforming text object"""
+    font: Annotated[Optional['VectorFont'], "is_animatable=False"]
+    font_bold: Annotated[Optional['VectorFont'], "is_animatable=False"]
+    font_italic: Annotated[Optional['VectorFont'], "is_animatable=False"]
+    font_bold_italic: Annotated[Optional['VectorFont'], "is_animatable=False"]
+    @property
+    def edit_format(self) -> Annotated[Optional['TextCharacterFormat'], "is_animatable=False"]:
+        """Editing settings character formatting"""
+        ...
     use_fast_edit: bool
-    is_select_bold: bool
-    is_select_italic: bool
-    is_select_underline: bool
-    is_select_smallcaps: bool
-    has_selection: bool
+    """Don't fill polygons while editing"""
+    @property
+    def is_select_bold(self) -> bool:
+        """Whether the selected text is bold"""
+        ...
+    @property
+    def is_select_italic(self) -> bool:
+        """Whether the selected text is italics"""
+        ...
+    @property
+    def is_select_underline(self) -> bool:
+        """Whether the selected text is underlined"""
+        ...
+    @property
+    def is_select_smallcaps(self) -> bool:
+        """Whether the selected text is small caps"""
+        ...
+    @property
+    def has_selection(self) -> bool:
+        """Whether there is any text selected"""
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

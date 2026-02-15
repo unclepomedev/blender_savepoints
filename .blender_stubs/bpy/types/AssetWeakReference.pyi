@@ -6,11 +6,17 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class AssetWeakReference(bpy_struct):
-    asset_library_type: str
-    asset_library_identifier: str
-    relative_asset_identifier: str
+    @property
+    def asset_library_type(self) -> Annotated[Literal['ALL', 'LOCAL', 'ESSENTIALS', 'CUSTOM'], "is_animatable=False"]:
+        ...
+    @property
+    def asset_library_identifier(self) -> Annotated[str, "is_animatable=False"]:
+        ...
+    @property
+    def relative_asset_identifier(self) -> Annotated[str, "is_animatable=False"]:
+        ...

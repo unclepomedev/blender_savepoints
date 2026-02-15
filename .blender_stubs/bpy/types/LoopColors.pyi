@@ -6,14 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MeshLoopColorLayer import MeshLoopColorLayer
 class LoopColors(bpy_struct):
-    active: 'MeshLoopColorLayer'
-    active_index: int
+    active: Annotated[Optional['MeshLoopColorLayer'], "is_animatable=False"]
+    """Active vertex color layer"""
+    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+    """Active vertex color index"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

@@ -6,12 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .TransformOrientation import TransformOrientation
 class TransformOrientationSlot(bpy_struct):
-    type: str
-    custom_orientation: 'TransformOrientation'
-    use: bool
+    type: Annotated[Literal['GLOBAL', 'LOCAL', 'NORMAL', 'GIMBAL', 'VIEW', 'CURSOR', 'PARENT'], "is_animatable=False"]
+    """Transformation orientation"""
+    @property
+    def custom_orientation(self) -> Annotated[Optional['TransformOrientation'], "is_animatable=False"]:
+        ...
+    use: Annotated[bool, "is_animatable=False"]
+    """Use scene orientation instead of a custom setting"""

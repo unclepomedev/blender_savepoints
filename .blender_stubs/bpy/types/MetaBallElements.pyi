@@ -6,13 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MetaElement import MetaElement
 class MetaBallElements(bpy_struct):
-    active: 'MetaElement'
+    @property
+    def active(self) -> Annotated[Optional['MetaElement'], "is_animatable=False"]:
+        """Last selected element"""
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def clear(self, *args, **kwargs) -> Any: ...

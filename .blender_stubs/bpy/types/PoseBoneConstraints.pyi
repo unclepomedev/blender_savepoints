@@ -6,13 +6,14 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Constraint import Constraint
 class PoseBoneConstraints(bpy_struct):
-    active: 'Constraint'
+    active: Annotated[Optional['Constraint'], "is_animatable=False"]
+    """Active PoseChannel constraint"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def move(self, *args, **kwargs) -> Any: ...

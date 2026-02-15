@@ -6,18 +6,24 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .Menu import Menu
 from .UILayout import UILayout
 class VIEW3D_MT_edit_font_chars(Menu):
-    layout: 'UILayout'
-    bl_idname: str
-    bl_label: str
-    bl_translation_context: str
-    bl_description: str
-    bl_owner_id: str
+    @property
+    def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
+        """Defines the structure of the menu in the UI"""
+        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    """If this is set, the menu gets a custom ID, otherwise it takes the name of the class used to define the menu (for example, if the class name is "OBJECT_MT_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_MT_hello")"""
+    bl_label: Annotated[str, "is_animatable=False"]
+    """The menu label"""
+    bl_translation_context: Annotated[str, "is_animatable=False"]
+    bl_description: Annotated[str, "is_animatable=False"]
+    bl_owner_id: Annotated[str, "is_animatable=False"]
     bl_options: set[str]
+    """Options for this menu type"""
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

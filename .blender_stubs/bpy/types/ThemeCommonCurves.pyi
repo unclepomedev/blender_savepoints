@@ -6,21 +6,21 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeCommonCurves(bpy_struct):
-    handle_free: list[float]
-    handle_sel_free: list[float]
-    handle_auto: list[float]
-    handle_sel_auto: list[float]
-    handle_vect: list[float]
-    handle_sel_vect: list[float]
-    handle_align: list[float]
-    handle_sel_align: list[float]
-    handle_auto_clamped: list[float]
-    handle_sel_auto_clamped: list[float]
-    handle_vertex: list[float]
-    handle_vertex_select: list[float]
-    handle_vertex_size: int
+    handle_free: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_sel_free: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_auto: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_sel_auto: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_vect: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_sel_vect: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_align: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_sel_align: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_auto_clamped: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_sel_auto_clamped: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_vertex: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_vertex_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    handle_vertex_size: Annotated[int, "subtype='PIXEL'", "step=1"]

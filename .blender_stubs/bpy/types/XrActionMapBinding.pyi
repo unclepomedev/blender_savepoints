@@ -6,18 +6,26 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .XrComponentPath import XrComponentPath
 from .XrComponentPaths import XrComponentPaths
 class XrActionMapBinding(bpy_struct):
-    name: str
-    profile: str
-    component_paths: 'XrComponentPaths'
-    threshold: float
-    axis0_region: str
-    axis1_region: str
-    pose_location: list[float]
-    pose_rotation: list[float]
+    name: Annotated[str, "is_animatable=False"]
+    """Name of the action map binding"""
+    profile: Annotated[str, "is_animatable=False"]
+    """OpenXR interaction profile path"""
+    @property
+    def component_paths(self) -> Annotated['XrComponentPaths', "is_animatable=False"]:
+        """OpenXR component paths"""
+        ...
+    threshold: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
+    """Input threshold for button/axis actions"""
+    axis0_region: Annotated[Literal['ANY', 'POSITIVE', 'NEGATIVE'], "is_animatable=False"]
+    """Action execution region for the first input axis"""
+    axis1_region: Annotated[Literal['ANY', 'POSITIVE', 'NEGATIVE'], "is_animatable=False"]
+    """Action execution region for the second input axis"""
+    pose_location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3", "is_animatable=False"]
+    pose_rotation: Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]

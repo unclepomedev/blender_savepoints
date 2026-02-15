@@ -6,14 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .UDIMTile import UDIMTile
 class UDIMTiles(bpy_struct):
-    active_index: int
-    active: 'UDIMTile'
+    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+    """Active index in tiles array"""
+    active: Annotated['UDIMTile', "is_animatable=False"]
+    """Active Image Tile"""
     def new(self, *args, **kwargs) -> Any: ...
     def get(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...

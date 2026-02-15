@@ -6,10 +6,10 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeRegionsSidebars(bpy_struct):
-    back: list[float]
-    tab_back: list[float]
+    back: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    tab_back: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

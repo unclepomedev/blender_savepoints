@@ -6,41 +6,47 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
 class ThemeNodeEditor(bpy_struct):
-    space: 'ThemeSpaceGeneric'
-    grid: list[float]
-    node_outline: list[float]
-    node_selected: list[float]
-    node_active: list[float]
-    wire: list[float]
-    wire_inner: list[float]
-    wire_select: list[float]
-    node_backdrop: list[float]
-    converter_node: list[float]
-    color_node: list[float]
-    group_node: list[float]
-    group_socket_node: list[float]
-    frame_node: list[float]
-    matte_node: list[float]
-    distor_node: list[float]
-    noodle_curving: int
-    grid_levels: int
-    dash_alpha: float
-    input_node: list[float]
-    output_node: list[float]
-    filter_node: list[float]
-    vector_node: list[float]
-    texture_node: list[float]
-    shader_node: list[float]
-    script_node: list[float]
-    geometry_node: list[float]
-    attribute_node: list[float]
-    simulation_zone: list[float]
-    repeat_zone: list[float]
-    foreach_geometry_element_zone: list[float]
-    closure_zone: list[float]
+    @property
+    def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
+        """Settings for space"""
+        ...
+    grid: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    node_outline: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    node_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    node_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    wire: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    wire_inner: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    wire_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    node_backdrop: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    converter_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    color_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    group_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    group_socket_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    frame_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    matte_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    distor_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    noodle_curving: Annotated[int, "step=1"]
+    """Curving of the noodle"""
+    grid_levels: Annotated[int, "step=1"]
+    """Number of subdivisions for the dot grid displayed in the background"""
+    dash_alpha: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Opacity for the dashed lines in wires"""
+    input_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    output_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    filter_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vector_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    texture_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    shader_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    script_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    geometry_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    attribute_node: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    simulation_zone: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    repeat_zone: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    foreach_geometry_element_zone: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    closure_zone: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

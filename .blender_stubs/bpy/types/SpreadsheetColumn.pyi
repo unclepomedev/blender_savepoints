@@ -6,11 +6,17 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .SpreadsheetColumnID import SpreadsheetColumnID
 class SpreadsheetColumn(bpy_struct):
-    data_type: str
-    id: 'SpreadsheetColumnID'
+    @property
+    def data_type(self) -> Literal['INT32', 'FLOAT', 'BOOLEAN', 'INSTANCES']:
+        """The data type of the corresponding column visible in the spreadsheet"""
+        ...
+    @property
+    def id(self) -> Annotated[Optional['SpreadsheetColumnID'], "is_animatable=False"]:
+        """Data used to identify the corresponding data from the data source"""
+        ...

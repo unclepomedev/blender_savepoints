@@ -6,18 +6,31 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .LineStyleColorModifier import LineStyleColorModifier
 from .ColorRamp import ColorRamp
 class LineStyleColorModifier_Material(LineStyleColorModifier):
-    name: str
-    type: str
-    blend: str
-    influence: float
+    name: Annotated[str, "is_animatable=False"]
+    """Name of the modifier"""
+    @property
+    def type(self) -> Literal['ALONG_STROKE', 'CREASE_ANGLE', 'CURVATURE_3D', 'DISTANCE_FROM_CAMERA', 'DISTANCE_FROM_OBJECT', 'MATERIAL', 'NOISE', 'TANGENT']:
+        """Type of the modifier"""
+        ...
+    blend: Literal['MIX', 'DARKEN', 'MULTIPLY', 'BURN', 'LIGHTEN', 'SCREEN', 'DODGE', 'ADD', 'OVERLAY', 'SOFT_LIGHT', 'LINEAR_LIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUBTRACT', 'DIVIDE', 'HUE', 'SATURATION', 'COLOR', 'VALUE']
+    """Specify how the modifier value is blended into the base value"""
+    influence: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """Influence factor by which the modifier changes the property"""
     use: bool
+    """Enable or disable this modifier during stroke rendering"""
     expanded: bool
-    material_attribute: str
-    color_ramp: 'ColorRamp'
+    """True if the modifier tab is expanded"""
+    material_attribute: Literal['LINE', 'LINE_R', 'LINE_G', 'LINE_B', 'LINE_A', 'DIFF', 'DIFF_R', 'DIFF_G', 'DIFF_B', 'SPEC', 'SPEC_R', 'SPEC_G', 'SPEC_B', 'SPEC_HARD', 'ALPHA']
+    """Specify which material attribute is used"""
+    @property
+    def color_ramp(self) -> Annotated[Optional['ColorRamp'], "is_animatable=False"]:
+        """Color ramp used to change line color"""
+        ...
     use_ramp: bool
+    """Use color ramp to map the BW average into an RGB color"""

@@ -6,15 +6,17 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MaskSpline import MaskSpline
 from .MaskSplinePoint import MaskSplinePoint
 class MaskSplines(bpy_struct):
-    active: 'MaskSpline'
-    active_point: 'MaskSplinePoint'
+    active: Annotated[Optional['MaskSpline'], "is_animatable=False"]
+    """Active spline of masking layer"""
+    active_point: Annotated[Optional['MaskSplinePoint'], "is_animatable=False"]
+    """Active point of masking layer"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

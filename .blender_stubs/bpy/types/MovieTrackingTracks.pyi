@@ -6,13 +6,14 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MovieTrackingTrack import MovieTrackingTrack
 class MovieTrackingTracks(bpy_struct):
-    active: 'MovieTrackingTrack'
+    active: Annotated[Optional['MovieTrackingTrack'], "is_animatable=False"]
+    """Active track in this tracking data object. Deprecated, use objects[name].tracks.active"""
     def new(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...
     def __iter__(self) -> Iterator['MovieTrackingTrack']: ...

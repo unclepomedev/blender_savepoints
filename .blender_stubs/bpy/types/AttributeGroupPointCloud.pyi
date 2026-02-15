@@ -6,14 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Attribute import Attribute
 class AttributeGroupPointCloud(bpy_struct):
-    active: 'Attribute'
-    active_index: int
+    active: Annotated[Optional['Attribute'], "is_animatable=False"]
+    """Active attribute"""
+    active_index: Annotated[int, "step=1", "is_animatable=False"]
+    """Active attribute index or -1 when none are active"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def domain_size(self, *args, **kwargs) -> Any: ...

@@ -6,14 +6,20 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .Header import Header
 from .UILayout import UILayout
 class CLIP_HT_header(Header):
-    layout: 'UILayout'
-    bl_idname: str
-    bl_space_type: str
-    bl_region_type: str
+    @property
+    def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
+        """Structure of the header in the UI"""
+        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    """If this is set, the header gets a custom ID, otherwise it takes the name of the class used to define the header; for example, if the class name is "OBJECT_HT_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_HT_hello" """
+    bl_space_type: Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']
+    """The space where the header is going to be used in"""
+    bl_region_type: Literal['WINDOW', 'HEADER', 'CHANNELS', 'TEMPORARY', 'UI', 'TOOLS', 'TOOL_PROPS', 'ASSET_SHELF', 'ASSET_SHELF_HEADER', 'PREVIEW', 'HUD', 'NAVIGATION_BAR', 'EXECUTE', 'FOOTER', 'TOOL_HEADER', 'XR']
+    """The region where the header is going to be used in (defaults to header region)"""
     def draw(self, *args, **kwargs) -> Any: ...

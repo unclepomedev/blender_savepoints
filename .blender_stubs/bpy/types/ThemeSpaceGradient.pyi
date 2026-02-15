@@ -6,16 +6,18 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeGradientColors import ThemeGradientColors
 class ThemeSpaceGradient(bpy_struct):
-    gradients: 'ThemeGradientColors'
-    title: list[float]
-    text: list[float]
-    text_hi: list[float]
-    header: list[float]
-    header_text: list[float]
-    header_text_hi: list[float]
+    @property
+    def gradients(self) -> Annotated['ThemeGradientColors', "is_animatable=False"]:
+        ...
+    title: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    text_hi: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    header: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    header_text: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    header_text_hi: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

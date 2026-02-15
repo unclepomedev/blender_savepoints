@@ -6,69 +6,81 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGradient import ThemeSpaceGradient
 class ThemeView3D(bpy_struct):
-    space: 'ThemeSpaceGradient'
-    grid: list[float]
-    clipping_border_3d: list[float]
-    wire: list[float]
-    wire_edit: list[float]
-    edge_width: int
-    gp_vertex: list[float]
-    gp_vertex_select: list[float]
-    gp_vertex_size: int
-    text_grease_pencil: list[float]
-    object_selected: list[float]
-    object_active: list[float]
-    camera: list[float]
-    empty: list[float]
-    light: list[float]
-    speaker: list[float]
-    vertex: list[float]
-    vertex_select: list[float]
-    vertex_size: int
-    edge_select: list[float]
-    edge_mode_select: list[float]
-    face: list[float]
-    face_select: list[float]
-    face_mode_select: list[float]
-    facedot_size: int
-    face_back: list[float]
-    face_front: list[float]
-    bevel: list[float]
-    seam: list[float]
-    sharp: list[float]
-    crease: list[float]
-    freestyle: list[float]
-    extra_edge_len: list[float]
-    extra_edge_angle: list[float]
-    extra_face_angle: list[float]
-    extra_face_area: list[float]
-    editmesh_active: list[float]
-    normal: list[float]
-    vertex_normal: list[float]
-    split_normal: list[float]
-    vertex_unreferenced: list[float]
-    face_retopology: list[float]
-    nurb_uline: list[float]
-    nurb_vline: list[float]
-    nurb_sel_uline: list[float]
-    nurb_sel_vline: list[float]
-    bone_pose: list[float]
-    bone_pose_active: list[float]
-    bone_solid: list[float]
-    bone_locked_weight: list[float]
-    before_current_frame: list[float]
-    after_current_frame: list[float]
-    bundle_solid: list[float]
-    camera_path: list[float]
-    camera_passepartout: list[float]
-    skin_root: list[float]
-    view_overlay: list[float]
-    transform: list[float]
-    outline_width: int
-    object_origin_size: int
+    @property
+    def space(self) -> Annotated['ThemeSpaceGradient', "is_animatable=False"]:
+        """Settings for space"""
+        ...
+    grid: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    clipping_border_3d: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    wire: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    wire_edit: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color for wireframe when in edit mode, but edge selection is active"""
+    edge_width: Annotated[int, "subtype='PIXEL'", "step=1"]
+    gp_vertex: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    gp_vertex_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    gp_vertex_size: Annotated[int, "subtype='PIXEL'", "step=1"]
+    text_grease_pencil: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color for indicating Grease Pencil keyframes"""
+    object_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    object_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    camera: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    empty: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    light: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    speaker: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex_size: Annotated[int, "subtype='PIXEL'", "step=1"]
+    edge_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    edge_mode_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    face: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    face_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    face_mode_select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    facedot_size: Annotated[int, "subtype='PIXEL'", "step=1"]
+    face_back: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    face_front: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    bevel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    seam: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    sharp: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    crease: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    freestyle: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    extra_edge_len: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    extra_edge_angle: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    extra_face_angle: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    extra_face_area: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    editmesh_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    normal: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex_normal: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    split_normal: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    vertex_unreferenced: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    face_retopology: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    nurb_uline: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    nurb_vline: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    nurb_sel_uline: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    nurb_sel_vline: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    bone_pose: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Outline color of selected pose bones"""
+    bone_pose_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Outline color of active pose bones"""
+    bone_solid: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Default color of the solid shapes of bones"""
+    bone_locked_weight: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Shade for bones corresponding to a locked weight group during painting"""
+    before_current_frame: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """The color for things before the current frame (for onion skinning, motion paths, etc.)"""
+    after_current_frame: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """The color for things after the current frame (for onion skinning, motion paths, etc.)"""
+    bundle_solid: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    camera_path: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    camera_passepartout: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    skin_root: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    view_overlay: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    transform: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    outline_width: Annotated[int, "subtype='PIXEL'", "step=1"]
+    object_origin_size: Annotated[int, "subtype='PIXEL'", "step=1"]
+    """Diameter in pixels for object/light origin display"""

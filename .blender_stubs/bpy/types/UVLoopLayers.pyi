@@ -6,14 +6,16 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MeshUVLoopLayer import MeshUVLoopLayer
 class UVLoopLayers(bpy_struct):
-    active: 'MeshUVLoopLayer'
-    active_index: int
+    active: Annotated[Optional['MeshUVLoopLayer'], "is_animatable=False"]
+    """Active UV Map layer"""
+    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+    """Active UV map index"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

@@ -6,31 +6,45 @@
 
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 class ThemeCommonAnim(bpy_struct):
-    playhead: list[float]
-    preview_range: list[float]
-    scene_strip_range: list[float]
-    channels: list[float]
-    channels_sub: list[float]
-    channel_group: list[float]
-    channel_group_active: list[float]
-    channel: list[float]
-    channel_selected: list[float]
-    keyframe: list[float]
-    keyframe_selected: list[float]
-    keyframe_extreme: list[float]
-    keyframe_extreme_selected: list[float]
-    keyframe_breakdown: list[float]
-    keyframe_breakdown_selected: list[float]
-    keyframe_jitter: list[float]
-    keyframe_jitter_selected: list[float]
-    keyframe_moving_hold: list[float]
-    keyframe_moving_hold_selected: list[float]
-    keyframe_generated: list[float]
-    keyframe_generated_selected: list[float]
-    long_key: list[float]
-    long_key_selected: list[float]
+    playhead: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    preview_range: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of preview range overlay"""
+    scene_strip_range: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of scene strip range overlay"""
+    channels: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    channels_sub: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    channel_group: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    channel_group_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    channel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    channel_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    keyframe: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of regular keyframe"""
+    keyframe_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of selected keyframe"""
+    keyframe_extreme: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of extreme keyframe"""
+    keyframe_extreme_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of selected extreme keyframe"""
+    keyframe_breakdown: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of breakdown keyframe"""
+    keyframe_breakdown_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of selected breakdown keyframe"""
+    keyframe_jitter: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of jitter keyframe"""
+    keyframe_jitter_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of selected jitter keyframe"""
+    keyframe_moving_hold: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of moving hold keyframe"""
+    keyframe_moving_hold_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of selected moving hold keyframe"""
+    keyframe_generated: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of generated keyframe"""
+    keyframe_generated_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of selected generated keyframe"""
+    long_key: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    long_key_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
