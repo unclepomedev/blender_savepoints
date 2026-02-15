@@ -4,16 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NodeCompositorFileOutputItem.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ImageFormatSettings import ImageFormatSettings
+
 class NodeCompositorFileOutputItem(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
+
     socket_type: Annotated[Literal['FLOAT', 'INT', 'BOOLEAN', 'VECTOR', 'RGBA', 'ROTATION', 'MATRIX', 'STRING', 'MENU', 'SHADER', 'OBJECT', 'IMAGE', 'GEOMETRY', 'COLLECTION', 'TEXTURE', 'MATERIAL', 'BUNDLE', 'CLOSURE'], "is_animatable=False"]
+
     vector_socket_dimensions: Annotated[int, "step=1", "is_animatable=False"]
     """Dimensions of the vector socket"""
     @property
@@ -26,4 +35,5 @@ class NodeCompositorFileOutputItem(bpy_struct):
     """Apply render part of display transform when saving byte image"""
     @property
     def format(self) -> Annotated[Optional['ImageFormatSettings'], "is_animatable=False"]:
+
         ...

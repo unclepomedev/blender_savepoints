@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Menu.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from ._GenericUI import _GenericUI
 from .UILayout import UILayout
+
 class Menu(bpy_struct, _GenericUI):
+
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the menu in the UI"""
@@ -22,8 +29,11 @@ class Menu(bpy_struct, _GenericUI):
     bl_label: Annotated[str, "is_animatable=False"]
     """The menu label"""
     bl_translation_context: Annotated[str, "is_animatable=False"]
+
     bl_description: Annotated[str, "is_animatable=False"]
+
     bl_owner_id: Annotated[str, "is_animatable=False"]
+
     bl_options: set[str]
     """Options for this menu type"""
     def poll(self, *args, **kwargs) -> Any: ...

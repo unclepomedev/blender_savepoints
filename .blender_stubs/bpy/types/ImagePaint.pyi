@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ImagePaint.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Paint import Paint
 from .AssetWeakReference import AssetWeakReference
@@ -16,7 +21,9 @@ from .CurveMapping import CurveMapping
 from .Image import Image
 from .Palette import Palette
 from .UnifiedPaintSettings import UnifiedPaintSettings
+
 class ImagePaint(Paint):
+
     @property
     def brush(self) -> Annotated[Optional['Brush'], "is_animatable=False"]:
         """Active brush"""
@@ -34,7 +41,9 @@ class ImagePaint(Paint):
     palette: Annotated[Optional['Palette'], "is_animatable=False"]
     """Active Palette"""
     show_brush: Annotated[bool, "is_animatable=False"]
+
     show_brush_on_surface: Annotated[bool, "is_animatable=False"]
+
     show_low_resolution: Annotated[bool, "is_animatable=False"]
     """For multires, show low resolution while navigating the view"""
     use_sculpt_delay_updates: Annotated[bool, "is_animatable=False"]
@@ -62,10 +71,14 @@ class ImagePaint(Paint):
     tile_z: Annotated[bool, "is_animatable=False"]
     """Tile along Z axis"""
     show_strength_curve: Annotated[bool, "is_animatable=False"]
+
     show_size_curve: Annotated[bool, "is_animatable=False"]
+
     show_jitter_curve: Annotated[bool, "is_animatable=False"]
+
     @property
     def unified_paint_settings(self) -> Annotated['UnifiedPaintSettings', "is_animatable=False"]:
+
         ...
     use_occlude: Annotated[bool, "is_animatable=False"]
     """Only paint onto the faces directly under the brush (slower)"""
@@ -118,4 +131,5 @@ class ImagePaint(Paint):
     clone_alpha: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]
     """Opacity of clone image display"""
     clone_offset: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]
+
     def detect_data(self, *args, **kwargs) -> Any: ...

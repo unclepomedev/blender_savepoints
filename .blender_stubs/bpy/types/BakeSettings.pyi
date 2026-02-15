@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BakeSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ImageFormatSettings import ImageFormatSettings
 from .Object import Object
+
 class BakeSettings(bpy_struct):
+
     type: Annotated[Literal['NORMALS', 'DISPLACEMENT', 'VECTOR_DISPLACEMENT'], "is_animatable=False"]
     """Choose shading information to bake into the image"""
     cage_object: Annotated[Optional['Object'], "is_animatable=False"]
@@ -41,6 +48,7 @@ class BakeSettings(bpy_struct):
     """Axis to bake in blue channel"""
     @property
     def image_settings(self) -> Annotated['ImageFormatSettings', "is_animatable=False"]:
+
         ...
     target: Annotated[Literal['IMAGE_TEXTURES', 'VERTEX_COLORS'], "is_animatable=False"]
     """Where to output the baked map"""

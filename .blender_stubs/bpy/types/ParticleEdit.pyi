@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ParticleEdit.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Object import Object
 from .ParticleBrush import ParticleBrush
+
 class ParticleEdit(bpy_struct):
+
     tool: Annotated[Literal['COMB', 'SMOOTH', 'ADD', 'LENGTH', 'PUFF', 'CUT', 'WEIGHT'], "is_animatable=False"]
+
     select_mode: Annotated[Literal['PATH', 'POINT', 'TIP'], "is_animatable=False"]
     """Particle select and display mode"""
     use_preserve_length: Annotated[bool, "is_animatable=False"]
@@ -36,12 +44,14 @@ class ParticleEdit(bpy_struct):
     """How many keys to make new particles with"""
     @property
     def brush(self) -> Annotated[Optional['ParticleBrush'], "is_animatable=False"]:
+
         ...
     display_step: Annotated[int, "step=1", "is_animatable=False"]
     """How many steps to display the path with"""
     fade_frames: Annotated[int, "step=1", "is_animatable=False"]
     """How many frames to fade"""
     type: Annotated[Literal['PARTICLES', 'SOFT_BODY', 'CLOTH'], "is_animatable=False"]
+
     @property
     def is_editable(self) -> Annotated[bool, "is_animatable=False"]:
         """A valid edit mode exists"""

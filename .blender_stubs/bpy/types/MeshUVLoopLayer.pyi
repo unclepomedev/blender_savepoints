@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MeshUVLoopLayer.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .BoolAttributeValue import BoolAttributeValue
 from .Float2AttributeValue import Float2AttributeValue
 from .MeshUVLoop import MeshUVLoop
+from .bpy_prop_collection import bpy_prop_collection
+
 class MeshUVLoopLayer(bpy_struct):
+
     @property
     def data(self) -> Annotated[bpy_prop_collection['MeshUVLoop'], "is_animatable=False"]:
         """Deprecated, use 'uv', 'vertex_select', 'edge_select' or 'pin' properties instead"""

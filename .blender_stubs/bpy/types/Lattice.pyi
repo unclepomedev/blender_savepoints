@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Lattice.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -18,7 +23,10 @@ from .Key import Key
 from .LatticePoint import LatticePoint
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
+from .bpy_prop_collection import bpy_prop_collection
+
 class Lattice(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -98,14 +106,18 @@ class Lattice(ID):
     points_w: Annotated[int, "step=1", "is_animatable=False"]
     """Points in W direction (cannot be changed when there are shape keys)"""
     interpolation_type_u: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']
+
     interpolation_type_v: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']
+
     interpolation_type_w: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']
+
     use_outside: bool
     """Only display and take into account the outer vertices"""
     vertex_group: Annotated[str, "is_animatable=False"]
     """Vertex group to apply the influence of the lattice"""
     @property
     def shape_keys(self) -> Annotated[Optional['Key'], "is_animatable=False"]:
+
         ...
     @property
     def points(self) -> Annotated[bpy_prop_collection['LatticePoint'], "is_animatable=False"]:

@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ThemeFontStyle.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class ThemeFontStyle(bpy_struct):
+
     points: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=1"]
     """Font size in points"""
     character_weight: Annotated[int, "step=50"]
@@ -22,5 +29,6 @@ class ThemeFontStyle(bpy_struct):
     shadow_offset_y: Annotated[int, "subtype='PIXEL'", "step=1"]
     """Shadow offset in pixels"""
     shadow_alpha: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+
     shadow_value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
     """Shadow color in gray value"""

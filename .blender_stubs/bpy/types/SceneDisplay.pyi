@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SceneDisplay.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .View3DShading import View3DShading
+
 class SceneDisplay(bpy_struct):
+
     light_direction: Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3", "is_animatable=False"]
     """Direction of the light for shadows and highlights"""
     shadow_shift: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1.0", "precision=2", "is_animatable=False"]

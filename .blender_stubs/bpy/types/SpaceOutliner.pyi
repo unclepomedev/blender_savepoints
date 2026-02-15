@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceOutliner.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
+
 class SpaceOutliner(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -18,6 +25,7 @@ class SpaceOutliner(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     display_mode: Literal['SCENES', 'VIEW_LAYER', 'SEQUENCE', 'LIBRARIES', 'DATA_API', 'LIBRARY_OVERRIDES', 'ORPHAN_DATA']
     """Type of information to display"""
     lib_override_view_mode: Literal['PROPERTIES', 'HIERARCHIES']
@@ -29,6 +37,7 @@ class SpaceOutliner(Space):
     use_filter_complete: bool
     """Only use complete matches of search string"""
     use_sort_alpha: bool
+
     use_sync_select: bool
     """Sync outliner selection with other editors"""
     show_mode_column: bool
@@ -58,6 +67,7 @@ class SpaceOutliner(Space):
     use_filter_view_layers: bool
     """Show all the view layers"""
     filter_state: Literal['ALL', 'VISIBLE', 'SELECTED', 'ACTIVE', 'SELECTABLE']
+
     filter_invert: bool
     """Invert the object state filter"""
     use_filter_object_mesh: bool

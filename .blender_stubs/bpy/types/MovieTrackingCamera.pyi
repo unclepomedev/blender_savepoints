@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieTrackingCamera.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class MovieTrackingCamera(bpy_struct):
+
     distortion_model: Annotated[Literal['POLYNOMIAL', 'DIVISION', 'NUKE', 'BROWN'], "is_animatable=False"]
     """Distortion model used for camera lenses"""
     sensor_width: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]

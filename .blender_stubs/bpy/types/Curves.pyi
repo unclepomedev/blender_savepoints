@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Curves.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -26,7 +31,10 @@ from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .Material import Material
 from .Object import Object
+from .bpy_prop_collection import bpy_prop_collection
+
 class Curves(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -109,9 +117,11 @@ class Curves(ID):
         ...
     @property
     def position_data(self) -> Annotated[bpy_prop_collection['FloatVectorAttributeValue'], "is_animatable=False"]:
+
         ...
     @property
     def curve_offset_data(self) -> Annotated[bpy_prop_collection['IntAttributeValue'], "is_animatable=False"]:
+
         ...
     @property
     def normals(self) -> Annotated[bpy_prop_collection['FloatVectorValueReadOnly'], "is_animatable=False"]:
@@ -119,6 +129,7 @@ class Curves(ID):
         ...
     @property
     def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
+
         ...
     surface: Annotated[Optional['Object'], "is_animatable=False"]
     """Mesh object that the curves can be attached to"""
@@ -131,6 +142,7 @@ class Curves(ID):
     use_mirror_z: bool
     """Enable symmetry in the Z axis"""
     selection_domain: Annotated[Literal['POINT', 'CURVE'], "is_animatable=False"]
+
     use_sculpt_collision: Annotated[bool, "is_animatable=False"]
     """Enable collision with the surface while sculpting"""
     surface_collision_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.0010000000474974513", "precision=3"]

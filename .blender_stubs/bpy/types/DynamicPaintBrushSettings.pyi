@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.DynamicPaintBrushSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ColorRamp import ColorRamp
 from .ParticleSystem import ParticleSystem
+
 class DynamicPaintBrushSettings(bpy_struct):
+
     paint_color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Color of the paint"""
     paint_alpha: Annotated[float, "step=5.0", "precision=2"]
@@ -24,6 +31,7 @@ class DynamicPaintBrushSettings(bpy_struct):
     use_paint_erase: bool
     """Erase / remove paint instead of adding it"""
     wave_type: Annotated[Literal['CHANGE', 'DEPTH', 'FORCE', 'REFLECT'], "is_animatable=False"]
+
     wave_factor: Annotated[float, "step=5.0", "precision=2"]
     """Multiplier for wave influence of this brush"""
     wave_clamp: Annotated[float, "step=1.0", "precision=2"]
@@ -41,6 +49,7 @@ class DynamicPaintBrushSettings(bpy_struct):
     use_velocity_color: bool
     """Replace brush color by velocity color ramp"""
     paint_source: Annotated[Literal['PARTICLE_SYSTEM', 'POINT', 'DISTANCE', 'VOLUME_DISTANCE', 'VOLUME'], "is_animatable=False"]
+
     paint_distance: Annotated[float, "step=10.0", "precision=3"]
     """Maximum distance from brush to mesh surface to affect paint"""
     use_proximity_ramp_alpha: bool

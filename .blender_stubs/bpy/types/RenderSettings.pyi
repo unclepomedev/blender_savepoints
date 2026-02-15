@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.RenderSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .BakeSettings import BakeSettings
@@ -16,9 +21,13 @@ from .FFmpegSettings import FFmpegSettings
 from .ImageFormatSettings import ImageFormatSettings
 from .RenderViews import RenderViews
 from .SceneRenderView import SceneRenderView
+from .bpy_prop_collection import bpy_prop_collection
+
 class RenderSettings(bpy_struct):
+
     @property
     def image_settings(self) -> Annotated['ImageFormatSettings', "is_animatable=False"]:
+
         ...
     resolution_x: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]
     """Number of horizontal pixels in the rendered image"""
@@ -162,13 +171,16 @@ class RenderSettings(bpy_struct):
     """Only render the active layer. Only affects rendering from the interface, ignored for rendering from command line."""
     @property
     def views(self) -> Annotated['RenderViews', "is_animatable=False"]:
+
         ...
     @property
     def stereo_views(self) -> Annotated[bpy_prop_collection['SceneRenderView'], "is_animatable=False"]:
+
         ...
     use_multiview: bool
     """Use multiple views in the scene"""
     views_format: Annotated[Literal['STEREO_3D', 'MULTIVIEW'], "is_animatable=False"]
+
     engine: Annotated[Literal['BLENDER_EEVEE'], "is_animatable=False"]
     """Engine to use for rendering"""
     @property
@@ -215,6 +227,7 @@ class RenderSettings(bpy_struct):
     """Line thickness in pixels"""
     @property
     def bake(self) -> Annotated['BakeSettings', "is_animatable=False"]:
+
         ...
     compositor_device: Literal['CPU', 'GPU']
     """Set how compositing is executed"""

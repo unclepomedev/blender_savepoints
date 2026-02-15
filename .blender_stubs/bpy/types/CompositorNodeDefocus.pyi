@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CompositorNodeDefocus.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .CompositorNode import CompositorNode
 from .Node import Node
@@ -16,7 +21,10 @@ from .NodeLink import NodeLink
 from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 from .Scene import Scene
+from .bpy_prop_collection import bpy_prop_collection
+
 class CompositorNodeDefocus(CompositorNode):
+
     @property
     def type(self) -> Annotated[str, "is_animatable=False"]:
         """Legacy unique node type identifier, redundant with bl_idname property"""
@@ -39,9 +47,11 @@ class CompositorNodeDefocus(CompositorNode):
     """Optional custom node label"""
     @property
     def inputs(self) -> Annotated['NodeInputs', "is_animatable=False"]:
+
         ...
     @property
     def outputs(self) -> Annotated['NodeOutputs', "is_animatable=False"]:
+
         ...
     @property
     def internal_links(self) -> Annotated[bpy_prop_collection['NodeLink'], "is_animatable=False"]:
@@ -62,15 +72,21 @@ class CompositorNodeDefocus(CompositorNode):
     select: bool
     """Node selection state"""
     show_options: bool
+
     show_preview: bool
+
     hide: bool
+
     mute: Annotated[bool, "is_animatable=False"]
+
     show_texture: bool
     """Display node in viewport textured shading mode"""
     bl_idname: Annotated[str, "is_animatable=False"]
+
     bl_label: Annotated[str, "is_animatable=False"]
     """The node label"""
     bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+
     bl_icon: str
     """The node icon"""
     @property
@@ -78,14 +94,21 @@ class CompositorNodeDefocus(CompositorNode):
         """Legacy unique node type identifier, redundant with bl_idname property"""
         ...
     bl_width_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_width_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_width_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     scene: Annotated[Optional['Scene'], "is_animatable=False"]
     """Scene from which to select the active camera (render scene if undefined)"""
     bokeh: Literal['OCTAGON', 'HEPTAGON', 'HEXAGON', 'PENTAGON', 'SQUARE', 'TRIANGLE', 'CIRCLE']
+
     angle: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
     """Bokeh shape rotation offset"""
     f_stop: Annotated[float, "step=10.0", "precision=3"]

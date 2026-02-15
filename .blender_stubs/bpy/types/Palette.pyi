@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Palette.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AssetMetaData import AssetMetaData
@@ -17,7 +22,10 @@ from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .PaletteColor import PaletteColor
 from .PaletteColors import PaletteColors
+from .bpy_prop_collection import bpy_prop_collection
+
 class Palette(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -92,6 +100,7 @@ class Palette(ID):
         ...
     @property
     def colors(self) -> Annotated['PaletteColors', "is_animatable=False"]:
+
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

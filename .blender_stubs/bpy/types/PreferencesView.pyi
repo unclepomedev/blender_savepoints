@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PreferencesView.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ColorRamp import ColorRamp
+
 class PreferencesView(bpy_struct):
+
     ui_scale: Annotated[float, "step=1.0", "precision=2"]
     """Changes the size of the fonts and widgets in the interface"""
     border_width: Annotated[int, "step=1"]

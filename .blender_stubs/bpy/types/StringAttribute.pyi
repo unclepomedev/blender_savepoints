@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.StringAttribute.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Attribute import Attribute
 from .StringAttributeValue import StringAttributeValue
+from .bpy_prop_collection import bpy_prop_collection
+
 class StringAttribute(Attribute):
+
     name: Annotated[str, "is_animatable=False"]
     """Name of the Attribute"""
     @property
@@ -36,4 +44,5 @@ class StringAttribute(Attribute):
         ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['StringAttributeValue'], "is_animatable=False"]:
+
         ...

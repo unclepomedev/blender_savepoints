@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceImageOverlay.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class SpaceImageOverlay(bpy_struct):
+
     show_overlays: bool
     """Display overlays like UV Maps and Metadata"""
     show_grid_background: bool

@@ -4,17 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ImageFormatSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ColorManagedDisplaySettings import ColorManagedDisplaySettings
 from .ColorManagedInputColorspaceSettings import ColorManagedInputColorspaceSettings
 from .ColorManagedViewSettings import ColorManagedViewSettings
 from .Stereo3dFormat import Stereo3dFormat
+
 class ImageFormatSettings(bpy_struct):
+
     media_type: Annotated[Literal['IMAGE', 'MULTI_LAYER_IMAGE', 'VIDEO'], "is_animatable=False"]
     """The type of media to save"""
     file_format: Annotated[Literal['JPEG', 'OPEN_EXR', 'PNG', 'WEBP', 'BMP', 'CINEON', 'DPX', 'IRIS', 'JPEG2000', 'HDR', 'TARGA', 'TARGA_RAW', 'TIFF', 'OPEN_EXR_MULTILAYER', 'FFMPEG'], "is_animatable=False"]

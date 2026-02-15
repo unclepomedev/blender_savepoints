@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NodeTreeInterfaceSocketImage.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .NodeTreeInterfaceSocket import NodeTreeInterfaceSocket
 from .Image import Image
 from .NodeTreeInterfacePanel import NodeTreeInterfacePanel
+
 class NodeTreeInterfaceSocketImage(NodeTreeInterfaceSocket):
+
     @property
     def item_type(self) -> Literal['SOCKET', 'PANEL']:
         """Type of interface item"""

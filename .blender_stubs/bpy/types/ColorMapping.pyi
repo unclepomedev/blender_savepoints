@@ -4,18 +4,26 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ColorMapping.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ColorRamp import ColorRamp
+
 class ColorMapping(bpy_struct):
+
     use_color_ramp: bool
     """Toggle color ramp operations"""
     @property
     def color_ramp(self) -> Annotated[Optional['ColorRamp'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
+
         ...
     brightness: Annotated[float, "step=1.0", "precision=3"]
     """Adjust the brightness of the texture"""

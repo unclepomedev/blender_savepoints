@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.LineStyleThicknessModifier_Material.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .LineStyleThicknessModifier import LineStyleThicknessModifier
 from .CurveMapping import CurveMapping
+
 class LineStyleThicknessModifier_Material(LineStyleThicknessModifier):
+
     name: Annotated[str, "is_animatable=False"]
     """Name of the modifier"""
     @property

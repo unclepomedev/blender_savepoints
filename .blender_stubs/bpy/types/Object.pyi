@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Object.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -42,7 +47,10 @@ from .ShapeKey import ShapeKey
 from .SoftBodySettings import SoftBodySettings
 from .VertexGroup import VertexGroup
 from .VertexGroups import VertexGroups
+from .bpy_prop_collection import bpy_prop_collection
+
 class Object(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -311,6 +319,7 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
     """Instance an existing collection"""
     @property
     def is_instancer(self) -> bool:
+
         ...
     display_type: Literal['BOUNDS', 'WIRE', 'SOLID', 'TEXTURED']
     """How to display object in viewport"""
@@ -350,6 +359,7 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
     """Current shape key index"""
     @property
     def use_dynamic_topology_sculpting(self) -> bool:
+
         ...
     @property
     def is_from_instancer(self) -> bool:

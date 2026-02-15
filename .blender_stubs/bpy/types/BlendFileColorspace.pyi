@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BlendFileColorspace.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class BlendFileColorspace(bpy_struct):
+
     @property
     def working_space(self) -> Literal['Linear Rec.709', 'Linear Rec.2020', 'ACEScg']:
         """Color space used for all scene linear colors in this file, and for compositing, shader and geometry nodes processing"""

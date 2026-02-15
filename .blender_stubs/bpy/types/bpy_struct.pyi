@@ -4,12 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.bpy_struct.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
+
+
 
 class bpy_struct:
+
     # --- Injected Methods ---
     def __getattr__(self, name) -> Any: ...
     def __setattr__(self, name: str, value: Any) -> None: ...

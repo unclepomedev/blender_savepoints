@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Bone.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from ._GenericBone import _GenericBone
 from .BoneCollection import BoneCollection
 from .BoneCollectionMemberships import BoneCollectionMemberships
 from .BoneColor import BoneColor
+from .bpy_prop_collection import bpy_prop_collection
+
 class Bone(bpy_struct, _GenericBone):
+
     @property
     def parent(self) -> Annotated[Optional['Bone'], "is_animatable=False"]:
         """Parent bone (in same Armature)"""
@@ -28,10 +36,13 @@ class Bone(bpy_struct, _GenericBone):
         """Bone Collections that contain this bone"""
         ...
     name: Annotated[str, "is_animatable=False"]
+
     @property
     def color(self) -> Annotated[Optional['BoneColor'], "is_animatable=False"]:
+
         ...
     display_type: Literal['ARMATURE_DEFINED', 'OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']
+
     @property
     def use_connect(self) -> bool:
         """When bone has a parent, bone's head is stuck to the parent's tail"""

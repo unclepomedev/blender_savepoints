@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PaletteColors.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .PaletteColor import PaletteColor
+
 class PaletteColors(bpy_struct):
+
     active: Annotated[Optional['PaletteColor'], "is_animatable=False"]
+
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def clear(self, *args, **kwargs) -> Any: ...

@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceFileBrowser.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .FileBrowserFSMenuEntry import FileBrowserFSMenuEntry
 from .FileSelectParams import FileSelectParams
 from .Operator import Operator
+from .bpy_prop_collection import bpy_prop_collection
+
 class SpaceFileBrowser(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -21,9 +29,13 @@ class SpaceFileBrowser(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_toolbar: bool
+
     show_region_tool_props: bool
+
     show_region_ui: bool
+
     browse_mode: Literal['FILES', 'ASSETS']
     """Type of the File Editor view (regular file browsing or asset browsing)"""
     @property
@@ -32,9 +44,11 @@ class SpaceFileBrowser(Space):
         ...
     @property
     def active_operator(self) -> Annotated[Optional['Operator'], "is_animatable=False"]:
+
         ...
     @property
     def operator(self) -> Annotated[Optional['Operator'], "is_animatable=False"]:
+
         ...
     @property
     def system_folders(self) -> Annotated[bpy_prop_collection['FileBrowserFSMenuEntry'], "is_animatable=False"]:
@@ -53,6 +67,7 @@ class SpaceFileBrowser(Space):
     bookmarks_active: Annotated[int, "step=1"]
     """Index of active bookmark (-1 if none)"""
     recent_folders: Annotated[bpy_prop_collection['FileBrowserFSMenuEntry'], "is_animatable=False"]
+
     recent_folders_active: Annotated[int, "step=1"]
     """Index of active recent folder (-1 if none)"""
     def activate_asset_by_id(self, *args, **kwargs) -> Any: ...

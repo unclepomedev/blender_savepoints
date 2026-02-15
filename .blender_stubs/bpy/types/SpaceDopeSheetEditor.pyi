@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceDopeSheetEditor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .DopeSheet import DopeSheet
 from .SpaceDopeSheetOverlay import SpaceDopeSheetOverlay
+
 class SpaceDopeSheetEditor(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -20,10 +27,15 @@ class SpaceDopeSheetEditor(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_footer: bool
+
     show_region_channels: bool
+
     show_region_ui: bool
+
     show_region_hud: bool
+
     mode: Literal['DOPESHEET', 'ACTION', 'SHAPEKEY', 'GPENCIL', 'MASK', 'CACHEFILE', 'TIMELINE']
     """Editing context being displayed"""
     ui_mode: Literal['DOPESHEET', 'ACTION', 'SHAPEKEY', 'GPENCIL', 'MASK', 'CACHEFILE']

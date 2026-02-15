@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Preferences.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Addon import Addon
@@ -27,21 +32,29 @@ from .StudioLight import StudioLight
 from .StudioLights import StudioLights
 from .Theme import Theme
 from .ThemeStyle import ThemeStyle
+from .bpy_prop_collection import bpy_prop_collection
+
 class Preferences(bpy_struct):
+
     active_section: Literal['INTERFACE', 'VIEWPORT', 'LIGHTS', 'EDITING', 'ANIMATION', 'EXTENSIONS', 'ADDONS', 'THEMES', 'INPUT', 'NAVIGATION', 'KEYMAP', 'SYSTEM', 'SAVE_LOAD', 'FILE_PATHS', 'DEVELOPER_TOOLS', 'EXPERIMENTAL']
     """Preferences"""
     app_template: Annotated[str, "is_animatable=False"]
+
     @property
     def themes(self) -> Annotated[bpy_prop_collection['Theme'], "is_animatable=False"]:
+
         ...
     @property
     def ui_styles(self) -> Annotated[bpy_prop_collection['ThemeStyle'], "is_animatable=False"]:
+
         ...
     @property
     def addons(self) -> Annotated['Addons', "is_animatable=False"]:
+
         ...
     @property
     def autoexec_paths(self) -> Annotated['PathCompareCollection', "is_animatable=False"]:
+
         ...
     use_recent_searches: bool
     """Sort the recently searched items at the top"""
@@ -87,6 +100,7 @@ class Preferences(bpy_struct):
         ...
     @property
     def studio_lights(self) -> Annotated['StudioLights', "is_animatable=False"]:
+
         ...
     use_preferences_save: bool
     """Save preferences on exit when modified (unless factory settings have been loaded)"""

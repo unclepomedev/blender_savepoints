@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.DepsgraphUpdate.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ID import ID
+
 class DepsgraphUpdate(bpy_struct):
+
     @property
     def id(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
         """Updated data-block"""

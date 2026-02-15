@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.EffectorWeights.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Collection import Collection
+
 class EffectorWeights(bpy_struct):
+
     apply_to_hair_growing: bool
     """Use force fields when growing hair"""
     collection: Annotated[Optional['Collection'], "is_animatable=False"]

@@ -4,17 +4,26 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MeshEdge.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class MeshEdge(bpy_struct):
+
     vertices: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
     """Vertex indices"""
     select: Annotated[bool, "is_animatable=False"]
+
     hide: Annotated[bool, "is_animatable=False"]
+
     use_seam: bool
     """Seam edge for UV unwrapping"""
     use_edge_sharp: bool

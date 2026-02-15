@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.wmTools.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .WorkSpaceTool import WorkSpaceTool
+
 class wmTools(bpy_struct):
+
     def from_space_view3d_mode(self, *args, **kwargs) -> Any: ...
     def from_space_image_mode(self, *args, **kwargs) -> Any: ...
     def from_space_node(self, *args, **kwargs) -> Any: ...

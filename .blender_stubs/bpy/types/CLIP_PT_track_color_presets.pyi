@@ -4,15 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CLIP_PT_track_color_presets.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .PresetPanel import PresetPanel
 from .Panel import Panel
 from .Constraint import Constraint
 from .UILayout import UILayout
+
 class CLIP_PT_track_color_presets(PresetPanel, Panel):
     """Predefined track color"""
     @property
@@ -55,6 +61,7 @@ class CLIP_PT_track_color_presets(PresetPanel, Panel):
     """Show the panel on all tabs"""
     @property
     def is_popover(self) -> bool:
+
         ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

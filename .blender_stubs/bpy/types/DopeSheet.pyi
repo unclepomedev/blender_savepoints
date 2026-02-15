@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.DopeSheet.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Collection import Collection
 from .ID import ID
+
 class DopeSheet(bpy_struct):
+
     @property
     def source(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
         """ID-Block representing source data, usually ID_SCE (i.e. Scene)"""

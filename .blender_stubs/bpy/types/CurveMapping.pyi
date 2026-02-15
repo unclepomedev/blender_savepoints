@@ -4,26 +4,39 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CurveMapping.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMap import CurveMap
+from .bpy_prop_collection import bpy_prop_collection
+
 class CurveMapping(bpy_struct):
+
     tone: Literal['STANDARD', 'FILMLIKE']
     """Tone of the curve"""
     use_clip: bool
     """Force the curve view to fit a defined boundary"""
     clip_min_x: Annotated[float, "step=10.0", "precision=3"]
+
     clip_min_y: Annotated[float, "step=10.0", "precision=3"]
+
     clip_max_x: Annotated[float, "step=10.0", "precision=3"]
+
     clip_max_y: Annotated[float, "step=10.0", "precision=3"]
+
     extend: Literal['HORIZONTAL', 'EXTRAPOLATED']
     """Extrapolate the curve or extend it horizontally"""
     @property
     def curves(self) -> Annotated[bpy_prop_collection['CurveMap'], "is_animatable=False"]:
+
         ...
     black_level: Annotated[list[float], "subtype='COLOR'", "step=1.0", "precision=3"]
     """For RGB curves, the color that black is mapped to"""

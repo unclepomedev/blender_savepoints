@@ -4,19 +4,28 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SequencerCompositorModifierData.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .StripModifier import StripModifier
 from .Mask import Mask
 from .NodeTree import NodeTree
 from .Strip import Strip
+
 class SequencerCompositorModifierData(StripModifier):
+
     name: Annotated[str, "is_animatable=False"]
+
     @property
     def type(self) -> Literal['BRIGHT_CONTRAST', 'COLOR_BALANCE', 'COMPOSITOR', 'CURVES', 'HUE_CORRECT', 'MASK', 'TONEMAP', 'WHITE_BALANCE', 'SOUND_EQUALIZER']:
+
         ...
     mute: bool
     """Mute this modifier"""

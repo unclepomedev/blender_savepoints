@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieTrackingSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class MovieTrackingSettings(bpy_struct):
+
     speed: Annotated[Literal['FASTEST', 'DOUBLE', 'REALTIME', 'HALF', 'QUARTER'], "is_animatable=False"]
     """Limit speed of tracking to make visual feedback easier (this does not affect the tracking quality)"""
     use_keyframe_selection: Annotated[bool, "is_animatable=False"]

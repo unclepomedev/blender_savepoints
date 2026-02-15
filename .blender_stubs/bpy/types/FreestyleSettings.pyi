@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FreestyleSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .FreestyleLineSet import FreestyleLineSet
 from .FreestyleModuleSettings import FreestyleModuleSettings
 from .FreestyleModules import FreestyleModules
 from .Linesets import Linesets
+from .bpy_prop_collection import bpy_prop_collection
+
 class FreestyleSettings(bpy_struct):
+
     @property
     def modules(self) -> Annotated['FreestyleModules', "is_animatable=False"]:
         """A list of style modules (to be applied from top to bottom)"""
@@ -43,4 +51,5 @@ class FreestyleSettings(bpy_struct):
     """Angular threshold for detecting crease edges"""
     @property
     def linesets(self) -> Annotated['Linesets', "is_animatable=False"]:
+
         ...

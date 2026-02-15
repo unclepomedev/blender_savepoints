@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Scene.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -45,7 +50,10 @@ from .View3DCursor import View3DCursor
 from .ViewLayer import ViewLayer
 from .ViewLayers import ViewLayers
 from .World import World
+from .bpy_prop_collection import bpy_prop_collection
+
 class Scene(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -126,11 +134,14 @@ class Scene(ID):
     """World used for rendering the scene"""
     @property
     def objects(self) -> Annotated['SceneObjects', "is_animatable=False"]:
+
         ...
     frame_current: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
     """Current frame, to update animation data from Python frame_set() instead"""
     frame_subframe: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.009999999776482582", "precision=2", "is_animatable=False"]
+
     frame_float: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.10000000149011612", "precision=2", "is_animatable=False"]
+
     frame_start: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
     """First frame of the playback/rendering range"""
     frame_end: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
@@ -181,6 +192,7 @@ class Scene(ID):
     """Enable the compositing node group."""
     @property
     def sequence_editor(self) -> Annotated[Optional['SequenceEditor'], "is_animatable=False"]:
+
         ...
     @property
     def keying_sets(self) -> Annotated['KeyingSets', "is_animatable=False"]:
@@ -192,9 +204,11 @@ class Scene(ID):
         ...
     @property
     def rigidbody_world(self) -> Annotated[Optional['RigidBodyWorld'], "is_animatable=False"]:
+
         ...
     @property
     def tool_settings(self) -> Annotated['ToolSettings', "is_animatable=False"]:
+
         ...
     @property
     def unit_settings(self) -> Annotated['UnitSettings', "is_animatable=False"]:
@@ -206,9 +220,11 @@ class Scene(ID):
     """Use global gravity for all dynamics"""
     @property
     def render(self) -> Annotated['RenderSettings', "is_animatable=False"]:
+
         ...
     @property
     def safe_areas(self) -> Annotated['DisplaySafeAreas', "is_animatable=False"]:
+
         ...
     @property
     def timeline_markers(self) -> Annotated['TimelineMarkers', "is_animatable=False"]:
@@ -216,9 +232,11 @@ class Scene(ID):
         ...
     @property
     def transform_orientation_slots(self) -> Annotated[bpy_prop_collection['TransformOrientationSlot'], "is_animatable=False"]:
+
         ...
     @property
     def cursor(self) -> Annotated['View3DCursor', "is_animatable=False"]:
+
         ...
     use_audio: bool
     """Play back of audio from Sequence Editor, otherwise mute audio"""
@@ -250,6 +268,7 @@ class Scene(ID):
         ...
     @property
     def view_layers(self) -> Annotated['ViewLayers', "is_animatable=False"]:
+
         ...
     @property
     def collection(self) -> Annotated['Collection', "is_animatable=False"]:

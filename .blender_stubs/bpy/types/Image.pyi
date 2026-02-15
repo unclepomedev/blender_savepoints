@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Image.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AssetMetaData import AssetMetaData
@@ -23,7 +28,10 @@ from .RenderSlots import RenderSlots
 from .Stereo3dFormat import Stereo3dFormat
 from .UDIMTile import UDIMTile
 from .UDIMTiles import UDIMTiles
+from .bpy_prop_collection import bpy_prop_collection
+
 class Image(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property

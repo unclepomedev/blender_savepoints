@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceGraphEditor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .DopeSheet import DopeSheet
+
 class SpaceGraphEditor(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -19,10 +26,15 @@ class SpaceGraphEditor(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_footer: bool
+
     show_region_channels: bool
+
     show_region_ui: bool
+
     show_region_hud: bool
+
     mode: Literal['FCURVES', 'DRIVERS']
     """Editing context being displayed"""
     show_seconds: bool
@@ -38,6 +50,7 @@ class SpaceGraphEditor(Space):
     show_markers: bool
     """If any exists, show markers in a separate row at the bottom of the editor"""
     show_extrapolation: bool
+
     use_auto_merge_keyframes: bool
     """Automatically merge nearby keyframes"""
     use_realtime_update: bool

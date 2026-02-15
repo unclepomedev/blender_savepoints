@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.GPencilSculptSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMapping import CurveMapping
 from .GPencilSculptGuide import GPencilSculptGuide
+
 class GPencilSculptSettings(bpy_struct):
+
     @property
     def guide(self) -> Annotated[Optional['GPencilSculptGuide'], "is_animatable=False"]:
+
         ...
     use_multiframe_falloff: Annotated[bool, "is_animatable=False"]
     """Use falloff effect when edit in multiframe mode to compute brush effect by frame"""
@@ -41,5 +49,6 @@ class GPencilSculptSettings(bpy_struct):
         """Custom curve to control primitive thickness"""
         ...
     lock_axis: Annotated[Literal['VIEW', 'AXIS_Y', 'AXIS_X', 'AXIS_Z', 'CURSOR'], "is_animatable=False"]
+
     intersection_threshold: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
     """Threshold for stroke intersections"""

@@ -4,16 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NODE_PT_active_node_custom_properties.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .PropertyPanel import PropertyPanel
 from .Panel import Panel
 from .Constraint import Constraint
 from .UILayout import UILayout
+
 class NODE_PT_active_node_custom_properties(PropertyPanel, Panel):
+
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the panel in the UI"""
@@ -54,6 +61,7 @@ class NODE_PT_active_node_custom_properties(PropertyPanel, Panel):
     """Show the panel on all tabs"""
     @property
     def is_popover(self) -> bool:
+
         ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

@@ -4,21 +4,33 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ThemeConsole.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
+
 class ThemeConsole(bpy_struct):
+
     @property
     def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
         """Settings for space"""
         ...
     line_output: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     line_input: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     line_info: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     line_error: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     cursor: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     select: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

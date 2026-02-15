@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MaskSpline.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MaskSplinePoint import MaskSplinePoint
 from .MaskSplinePoints import MaskSplinePoints
+from .bpy_prop_collection import bpy_prop_collection
+
 class MaskSpline(bpy_struct):
+
     offset_mode: Literal['EVEN', 'SMOOTH']
     """The method used for calculating the feather offset"""
     weight_interpolation: Literal['LINEAR', 'EASE']

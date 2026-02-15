@@ -4,17 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.IMAGE_PT_paint_stroke.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .BrushButtonsPanel import BrushButtonsPanel
 from .Panel import Panel
 from .StrokePanel import StrokePanel
 from .Constraint import Constraint
 from .UILayout import UILayout
+
 class IMAGE_PT_paint_stroke(BrushButtonsPanel, Panel, StrokePanel):
+
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the panel in the UI"""
@@ -55,6 +62,7 @@ class IMAGE_PT_paint_stroke(BrushButtonsPanel, Panel, StrokePanel):
     """Show the panel on all tabs"""
     @property
     def is_popover(self) -> bool:
+
         ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

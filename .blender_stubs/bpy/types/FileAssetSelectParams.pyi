@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FileAssetSelectParams.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .FileSelectParams import FileSelectParams
 from .FileAssetSelectIDFilter import FileAssetSelectIDFilter
 from .FileSelectIDFilter import FileSelectIDFilter
+
 class FileAssetSelectParams(FileSelectParams):
+
     @property
     def title(self) -> Annotated[str, "is_animatable=False"]:
         """Title for the file browser"""
@@ -38,6 +45,7 @@ class FileAssetSelectParams(FileSelectParams):
     show_hidden: bool
     """Show hidden dot files"""
     sort_method: Literal['FILE_SORT_ALPHA', 'FILE_SORT_EXTENSION', 'FILE_SORT_TIME', 'FILE_SORT_SIZE', 'ASSET_CATALOG']
+
     use_sort_invert: bool
     """Sort items descending, from highest value to lowest"""
     use_filter_image: bool
@@ -81,6 +89,7 @@ class FileAssetSelectParams(FileSelectParams):
     list_column_size: Annotated[int, "step=1"]
     """The width of columns in horizontal list views"""
     asset_library_reference: Literal['ALL', 'LOCAL', 'ESSENTIALS', 'CUSTOM']
+
     catalog_id: Annotated[str, "is_animatable=False"]
     """The UUID of the catalog shown in the browser"""
     @property

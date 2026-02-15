@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SceneEEVEE.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .RaytraceEEVEE import RaytraceEEVEE
+
 class SceneEEVEE(bpy_struct):
+
     gi_diffuse_bounces: Annotated[int, "step=1", "is_animatable=False"]
     """Number of times the light is reinjected inside light grids, 0 disable indirect diffuse light"""
     gi_cubemap_resolution: Annotated[Literal['128', '256', '512', '1024', '2048', '4096'], "is_animatable=False"]

@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SoftBodySettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Collection import Collection
 from .EffectorWeights import EffectorWeights
+
 class SoftBodySettings(bpy_struct):
+
     friction: Annotated[float, "step=10.0", "precision=3"]
     """General media friction for point movements"""
     mass: Annotated[float, "subtype=''", "unit='MASS'", "step=10.0", "precision=3"]
@@ -101,4 +108,5 @@ class SoftBodySettings(bpy_struct):
     """Limit colliders to this collection"""
     @property
     def effector_weights(self) -> Annotated[Optional['EffectorWeights'], "is_animatable=False"]:
+
         ...

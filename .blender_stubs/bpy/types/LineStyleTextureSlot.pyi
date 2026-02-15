@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.LineStyleTextureSlot.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .TextureSlot import TextureSlot
 from .Texture import Texture
+
 class LineStyleTextureSlot(TextureSlot):
+
     texture: Annotated[Optional['Texture'], "is_animatable=False"]
     """Texture data-block used by this texture slot"""
     @property
@@ -31,9 +38,13 @@ class LineStyleTextureSlot(TextureSlot):
     output_node: Literal['DEFAULT']
     """Which output node to use, for node-based textures"""
     mapping_x: Literal['NONE', 'X', 'Y', 'Z']
+
     mapping_y: Literal['NONE', 'X', 'Y', 'Z']
+
     mapping_z: Literal['NONE', 'X', 'Y', 'Z']
+
     mapping: Literal['FLAT', 'CUBE', 'TUBE', 'SPHERE']
+
     use_map_color_diffuse: bool
     """The texture affects basic color of the stroke"""
     use_map_alpha: bool

@@ -4,15 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MATERIAL_PT_gpencil_material_presets.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .PresetPanel import PresetPanel
 from .Panel import Panel
 from .Constraint import Constraint
 from .UILayout import UILayout
+
 class MATERIAL_PT_gpencil_material_presets(PresetPanel, Panel):
     """Material settings"""
     @property
@@ -55,6 +61,7 @@ class MATERIAL_PT_gpencil_material_presets(PresetPanel, Panel):
     """Show the panel on all tabs"""
     @property
     def is_popover(self) -> bool:
+
         ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

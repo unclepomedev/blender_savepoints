@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Paint.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AssetWeakReference import AssetWeakReference
@@ -15,7 +20,9 @@ from .Brush import Brush
 from .CurveMapping import CurveMapping
 from .Palette import Palette
 from .UnifiedPaintSettings import UnifiedPaintSettings
+
 class Paint(bpy_struct):
+
     @property
     def brush(self) -> Annotated[Optional['Brush'], "is_animatable=False"]:
         """Active brush"""
@@ -33,7 +40,9 @@ class Paint(bpy_struct):
     palette: Annotated[Optional['Palette'], "is_animatable=False"]
     """Active Palette"""
     show_brush: Annotated[bool, "is_animatable=False"]
+
     show_brush_on_surface: Annotated[bool, "is_animatable=False"]
+
     show_low_resolution: Annotated[bool, "is_animatable=False"]
     """For multires, show low resolution while navigating the view"""
     use_sculpt_delay_updates: Annotated[bool, "is_animatable=False"]
@@ -61,8 +70,12 @@ class Paint(bpy_struct):
     tile_z: Annotated[bool, "is_animatable=False"]
     """Tile along Z axis"""
     show_strength_curve: Annotated[bool, "is_animatable=False"]
+
     show_size_curve: Annotated[bool, "is_animatable=False"]
+
     show_jitter_curve: Annotated[bool, "is_animatable=False"]
+
     @property
     def unified_paint_settings(self) -> Annotated['UnifiedPaintSettings', "is_animatable=False"]:
+
         ...

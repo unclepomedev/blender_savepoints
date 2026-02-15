@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FloatColorAttribute.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Attribute import Attribute
 from .FloatColorAttributeValue import FloatColorAttributeValue
+from .bpy_prop_collection import bpy_prop_collection
+
 class FloatColorAttribute(Attribute):
+
     name: Annotated[str, "is_animatable=False"]
     """Name of the Attribute"""
     @property
@@ -36,4 +44,5 @@ class FloatColorAttribute(Attribute):
         ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['FloatColorAttributeValue'], "is_animatable=False"]:
+
         ...

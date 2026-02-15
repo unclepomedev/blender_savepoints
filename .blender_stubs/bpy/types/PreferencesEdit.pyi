@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PreferencesEdit.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class PreferencesEdit(bpy_struct):
+
     material_link: Literal['OBDATA', 'OBJECT']
     """Toggle whether the material is linked to object data or the object block"""
     object_align: Literal['WORLD', 'VIEW', 'CURSOR']

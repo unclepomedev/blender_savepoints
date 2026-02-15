@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieTrackingObject.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MovieTrackingObjectPlaneTracks import MovieTrackingObjectPlaneTracks
@@ -15,7 +20,10 @@ from .MovieTrackingObjectTracks import MovieTrackingObjectTracks
 from .MovieTrackingPlaneTrack import MovieTrackingPlaneTrack
 from .MovieTrackingReconstruction import MovieTrackingReconstruction
 from .MovieTrackingTrack import MovieTrackingTrack
+from .bpy_prop_collection import bpy_prop_collection
+
 class MovieTrackingObject(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique name of object"""
     @property
@@ -32,6 +40,7 @@ class MovieTrackingObject(bpy_struct):
         ...
     @property
     def reconstruction(self) -> Annotated[Optional['MovieTrackingReconstruction'], "is_animatable=False"]:
+
         ...
     scale: Annotated[float, "step=1.0", "precision=4", "is_animatable=False"]
     """Scale of object solution in camera space"""

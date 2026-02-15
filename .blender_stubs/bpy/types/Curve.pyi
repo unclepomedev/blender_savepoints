@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Curve.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -23,7 +28,10 @@ from .LibraryWeakReference import LibraryWeakReference
 from .Material import Material
 from .Object import Object
 from .Spline import Spline
+from .bpy_prop_collection import bpy_prop_collection
+
 class Curve(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -98,6 +106,7 @@ class Curve(ID):
         ...
     @property
     def shape_keys(self) -> Annotated[Optional['Key'], "is_animatable=False"]:
+
         ...
     @property
     def splines(self) -> Annotated['CurveSplines', "is_animatable=False"]:
@@ -166,9 +175,12 @@ class Curve(ID):
     use_auto_texspace: bool
     """Adjust active object's texture space automatically when transforming object"""
     texspace_location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]
+
     texspace_size: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+
     @property
     def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
+
         ...
     bevel_factor_start: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
     """Define where along the spline the curve geometry starts (0 for the beginning, 1 for the end)"""

@@ -4,19 +4,29 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.StudioLight.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .UserSolidLight import UserSolidLight
+from .bpy_prop_collection import bpy_prop_collection
+
 class StudioLight(bpy_struct):
+
     @property
     def index(self) -> Annotated[int, "step=1"]:
+
         ...
     @property
     def is_user_defined(self) -> bool:
+
         ...
     @property
     def has_specular_highlight_pass(self) -> bool:
@@ -24,12 +34,15 @@ class StudioLight(bpy_struct):
         ...
     @property
     def type(self) -> Literal['STUDIO', 'WORLD', 'MATCAP']:
+
         ...
     @property
     def name(self) -> Annotated[str, "is_animatable=False"]:
+
         ...
     @property
     def path(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
+
         ...
     @property
     def solid_lights(self) -> Annotated[bpy_prop_collection['UserSolidLight'], "is_animatable=False"]:

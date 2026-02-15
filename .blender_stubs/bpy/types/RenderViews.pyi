@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.RenderViews.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .SceneRenderView import SceneRenderView
+
 class RenderViews(bpy_struct):
+
     active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
     """Active index in render view array"""
     active: Annotated['SceneRenderView', "is_animatable=False"]

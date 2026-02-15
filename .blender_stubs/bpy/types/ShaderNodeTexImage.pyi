@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ShaderNodeTexImage.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ShaderNode import ShaderNode
 from .ColorMapping import ColorMapping
@@ -19,7 +24,10 @@ from .NodeLink import NodeLink
 from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
 from .TexMapping import TexMapping
+from .bpy_prop_collection import bpy_prop_collection
+
 class ShaderNodeTexImage(ShaderNode):
+
     @property
     def type(self) -> Annotated[str, "is_animatable=False"]:
         """Legacy unique node type identifier, redundant with bl_idname property"""
@@ -42,9 +50,11 @@ class ShaderNodeTexImage(ShaderNode):
     """Optional custom node label"""
     @property
     def inputs(self) -> Annotated['NodeInputs', "is_animatable=False"]:
+
         ...
     @property
     def outputs(self) -> Annotated['NodeOutputs', "is_animatable=False"]:
+
         ...
     @property
     def internal_links(self) -> Annotated[bpy_prop_collection['NodeLink'], "is_animatable=False"]:
@@ -65,15 +75,21 @@ class ShaderNodeTexImage(ShaderNode):
     select: bool
     """Node selection state"""
     show_options: bool
+
     show_preview: bool
+
     hide: bool
+
     mute: Annotated[bool, "is_animatable=False"]
+
     show_texture: bool
     """Display node in viewport textured shading mode"""
     bl_idname: Annotated[str, "is_animatable=False"]
+
     bl_label: Annotated[str, "is_animatable=False"]
     """The node label"""
     bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+
     bl_icon: str
     """The node icon"""
     @property
@@ -81,12 +97,19 @@ class ShaderNodeTexImage(ShaderNode):
         """Legacy unique node type identifier, redundant with bl_idname property"""
         ...
     bl_width_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_width_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_width_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     image: Annotated[Optional['Image'], "is_animatable=False"]
+
     @property
     def texture_mapping(self) -> Annotated['TexMapping', "is_animatable=False"]:
         """Texture coordinate mapping settings"""

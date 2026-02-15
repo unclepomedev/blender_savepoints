@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ParticleSystem.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ChildParticle import ChildParticle
@@ -17,7 +22,10 @@ from .Particle import Particle
 from .ParticleSettings import ParticleSettings
 from .ParticleTarget import ParticleTarget
 from .PointCache import PointCache
+from .bpy_prop_collection import bpy_prop_collection
+
 class ParticleSystem(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
     """Particle system name"""
     settings: Annotated['ParticleSettings', "is_animatable=False"]
@@ -56,8 +64,10 @@ class ParticleSystem(bpy_struct):
         ...
     @property
     def active_particle_target(self) -> Annotated[Optional['ParticleTarget'], "is_animatable=False"]:
+
         ...
     active_particle_target_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+
     vertex_group_density: Annotated[str, "is_animatable=False"]
     """Vertex group to control density"""
     invert_vertex_group_density: bool
@@ -112,6 +122,7 @@ class ParticleSystem(bpy_struct):
     """Negate the effect of the twist vertex group"""
     @property
     def point_cache(self) -> Annotated['PointCache', "is_animatable=False"]:
+
         ...
     @property
     def has_multiple_caches(self) -> bool:

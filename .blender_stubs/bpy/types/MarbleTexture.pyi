@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MarbleTexture.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Texture import Texture
 from .AnimData import AnimData
@@ -19,7 +24,9 @@ from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .NodeTree import NodeTree
+
 class MarbleTexture(Texture):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -93,12 +100,14 @@ class MarbleTexture(Texture):
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
     type: Literal['NONE', 'BLEND', 'CLOUDS', 'DISTORTED_NOISE', 'IMAGE', 'MAGIC', 'MARBLE', 'MUSGRAVE', 'NOISE', 'STUCCI', 'VORONOI', 'WOOD']
+
     use_clamp: bool
     """Set negative texture RGB and intensity values to zero, for some uses like displacement this option can be disabled to get the full range"""
     use_color_ramp: bool
     """Map the texture intensity to the color ramp. Note that the alpha value is used for image textures, enable "Calculate Alpha" for images without an alpha channel."""
     @property
     def color_ramp(self) -> Annotated[Optional['ColorRamp'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
+
         ...
     intensity: Annotated[float, "step=1.0", "precision=3"]
     """Adjust the brightness of the texture"""
@@ -107,8 +116,11 @@ class MarbleTexture(Texture):
     saturation: Annotated[float, "step=1.0", "precision=3"]
     """Adjust the saturation of colors in the texture"""
     factor_red: Annotated[float, "step=1.0", "precision=3"]
+
     factor_green: Annotated[float, "step=1.0", "precision=3"]
+
     factor_blue: Annotated[float, "step=1.0", "precision=3"]
+
     use_preview_alpha: bool
     """Show Alpha in Preview Render"""
     use_nodes: bool
@@ -128,10 +140,13 @@ class MarbleTexture(Texture):
     noise_depth: Annotated[int, "step=1"]
     """Depth of the cloud calculation"""
     noise_type: Literal['SOFT_NOISE', 'HARD_NOISE']
+
     marble_type: Literal['SOFT', 'SHARP', 'SHARPER']
+
     noise_basis: Literal['BLENDER_ORIGINAL', 'ORIGINAL_PERLIN', 'IMPROVED_PERLIN', 'VORONOI_F1', 'VORONOI_F2', 'VORONOI_F3', 'VORONOI_F4', 'VORONOI_F2_F1', 'VORONOI_CRACKLE', 'CELL_NOISE']
     """Noise basis used for turbulence"""
     noise_basis_2: Literal['SIN', 'SAW', 'TRI']
+
     nabla: Annotated[float, "step=1.0", "precision=2"]
     """Size of derivative offset used for calculating normal"""
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

@@ -4,21 +4,32 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MeshVertex.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .VertexGroupElement import VertexGroupElement
+from .bpy_prop_collection import bpy_prop_collection
+
 class MeshVertex(bpy_struct):
+
     co: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
+
     @property
     def normal(self) -> Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]:
         """Vertex Normal"""
         ...
     select: Annotated[bool, "is_animatable=False"]
+
     hide: Annotated[bool, "is_animatable=False"]
+
     @property
     def groups(self) -> Annotated[bpy_prop_collection['VertexGroupElement'], "is_animatable=False"]:
         """Weights for the vertex groups this vertex is member of"""

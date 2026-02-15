@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Brush.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AssetMetaData import AssetMetaData
@@ -27,7 +32,9 @@ from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .PaintCurve import PaintCurve
 from .Texture import Texture
+
 class Brush(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -107,19 +114,33 @@ class Brush(ID):
     blend: Literal['MIX', 'DARKEN', 'MUL', 'COLORBURN', 'LINEARBURN', 'LIGHTEN', 'SCREEN', 'COLORDODGE', 'ADD', 'OVERLAY', 'SOFTLIGHT', 'HARDLIGHT', 'VIVIDLIGHT', 'LINEARLIGHT', 'PINLIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUB', 'HUE', 'SATURATION', 'COLOR', 'LUMINOSITY', 'ERASE_ALPHA', 'ADD_ALPHA']
     """Brush blending mode"""
     sculpt_brush_type: Literal['DRAW', 'DRAW_SHARP', 'CLAY', 'CLAY_STRIPS', 'CLAY_THUMB', 'LAYER', 'INFLATE', 'BLOB', 'CREASE', 'SMOOTH', 'PLANE', 'MULTIPLANE_SCRAPE', 'PINCH', 'GRAB', 'ELASTIC_DEFORM', 'SNAKE_HOOK', 'THUMB', 'POSE', 'NUDGE', 'ROTATE', 'TOPOLOGY', 'BOUNDARY', 'CLOTH', 'SIMPLIFY', 'MASK', 'DRAW_FACE_SETS', 'DISPLACEMENT_ERASER', 'DISPLACEMENT_SMEAR', 'PAINT', 'SMEAR']
+
     vertex_brush_type: Literal['DRAW', 'BLUR', 'AVERAGE', 'SMEAR']
+
     weight_brush_type: Literal['DRAW', 'BLUR', 'AVERAGE', 'SMEAR']
+
     image_brush_type: Literal['DRAW', 'SOFTEN', 'SMEAR', 'CLONE', 'FILL', 'MASK']
+
     gpencil_brush_type: Annotated[Literal['DRAW', 'FILL', 'ERASE', 'TINT'], "is_animatable=False"]
+
     gpencil_vertex_brush_type: Annotated[Literal['DRAW', 'BLUR', 'AVERAGE', 'SMEAR', 'REPLACE'], "is_animatable=False"]
+
     gpencil_sculpt_brush_type: Annotated[Literal['SMOOTH', 'THICKNESS', 'STRENGTH', 'RANDOMIZE', 'GRAB', 'PUSH', 'TWIST', 'PINCH', 'CLONE'], "is_animatable=False"]
+
     gpencil_weight_brush_type: Annotated[Literal['WEIGHT', 'BLUR', 'AVERAGE', 'SMEAR'], "is_animatable=False"]
+
     curves_sculpt_brush_type: Annotated[Literal['SELECTION_PAINT', 'ADD', 'DELETE', 'DENSITY', 'COMB', 'SNAKE_HOOK', 'GROW_SHRINK', 'PINCH', 'PUFF', 'SMOOTH', 'SLIDE'], "is_animatable=False"]
+
     direction: Literal['ADD', 'SUBTRACT']
+
     stroke_method: Literal['DOTS', 'DRAG_DOT', 'SPACE', 'AIRBRUSH', 'ANCHORED', 'LINE', 'CURVE']
+
     sculpt_plane: Literal['AREA', 'VIEW', 'X', 'Y', 'Z']
+
     mask_tool: Literal['DRAW', 'SMOOTH']
+
     curve_distance_falloff_preset: Literal['CUSTOM', 'SMOOTH', 'SMOOTHER', 'SPHERE', 'ROOT', 'SHARP', 'LIN', 'POW4', 'INVSQUARE', 'CONSTANT']
+
     deform_target: Literal['GEOMETRY', 'CLOTH_SIM']
     """How the deformation of the brush will affect the object"""
     elastic_deform_type: Literal['GRAB', 'GRAB_BISCALE', 'GRAB_TRISCALE', 'SCALE', 'TWIST']
@@ -217,7 +238,9 @@ class Brush(ID):
     rate: Annotated[float, "step=1.0", "precision=3"]
     """Interval between paints for Airbrush"""
     color: Annotated[list[float], "subtype='COLOR'", "step=0.0010000000474974513", "precision=3"]
+
     secondary_color: Annotated[list[float], "subtype='COLOR'", "step=0.0010000000474974513", "precision=3"]
+
     weight: Annotated[float, "subtype='FACTOR'", "step=0.0010000000474974513", "precision=3"]
     """Vertex weight when brush is applied"""
     strength: Annotated[float, "subtype='FACTOR'", "step=0.0010000000474974513", "precision=3"]
@@ -343,6 +366,7 @@ class Brush(ID):
     blur_kernel_radius: Annotated[int, "step=1"]
     """Radius of kernel used for soften and sharpen in pixels"""
     blur_mode: Literal['BOX', 'GAUSSIAN']
+
     falloff_angle: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
     """Paint most on faces pointing towards the view according to this angle"""
     use_airbrush: bool
@@ -469,9 +493,12 @@ class Brush(ID):
     """Active paint curve"""
     @property
     def gradient(self) -> Annotated[Optional['ColorRamp'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
+
         ...
     gradient_stroke_mode: Literal['PRESSURE', 'SPACING_REPEAT', 'SPACING_CLAMP']
+
     gradient_fill_mode: Literal['LINEAR', 'RADIAL']
+
     use_primary_overlay: bool
     """Show texture in viewport"""
     use_secondary_overlay: bool
@@ -502,15 +529,22 @@ class Brush(ID):
     """Use this brush in sculpt curves mode"""
     @property
     def texture_slot(self) -> Annotated[Optional['BrushTextureSlot'], "is_animatable=False"]:
+
         ...
     texture: Annotated[Optional['Texture'], "is_animatable=False"]
+
     @property
     def mask_texture_slot(self) -> Annotated[Optional['BrushTextureSlot'], "is_animatable=False"]:
+
         ...
     mask_texture: Annotated[Optional['Texture'], "is_animatable=False"]
+
     texture_overlay_alpha: Annotated[int, "subtype='PERCENTAGE'", "step=1"]
+
     mask_overlay_alpha: Annotated[int, "subtype='PERCENTAGE'", "step=1"]
+
     cursor_overlay_alpha: Annotated[int, "subtype='PERCENTAGE'", "step=1"]
+
     cursor_color_add: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Color of cursor when adding"""
     cursor_color_subtract: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
@@ -521,21 +555,27 @@ class Brush(ID):
         ...
     @property
     def sculpt_capabilities(self) -> Annotated['BrushCapabilitiesSculpt', "is_animatable=False"]:
+
         ...
     @property
     def image_paint_capabilities(self) -> Annotated['BrushCapabilitiesImagePaint', "is_animatable=False"]:
+
         ...
     @property
     def vertex_paint_capabilities(self) -> Annotated['BrushCapabilitiesVertexPaint', "is_animatable=False"]:
+
         ...
     @property
     def weight_paint_capabilities(self) -> Annotated['BrushCapabilitiesWeightPaint', "is_animatable=False"]:
+
         ...
     @property
     def gpencil_settings(self) -> Annotated[Optional['BrushGpencilSettings'], "is_animatable=False"]:
+
         ...
     @property
     def curves_sculpt_settings(self) -> Annotated[Optional['BrushCurvesSculptSettings'], "is_animatable=False"]:
+
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

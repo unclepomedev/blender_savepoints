@@ -4,15 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CameraStereoData.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class CameraStereoData(bpy_struct):
+
     convergence_mode: Literal['OFFAXIS', 'PARALLEL', 'TOE']
+
     pivot: Literal['LEFT', 'RIGHT', 'CENTER']
+
     interocular_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=3"]
     """Set the distance between the eyes - the stereo plane distance / 30 should be fine"""
     convergence_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=3"]

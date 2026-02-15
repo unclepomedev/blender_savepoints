@@ -4,20 +4,28 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FieldSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Object import Object
 from .Texture import Texture
+
 class FieldSettings(bpy_struct):
+
     type: Literal['NONE', 'BOID', 'CHARGE', 'GUIDE', 'DRAG', 'FLUID_FLOW', 'FORCE', 'HARMONIC', 'LENNARDJ', 'MAGNET', 'TEXTURE', 'TURBULENCE', 'VORTEX', 'WIND']
     """Type of field"""
     shape: Literal['POINT', 'LINE', 'PLANE', 'SURFACE', 'POINTS']
     """Which direction is used to calculate the effector force"""
     falloff_type: Literal['CONE', 'SPHERE', 'TUBE']
+
     texture_mode: Literal['CURL', 'GRADIENT', 'RGB']
     """How the texture effect is calculated (RGB and Curl need a RGB texture, else Gradient will be used instead)"""
     z_direction: Literal['POSITIVE', 'NEGATIVE', 'BOTH']

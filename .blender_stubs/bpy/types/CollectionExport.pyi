@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CollectionExport.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .PropertyGroup import PropertyGroup
+
 class CollectionExport(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
+
     is_open: bool
     """Whether the panel is expanded or closed"""
     @property

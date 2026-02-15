@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NodeTree.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -22,7 +27,10 @@ from .NodeLink import NodeLink
 from .NodeLinks import NodeLinks
 from .NodeTreeInterface import NodeTreeInterface
 from .Nodes import Nodes
+from .bpy_prop_collection import bpy_prop_collection
+
 class NodeTree(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -111,9 +119,11 @@ class NodeTree(ID):
         ...
     @property
     def nodes(self) -> Annotated['Nodes', "is_animatable=False"]:
+
         ...
     @property
     def links(self) -> Annotated['NodeLinks', "is_animatable=False"]:
+
         ...
     annotation: Annotated[Optional['Annotation'], "is_animatable=False"]
     """Annotation data"""
@@ -126,9 +136,11 @@ class NodeTree(ID):
         """Interface declaration for this node tree"""
         ...
     bl_idname: Annotated[str, "is_animatable=False"]
+
     bl_label: Annotated[str, "is_animatable=False"]
     """The node tree label"""
     bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+
     bl_icon: str
     """The node tree icon"""
     bl_use_group_interface: bool

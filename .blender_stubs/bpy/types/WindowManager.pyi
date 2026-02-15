@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.WindowManager.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .Action import Action
@@ -22,7 +27,10 @@ from .Operator import Operator
 from .Window import Window
 from .XrSessionSettings import XrSessionSettings
 from .XrSessionState import XrSessionState
+from .bpy_prop_collection import bpy_prop_collection
+
 class WindowManager(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -109,6 +117,7 @@ class WindowManager(ID):
         ...
     @property
     def xr_session_settings(self) -> Annotated['XrSessionSettings', "is_animatable=False"]:
+
         ...
     @property
     def xr_session_state(self) -> Annotated[Optional['XrSessionState'], "is_animatable=False"]:
@@ -135,11 +144,14 @@ class WindowManager(ID):
     addon_support: Annotated[set[str], "is_animatable=False"]
     """Display support level"""
     poselib_previous_action: Annotated[Optional['Action'], "is_animatable=False"]
+
     @property
     def addon_tags(self) -> Annotated[bpy_prop_collection['BlExtDummyGroup'], "is_animatable=False"]:
+
         ...
     @property
     def extension_tags(self) -> Annotated[bpy_prop_collection['BlExtDummyGroup'], "is_animatable=False"]:
+
         ...
     extension_search: Annotated[str, "is_animatable=False"]
     """Filter by extension name, author & category"""

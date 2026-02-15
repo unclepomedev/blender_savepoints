@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.StripTransform.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class StripTransform(bpy_struct):
+
     scale_x: Annotated[float, "subtype='UNSIGNED'", "step=3.0", "precision=3"]
     """Scale along X axis"""
     scale_y: Annotated[float, "subtype='UNSIGNED'", "step=3.0", "precision=3"]

@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Linesets.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .FreestyleLineSet import FreestyleLineSet
+
 class Linesets(bpy_struct):
+
     @property
     def active(self) -> Annotated[Optional['FreestyleLineSet'], "is_animatable=False"]:
         """Active line set being displayed"""

@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.View3DShading.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .StudioLight import StudioLight
+
 class View3DShading(bpy_struct):
+
     type: Literal['WIREFRAME', 'SOLID', 'MATERIAL', 'RENDERED']
     """Method to display/shade objects in the 3D View"""
     light: Literal['STUDIO', 'MATCAP', 'FLAT']
@@ -94,5 +101,6 @@ class View3DShading(bpy_struct):
     """When to preview the compositor output inside the viewport"""
     @property
     def cycles(self) -> Annotated[Optional['CyclesView3DShadingSettings'], "is_animatable=False"]:
+
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

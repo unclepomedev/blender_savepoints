@@ -4,23 +4,35 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.WorkSpaceTool.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class WorkSpaceTool(bpy_struct):
+
     idname: Annotated[str, "is_animatable=False"]
+
     idname_fallback: Annotated[str, "is_animatable=False"]
+
     @property
     def index(self) -> Annotated[int, "step=1"]:
+
         ...
     @property
     def space_type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
+
         ...
     @property
     def mode(self) -> Literal['DEFAULT']:
+
         ...
     @property
     def use_paint_canvas(self) -> bool:
@@ -28,9 +40,11 @@ class WorkSpaceTool(bpy_struct):
         ...
     @property
     def has_datablock(self) -> bool:
+
         ...
     @property
     def use_brushes(self) -> bool:
+
         ...
     @property
     def brush_type(self) -> Literal['DEFAULT']:
@@ -38,6 +52,7 @@ class WorkSpaceTool(bpy_struct):
         ...
     @property
     def widget(self) -> Annotated[str, "is_animatable=False"]:
+
         ...
     def setup(self, *args, **kwargs) -> Any: ...
     def operator_properties(self, *args, **kwargs) -> Any: ...

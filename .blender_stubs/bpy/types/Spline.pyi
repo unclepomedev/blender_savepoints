@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Spline.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .BezierSplinePoint import BezierSplinePoint
 from .SplineBezierPoints import SplineBezierPoints
 from .SplinePoint import SplinePoint
 from .SplinePoints import SplinePoints
+from .bpy_prop_collection import bpy_prop_collection
+
 class Spline(bpy_struct):
+
     @property
     def points(self) -> Annotated['SplinePoints', "is_animatable=False"]:
         """Collection of points that make up this poly or nurbs spline"""

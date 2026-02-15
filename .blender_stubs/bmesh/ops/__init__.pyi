@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bmesh.ops.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/bmesh.ops.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bmesh.ops.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 average_vert_facedata: Any
 beautify_fill: Any

@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MaskSplinePoint.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MaskParent import MaskParent
 from .MaskSplinePointUW import MaskSplinePointUW
+from .bpy_prop_collection import bpy_prop_collection
+
 class MaskSplinePoint(bpy_struct):
+
     handle_left: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
     """Coordinates of the first handle"""
     co: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
@@ -39,6 +47,7 @@ class MaskSplinePoint(bpy_struct):
     """Selection status of the Aligned Single handle"""
     @property
     def parent(self) -> Annotated[Optional['MaskParent'], "is_animatable=False"]:
+
         ...
     @property
     def feather_points(self) -> Annotated[bpy_prop_collection['MaskSplinePointUW'], "is_animatable=False"]:

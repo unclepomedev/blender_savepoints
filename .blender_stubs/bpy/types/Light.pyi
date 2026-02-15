@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Light.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -17,7 +22,9 @@ from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .NodeTree import NodeTree
+
 class Light(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -115,6 +122,7 @@ class Light(ID):
     cutoff_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]
     """Distance at which the light influence will be set to 0"""
     use_shadow: bool
+
     exposure: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]
     """Scales the power of the light exponentially, multiplying the intensity by 2^exposure"""
     normalize: Annotated[bool, "is_animatable=False"]

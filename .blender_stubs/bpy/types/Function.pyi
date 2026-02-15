@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Function.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Property import Property
+from .bpy_prop_collection import bpy_prop_collection
+
 class Function(bpy_struct):
+
     @property
     def identifier(self) -> Annotated[str, "is_animatable=False"]:
         """Unique name used in the code and scripting"""

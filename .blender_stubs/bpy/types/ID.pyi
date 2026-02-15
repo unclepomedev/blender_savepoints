@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ID.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AssetMetaData import AssetMetaData
@@ -15,7 +20,9 @@ from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
+
 class ID(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property

@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/mathutils.bvhtree.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,15 +5,20 @@ https://docs.blender.org/api/current/mathutils.bvhtree.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/mathutils.bvhtree.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class BVHTree:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/mathutils.bvhtree.html
-    """
+    https://docs.blender.org/api/current/mathutils.bvhtree.html"""
     def FromBMesh(*args, **kwargs) -> Any: ...
     def FromObject(*args, **kwargs) -> Any: ...
     def FromPolygons(*args, **kwargs) -> Any: ...

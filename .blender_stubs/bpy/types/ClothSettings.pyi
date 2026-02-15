@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ClothSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .EffectorWeights import EffectorWeights
 from .ShapeKey import ShapeKey
+
 class ClothSettings(bpy_struct):
+
     goal_min: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
     """Goal minimum, vertex group weights are scaled to match this range"""
     goal_max: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
@@ -24,7 +31,9 @@ class ClothSettings(bpy_struct):
     goal_friction: Annotated[float, "step=10.0", "precision=3"]
     """Goal (vertex target position) friction"""
     internal_friction: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+
     collider_friction: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+
     density_target: Annotated[float, "step=10.0", "precision=3"]
     """Maximum density of hair"""
     density_strength: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
@@ -87,6 +96,7 @@ class ClothSettings(bpy_struct):
     """Vertex group for fine control over bending stiffness"""
     @property
     def effector_weights(self) -> Annotated[Optional['EffectorWeights'], "is_animatable=False"]:
+
         ...
     rest_shape_key: Annotated[Optional['ShapeKey'], "is_animatable=False"]
     """Shape key to use the rest spring lengths from"""

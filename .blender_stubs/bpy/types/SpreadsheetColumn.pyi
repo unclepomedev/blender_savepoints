@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpreadsheetColumn.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .SpreadsheetColumnID import SpreadsheetColumnID
+
 class SpreadsheetColumn(bpy_struct):
+
     @property
     def data_type(self) -> Literal['INT32', 'FLOAT', 'BOOLEAN', 'INSTANCES']:
         """The data type of the corresponding column visible in the spreadsheet"""

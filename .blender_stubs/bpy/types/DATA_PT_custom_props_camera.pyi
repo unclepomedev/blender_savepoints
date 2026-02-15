@@ -4,17 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.DATA_PT_custom_props_camera.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .CameraButtonsPanel import CameraButtonsPanel
 from .PropertyPanel import PropertyPanel
 from .Panel import Panel
 from .Constraint import Constraint
 from .UILayout import UILayout
+
 class DATA_PT_custom_props_camera(CameraButtonsPanel, PropertyPanel, Panel):
+
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the panel in the UI"""
@@ -55,6 +62,7 @@ class DATA_PT_custom_props_camera(CameraButtonsPanel, PropertyPanel, Panel):
     """Show the panel on all tabs"""
     @property
     def is_popover(self) -> bool:
+
         ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

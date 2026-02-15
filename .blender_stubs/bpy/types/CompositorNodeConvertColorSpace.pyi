@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CompositorNodeConvertColorSpace.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .CompositorNode import CompositorNode
 from .Node import Node
@@ -15,7 +20,10 @@ from .NodeInputs import NodeInputs
 from .NodeLink import NodeLink
 from .NodeOutputs import NodeOutputs
 from .NodeSocket import NodeSocket
+from .bpy_prop_collection import bpy_prop_collection
+
 class CompositorNodeConvertColorSpace(CompositorNode):
+
     @property
     def type(self) -> Annotated[str, "is_animatable=False"]:
         """Legacy unique node type identifier, redundant with bl_idname property"""
@@ -38,9 +46,11 @@ class CompositorNodeConvertColorSpace(CompositorNode):
     """Optional custom node label"""
     @property
     def inputs(self) -> Annotated['NodeInputs', "is_animatable=False"]:
+
         ...
     @property
     def outputs(self) -> Annotated['NodeOutputs', "is_animatable=False"]:
+
         ...
     @property
     def internal_links(self) -> Annotated[bpy_prop_collection['NodeLink'], "is_animatable=False"]:
@@ -61,15 +71,21 @@ class CompositorNodeConvertColorSpace(CompositorNode):
     select: bool
     """Node selection state"""
     show_options: bool
+
     show_preview: bool
+
     hide: bool
+
     mute: Annotated[bool, "is_animatable=False"]
+
     show_texture: bool
     """Display node in viewport textured shading mode"""
     bl_idname: Annotated[str, "is_animatable=False"]
+
     bl_label: Annotated[str, "is_animatable=False"]
     """The node label"""
     bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+
     bl_icon: str
     """The node icon"""
     @property
@@ -77,11 +93,17 @@ class CompositorNodeConvertColorSpace(CompositorNode):
         """Legacy unique node type identifier, redundant with bl_idname property"""
         ...
     bl_width_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_width_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_width_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     bl_height_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+
     from_color_space: Literal['ACES 1.3 sRGB', 'ACES 2.0 sRGB', 'ACES2065-1', 'ACEScc', 'ACEScct', 'ACEScg', 'AgX Base sRGB', 'AgX Log', 'Display P3', 'Filmic Log', 'Filmic sRGB', 'Khronos PBR Neutral sRGB', 'Linear CIE-XYZ D65', 'Linear CIE-XYZ E', 'Linear DCI-P3 D65', 'Linear FilmLight E-Gamut', 'Linear Rec.2020', 'Linear Rec.709', 'Non-Color', 'Rec.1886', 'Rec.2020', 'Rec.2100-HLG', 'Rec.2100-PQ', 'sRGB', 'scene_linear']
     """Color space of the input image"""
     to_color_space: Literal['ACES 1.3 sRGB', 'ACES 2.0 sRGB', 'ACES2065-1', 'ACEScc', 'ACEScct', 'ACEScg', 'AgX Base sRGB', 'AgX Log', 'Display P3', 'Filmic Log', 'Filmic sRGB', 'Khronos PBR Neutral sRGB', 'Linear CIE-XYZ D65', 'Linear CIE-XYZ E', 'Linear DCI-P3 D65', 'Linear FilmLight E-Gamut', 'Linear Rec.2020', 'Linear Rec.709', 'Non-Color', 'Rec.1886', 'Rec.2020', 'Rec.2100-HLG', 'Rec.2100-PQ', 'sRGB', 'scene_linear']

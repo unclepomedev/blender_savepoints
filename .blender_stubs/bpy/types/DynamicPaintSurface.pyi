@@ -4,17 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.DynamicPaintSurface.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Collection import Collection
 from .EffectorWeights import EffectorWeights
 from .PointCache import PointCache
 from .Texture import Texture
+
 class DynamicPaintSurface(bpy_struct):
+
     surface_format: Annotated[Literal['VERTEX', 'IMAGE'], "is_animatable=False"]
     """Surface Format"""
     surface_type: Annotated[Literal['PAINT'], "is_animatable=False"]
@@ -50,11 +57,15 @@ class DynamicPaintSurface(bpy_struct):
     brush_radius_scale: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=2"]
     """Adjust radius of proximity brushes or particles for this surface"""
     init_color_type: Annotated[Literal['NONE', 'COLOR', 'TEXTURE', 'VERTEX_COLOR'], "is_animatable=False"]
+
     init_color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]
     """Initial color of the surface"""
     init_texture: Annotated[Optional['Texture'], "is_animatable=False"]
+
     init_layername: Annotated[str, "is_animatable=False"]
+
     effect_ui: Annotated[Literal['SPREAD', 'DRIP', 'SHRINK'], "is_animatable=False"]
+
     use_dry_log: bool
     """Use logarithmic drying (makes high values to dry faster than low values)"""
     use_dissolve_log: bool
@@ -75,6 +86,7 @@ class DynamicPaintSurface(bpy_struct):
     """How fast shrink effect moves on the canvas surface"""
     @property
     def effector_weights(self) -> Annotated[Optional['EffectorWeights'], "is_animatable=False"]:
+
         ...
     drip_velocity: Annotated[float, "step=0.10000000149011612", "precision=3"]
     """How much surface velocity affects dripping"""
@@ -97,7 +109,9 @@ class DynamicPaintSurface(bpy_struct):
     displace_factor: Annotated[float, "step=1.0", "precision=2", "is_animatable=False"]
     """Strength of displace when applied to the mesh"""
     image_fileformat: Annotated[Literal['PNG', 'OPENEXR'], "is_animatable=False"]
+
     displace_type: Annotated[Literal['DISPLACE', 'DEPTH'], "is_animatable=False"]
+
     use_incremental_displace: Annotated[bool, "is_animatable=False"]
     """New displace is added cumulatively on top of existing"""
     wave_damping: Annotated[float, "step=1.0", "precision=2"]
@@ -114,8 +128,10 @@ class DynamicPaintSurface(bpy_struct):
     """Pass waves through mesh edges"""
     @property
     def point_cache(self) -> Annotated['PointCache', "is_animatable=False"]:
+
         ...
     @property
     def is_cache_user(self) -> Annotated[bool, "is_animatable=False"]:
+
         ...
     def output_exists(self, *args, **kwargs) -> Any: ...

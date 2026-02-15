@@ -4,36 +4,54 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.HydraRenderEngine.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .RenderEngine import RenderEngine
 from .Object import Object
 from .RenderSettings import RenderSettings
+
 class HydraRenderEngine(RenderEngine):
+
     is_animation: bool
+
     is_preview: bool
+
     @property
     def camera_override(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+
         ...
     layer_override: Annotated[list[bool], "subtype='LAYER_MEMBER'"]
+
     @property
     def resolution_x(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+
         ...
     @property
     def resolution_y(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+
         ...
     @property
     def temporary_directory(self) -> Annotated[str, "is_animatable=False"]:
+
         ...
     @property
     def render(self) -> Annotated[Optional['RenderSettings'], "is_animatable=False"]:
+
         ...
     use_highlight_tiles: bool
+
     bl_idname: Annotated[str, "is_animatable=False"]
+
     bl_label: Annotated[str, "is_animatable=False"]
+
     bl_use_preview: bool
     """Render engine supports being used for rendering previews of materials, lights and worlds"""
     bl_use_postprocess: bool

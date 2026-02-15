@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.AnimData.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Action import Action
@@ -16,7 +21,10 @@ from .AnimDataDrivers import AnimDataDrivers
 from .FCurve import FCurve
 from .NlaTrack import NlaTrack
 from .NlaTracks import NlaTracks
+from .bpy_prop_collection import bpy_prop_collection
+
 class AnimData(bpy_struct):
+
     @property
     def nla_tracks(self) -> Annotated['NlaTracks', "is_animatable=False"]:
         """NLA Tracks (i.e. Animation Layers)"""
@@ -42,6 +50,7 @@ class AnimData(bpy_struct):
     use_tweak_mode: bool
     """Whether to enable or disable tweak mode in NLA"""
     use_pin: bool
+
     action_slot_handle: Annotated[int, "step=1"]
     """A number that identifies which sub-set of the Action is considered to be for this data-block"""
     last_slot_identifier: Annotated[str, "is_animatable=False"]

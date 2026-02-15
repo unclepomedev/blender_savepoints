@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Library.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AssetMetaData import AssetMetaData
@@ -15,7 +20,10 @@ from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .LibraryWeakReference import LibraryWeakReference
 from .PackedFile import PackedFile
+from .bpy_prop_collection import bpy_prop_collection
+
 class Library(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -92,9 +100,11 @@ class Library(ID):
     """Path to the library .blend file"""
     @property
     def parent(self) -> Annotated[Optional['Library'], "is_animatable=False"]:
+
         ...
     @property
     def packed_file(self) -> Annotated[Optional['PackedFile'], "is_animatable=False"]:
+
         ...
     @property
     def version(self) -> Annotated[list[int], "subtype='XYZ'", "step=1"]:

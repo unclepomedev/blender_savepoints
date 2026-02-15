@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceImageEditor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .Annotation import Annotation
@@ -18,7 +23,9 @@ from .Mask import Mask
 from .Scopes import Scopes
 from .SpaceImageOverlay import SpaceImageOverlay
 from .SpaceUVEditor import SpaceUVEditor
+
 class SpaceImageEditor(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -26,10 +33,15 @@ class SpaceImageEditor(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_tool_header: bool
+
     show_region_toolbar: bool
+
     show_region_ui: bool
+
     show_region_hud: bool
+
     show_region_asset_shelf: bool
     """Display a region with assets that may currently be relevant (such as brushes in paint modes, or poses in Pose Mode)"""
     image: Annotated[Optional['Image'], "is_animatable=False"]
@@ -109,7 +121,9 @@ class SpaceImageEditor(Space):
     mask_display_type: Literal['OUTLINE', 'DASH', 'BLACK', 'WHITE']
     """Display type for mask splines"""
     show_mask_spline: bool
+
     show_mask_overlay: bool
+
     mask_overlay_mode: Literal['ALPHACHANNEL', 'COMBINED']
     """Overlay mode of rasterized mask"""
     blend_factor: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=1"]

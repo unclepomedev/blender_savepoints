@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SEQUENCER_FH_image_strip.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .FileHandler import FileHandler
 from .SequencerFileHandlerBase import SequencerFileHandlerBase
+
 class SEQUENCER_FH_image_strip(FileHandler, SequencerFileHandlerBase):
+
     bl_idname: Annotated[str, "is_animatable=False"]
     """If this is set, the file handler gets a custom ID, otherwise it takes the name of the class used to define the file handler (for example, if the class name is "OBJECT_FH_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_FH_hello")"""
     bl_import_operator: Annotated[str, "is_animatable=False"]

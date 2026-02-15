@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CacheFile.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -20,7 +25,10 @@ from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
+from .bpy_prop_collection import bpy_prop_collection
+
 class CacheFile(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -104,7 +112,9 @@ class CacheFile(ID):
     frame_offset: Annotated[float, "step=10.0", "precision=3"]
     """Subtracted from the current frame to use for looking up the data in the cache file, or to determine which file to use in a file sequence"""
     forward_axis: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']
+
     up_axis: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']
+
     scale: Annotated[float, "step=10.0", "precision=3"]
     """Value by which to enlarge or shrink the object with respect to the world's origin (only applicable through a Transform Cache constraint)"""
     @property
@@ -120,6 +130,7 @@ class CacheFile(ID):
         """Layers of the cache"""
         ...
     active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
         """Animation data for this data-block"""

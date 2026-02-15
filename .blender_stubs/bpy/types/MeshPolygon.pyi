@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MeshPolygon.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class MeshPolygon(bpy_struct):
+
     vertices: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
     """Vertex indices"""
     loop_start: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
@@ -22,8 +29,11 @@ class MeshPolygon(bpy_struct):
     material_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
     """Material slot index of this face"""
     select: Annotated[bool, "is_animatable=False"]
+
     hide: Annotated[bool, "is_animatable=False"]
+
     use_smooth: bool
+
     @property
     def normal(self) -> Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]:
         """Local space unit length normal vector for this face"""

@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NodesModifier.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Modifier import Modifier
 from .NodeTree import NodeTree
@@ -16,11 +21,15 @@ from .NodesModifierBakes import NodesModifierBakes
 from .NodesModifierPanel import NodesModifierPanel
 from .NodesModifierPanels import NodesModifierPanels
 from .NodesModifierWarning import NodesModifierWarning
+from .bpy_prop_collection import bpy_prop_collection
+
 class NodesModifier(Modifier):
+
     name: Annotated[str, "is_animatable=False"]
     """Modifier name"""
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
+
         ...
     show_viewport: bool
     """Display modifier in viewport"""
@@ -58,19 +67,30 @@ class NodesModifier(Modifier):
     """Where to store the baked data"""
     @property
     def bakes(self) -> Annotated['NodesModifierBakes', "is_animatable=False"]:
+
         ...
     @property
     def panels(self) -> Annotated['NodesModifierPanels', "is_animatable=False"]:
+
         ...
     show_group_selector: bool
+
     show_manage_panel: bool
+
     @property
     def node_warnings(self) -> Annotated[bpy_prop_collection['NodesModifierWarning'], "is_animatable=False"]:
+
         ...
     open_output_attributes_panel: bool
+
     open_manage_panel: bool
+
     open_bake_panel: bool
+
     open_named_attributes_panel: bool
+
     open_bake_data_blocks_panel: bool
+
     open_warnings_panel: bool
+
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

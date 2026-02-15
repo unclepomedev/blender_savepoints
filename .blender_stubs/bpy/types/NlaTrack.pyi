@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NlaTrack.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .NlaStrip import NlaStrip
 from .NlaStrips import NlaStrips
+from .bpy_prop_collection import bpy_prop_collection
+
 class NlaTrack(bpy_struct):
+
     @property
     def strips(self) -> Annotated['NlaStrips', "is_animatable=False"]:
         """NLA Strips on this NLA-track"""
@@ -22,6 +30,7 @@ class NlaTrack(bpy_struct):
         """In a local override data, whether this NLA track comes from the linked reference data, or is local to the override"""
         ...
     name: Annotated[str, "is_animatable=False"]
+
     @property
     def active(self) -> bool:
         """NLA Track is active"""

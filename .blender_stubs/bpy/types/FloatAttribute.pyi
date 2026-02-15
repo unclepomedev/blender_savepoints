@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FloatAttribute.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Attribute import Attribute
 from .FloatAttributeValue import FloatAttributeValue
+from .bpy_prop_collection import bpy_prop_collection
+
 class FloatAttribute(Attribute):
+
     name: Annotated[str, "is_animatable=False"]
     """Name of the Attribute"""
     @property
@@ -36,4 +44,5 @@ class FloatAttribute(Attribute):
         ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['FloatAttributeValue'], "is_animatable=False"]:
+
         ...

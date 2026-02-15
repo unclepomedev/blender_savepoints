@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Driver.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ChannelDriverVariables import ChannelDriverVariables
 from .DriverVariable import DriverVariable
+from .bpy_prop_collection import bpy_prop_collection
+
 class Driver(bpy_struct):
+
     type: Literal['AVERAGE', 'SUM', 'SCRIPTED', 'MIN', 'MAX']
     """Driver type"""
     expression: Annotated[str, "is_animatable=False"]

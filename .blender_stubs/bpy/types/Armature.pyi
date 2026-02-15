@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Armature.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -22,7 +27,10 @@ from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
+from .bpy_prop_collection import bpy_prop_collection
+
 class Armature(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -101,11 +109,14 @@ class Armature(ID):
         ...
     @property
     def bones(self) -> Annotated['ArmatureBones', "is_animatable=False"]:
+
         ...
     @property
     def edit_bones(self) -> Annotated['ArmatureEditBones', "is_animatable=False"]:
+
         ...
     collections: Annotated['BoneCollections', "is_animatable=False"]
+
     @property
     def collections_all(self) -> Annotated[bpy_prop_collection['BoneCollection'], "is_animatable=False"]:
         """List of all bone collections of the armature"""
@@ -113,6 +124,7 @@ class Armature(ID):
     pose_position: Literal['POSE', 'REST']
     """Show armature in binding pose or final posed state"""
     display_type: Literal['OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']
+
     show_axes: bool
     """Display bone axes"""
     axes_position: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=1"]

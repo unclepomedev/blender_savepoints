@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FCurve.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ActionGroup import ActionGroup
@@ -17,7 +22,10 @@ from .FCurveModifiers import FCurveModifiers
 from .FCurveSample import FCurveSample
 from .FModifier import FModifier
 from .Keyframe import Keyframe
+from .bpy_prop_collection import bpy_prop_collection
+
 class FCurve(bpy_struct):
+
     extrapolation: Literal['CONSTANT', 'LINEAR']
     """Method used for evaluating value of F-Curve outside first and last keyframes"""
     @property

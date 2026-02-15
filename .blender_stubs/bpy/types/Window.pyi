@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Window.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Operator import Operator
@@ -16,7 +21,10 @@ from .Screen import Screen
 from .Stereo3dDisplay import Stereo3dDisplay
 from .ViewLayer import ViewLayer
 from .WorkSpace import WorkSpace
+from .bpy_prop_collection import bpy_prop_collection
+
 class Window(bpy_struct):
+
     @property
     def parent(self) -> Annotated[Optional['Window'], "is_animatable=False"]:
         """Active workspace and scene follow this window"""

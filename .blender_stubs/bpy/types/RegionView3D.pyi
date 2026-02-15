@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.RegionView3D.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class RegionView3D(bpy_struct):
+
     lock_rotation: bool
     """Lock view rotation of side views to Top/Front/Right"""
     show_sync_view: bool
@@ -30,10 +37,13 @@ class RegionView3D(bpy_struct):
     view_perspective: Literal['PERSP', 'ORTHO', 'CAMERA']
     """View Perspective"""
     is_perspective: bool
+
     is_orthographic_side_view: bool
     """Whether the current view is aligned to an axis (does not check whether the view is orthographic, use "is_perspective" for that). Setting this will rotate the view to the closest axis"""
     use_clip_planes: bool
+
     clip_planes: Annotated[list[float], "step=10.0", "precision=3"]
+
     view_location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=5"]
     """View pivot location"""
     view_rotation: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]

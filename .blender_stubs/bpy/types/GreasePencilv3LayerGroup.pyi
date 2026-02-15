@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.GreasePencilv3LayerGroup.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .GreasePencilLayerGroup import GreasePencilLayerGroup
+
 class GreasePencilv3LayerGroup(bpy_struct):
+
     active: Annotated[Optional['GreasePencilLayerGroup'], "is_animatable=False"]
     """Active Grease Pencil layer group"""
     def new(self, *args, **kwargs) -> Any: ...

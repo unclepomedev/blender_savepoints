@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ParticleSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -27,7 +32,10 @@ from .ParticleSettingsTextureSlot import ParticleSettingsTextureSlot
 from .ParticleSettingsTextureSlots import ParticleSettingsTextureSlots
 from .SPHFluidSettings import SPHFluidSettings
 from .Texture import Texture
+from .bpy_prop_collection import bpy_prop_collection
+
 class ParticleSettings(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -151,6 +159,7 @@ class ParticleSettings(ID):
     create_long_hair_children: bool
     """Calculate children that suit long hair well"""
     apply_guide_to_children: bool
+
     use_self_effect: bool
     """Particle effectors affect themselves"""
     type: Annotated[Literal['EMITTER', 'HAIR'], "is_animatable=False"]
@@ -220,6 +229,7 @@ class ParticleSettings(ID):
     bending_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
     """Random stiffness of hairs"""
     keys_step: Annotated[int, "step=1"]
+
     adaptive_angle: Annotated[int, "step=1"]
     """How many degrees path has to curve to make another render segment"""
     adaptive_pixel: Annotated[int, "step=1"]
@@ -410,18 +420,23 @@ class ParticleSettings(ID):
         ...
     @property
     def active_instanceweight(self) -> Annotated[Optional['ParticleDupliWeight'], "is_animatable=False"]:
+
         ...
     active_instanceweight_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+
     instance_object: Annotated[Optional['Object'], "is_animatable=False"]
     """Show this object in place of particles"""
     @property
     def boids(self) -> Annotated[Optional['BoidSettings'], "is_animatable=False"]:
+
         ...
     @property
     def fluid(self) -> Annotated[Optional['SPHFluidSettings'], "is_animatable=False"]:
+
         ...
     @property
     def effector_weights(self) -> Annotated[Optional['EffectorWeights'], "is_animatable=False"]:
+
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
@@ -429,9 +444,11 @@ class ParticleSettings(ID):
         ...
     @property
     def force_field_1(self) -> Annotated[Optional['FieldSettings'], "is_animatable=False"]:
+
         ...
     @property
     def force_field_2(self) -> Annotated[Optional['FieldSettings'], "is_animatable=False"]:
+
         ...
     twist: Annotated[float, "step=0.10000000149011612", "precision=3"]
     """Number of turns around parent along the strand"""

@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PreferencesFilePaths.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AssetLibraryCollection import AssetLibraryCollection
 from .ScriptDirectory import ScriptDirectory
 from .ScriptDirectoryCollection import ScriptDirectoryCollection
 from .UserAssetLibrary import UserAssetLibrary
+from .bpy_prop_collection import bpy_prop_collection
+
 class PreferencesFilePaths(bpy_struct):
+
     show_hidden_files_datablocks: bool
     """Show files and data-blocks that are normally hidden"""
     use_filter_files: bool
@@ -43,6 +51,7 @@ class PreferencesFilePaths(bpy_struct):
     """The default directory for rendering output, for new scenes"""
     @property
     def script_directories(self) -> Annotated['ScriptDirectoryCollection', "is_animatable=False"]:
+
         ...
     i18n_branches_directory: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]
     """The path to the '/branches' directory of your local svn-translation copy, to allow translating from the UI"""
@@ -82,6 +91,7 @@ Warning: Sculpt and edit mode data won't be saved"""
     """What type of blend preview to create"""
     @property
     def asset_libraries(self) -> Annotated['AssetLibraryCollection', "is_animatable=False"]:
+
         ...
     active_asset_library: Annotated[int, "step=1"]
     """Index of the asset library being edited in the Preferences UI"""

@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieTrackingTrack.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Annotation import Annotation
 from .MovieTrackingMarker import MovieTrackingMarker
 from .MovieTrackingMarkers import MovieTrackingMarkers
+from .bpy_prop_collection import bpy_prop_collection
+
 class MovieTrackingTrack(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique name of track"""
     frames_limit: Annotated[int, "step=1", "is_animatable=False"]

@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.IDOverrideLibrary.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ID import ID
 from .IDOverrideLibraryProperties import IDOverrideLibraryProperties
 from .IDOverrideLibraryProperty import IDOverrideLibraryProperty
+from .bpy_prop_collection import bpy_prop_collection
+
 class IDOverrideLibrary(bpy_struct):
+
     @property
     def reference(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
         """Linked ID used as reference by this override"""

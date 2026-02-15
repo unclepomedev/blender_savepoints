@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BrushGpencilSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMapping import CurveMapping
 from .Material import Material
+
 class BrushGpencilSettings(bpy_struct):
+
     pen_strength: Annotated[float, "subtype='FACTOR'", "step=0.0010000000474974513", "precision=3", "is_animatable=False"]
     """Color strength for new strokes (affect alpha factor of color)"""
     pen_jitter: Annotated[float, "subtype='FACTOR'", "step=0.0010000000474974513", "precision=3", "is_animatable=False"]
@@ -82,6 +89,7 @@ class BrushGpencilSettings(bpy_struct):
     hardness: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]
     """Gradient from the center of Dot and Box strokes (set to 1 for a solid stroke)"""
     aspect: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]
+
     input_samples: Annotated[int, "step=1", "is_animatable=False"]
     """Generated intermediate points for very fast mouse movements (Set to 0 to disable)"""
     active_smooth_factor: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]

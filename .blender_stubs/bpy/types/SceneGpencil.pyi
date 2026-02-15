@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SceneGpencil.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class SceneGpencil(bpy_struct):
+
     antialias_threshold: Annotated[float, "step=1.0", "precision=3", "is_animatable=False"]
     """Threshold for edge detection algorithm (higher values might over-blur some part of the image)"""
     antialias_threshold_render: Annotated[float, "step=1.0", "precision=3", "is_animatable=False"]

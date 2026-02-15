@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ActionPoseMarkers.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .TimelineMarker import TimelineMarker
+
 class ActionPoseMarkers(bpy_struct):
+
     active: Annotated[Optional['TimelineMarker'], "is_animatable=False"]
     """Active pose marker for this action"""
     active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]

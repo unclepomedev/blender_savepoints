@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.StripColorBalanceData.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class StripColorBalanceData(bpy_struct):
+
     correction_method: Literal['LIFT_GAMMA_GAIN', 'OFFSET_POWER_SLOPE']
+
     lift: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]
     """Color balance lift (shadows)"""
     gamma: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]

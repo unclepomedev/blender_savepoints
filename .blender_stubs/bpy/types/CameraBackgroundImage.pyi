@@ -4,17 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CameraBackgroundImage.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Image import Image
 from .ImageUser import ImageUser
 from .MovieClip import MovieClip
 from .MovieClipUser import MovieClipUser
+
 class CameraBackgroundImage(bpy_struct):
+
     @property
     def is_override_data(self) -> bool:
         """In a local override camera, whether this background image comes from the linked reference camera, or is local to the override"""
@@ -34,6 +41,7 @@ class CameraBackgroundImage(bpy_struct):
         """Parameters defining which frame of the movie clip is displayed"""
         ...
     offset: Annotated[list[float], "subtype='XYZ'", "step=0.10000000149011612", "precision=5"]
+
     scale: Annotated[float, "step=0.10000000149011612", "precision=5"]
     """Scale the background image"""
     rotation: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]

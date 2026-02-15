@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PreferencesInput.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .WalkNavigation import WalkNavigation
 from .XrNavigation import XrNavigation
+
 class PreferencesInput(bpy_struct):
+
     view_zoom_method: Literal['CONTINUE', 'DOLLY', 'SCALE']
     """Which style to use for viewport scaling"""
     view_zoom_axis: Literal['VERTICAL', 'HORIZONTAL']
@@ -88,11 +95,17 @@ class PreferencesInput(bpy_struct):
     ndof_orbit_center_selected: bool
     """Selected Item forces the orbit center to only take the currently selected objects into account."""
     ndof_rotx_invert_axis: bool
+
     ndof_roty_invert_axis: bool
+
     ndof_rotz_invert_axis: bool
+
     ndof_panx_invert_axis: bool
+
     ndof_pany_invert_axis: bool
+
     ndof_panz_invert_axis: bool
+
     ndof_fly_helicopter: bool
     """Device up/down directly controls the Z position of the 3D viewport"""
     ndof_lock_camera_pan_zoom: bool

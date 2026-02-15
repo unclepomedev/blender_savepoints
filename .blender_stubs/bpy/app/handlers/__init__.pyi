@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bpy.app.handlers.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/bpy.app.handlers.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.app.handlers.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 animation_playback_post: Any
 animation_playback_pre: Any
@@ -24,10 +25,10 @@ composite_cancel: Any
 composite_post: Any
 composite_pre: Any
 def count(value, /) -> Any:
-    """
+    """Return number of occurrences of value.
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy.app.handlers.html
-    """
+    https://docs.blender.org/api/current/bpy.app.handlers.html"""
     ...
 
 depsgraph_update_post: Any
@@ -35,10 +36,12 @@ depsgraph_update_pre: Any
 frame_change_post: Any
 frame_change_pre: Any
 def index(value, start=0, stop=9223372036854775807, /) -> Any:
-    """
+    """Return first index of value.
+
+Raises ValueError if the value is not present.
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy.app.handlers.html
-    """
+    https://docs.blender.org/api/current/bpy.app.handlers.html"""
     ...
 
 load_factory_preferences_post: Any
@@ -55,8 +58,7 @@ object_bake_pre: Any
 class persistent:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy.app.handlers.html
-    """
+    https://docs.blender.org/api/current/bpy.app.handlers.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 redo_post: Any

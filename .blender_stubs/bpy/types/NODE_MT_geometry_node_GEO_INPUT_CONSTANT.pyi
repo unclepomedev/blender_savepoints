@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NODE_MT_geometry_node_GEO_INPUT_CONSTANT.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .AddNodeMenu import AddNodeMenu
 from .NODE_MT_gn_input_constant_base import NODE_MT_gn_input_constant_base
 from .UILayout import UILayout
+
 class NODE_MT_geometry_node_GEO_INPUT_CONSTANT(AddNodeMenu, NODE_MT_gn_input_constant_base):
+
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the menu in the UI"""
@@ -22,8 +29,11 @@ class NODE_MT_geometry_node_GEO_INPUT_CONSTANT(AddNodeMenu, NODE_MT_gn_input_con
     bl_label: Annotated[str, "is_animatable=False"]
     """The menu label"""
     bl_translation_context: Annotated[str, "is_animatable=False"]
+
     bl_description: Annotated[str, "is_animatable=False"]
+
     bl_owner_id: Annotated[str, "is_animatable=False"]
+
     bl_options: set[str]
     """Options for this menu type"""
     def poll(self, *args, **kwargs) -> Any: ...

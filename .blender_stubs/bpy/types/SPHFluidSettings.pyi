@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SPHFluidSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class SPHFluidSettings(bpy_struct):
+
     solver: Annotated[Literal['DDR', 'CLASSICAL'], "is_animatable=False"]
     """The code used to calculate internal forces on particles"""
     spring_force: Annotated[float, "step=1.0", "precision=3"]

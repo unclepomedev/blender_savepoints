@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bpy_extras.asset_utils.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,15 +5,20 @@ https://docs.blender.org/api/current/bpy_extras.asset_utils.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy_extras.asset_utils.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class AssetBrowserPanel:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.asset_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.asset_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def asset_browser_panel_poll(context) -> Any: ...
     def poll(context) -> Any: ...
@@ -26,16 +26,14 @@ class AssetBrowserPanel:
 class AssetMetaDataPanel:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.asset_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.asset_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def poll(context) -> Any: ...
 
 class Context:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.asset_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.asset_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     def bl_rna_get_subclass(*args, **kwargs) -> Any: ...
@@ -93,8 +91,7 @@ class Context:
 class SpaceAssetInfo:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.asset_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.asset_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def is_asset_browser(space_data: bpy.types.Space) -> Any: ...
     def is_asset_browser_poll(context: _bpy_types.Context) -> Any: ...

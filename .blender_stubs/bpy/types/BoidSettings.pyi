@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BoidSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .BoidRule import BoidRule
 from .BoidState import BoidState
+from .bpy_prop_collection import bpy_prop_collection
+
 class BoidSettings(bpy_struct):
+
     land_smooth: Annotated[float, "step=10.0", "precision=3"]
     """How smoothly the boids land"""
     bank: Annotated[float, "step=10.0", "precision=3"]
@@ -23,11 +31,14 @@ class BoidSettings(bpy_struct):
     """Boid height relative to particle size"""
     @property
     def states(self) -> Annotated[bpy_prop_collection['BoidState'], "is_animatable=False"]:
+
         ...
     @property
     def active_boid_state(self) -> Annotated[Optional['BoidRule'], "is_animatable=False"]:
+
         ...
     active_boid_state_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+
     health: Annotated[float, "step=10.0", "precision=3"]
     """Initial boid health when born"""
     strength: Annotated[float, "step=10.0", "precision=3"]

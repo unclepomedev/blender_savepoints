@@ -4,12 +4,19 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ThemeStripColor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class ThemeStripColor(bpy_struct):
+
     color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Strip Color"""

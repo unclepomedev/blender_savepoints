@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieClip.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -20,7 +25,9 @@ from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .MovieClipProxy import MovieClipProxy
 from .MovieTracking import MovieTracking
+
 class MovieClip(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -97,9 +104,11 @@ class MovieClip(ID):
     """Filename of the movie or sequence file"""
     @property
     def tracking(self) -> Annotated[Optional['MovieTracking'], "is_animatable=False"]:
+
         ...
     @property
     def proxy(self) -> Annotated[Optional['MovieClipProxy'], "is_animatable=False"]:
+
         ...
     use_proxy: Annotated[bool, "is_animatable=False"]
     """Use a preview proxy and/or timecode index for this clip"""

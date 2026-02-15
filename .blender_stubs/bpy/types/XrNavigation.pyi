@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.XrNavigation.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class XrNavigation(bpy_struct):
+
     vignette_intensity: Annotated[float, "subtype='PERCENTAGE'", "step=1000.0", "precision=0"]
     """Intensity of vignette that appears when moving"""
     turn_speed: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1000.0", "precision=0"]

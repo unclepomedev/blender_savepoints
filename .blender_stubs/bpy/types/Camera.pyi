@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Camera.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -21,7 +26,10 @@ from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .Text import Text
+from .bpy_prop_collection import bpy_prop_collection
+
 class Camera(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -126,6 +134,7 @@ class Camera(ID):
     """Camera vertical shift"""
     @property
     def stereo(self) -> Annotated['CameraStereoData', "is_animatable=False"]:
+
         ...
     show_limits: bool
     """Display the clipping range and focus point on the camera"""
@@ -202,12 +211,14 @@ class Camera(ID):
     custom_shader: Annotated[Optional['Text'], "is_animatable=False"]
     """Shader defining the custom camera"""
     custom_mode: Literal['INTERNAL', 'EXTERNAL']
+
     custom_bytecode: Annotated[str, "is_animatable=False"]
     """Compiled bytecode of the custom shader"""
     custom_bytecode_hash: Annotated[str, "is_animatable=False"]
     """Hash of the compiled bytecode of the custom shader, for quick equality checking"""
     @property
     def dof(self) -> Annotated[Optional['CameraDOFSettings'], "is_animatable=False"]:
+
         ...
     @property
     def background_images(self) -> Annotated['CameraBackgroundImages', "is_animatable=False"]:

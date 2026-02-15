@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CurvePaintSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class CurvePaintSettings(bpy_struct):
+
     curve_type: Annotated[Literal['POLY', 'BEZIER'], "is_animatable=False"]
     """Type of curve to use for new strokes"""
     use_corners_detect: Annotated[bool, "is_animatable=False"]

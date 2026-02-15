@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MaterialGPencilStyle.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Image import Image
+
 class MaterialGPencilStyle(bpy_struct):
+
     color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
+
     fill_color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
     """Color for filling region bounded by each stroke"""
     mix_color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
@@ -60,11 +68,13 @@ class MaterialGPencilStyle(bpy_struct):
     stroke_style: Literal['SOLID', 'TEXTURE']
     """Select style used to draw strokes"""
     stroke_image: Annotated[Optional['Image'], "is_animatable=False"]
+
     fill_style: Literal['SOLID', 'GRADIENT', 'TEXTURE']
     """Select style used to fill strokes"""
     gradient_type: Literal['LINEAR', 'RADIAL']
     """Select type of gradient used to fill strokes"""
     fill_image: Annotated[Optional['Image'], "is_animatable=False"]
+
     @property
     def is_stroke_visible(self) -> bool:
         """True when opacity of stroke is set high enough to be visible"""

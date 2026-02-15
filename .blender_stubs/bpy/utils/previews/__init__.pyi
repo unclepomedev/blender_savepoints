@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bpy.utils.previews.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/bpy.utils.previews.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.utils.previews.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class ImagePreviewCollection:
     """
@@ -26,11 +27,10 @@ class ImagePreviewCollection:
         - instance with :mod:`bpy.utils.previews.new`
         - keys must be ``str`` type.
         - values will be :class:`bpy.types.ImagePreview`
-    """
-    """
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy.utils.previews.html
-    """
+    https://docs.blender.org/api/current/bpy.utils.previews.html"""
     def __init__(self) -> Any: ...
     def clear(self) -> Any: ...
     def close(self) -> Any: ...
@@ -49,14 +49,22 @@ class ImagePreviewCollection:
 
 def new() -> Any:
     """
+    :return: a new preview collection.
+    :rtype: :class:`ImagePreviewCollection`
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy.utils.previews.html
-    """
+    https://docs.blender.org/api/current/bpy.utils.previews.html"""
     ...
 
 def remove(pcoll) -> Any:
     """
+    Remove the specified previews collection.
+
+    :arg pcoll: Preview collection to close.
+    :type pcoll: :class:`ImagePreviewCollection`
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy.utils.previews.html
-    """
+    https://docs.blender.org/api/current/bpy.utils.previews.html"""
     ...

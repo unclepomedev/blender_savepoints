@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.UILayout.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class UILayout(bpy_struct):
+
     active: bool
+
     active_default: bool
     """When true, an operator button defined after this will be activated when pressing return(use with popup dialogs)"""
     activate_init: bool
@@ -21,9 +29,12 @@ class UILayout(bpy_struct):
     enabled: bool
     """When false, this (sub)layout is grayed out"""
     alert: bool
+
     alignment: Literal['EXPAND', 'LEFT', 'CENTER', 'RIGHT']
+
     @property
     def direction(self) -> Literal['HORIZONTAL', 'VERTICAL']:
+
         ...
     scale_x: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
     """Scale factor along the X for items in this (sub)layout"""
@@ -34,8 +45,11 @@ class UILayout(bpy_struct):
     ui_units_y: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
     """Fixed size along the Y for items in this (sub)layout"""
     emboss: Literal['NORMAL', 'NONE', 'PULLDOWN_MENU', 'PIE_MENU', 'NONE_OR_STATUS']
+
     use_property_split: bool
+
     use_property_decorate: bool
+
     def row(self, *args, **kwargs) -> Any: ...
     def column(self, *args, **kwargs) -> Any: ...
     def panel(self, *args, **kwargs) -> Any: ...

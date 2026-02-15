@@ -4,16 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CurveProfile.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveProfilePoint import CurveProfilePoint
 from .CurveProfilePoints import CurveProfilePoints
+from .bpy_prop_collection import bpy_prop_collection
+
 class CurveProfile(bpy_struct):
+
     preset: Literal['LINE', 'SUPPORTS', 'CORNICE', 'CROWN', 'STEPS']
+
     use_clip: bool
     """Force the path view to fit a defined boundary"""
     use_sample_straight_edges: bool

@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BoneCollection.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Bone import Bone
+from .bpy_prop_collection import bpy_prop_collection
+
 class BoneCollection(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique within the Armature"""
     is_expanded: bool
@@ -42,6 +50,7 @@ class BoneCollection(bpy_struct):
         ...
     @property
     def children(self) -> Annotated[bpy_prop_collection['BoneCollection'], "is_animatable=False"]:
+
         ...
     parent: Annotated[Optional['BoneCollection'], "is_animatable=False"]
     """Parent bone collection. Note that accessing this requires a scan of all the bone collections to find the parent."""

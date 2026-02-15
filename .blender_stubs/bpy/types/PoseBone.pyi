@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PoseBone.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from ._GenericBone import _GenericBone
@@ -17,12 +22,16 @@ from .Constraint import Constraint
 from .MotionPath import MotionPath
 from .Object import Object
 from .PoseBoneConstraints import PoseBoneConstraints
+from .bpy_prop_collection import bpy_prop_collection
+
 class PoseBone(bpy_struct, _GenericBone):
+
     @property
     def constraints(self) -> Annotated['PoseBoneConstraints', "is_animatable=False"]:
         """Constraints that act on this pose channel"""
         ...
     name: Annotated[str, "is_animatable=False"]
+
     @property
     def motion_path(self) -> Annotated[Optional['MotionPath'], "is_animatable=False"]:
         """Motion Path for this element"""
@@ -40,7 +49,9 @@ class PoseBone(bpy_struct, _GenericBone):
         """Child of this pose bone"""
         ...
     location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]
+
     scale: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+
     rotation_quaternion: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]
     """Rotation in Quaternions"""
     rotation_axis_angle: Annotated[list[float], "subtype='AXISANGLE'", "step=10.0", "precision=3"]
@@ -165,6 +176,7 @@ class PoseBone(bpy_struct, _GenericBone):
     """Adjust the line thickness of custom shapes"""
     @property
     def color(self) -> Annotated[Optional['BoneColor'], "is_animatable=False"]:
+
         ...
     lock_location: list[bool]
     """Lock editing of location when transforming"""

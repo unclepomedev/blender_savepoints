@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.View3DOverlay.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class View3DOverlay(bpy_struct):
+
     show_overlays: bool
     """Display overlays like gizmos and outlines"""
     show_ortho_grid: bool
@@ -148,13 +155,17 @@ class View3DOverlay(bpy_struct):
     weight_paint_mode_opacity: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
     """Opacity of the weight paint mode overlay"""
     sculpt_mode_mask_opacity: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+
     show_sculpt_curves_cage: bool
     """Show original curves that are currently being edited"""
     sculpt_curves_cage_opacity: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
     """Opacity of the cage overlay in curves sculpt mode"""
     sculpt_mode_face_sets_opacity: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+
     show_sculpt_mask: bool
+
     show_sculpt_face_sets: bool
+
     show_annotation: bool
     """Show annotations for this view"""
     use_gpencil_fade_objects: bool

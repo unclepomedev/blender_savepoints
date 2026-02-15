@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FileSelectParams.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .FileSelectIDFilter import FileSelectIDFilter
+
 class FileSelectParams(bpy_struct):
+
     @property
     def title(self) -> Annotated[str, "is_animatable=False"]:
         """Title for the file browser"""
@@ -37,6 +44,7 @@ class FileSelectParams(bpy_struct):
     show_hidden: bool
     """Show hidden dot files"""
     sort_method: Literal['FILE_SORT_ALPHA', 'FILE_SORT_EXTENSION', 'FILE_SORT_TIME', 'FILE_SORT_SIZE', 'ASSET_CATALOG']
+
     use_sort_invert: bool
     """Sort items descending, from highest value to lowest"""
     use_filter_image: bool

@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/mathutils.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/mathutils.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/mathutils.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class Color:
     """.. class:: Color(rgb=(0.0, 0.0, 0.0), /)
@@ -23,11 +24,10 @@ class Color:
 
    :arg rgb: (red, green, blue) color values where (0, 0, 0) is black & (1, 1, 1) is white.
    :type rgb: Sequence[float]
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/mathutils.html
-    """
+    https://docs.blender.org/api/current/mathutils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     b: Any
     def copy(*args, **kwargs) -> Any: ...
@@ -101,11 +101,10 @@ class Euler:
    :type angles: Sequence[float]
    :arg order: Euler rotation order.
    :type order: Literal['XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX']
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/mathutils.html
-    """
+    https://docs.blender.org/api/current/mathutils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def copy(*args, **kwargs) -> Any: ...
     def freeze(*args, **kwargs) -> Any: ...
@@ -167,11 +166,10 @@ class Matrix:
 
    :arg rows: Sequence of rows.
    :type rows: Sequence[Sequence[float]]
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/mathutils.html
-    """
+    https://docs.blender.org/api/current/mathutils.html"""
     def Diagonal(*args, **kwargs) -> Any: ...
     def Identity(*args, **kwargs) -> Any: ...
     def LocRotScale(*args, **kwargs) -> Any: ...
@@ -279,11 +277,10 @@ class Quaternion:
       Create a quaternion representing a rotation of *angle* radians over *axis*.
 
       .. seealso:: :meth:`to_axis_angle`
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/mathutils.html
-    """
+    https://docs.blender.org/api/current/mathutils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     angle: Any
     axis: Any
@@ -360,11 +357,10 @@ class Vector:
 
    :arg seq: Components of the vector, must be a sequence of at least two.
    :type seq: Sequence[float]
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/mathutils.html
-    """
+    https://docs.blender.org/api/current/mathutils.html"""
     def Fill(*args, **kwargs) -> Any: ...
     def Linspace(*args, **kwargs) -> Any: ...
     def Range(*args, **kwargs) -> Any: ...

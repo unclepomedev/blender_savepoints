@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.GreasePencilLayer.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .GreasePencilTreeNode import GreasePencilTreeNode
 from .GreasePencilFrame import GreasePencilFrame
@@ -16,7 +21,10 @@ from .GreasePencilLayerGroup import GreasePencilLayerGroup
 from .GreasePencilLayerMask import GreasePencilLayerMask
 from .GreasePencilLayerMasks import GreasePencilLayerMasks
 from .Object import Object
+from .bpy_prop_collection import bpy_prop_collection
+
 class GreasePencilLayer(GreasePencilTreeNode):
+
     name: Annotated[str, "is_animatable=False"]
     """The name of the tree node"""
     hide: bool

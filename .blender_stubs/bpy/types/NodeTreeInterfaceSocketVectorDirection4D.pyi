@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NodeTreeInterfaceSocketVectorDirection4D.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .NodeTreeInterfaceSocket import NodeTreeInterfaceSocket
 from .NodeTreeInterfacePanel import NodeTreeInterfacePanel
+
 class NodeTreeInterfaceSocketVectorDirection4D(NodeTreeInterfaceSocket):
+
     @property
     def item_type(self) -> Literal['SOCKET', 'PANEL']:
         """Type of interface item"""

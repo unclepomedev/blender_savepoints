@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.EditBone.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from ._GenericBone import _GenericBone
 from .BoneCollection import BoneCollection
 from .BoneColor import BoneColor
+from .bpy_prop_collection import bpy_prop_collection
+
 class EditBone(bpy_struct, _GenericBone):
+
     @property
     def collections(self) -> Annotated[bpy_prop_collection['BoneCollection'], "is_animatable=False"]:
         """Bone Collections that contain this bone"""
@@ -29,10 +37,13 @@ class EditBone(bpy_struct, _GenericBone):
     length: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]
     """Length of the bone. Changing moves the tail end."""
     name: Annotated[str, "is_animatable=False"]
+
     @property
     def color(self) -> Annotated[Optional['BoneColor'], "is_animatable=False"]:
+
         ...
     display_type: Literal['ARMATURE_DEFINED', 'OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']
+
     use_connect: bool
     """When bone has a parent, bone's head is stuck to the parent's tail"""
     use_inherit_rotation: bool
@@ -114,8 +125,11 @@ class EditBone(bpy_struct, _GenericBone):
     lock: Annotated[bool, "is_animatable=False"]
     """Bone is not able to be transformed when in Edit Mode"""
     select: Annotated[bool, "is_animatable=False"]
+
     select_head: Annotated[bool, "is_animatable=False"]
+
     select_tail: Annotated[bool, "is_animatable=False"]
+
     matrix: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]
     """Matrix combining location and rotation of the bone (head position, direction and roll), in armature space (does not include/support bone's length/size)"""
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

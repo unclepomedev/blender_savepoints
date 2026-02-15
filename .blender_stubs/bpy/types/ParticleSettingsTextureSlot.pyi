@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ParticleSettingsTextureSlot.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .TextureSlot import TextureSlot
 from .Object import Object
 from .Texture import Texture
+
 class ParticleSettingsTextureSlot(TextureSlot):
+
     texture: Annotated[Optional['Texture'], "is_animatable=False"]
     """Texture data-block used by this texture slot"""
     @property
@@ -38,9 +45,13 @@ class ParticleSettingsTextureSlot(TextureSlot):
     uv_layer: Annotated[str, "is_animatable=False"]
     """UV map to use for mapping with UV texture coordinates"""
     mapping_x: Literal['NONE', 'X', 'Y', 'Z']
+
     mapping_y: Literal['NONE', 'X', 'Y', 'Z']
+
     mapping_z: Literal['NONE', 'X', 'Y', 'Z']
+
     mapping: Literal['FLAT', 'CUBE', 'TUBE', 'SPHERE']
+
     use_map_time: bool
     """Affect the emission time of the particles"""
     use_map_life: bool

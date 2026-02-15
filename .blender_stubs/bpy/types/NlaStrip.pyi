@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NlaStrip.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Action import Action
@@ -15,8 +20,12 @@ from .ActionSlot import ActionSlot
 from .FCurve import FCurve
 from .FModifier import FModifier
 from .NlaStripFCurves import NlaStripFCurves
+from .bpy_prop_collection import bpy_prop_collection
+
 class NlaStrip(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
+
     @property
     def type(self) -> Literal['CLIP', 'TRANSITION', 'META', 'SOUND']:
         """Type of NLA Strip"""
@@ -26,7 +35,9 @@ class NlaStrip(bpy_struct):
     blend_type: Literal['REPLACE', 'COMBINE', 'ADD', 'SUBTRACT', 'MULTIPLY']
     """Method used for combining strip's result with accumulated result"""
     frame_start: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
+
     frame_end: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
+
     frame_start_raw: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
     """Same as frame_start, except that any value can be set, including ones that create an invalid state"""
     frame_end_raw: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
@@ -38,6 +49,7 @@ class NlaStrip(bpy_struct):
     blend_in: Annotated[float, "step=10.0", "precision=3"]
     """Number of frames at start of strip to fade in influence"""
     blend_out: Annotated[float, "step=10.0", "precision=3"]
+
     use_auto_blend: bool
     """Number of frames for Blending In/Out is automatically determined from overlapping strips"""
     action: Annotated[Optional['Action'], "is_animatable=False"]

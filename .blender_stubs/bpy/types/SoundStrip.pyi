@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SoundStrip.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Strip import Strip
 from .RetimingKey import RetimingKey
@@ -15,14 +20,22 @@ from .RetimingKeys import RetimingKeys
 from .Sound import Sound
 from .StripModifier import StripModifier
 from .StripModifiers import StripModifiers
+from .bpy_prop_collection import bpy_prop_collection
+
 class SoundStrip(Strip):
+
     name: Annotated[str, "is_animatable=False"]
+
     @property
     def type(self) -> Literal['IMAGE', 'META', 'SCENE', 'MOVIE', 'MOVIECLIP', 'MASK', 'SOUND', 'CROSS', 'ADD', 'SUBTRACT', 'ALPHA_OVER', 'ALPHA_UNDER', 'GAMMA_CROSS', 'MULTIPLY', 'WIPE', 'GLOW', 'COLOR', 'SPEED', 'MULTICAM', 'ADJUSTMENT', 'GAUSSIAN_BLUR', 'TEXT', 'COLORMIX']:
+
         ...
     select: bool
+
     select_left_handle: bool
+
     select_right_handle: bool
+
     mute: bool
     """Disable strip so that it cannot be viewed in the output"""
     lock: Annotated[bool, "is_animatable=False"]
@@ -40,7 +53,9 @@ class SoundStrip(Strip):
     frame_final_end: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
     """End frame displayed in the sequence editor after offsets are applied"""
     frame_offset_start: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=100.0", "precision=0"]
+
     frame_offset_end: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=100.0", "precision=0"]
+
     channel: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
     """Y position of the sequence strip"""
     use_linear_modifiers: bool
@@ -75,6 +90,7 @@ class SoundStrip(Strip):
     """Maintain the original pitch of the audio when changing playback speed"""
     @property
     def retiming_keys(self) -> Annotated['RetimingKeys', "is_animatable=False"]:
+
         ...
     animation_offset_start: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
     """Animation start offset (trim start)"""

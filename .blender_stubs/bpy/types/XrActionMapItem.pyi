@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.XrActionMapItem.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .OperatorProperties import OperatorProperties
@@ -15,7 +20,10 @@ from .XrActionMapBinding import XrActionMapBinding
 from .XrActionMapBindings import XrActionMapBindings
 from .XrUserPath import XrUserPath
 from .XrUserPaths import XrUserPaths
+from .bpy_prop_collection import bpy_prop_collection
+
 class XrActionMapItem(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
     """Name of the action map item"""
     type: Annotated[Literal['FLOAT', 'VECTOR2D', 'POSE', 'VIBRATION'], "is_animatable=False"]

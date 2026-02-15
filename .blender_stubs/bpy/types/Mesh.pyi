@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Mesh.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -38,7 +43,10 @@ from .MeshVertex import MeshVertex
 from .MeshVertices import MeshVertices
 from .ReadOnlyInteger import ReadOnlyInteger
 from .UVLoopLayers import UVLoopLayers
+from .bpy_prop_collection import bpy_prop_collection
+
 class Mesh(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -192,6 +200,7 @@ class Mesh(ID):
     use_remesh_preserve_attributes: Annotated[bool, "is_animatable=False"]
     """Transfer all attributes to the new mesh"""
     remesh_mode: Annotated[Literal['VOXEL', 'QUAD'], "is_animatable=False"]
+
     use_mirror_x: Annotated[bool, "is_animatable=False"]
     """Enable symmetry in the X axis"""
     use_mirror_y: Annotated[bool, "is_animatable=False"]
@@ -210,6 +219,7 @@ class Mesh(ID):
     """Derive texture coordinates from another mesh"""
     @property
     def shape_keys(self) -> Annotated[Optional['Key'], "is_animatable=False"]:
+
         ...
     use_auto_texspace: bool
     """Adjust active object's texture space automatically when transforming object"""
@@ -249,6 +259,7 @@ class Mesh(ID):
     """Texture space size"""
     @property
     def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
+
         ...
     @property
     def cycles(self) -> Annotated[Optional['CyclesMeshSettings'], "is_animatable=False"]:

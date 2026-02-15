@@ -4,17 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceSequenceEditor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .Annotation import Annotation
 from .SequencerCacheOverlay import SequencerCacheOverlay
 from .SequencerPreviewOverlay import SequencerPreviewOverlay
 from .SequencerTimelineOverlay import SequencerTimelineOverlay
+
 class SpaceSequenceEditor(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -22,12 +29,19 @@ class SpaceSequenceEditor(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_tool_header: bool
+
     show_region_footer: bool
+
     show_region_toolbar: bool
+
     show_region_channels: bool
+
     show_region_ui: bool
+
     show_region_hud: bool
+
     view_type: Literal['SEQUENCER', 'PREVIEW', 'SEQUENCER_PREVIEW']
     """Type of the Sequencer view (sequencer, preview or both)"""
     display_mode: Literal['IMAGE', 'WAVEFORM', 'RGB_PARADE', 'VECTOR_SCOPE', 'HISTOGRAM']
@@ -69,6 +83,7 @@ class SpaceSequenceEditor(Space):
     show_gizmo_tool: bool
     """Active tool gizmo"""
     show_overlays: bool
+
     @property
     def preview_overlay(self) -> Annotated['SequencerPreviewOverlay', "is_animatable=False"]:
         """Settings for display of overlays"""

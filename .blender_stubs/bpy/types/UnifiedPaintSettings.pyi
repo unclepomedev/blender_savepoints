@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.UnifiedPaintSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class UnifiedPaintSettings(bpy_struct):
+
     use_unified_size: Annotated[bool, "is_animatable=False"]
     """Instead of per-brush size, the size is shared across brushes"""
     use_unified_strength: Annotated[bool, "is_animatable=False"]
@@ -30,7 +37,9 @@ class UnifiedPaintSettings(bpy_struct):
     weight: Annotated[float, "subtype='FACTOR'", "step=0.0010000000474974513", "precision=3", "is_animatable=False"]
     """Weight to assign in vertex groups"""
     color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]
+
     secondary_color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]
+
     use_color_jitter: Annotated[bool, "is_animatable=False"]
     """Jitter brush color"""
     hue_jitter: Annotated[float, "step=0.05000000074505806", "precision=2", "is_animatable=False"]

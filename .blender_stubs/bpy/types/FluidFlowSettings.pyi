@@ -4,19 +4,28 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FluidFlowSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .ParticleSystem import ParticleSystem
 from .Texture import Texture
+
 class FluidFlowSettings(bpy_struct):
+
     density: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=4"]
+
     smoke_color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Color of smoke"""
     fuel_amount: Annotated[float, "step=1.0", "precision=4"]
+
     temperature: Annotated[float, "step=1.0", "precision=1"]
     """Temperature difference to ambient temperature"""
     particle_system: Annotated[Optional['ParticleSystem'], "is_animatable=False"]

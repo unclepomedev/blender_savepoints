@@ -5,11 +5,15 @@
 # pylint: disable=invalid-name
 
 
+
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class ASSETSHELF_PT_display:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -46,6 +50,7 @@ class ASSETSHELF_PT_display:
     def values(*args, **kwargs) -> Any: ...
 
 class Panel:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...

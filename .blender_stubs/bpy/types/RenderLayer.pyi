@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.RenderLayer.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .RenderPass import RenderPass
 from .RenderPasses import RenderPasses
+from .bpy_prop_collection import bpy_prop_collection
+
 class RenderLayer(bpy_struct):
+
     @property
     def name(self) -> Annotated[str, "is_animatable=False"]:
         """View layer name"""
@@ -147,5 +155,6 @@ class RenderLayer(bpy_struct):
         ...
     @property
     def passes(self) -> Annotated['RenderPasses', "is_animatable=False"]:
+
         ...
     def load_from_file(self, *args, **kwargs) -> Any: ...

@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ToolSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurvePaintSettings import CurvePaintSettings
@@ -28,12 +33,16 @@ from .Sculpt import Sculpt
 from .SequencerToolSettings import SequencerToolSettings
 from .UvSculpt import UvSculpt
 from .VertexPaint import VertexPaint
+
 class ToolSettings(bpy_struct):
+
     @property
     def sculpt(self) -> Annotated[Optional['Sculpt'], "is_animatable=False"]:
+
         ...
     @property
     def curves_sculpt(self) -> Annotated[Optional['CurvesSculpt'], "is_animatable=False"]:
+
         ...
     use_auto_normalize: Annotated[bool, "is_animatable=False"]
     """Ensure all bone-deforming vertex groups add up to 1.0 while weight painting or assigning to vertices"""
@@ -47,33 +56,43 @@ class ToolSettings(bpy_struct):
     """Filter Vertex groups for Display"""
     @property
     def vertex_paint(self) -> Annotated[Optional['VertexPaint'], "is_animatable=False"]:
+
         ...
     @property
     def weight_paint(self) -> Annotated[Optional['VertexPaint'], "is_animatable=False"]:
+
         ...
     @property
     def image_paint(self) -> Annotated[Optional['ImagePaint'], "is_animatable=False"]:
+
         ...
     @property
     def paint_mode(self) -> Annotated[Optional['PaintModeSettings'], "is_animatable=False"]:
+
         ...
     @property
     def uv_sculpt(self) -> Annotated[Optional['UvSculpt'], "is_animatable=False"]:
+
         ...
     @property
     def gpencil_paint(self) -> Annotated[Optional['GpPaint'], "is_animatable=False"]:
+
         ...
     @property
     def gpencil_vertex_paint(self) -> Annotated[Optional['GpVertexPaint'], "is_animatable=False"]:
+
         ...
     @property
     def gpencil_sculpt_paint(self) -> Annotated[Optional['GpSculptPaint'], "is_animatable=False"]:
+
         ...
     @property
     def gpencil_weight_paint(self) -> Annotated[Optional['GpWeightPaint'], "is_animatable=False"]:
+
         ...
     @property
     def particle_edit(self) -> Annotated[Optional['ParticleEdit'], "is_animatable=False"]:
+
         ...
     uv_sculpt_lock_borders: Annotated[bool, "is_animatable=False"]
     """Disable editing of boundary edges"""
@@ -224,12 +243,15 @@ class ToolSettings(bpy_struct):
         """Settings for Grease Pencil interpolation tools"""
         ...
     gpencil_stroke_placement_view3d: Annotated[Literal['ORIGIN', 'CURSOR', 'SURFACE', 'STROKE'], "is_animatable=False"]
+
     gpencil_stroke_snap_mode: Annotated[Literal['NONE', 'ENDS', 'FIRST'], "is_animatable=False"]
+
     gpencil_surface_offset: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3", "is_animatable=False"]
     """Offset along the normal when drawing on surfaces"""
     use_gpencil_project_only_selected: Annotated[bool, "is_animatable=False"]
     """Project the strokes only onto selected objects"""
     gpencil_selectmode_edit: Annotated[Literal['POINT', 'STROKE', 'SEGMENT'], "is_animatable=False"]
+
     use_gpencil_select_mask_point: Annotated[bool, "is_animatable=False"]
     """Only sculpt selected stroke points"""
     use_gpencil_select_mask_stroke: Annotated[bool, "is_animatable=False"]
@@ -245,6 +267,7 @@ class ToolSettings(bpy_struct):
     use_grease_pencil_multi_frame_editing: Annotated[bool, "is_animatable=False"]
     """Enable multi-frame editing"""
     annotation_stroke_placement_view2d: Annotated[Literal['IMAGE', 'VIEW'], "is_animatable=False"]
+
     annotation_stroke_placement_view3d: Annotated[Literal['CURSOR', 'VIEW', 'SURFACE'], "is_animatable=False"]
     """How annotation strokes are orientated in 3D space"""
     use_annotation_stroke_endpoints: Annotated[bool, "is_animatable=False"]
@@ -299,9 +322,11 @@ class ToolSettings(bpy_struct):
     """Normal vector used to copy, add or multiply"""
     @property
     def curve_paint_settings(self) -> Annotated['CurvePaintSettings', "is_animatable=False"]:
+
         ...
     @property
     def statvis(self) -> Annotated['MeshStatVis', "is_animatable=False"]:
+
         ...
     @property
     def custom_bevel_profile_preset(self) -> Annotated[Optional['CurveProfile'], "is_animatable=False"]:
@@ -309,4 +334,5 @@ class ToolSettings(bpy_struct):
         ...
     @property
     def sequencer_tool_settings(self) -> Annotated['SequencerToolSettings', "is_animatable=False"]:
+
         ...

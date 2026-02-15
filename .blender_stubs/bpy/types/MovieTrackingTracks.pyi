@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieTrackingTracks.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .MovieTrackingTrack import MovieTrackingTrack
+
 class MovieTrackingTracks(bpy_struct):
+
     active: Annotated[Optional['MovieTrackingTrack'], "is_animatable=False"]
     """Active track in this tracking data object. Deprecated, use objects[name].tracks.active"""
     def new(self, *args, **kwargs) -> Any: ...

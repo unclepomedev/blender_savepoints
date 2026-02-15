@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.WorkSpace.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AssetMetaData import AssetMetaData
@@ -18,10 +23,13 @@ from .LibraryWeakReference import LibraryWeakReference
 from .Scene import Scene
 from .Screen import Screen
 from .WorkSpaceTool import WorkSpaceTool
+from .bpy_prop_collection import bpy_prop_collection
 from .wmOwnerID import wmOwnerID
 from .wmOwnerIDs import wmOwnerIDs
 from .wmTools import wmTools
+
 class WorkSpace(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -100,9 +108,11 @@ class WorkSpace(ID):
         ...
     @property
     def owner_ids(self) -> Annotated['wmOwnerIDs', "is_animatable=False"]:
+
         ...
     @property
     def tools(self) -> Annotated['wmTools', "is_animatable=False"]:
+
         ...
     object_mode: Literal['OBJECT', 'EDIT', 'POSE', 'SCULPT', 'VERTEX_PAINT', 'WEIGHT_PAINT', 'TEXTURE_PAINT', 'PARTICLE_EDIT', 'EDIT_GPENCIL', 'SCULPT_GREASE_PENCIL', 'PAINT_GREASE_PENCIL', 'VERTEX_GREASE_PENCIL', 'WEIGHT_GREASE_PENCIL']
     """Switch to this object mode when activating the workspace"""
@@ -113,6 +123,7 @@ class WorkSpace(ID):
     asset_library_reference: Literal['ALL', 'LOCAL', 'ESSENTIALS', 'CUSTOM']
     """Active asset library to show in the UI, not used by the Asset Browser (which has its own active asset library)"""
     sequencer_scene: Annotated[Optional['Scene'], "is_animatable=False"]
+
     use_scene_time_sync: bool
     """Set the active scene and time based on the current scene strip"""
     active_addon: Annotated[int, "step=1"]

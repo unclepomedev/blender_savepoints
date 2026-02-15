@@ -4,15 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.AssetMetaData.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AssetTag import AssetTag
 from .AssetTags import AssetTags
+from .bpy_prop_collection import bpy_prop_collection
+
 class AssetMetaData(bpy_struct):
+
     author: Annotated[str, "is_animatable=False"]
     """Name of the creator of the asset"""
     description: Annotated[str, "is_animatable=False"]

@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.VIEW3D_MT_edit_mesh_context_menu.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Menu import Menu
 from .UILayout import UILayout
+
 class VIEW3D_MT_edit_mesh_context_menu(Menu):
+
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the menu in the UI"""
@@ -21,8 +28,11 @@ class VIEW3D_MT_edit_mesh_context_menu(Menu):
     bl_label: Annotated[str, "is_animatable=False"]
     """The menu label"""
     bl_translation_context: Annotated[str, "is_animatable=False"]
+
     bl_description: Annotated[str, "is_animatable=False"]
+
     bl_owner_id: Annotated[str, "is_animatable=False"]
+
     bl_options: set[str]
     """Options for this menu type"""
     def poll(self, *args, **kwargs) -> Any: ...

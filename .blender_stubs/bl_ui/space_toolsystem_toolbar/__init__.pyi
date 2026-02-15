@@ -5,11 +5,15 @@
 # pylint: disable=invalid-name
 
 
+
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class BrushAssetShelf:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def asset_poll(asset) -> Any: ...
     def brush_type_poll(context, asset) -> Any: ...
@@ -21,6 +25,7 @@ class BrushAssetShelf:
     def poll(context) -> Any: ...
 
 class IMAGE_PT_tools_active:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -67,6 +72,7 @@ class IMAGE_PT_tools_active:
     def values(*args, **kwargs) -> Any: ...
 
 class NODE_PT_tools_active:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -113,6 +119,7 @@ class NODE_PT_tools_active:
     def values(*args, **kwargs) -> Any: ...
 
 class Panel:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -147,6 +154,7 @@ class Panel:
     def values(*args, **kwargs) -> Any: ...
 
 class SEQUENCER_PT_tools_active:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -253,6 +261,7 @@ class ToolSelectPanelHelper:
     def tools_from_context(context, mode=None) -> Any: ...
 
 class VIEW3D_PT_tools_active:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -306,10 +315,38 @@ def generate_from_enum_ex(_context, *, idname_prefix, icon_prefix, type, attr, o
     ...
 
 def iface_(*args, **kwargs) -> Any:
+    """.. method:: pgettext_iface(msgid, msgctxt=None)
+
+   Try to translate the given msgid (with optional msgctxt), if labels' translation is enabled.
+
+   .. note::
+      See :func:`pgettext` notes.
+
+   :arg msgid: The string to translate.
+   :type msgid: str
+   :arg msgctxt: The translation context (defaults to BLT_I18NCONTEXT_DEFAULT).
+   :type msgctxt: str | None
+   :return: The translated string (or msgid if no translation was found).
+
+"""
     ...
 
 def kmi_to_string_or_none(kmi) -> Any:
     ...
 
 def tip_(*args, **kwargs) -> Any:
+    """.. method:: pgettext_tip(msgid, msgctxt=None)
+
+   Try to translate the given msgid (with optional msgctxt), if tooltips' translation is enabled.
+
+   .. note::
+      See :func:`pgettext` notes.
+
+   :arg msgid: The string to translate.
+   :type msgid: str
+   :arg msgctxt: The translation context (defaults to BLT_I18NCONTEXT_DEFAULT).
+   :type msgctxt: str | None
+   :return: The translated string (or msgid if no translation was found).
+
+"""
     ...

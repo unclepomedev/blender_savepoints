@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Area.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AreaSpaces import AreaSpaces
 from .Region import Region
 from .Space import Space
+from .bpy_prop_collection import bpy_prop_collection
+
 class Area(bpy_struct):
+
     @property
     def spaces(self) -> Annotated['AreaSpaces', "is_animatable=False"]:
         """Spaces contained in this area, the first being the active space (NOTE: Useful for example to restore a previously used 3D view space in a certain area to get the old view orientation)"""

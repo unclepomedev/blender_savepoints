@@ -4,19 +4,27 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FluidDomainSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Collection import Collection
 from .ColorRamp import ColorRamp
 from .EffectorWeights import EffectorWeights
 from .Object import Object
+
 class FluidDomainSettings(bpy_struct):
+
     @property
     def effector_weights(self) -> Annotated[Optional['EffectorWeights'], "is_animatable=False"]:
+
         ...
     effector_group: Annotated[Optional['Collection'], "is_animatable=False"]
     """Limit effectors to this collection"""
@@ -241,10 +249,15 @@ class FluidDomainSettings(bpy_struct):
     cache_frame_offset: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
     """Frame offset that is used when loading the simulation from the cache. It is not considered when baking the simulation, only when loading it."""
     cache_frame_pause_data: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]
+
     cache_frame_pause_noise: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]
+
     cache_frame_pause_mesh: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]
+
     cache_frame_pause_particles: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]
+
     cache_frame_pause_guide: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]
+
     cache_mesh_format: Annotated[Literal['UNI', 'OPENVDB', 'RAW'], "is_animatable=False"]
     """Select the file format to be used for caching surface data"""
     cache_data_format: Annotated[Literal['UNI', 'OPENVDB', 'RAW'], "is_animatable=False"]
@@ -260,17 +273,29 @@ class FluidDomainSettings(bpy_struct):
     cache_directory: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]
     """Directory that contains fluid cache files"""
     is_cache_baking_data: bool
+
     has_cache_baked_data: bool
+
     is_cache_baking_noise: bool
+
     has_cache_baked_noise: bool
+
     is_cache_baking_mesh: bool
+
     has_cache_baked_mesh: bool
+
     is_cache_baking_particles: bool
+
     has_cache_baked_particles: bool
+
     is_cache_baking_guide: bool
+
     has_cache_baked_guide: bool
+
     is_cache_baking_any: bool
+
     has_cache_baked_any: bool
+
     export_manta_script: Annotated[bool, "is_animatable=False"]
     """Generate and export Mantaflow script from current domain settings during bake. This is only needed if you plan to analyze the cache (e.g. view grids, velocity vectors, particles) in Mantaflow directly (outside of Blender) after baking the simulation."""
     openvdb_cache_compress_type: Literal['ZIP', 'NONE']
@@ -290,6 +315,7 @@ class FluidDomainSettings(bpy_struct):
     use_slice: bool
     """Perform a single slice of the domain object"""
     slice_axis: Literal['AUTO', 'X', 'Y', 'Z']
+
     slice_per_voxel: Annotated[float, "step=0.10000000149011612", "precision=1"]
     """How many slices per voxel should be generated"""
     slice_depth: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=3"]
@@ -303,6 +329,7 @@ class FluidDomainSettings(bpy_struct):
     show_velocity: bool
     """Visualize vector fields"""
     vector_display_type: Literal['NEEDLE', 'STREAMLINE', 'MAC']
+
     vector_field: Literal['FLUID_VELOCITY', 'GUIDE_VELOCITY', 'FORCE']
     """Vector field to be represented by the display vectors"""
     vector_scale_with_magnitude: bool
@@ -323,6 +350,7 @@ class FluidDomainSettings(bpy_struct):
     """Multiplier for scaling the selected field to color map"""
     @property
     def color_ramp(self) -> Annotated[Optional['ColorRamp'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
+
         ...
     clipping: Annotated[float, "step=0.10000000149011612", "precision=6"]
     """Value under which voxels are considered empty space to optimize rendering"""

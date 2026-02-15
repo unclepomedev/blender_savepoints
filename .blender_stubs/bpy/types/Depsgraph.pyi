@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Depsgraph.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .DepsgraphObjectInstance import DepsgraphObjectInstance
@@ -16,7 +21,10 @@ from .ID import ID
 from .Object import Object
 from .Scene import Scene
 from .ViewLayer import ViewLayer
+from .bpy_prop_collection import bpy_prop_collection
+
 class Depsgraph(bpy_struct):
+
     @property
     def mode(self) -> Literal['VIEWPORT', 'RENDER']:
         """Evaluation mode"""

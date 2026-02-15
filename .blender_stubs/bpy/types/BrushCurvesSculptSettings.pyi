@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BrushCurvesSculptSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .CurveMapping import CurveMapping
+
 class BrushCurvesSculptSettings(bpy_struct):
+
     add_amount: Annotated[int, "step=1"]
     """Number of curves added by the Add brush"""
     points_per_curve: Annotated[int, "step=1"]

@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ViewLayer.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .AOV import AOV
@@ -22,7 +27,10 @@ from .Material import Material
 from .Object import Object
 from .ViewLayerEEVEE import ViewLayerEEVEE
 from .World import World
+from .bpy_prop_collection import bpy_prop_collection
+
 class ViewLayer(bpy_struct):
+
     name: Annotated[str, "is_animatable=False"]
     """View layer name"""
     material_override: Annotated[Optional['Material'], "is_animatable=False"]
@@ -39,6 +47,7 @@ class ViewLayer(bpy_struct):
         ...
     @property
     def aovs(self) -> Annotated['AOVs', "is_animatable=False"]:
+
         ...
     @property
     def active_aov(self) -> Annotated[Optional['AOV'], "is_animatable=False"]:
@@ -48,6 +57,7 @@ class ViewLayer(bpy_struct):
     """Index of active AOV"""
     @property
     def lightgroups(self) -> Annotated['Lightgroups', "is_animatable=False"]:
+
         ...
     @property
     def active_lightgroup(self) -> Annotated[Optional['Lightgroup'], "is_animatable=False"]:
@@ -149,6 +159,7 @@ class ViewLayer(bpy_struct):
     """Render stylized strokes in this Layer"""
     @property
     def freestyle_settings(self) -> Annotated['FreestyleSettings', "is_animatable=False"]:
+
         ...
     use_pass_grease_pencil: bool
     """Deliver Grease Pencil render result in a separate pass"""

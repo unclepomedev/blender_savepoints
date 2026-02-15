@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PreferencesSystem.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .UserSolidLight import UserSolidLight
+from .bpy_prop_collection import bpy_prop_collection
+
 class PreferencesSystem(bpy_struct):
+
     @property
     def ui_scale(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Size multiplier to use when displaying custom user interface elements, so that they are scaled correctly on screens with different DPI. This value is based on operating system DPI settings and Blender display scale."""
@@ -22,9 +30,11 @@ class PreferencesSystem(bpy_struct):
         ...
     @property
     def dpi(self) -> Annotated[int, "step=1"]:
+
         ...
     @property
     def pixel_size(self) -> Annotated[float, "step=10.0", "precision=3"]:
+
         ...
     memory_cache_limit: Annotated[int, "step=1"]
     """Memory cache limit (in megabytes)"""

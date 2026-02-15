@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Screen.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .Area import Area
@@ -16,7 +21,10 @@ from .IDOverrideLibrary import IDOverrideLibrary
 from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
+from .bpy_prop_collection import bpy_prop_collection
+
 class Screen(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -103,6 +111,7 @@ class Screen(ID):
         ...
     @property
     def is_temporary(self) -> bool:
+
         ...
     @property
     def show_fullscreen(self) -> bool:
@@ -111,16 +120,25 @@ class Screen(ID):
     show_statusbar: bool
     """Show status bar"""
     use_play_top_left_3d_editor: bool
+
     use_play_3d_editors: bool
+
     use_follow: bool
     """Follow current frame in editors"""
     use_play_animation_editors: bool
+
     use_play_properties_editors: bool
+
     use_play_image_editors: bool
+
     use_play_sequence_editors: bool
+
     use_play_node_editors: bool
+
     use_play_clip_editors: bool
+
     use_play_spreadsheet_editors: bool
+
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FloatProperty.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Property import Property
 from .Struct import Struct
+
 class FloatProperty(Property):
+
     @property
     def name(self) -> Annotated[str, "is_animatable=False"]:
         """Human readable name"""
@@ -158,6 +165,7 @@ class FloatProperty(Property):
         ...
     @property
     def is_array(self) -> bool:
+
         ...
     @property
     def hard_min(self) -> Annotated[float, "step=10.0", "precision=3"]:

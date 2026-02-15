@@ -4,24 +4,38 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ThemeCommonAnim.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class ThemeCommonAnim(bpy_struct):
+
     playhead: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     preview_range: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Color of preview range overlay"""
     scene_strip_range: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Color of scene strip range overlay"""
     channels: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     channels_sub: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     channel_group: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     channel_group_active: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     channel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     channel_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     keyframe: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Color of regular keyframe"""
     keyframe_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
@@ -47,4 +61,5 @@ class ThemeCommonAnim(bpy_struct):
     keyframe_generated_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
     """Color of selected generated keyframe"""
     long_key: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
     long_key_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]

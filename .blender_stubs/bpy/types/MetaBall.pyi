@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MetaBall.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .ID import ID
 from .AnimData import AnimData
@@ -20,7 +25,10 @@ from .LibraryWeakReference import LibraryWeakReference
 from .Material import Material
 from .MetaBallElements import MetaBallElements
 from .MetaElement import MetaElement
+from .bpy_prop_collection import bpy_prop_collection
+
 class MetaBall(ID):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -113,6 +121,7 @@ class MetaBall(ID):
     """Texture space size"""
     @property
     def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
+
         ...
     @property
     def is_editmode(self) -> bool:

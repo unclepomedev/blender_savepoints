@@ -4,16 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SequenceEditor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .SequenceTimelineChannel import SequenceTimelineChannel
 from .Strip import Strip
 from .StripsTopLevel import StripsTopLevel
+from .bpy_prop_collection import bpy_prop_collection
+
 class SequenceEditor(bpy_struct):
+
     @property
     def strips(self) -> Annotated['StripsTopLevel', "is_animatable=False"]:
         """Top-level strips only"""
@@ -28,15 +36,18 @@ class SequenceEditor(bpy_struct):
         ...
     @property
     def channels(self) -> Annotated[bpy_prop_collection['SequenceTimelineChannel'], "is_animatable=False"]:
+
         ...
     active_strip: Annotated[Optional['Strip'], "is_animatable=False"]
     """Sequencer's active strip"""
     @property
     def selected_retiming_keys(self) -> bool:
+
         ...
     show_overlay_frame: bool
     """Partial overlay on top of the sequencer with a frame offset"""
     use_overlay_frame_lock: bool
+
     show_missing_media: bool
     """Render missing images/movies with a solid magenta color"""
     overlay_frame: Annotated[int, "step=1"]
@@ -44,6 +55,7 @@ class SequenceEditor(bpy_struct):
     proxy_storage: Literal['PER_STRIP', 'PROJECT']
     """How to store proxies for this project"""
     proxy_dir: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]
+
     use_cache_raw: bool
     """Cache raw images read from disk, for faster tweaking of strip parameters at the cost of memory usage"""
     use_cache_final: bool

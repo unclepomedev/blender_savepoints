@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceClipEditor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .Mask import Mask
@@ -15,7 +20,9 @@ from .MovieClip import MovieClip
 from .MovieClipScopes import MovieClipScopes
 from .MovieClipUser import MovieClipUser
 from .SpaceClipOverlay import SpaceClipOverlay
+
 class SpaceClipEditor(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -23,10 +30,15 @@ class SpaceClipEditor(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_toolbar: bool
+
     show_region_channels: bool
+
     show_region_ui: bool
+
     show_region_hud: bool
+
     clip: Annotated[Optional['MovieClip'], "is_animatable=False"]
     """Movie clip displayed and edited in this space"""
     @property
@@ -38,7 +50,9 @@ class SpaceClipEditor(Space):
     mask_display_type: Literal['OUTLINE', 'DASH', 'BLACK', 'WHITE']
     """Display type for mask splines"""
     show_mask_spline: bool
+
     show_mask_overlay: bool
+
     mask_overlay_mode: Literal['ALPHACHANNEL', 'COMBINED']
     """Overlay mode of rasterized mask"""
     blend_factor: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=1"]

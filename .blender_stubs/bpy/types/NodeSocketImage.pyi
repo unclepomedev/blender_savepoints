@@ -4,15 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NodeSocketImage.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .NodeSocketStandard import NodeSocketStandard
 from .Image import Image
 from .Node import Node
+
 class NodeSocketImage(NodeSocketStandard):
+
     name: Annotated[str, "is_animatable=False"]
     """Socket name"""
     @property
@@ -78,6 +85,7 @@ class NodeSocketImage(NodeSocketStandard):
         """Best known structure type of the socket. This may not match the socket shape, e.g. for unlinked input sockets"""
         ...
     bl_idname: Annotated[str, "is_animatable=False"]
+
     bl_label: Annotated[str, "is_animatable=False"]
     """Label to display for the socket type in the UI"""
     bl_subtype_label: Annotated[str, "is_animatable=False"]

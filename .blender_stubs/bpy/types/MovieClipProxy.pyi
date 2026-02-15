@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieClipProxy.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class MovieClipProxy(bpy_struct):
+
     build_25: Annotated[bool, "is_animatable=False"]
     """Build proxy resolution 25% of the original footage dimension"""
     build_50: Annotated[bool, "is_animatable=False"]
@@ -32,5 +39,6 @@ class MovieClipProxy(bpy_struct):
     quality: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
     """JPEG quality of proxy images"""
     timecode: Annotated[Literal['NONE', 'RECORD_RUN', 'FREE_RUN_NO_GAPS'], "is_animatable=False"]
+
     directory: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]
     """Location to store the proxy files"""

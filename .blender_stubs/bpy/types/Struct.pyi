@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Struct.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .EnumPropertyItem import EnumPropertyItem
 from .Function import Function
 from .Property import Property
 from .StringProperty import StringProperty
+from .bpy_prop_collection import bpy_prop_collection
+
 class Struct(bpy_struct):
+
     @property
     def name(self) -> Annotated[str, "is_animatable=False"]:
         """Human readable name"""
@@ -49,6 +57,7 @@ class Struct(bpy_struct):
         ...
     @property
     def functions(self) -> Annotated[bpy_prop_collection['Function'], "is_animatable=False"]:
+
         ...
     @property
     def property_tags(self) -> Annotated[bpy_prop_collection['EnumPropertyItem'], "is_animatable=False"]:

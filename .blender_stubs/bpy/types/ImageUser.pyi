@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ImageUser.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class ImageUser(bpy_struct):
+
     use_auto_refresh: Annotated[bool, "is_animatable=False"]
     """Always refresh image on frame changes"""
     frame_current: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]

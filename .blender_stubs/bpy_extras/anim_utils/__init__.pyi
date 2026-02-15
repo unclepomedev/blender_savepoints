@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,15 +5,20 @@ https://docs.blender.org/api/current/bpy_extras.anim_utils.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy_extras.anim_utils.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class Action:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     def bl_rna_get_subclass(*args, **kwargs) -> Any: ...
@@ -51,8 +51,7 @@ class Action:
 class ActionChannelbag:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     def bl_rna_get_subclass(*args, **kwargs) -> Any: ...
@@ -85,8 +84,7 @@ class ActionChannelbag:
 class ActionSlot:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     def bl_rna_get_subclass(*args, **kwargs) -> Any: ...
@@ -117,11 +115,10 @@ class ActionSlot:
     def values(*args, **kwargs) -> Any: ...
 
 class AutoKeying:
-    """Auto-keying support."""
-    """
+    """Auto-keying support.
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def active_keyingset(context: _bpy_types.Context) -> Any: ...
     def autokey_transformation(context: _bpy_types.Context, target: Union[_bpy_types.Object, _bpy_types.PoseBone]) -> Any: ...
@@ -136,18 +133,16 @@ class AutoKeying:
     def options(*, keytype: str = '', use_loc: bool = True, use_rot: bool = True, use_scale: bool = True, force_autokey: bool = False) -> Any: ...
 
 class BakeOptions:
-    """BakeOptions(only_selected: bool, do_pose: bool, do_object: bool, do_visual_keying: bool, do_constraint_clear: bool, do_parents_clear: bool, do_clean: bool, do_location: bool, do_rotation: bool, do_scale: bool, do_bbone: bool, do_custom_props: bool)"""
-    """
+    """BakeOptions(only_selected: bool, do_pose: bool, do_object: bool, do_visual_keying: bool, do_constraint_clear: bool, do_parents_clear: bool, do_clean: bool, do_location: bool, do_rotation: bool, do_scale: bool, do_bbone: bool, do_custom_props: bool)
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, only_selected: bool, do_pose: bool, do_object: bool, do_visual_keying: bool, do_constraint_clear: bool, do_parents_clear: bool, do_clean: bool, do_location: bool, do_rotation: bool, do_scale: bool, do_bbone: bool, do_custom_props: bool) -> Any: ...
 
 class Context:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     def bl_rna_get_subclass(*args, **kwargs) -> Any: ...
@@ -212,11 +207,10 @@ class KeyframesCo:
     ``insert_keyframes_into_*_action()`` for efficiently inserting keys into the F-curves.
 
     Users are limited to one Action Group per instance.
-    """
-    """
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self) -> Any: ...
     def add_paths(self, rna_path: str, total_indices: int) -> Any: ...
     def extend_co_value(self, rna_path: str, frame: float, value: float) -> Any: ...
@@ -228,8 +222,7 @@ class KeyframesCo:
 class KeyingSet:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     def bl_rna_get_subclass(*args, **kwargs) -> Any: ...
@@ -266,11 +259,10 @@ class Mapping:
 
     This class provides concrete generic implementations of all
     methods except for __getitem__, __iter__, and __len__.
-    """
-    """
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def get(self, key, default=None) -> Any: ...
     def items(self) -> Any: ...
@@ -280,8 +272,7 @@ class Mapping:
 class Object:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     def bl_rna_get_subclass(*args, **kwargs) -> Any: ...
@@ -328,8 +319,7 @@ Optional: Any
 class PoseBone:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
     basename: Any
@@ -376,82 +366,144 @@ class Sequence:
 
     Concrete subclasses must override __new__ or __init__,
     __getitem__, and __len__.
-    """
-    """
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def count(self, value) -> Any: ...
     def index(self, value, start=0, stop=None) -> Any: ...
 
 Union: Any
 def action_ensure_channelbag_for_slot(action: bpy.types.Action, slot: bpy.types.ActionSlot) -> Any:
-    """
+    """Ensure a layer and a keyframe strip exists, then ensure that strip has a channelbag for the slot.
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def action_get_channelbag_for_slot(action: bpy.types.Action | None, slot: bpy.types.ActionSlot | None) -> Any:
     """
+    Returns the first channelbag found for the slot.
+    In case there are multiple layers or strips they are iterated until a
+    channelbag for that slot is found. In case no matching channelbag is found, returns None.
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def action_get_first_suitable_slot(action: bpy.types.Action | None, target_id_type: str) -> Any:
-    """
+    """Return the first Slot of the given Action that's suitable for the given ID type.
+
+    Typically you should not need this function; when an Action is assigned to a
+    data-block, just use the slot that was assigned along with it.
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def animdata_get_channelbag_for_assigned_slot(anim_data) -> Any:
-    """
+    """Return the channelbag used in the given anim_data or None if there is no Action
+    + Slot combination defined.
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def bake_action(obj, *, action, frames, bake_options) -> Any:
     """
+    :arg obj: Object to bake.
+    :type obj: :class:`bpy.types.Object`
+    :arg action: An action to bake the data into, or None for a new action
+       to be created.
+    :type action: :class:`bpy.types.Action` | None
+    :arg frames: Frames to bake.
+    :type frames: int
+    :arg bake_options: Options for baking.
+    :type bake_options: :class:`anim_utils.BakeOptions`
+    :return: Action or None.
+    :rtype: :class:`bpy.types.Action` | None
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def bake_action_iter(obj, *, action, bake_options) -> Any:
     """
+    An coroutine that bakes action for a single object.
+
+    :arg obj: Object to bake.
+    :type obj: :class:`bpy.types.Object`
+    :arg action: An action to bake the data into, or None for a new action
+       to be created.
+    :type action: :class:`bpy.types.Action` | None
+    :arg bake_options: Boolean options of what to include into the action bake.
+    :type bake_options: :class:`anim_utils.BakeOptions`
+
+    :return: an action or None
+    :rtype: :class:`bpy.types.Action`
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def bake_action_objects(object_action_pairs, *, frames, bake_options) -> Any:
     """
+    A version of :func:`bake_action_objects_iter` that takes frames and returns the output.
+
+    :arg frames: Frames to bake.
+    :type frames: iterable of int
+    :arg bake_options: Options for baking.
+    :type bake_options: :class:`anim_utils.BakeOptions`
+
+    :return: A sequence of Action or None types (aligned with ``object_action_pairs``)
+    :rtype: Sequence[:class:`bpy.types.Action`]
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def bake_action_objects_iter(object_action_pairs, bake_options) -> Any:
     """
+    An coroutine that bakes actions for multiple objects.
+
+    :arg object_action_pairs: Sequence of object action tuples,
+       action is the destination for the baked data. When None a new action will be created.
+    :type object_action_pairs: Sequence of (:class:`bpy.types.Object`, :class:`bpy.types.Action`)
+    :arg bake_options: Options for baking.
+    :type bake_options: :class:`anim_utils.BakeOptions`
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def dataclass(cls=None, /, *, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False, match_args=True, kw_only=False, slots=False, weakref_slot=False) -> Any:
-    """
+    """Add dunder methods based on the fields defined in the class.
+
+    Examines PEP 526 __annotations__ to determine fields.
+
+    If init is true, an __init__() method is added to the class. If repr
+    is true, a __repr__() method is added. If order is true, rich
+    comparison dunder methods are added. If unsafe_hash is true, a
+    __hash__() method is added. If frozen is true, fields may not be
+    assigned to after instance creation. If match_args is true, the
+    __match_args__ tuple is added. If kw_only is true, then by default
+    all fields are keyword-only. If slots is true, a new class with a
+    __slots__ attribute is returned.
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...
 
 def rna_idprop_value_to_python(value) -> Any:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.anim_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.anim_utils.html"""
     ...

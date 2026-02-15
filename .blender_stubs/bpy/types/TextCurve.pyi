@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.TextCurve.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Curve import Curve
 from .AnimData import AnimData
@@ -27,7 +32,10 @@ from .Spline import Spline
 from .TextBox import TextBox
 from .TextCharacterFormat import TextCharacterFormat
 from .VectorFont import VectorFont
+from .bpy_prop_collection import bpy_prop_collection
+
 class TextCurve(Curve):
+
     name: Annotated[str, "is_animatable=False"]
     """Unique data-block ID name (within a same type and library)"""
     @property
@@ -102,6 +110,7 @@ class TextCurve(Curve):
         ...
     @property
     def shape_keys(self) -> Annotated[Optional['Key'], "is_animatable=False"]:
+
         ...
     @property
     def splines(self) -> Annotated['CurveSplines', "is_animatable=False"]:
@@ -170,9 +179,12 @@ class TextCurve(Curve):
     use_auto_texspace: bool
     """Adjust active object's texture space automatically when transforming object"""
     texspace_location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]
+
     texspace_size: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+
     @property
     def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
+
         ...
     bevel_factor_start: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
     """Define where along the spline the curve geometry starts (0 for the beginning, 1 for the end)"""
@@ -197,11 +209,15 @@ class TextCurve(Curve):
     overflow: Literal['NONE', 'SCALE', 'TRUNCATE']
     """Handle the text behavior when it does not fit in the text boxes"""
     size: Annotated[float, "step=1.0", "precision=3"]
+
     small_caps_scale: Annotated[float, "step=1.0", "precision=2"]
     """Scale of small capitals"""
     space_line: Annotated[float, "step=10.0", "precision=3"]
+
     space_word: Annotated[float, "step=10.0", "precision=3"]
+
     space_character: Annotated[float, "step=10.0", "precision=3"]
+
     shear: Annotated[float, "step=10.0", "precision=3"]
     """Italic angle of the characters"""
     offset_x: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
@@ -211,10 +227,13 @@ class TextCurve(Curve):
     underline_position: Annotated[float, "step=10.0", "precision=3"]
     """Vertical position of underline"""
     underline_height: Annotated[float, "step=10.0", "precision=3"]
+
     @property
     def text_boxes(self) -> Annotated[bpy_prop_collection['TextBox'], "is_animatable=False"]:
+
         ...
     active_textbox: Annotated[int, "step=1"]
+
     family: Annotated[str, "is_animatable=False"]
     """Use objects as font characters (give font objects a common name followed by the character they represent, eg. 'family-a', 'family-b', etc, set this setting to 'family-', and turn on Vertex Instancing)"""
     body: Annotated[str, "is_animatable=False"]
@@ -226,9 +245,13 @@ class TextCurve(Curve):
     follow_curve: Annotated[Optional['Object'], "is_animatable=False"]
     """Curve deforming text object"""
     font: Annotated[Optional['VectorFont'], "is_animatable=False"]
+
     font_bold: Annotated[Optional['VectorFont'], "is_animatable=False"]
+
     font_italic: Annotated[Optional['VectorFont'], "is_animatable=False"]
+
     font_bold_italic: Annotated[Optional['VectorFont'], "is_animatable=False"]
+
     @property
     def edit_format(self) -> Annotated[Optional['TextCharacterFormat'], "is_animatable=False"]:
         """Editing settings character formatting"""

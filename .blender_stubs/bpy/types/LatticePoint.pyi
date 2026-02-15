@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.LatticePoint.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .VertexGroupElement import VertexGroupElement
+from .bpy_prop_collection import bpy_prop_collection
+
 class LatticePoint(bpy_struct):
+
     select: bool
     """Selection status"""
     @property
@@ -19,6 +27,7 @@ class LatticePoint(bpy_struct):
         """Original undeformed location used to calculate the strength of the deform effect (edit/animate the Deformed Location instead)"""
         ...
     co_deform: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
+
     weight_softbody: Annotated[float, "step=10.0", "precision=3"]
     """Softbody goal weight"""
     @property

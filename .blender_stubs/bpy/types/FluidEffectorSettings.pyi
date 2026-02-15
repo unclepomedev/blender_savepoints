@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FluidEffectorSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
+
 class FluidEffectorSettings(bpy_struct):
+
     effector_type: Literal['COLLISION', 'GUIDE']
     """Change type of effector in the simulation"""
     surface_distance: Annotated[float, "step=0.05000000074505806", "precision=5"]

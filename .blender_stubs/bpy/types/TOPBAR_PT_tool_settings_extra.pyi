@@ -4,14 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.TOPBAR_PT_tool_settings_extra.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Panel import Panel
 from .Constraint import Constraint
 from .UILayout import UILayout
+
 class TOPBAR_PT_tool_settings_extra(Panel):
     """
     Popover panel for adding extra options that don't fit in the tool settings header
@@ -56,6 +62,7 @@ class TOPBAR_PT_tool_settings_extra(Panel):
     """Show the panel on all tabs"""
     @property
     def is_popover(self) -> bool:
+
         ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

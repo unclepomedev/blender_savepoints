@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.XrSessionSettings.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Object import Object
 from .View3DShading import View3DShading
+
 class XrSessionSettings(bpy_struct):
+
     @property
     def shading(self) -> Annotated['View3DShading', "is_animatable=False"]:
+
         ...
     base_pose_type: Annotated[Literal['SCENE_CAMERA', 'OBJECT', 'CUSTOM'], "is_animatable=False"]
     """Define where the location and rotation for the VR view come from, to which translation and rotation deltas from the VR headset will be applied to"""
@@ -118,4 +126,5 @@ class XrSessionSettings(bpy_struct):
     """Allow selection of light probes"""
     @property
     def icon_from_show_object_viewport(self) -> Annotated[int, "step=1", "is_animatable=False"]:
+
         ...

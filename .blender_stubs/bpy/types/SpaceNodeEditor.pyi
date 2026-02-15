@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceNodeEditor.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .ID import ID
@@ -15,7 +20,10 @@ from .NodeTree import NodeTree
 from .NodeTreePath import NodeTreePath
 from .SpaceNodeEditorPath import SpaceNodeEditorPath
 from .SpaceNodeOverlay import SpaceNodeOverlay
+from .bpy_prop_collection import bpy_prop_collection
+
 class SpaceNodeEditor(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -23,8 +31,11 @@ class SpaceNodeEditor(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_toolbar: bool
+
     show_region_ui: bool
+
     show_region_asset_shelf: bool
     """Display a region with assets that may currently be relevant (such as brushes in paint modes, or poses in Pose Mode)"""
     tree_type: Literal['GeometryNodeTree', 'CompositorNodeTree', 'ShaderNodeTree', 'TextureNodeTree']
@@ -34,6 +45,7 @@ class SpaceNodeEditor(Space):
     shader_type: Literal['OBJECT', 'WORLD', 'LINESTYLE']
     """Type of data to take shader from"""
     node_tree_sub_type: str
+
     @property
     def id(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
         """Data-block whose nodes are being edited"""

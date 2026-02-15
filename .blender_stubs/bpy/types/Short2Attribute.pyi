@@ -4,14 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Short2Attribute.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Attribute import Attribute
 from .Short2AttributeValue import Short2AttributeValue
+from .bpy_prop_collection import bpy_prop_collection
+
 class Short2Attribute(Attribute):
+
     name: Annotated[str, "is_animatable=False"]
     """Name of the Attribute"""
     @property
@@ -36,4 +44,5 @@ class Short2Attribute(Attribute):
         ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['Short2AttributeValue'], "is_animatable=False"]:
+
         ...

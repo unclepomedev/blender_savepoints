@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BrushTextureSlot.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .TextureSlot import TextureSlot
 from .Texture import Texture
+
 class BrushTextureSlot(TextureSlot):
+
     texture: Annotated[Optional['Texture'], "is_animatable=False"]
     """Texture data-block used by this texture slot"""
     @property
@@ -33,17 +40,24 @@ class BrushTextureSlot(TextureSlot):
     angle: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
     """Brush texture rotation"""
     map_mode: Literal['VIEW_PLANE', 'AREA_PLANE', 'TILED', '3D', 'RANDOM', 'STENCIL']
+
     mask_map_mode: Literal['VIEW_PLANE', 'TILED', 'RANDOM', 'STENCIL']
+
     use_rake: bool
+
     use_random: bool
+
     random_angle: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
     """Brush texture random angle"""
     @property
     def has_texture_angle_source(self) -> bool:
+
         ...
     @property
     def has_random_texture_angle(self) -> bool:
+
         ...
     @property
     def has_texture_angle(self) -> bool:
+
         ...

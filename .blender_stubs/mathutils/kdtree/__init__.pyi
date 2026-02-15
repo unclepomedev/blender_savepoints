@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/mathutils.kdtree.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/mathutils.kdtree.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/mathutils.kdtree.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class KDTree:
     """KdTree(size) -> new kd-tree initialized to hold ``size`` items.
@@ -23,11 +24,10 @@ class KDTree:
 .. note::
 
    :class:`KDTree.balance` must have been called before using any of the ``find`` methods.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/mathutils.kdtree.html
-    """
+    https://docs.blender.org/api/current/mathutils.kdtree.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def balance(*args, **kwargs) -> Any: ...
     def find(*args, **kwargs) -> Any: ...

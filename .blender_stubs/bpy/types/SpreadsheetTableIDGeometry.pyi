@@ -4,20 +4,28 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpreadsheetTableIDGeometry.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .SpreadsheetTableID import SpreadsheetTableID
 from .ViewerPath import ViewerPath
+
 class SpreadsheetTableIDGeometry(SpreadsheetTableID):
+
     @property
     def type(self) -> Literal['GEOMETRY']:
         """The type of the table identifier"""
         ...
     @property
     def object_eval_state(self) -> Literal['EVALUATED', 'ORIGINAL', 'VIEWER_NODE']:
+
         ...
     @property
     def geometry_component_type(self) -> Literal['MESH', 'POINTCLOUD', 'CURVE', 'INSTANCES', 'GREASEPENCIL']:

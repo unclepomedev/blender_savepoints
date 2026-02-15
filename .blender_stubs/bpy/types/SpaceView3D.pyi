@@ -4,17 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceView3D.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .Space import Space
 from .Object import Object
 from .RegionView3D import RegionView3D
 from .View3DOverlay import View3DOverlay
 from .View3DShading import View3DShading
+from .bpy_prop_collection import bpy_prop_collection
+
 class SpaceView3D(Space):
+
     @property
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
@@ -22,10 +30,15 @@ class SpaceView3D(Space):
     show_locked_time: bool
     """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
+
     show_region_tool_header: bool
+
     show_region_toolbar: bool
+
     show_region_ui: bool
+
     show_region_hud: bool
+
     show_region_asset_shelf: bool
     """Display a region with assets that may currently be relevant (such as brushes in paint modes, or poses in Pose Mode)"""
     camera: Annotated[Optional['Object'], "is_animatable=False"]
@@ -113,6 +126,7 @@ class SpaceView3D(Space):
         """Current stereo eye being displayed"""
         ...
     stereo_3d_camera: Literal['LEFT', 'RIGHT', 'S3D']
+
     show_stereo_3d_cameras: bool
     """Show the left and right cameras"""
     show_stereo_3d_convergence_plane: bool
@@ -191,6 +205,7 @@ class SpaceView3D(Space):
     """Allow selection of light probes"""
     @property
     def icon_from_show_object_viewport(self) -> Annotated[int, "step=1"]:
+
         ...
     show_viewer: bool
     """Display non-final geometry from viewer nodes"""

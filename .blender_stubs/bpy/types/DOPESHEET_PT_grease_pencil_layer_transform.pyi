@@ -4,17 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.DOPESHEET_PT_grease_pencil_layer_transform.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .GreasePencilLayersDopeSheetPanel import GreasePencilLayersDopeSheetPanel
 from .GreasePencil_LayerTransformPanel import GreasePencil_LayerTransformPanel
 from .Panel import Panel
 from .Constraint import Constraint
 from .UILayout import UILayout
+
 class DOPESHEET_PT_grease_pencil_layer_transform(GreasePencilLayersDopeSheetPanel, GreasePencil_LayerTransformPanel, Panel):
+
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the panel in the UI"""
@@ -55,6 +62,7 @@ class DOPESHEET_PT_grease_pencil_layer_transform(GreasePencilLayersDopeSheetPane
     """Show the panel on all tabs"""
     @property
     def is_popover(self) -> bool:
+
         ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

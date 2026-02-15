@@ -4,14 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.RigidBodyConstraint.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Object import Object
+
 class RigidBodyConstraint(bpy_struct):
+
     type: Annotated[Literal['FIXED', 'POINT', 'HINGE', 'SLIDER', 'PISTON', 'GENERIC', 'GENERIC_SPRING', 'MOTOR'], "is_animatable=False"]
     """Type of Rigid Body Constraint"""
     spring_type: Annotated[Literal['SPRING1', 'SPRING2'], "is_animatable=False"]

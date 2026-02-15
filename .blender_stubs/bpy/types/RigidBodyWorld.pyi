@@ -4,16 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.RigidBodyWorld.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .bpy_struct import bpy_struct
 from .Collection import Collection
 from .EffectorWeights import EffectorWeights
 from .PointCache import PointCache
+
 class RigidBodyWorld(bpy_struct):
+
     collection: Annotated[Optional['Collection'], "is_animatable=False"]
     """Collection containing objects participating in this simulation"""
     constraints: Annotated[Optional['Collection'], "is_animatable=False"]
@@ -30,8 +37,10 @@ class RigidBodyWorld(bpy_struct):
     """Reduce extra velocity that can build up when objects collide (lowers simulation stability a little so use only when necessary)"""
     @property
     def point_cache(self) -> Annotated['PointCache', "is_animatable=False"]:
+
         ...
     @property
     def effector_weights(self) -> Annotated[Optional['EffectorWeights'], "is_animatable=False"]:
+
         ...
     def convex_sweep_test(self, *args, **kwargs) -> Any: ...

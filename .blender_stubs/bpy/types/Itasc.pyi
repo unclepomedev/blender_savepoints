@@ -4,13 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Itasc.html
+"""
+
 import sys
 import typing
 from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
-from .bpy_prop_collection import bpy_prop_collection
 
 from .IKParam import IKParam
+
 class Itasc(IKParam):
+
     @property
     def ik_solver(self) -> Literal['LEGACY', 'ITASC']:
         """IK solver for which these parameters are defined"""
@@ -24,6 +31,7 @@ class Itasc(IKParam):
     translate_root_bones: bool
     """Translate root (i.e. parentless) bones to the armature origin"""
     mode: Literal['ANIMATION', 'SIMULATION']
+
     reiteration_method: Literal['NEVER', 'INITIAL', 'ALWAYS']
     """Defines if the solver is allowed to reiterate (converge until precision is met) on none, first or all frames"""
     use_auto_step: bool
