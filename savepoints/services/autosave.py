@@ -66,6 +66,10 @@ class AutoSaveManager:
                 if area.type == "VIEW_3D":
                     area.tag_redraw()
 
+    @property
+    def is_dirty(self):
+        return bpy.data.is_dirty
+
     def update_warning(self, now):
         if not self.settings:
             return
@@ -76,7 +80,7 @@ class AutoSaveManager:
         minutes_since_save = (now - last_save) / 60.0
         threshold_minutes = max(15, interval_min + 5)
 
-        should_warn = bpy.data.is_dirty and minutes_since_save > threshold_minutes
+        should_warn = self.is_dirty and minutes_since_save > threshold_minutes
 
         if should_warn:
             self.settings.show_autosave_warning = True

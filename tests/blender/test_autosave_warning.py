@@ -26,6 +26,9 @@ class TestAutosaveWarning(SavePointsTestCase):
 
     def test_autosave_warning_triggered(self):
         """Test that autosave warning is triggered after threshold"""
+        from unittest.mock import patch, PropertyMock
+        from savepoints.services.autosave import AutoSaveManager
+
         # Set last save to 20 minutes ago (threshold is max(15, 1+5) = 15 mins)
         # So 20 mins > 15 mins, should warn.
         self.settings.last_autosave_timestamp = str(time.time() - (20 * 60))
@@ -36,7 +39,10 @@ class TestAutosaveWarning(SavePointsTestCase):
         bpy.ops.mesh.primitive_cube_add()
         bpy.ops.object.mode_set(mode="EDIT")  # Unsafe mode
 
-        autosave_timer()
+        # Mock is_dirty to be True, as it might be unreliable in test environment
+        with patch.object(AutoSaveManager, 'is_dirty', new_callable=PropertyMock) as mock_dirty:
+            mock_dirty.return_value = True
+            autosave_timer()
 
         self.assertTrue(self.settings.show_autosave_warning, "Warning should be shown")
         self.assertIn(
