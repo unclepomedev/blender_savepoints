@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.WindowManager.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .ID import ID
 from .Action import Action
@@ -22,48 +27,140 @@ from .Operator import Operator
 from .Window import Window
 from .XrSessionSettings import XrSessionSettings
 from .XrSessionState import XrSessionState
+from .bpy_prop_collection import bpy_prop_collection
+
 class WindowManager(ID):
-    name: str
-    name_full: str
-    id_type: str
-    session_uid: int
-    is_evaluated: bool
-    original: 'ID'
-    users: int
+
+    name: Annotated[str, "is_animatable=False"]
+    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name_full(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name, including library one if any"""
+        ...
+    @property
+    def id_type(self) -> Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD']:
+        """Type identifier of this data-block"""
+        ...
+    @property
+    def session_uid(self) -> Annotated[int, "step=1"]:
+        """A session-wide unique identifier for the data block that remains the same across renames and internal reallocations, unchanged when reloading the file"""
+        ...
+    @property
+    def is_evaluated(self) -> bool:
+        """Whether this ID is runtime-only, evaluated data-block, or actual data from .blend file"""
+        ...
+    @property
+    def original(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
+        """Actual data-block from .blend file (Main database) that generated that evaluated one"""
+        ...
+    @property
+    def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Number of times this data-block is referenced"""
+        ...
     use_fake_user: bool
+    """Save this data-block even if it has no users"""
     use_extra_user: bool
-    is_embedded_data: bool
-    is_linked_packed: bool
-    is_missing: bool
+    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def is_embedded_data(self) -> bool:
+        """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
+        ...
+    @property
+    def is_linked_packed(self) -> bool:
+        """This data-block is linked and packed into the .blend file"""
+        ...
+    @property
+    def is_missing(self) -> bool:
+        """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
+        ...
     is_runtime_data: bool
-    is_editable: bool
+    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_editable(self) -> bool:
+        """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
+        ...
     tag: bool
-    is_library_indirect: bool
-    library: 'Library'
-    library_weak_reference: 'LibraryWeakReference'
-    asset_data: 'AssetMetaData'
-    override_library: 'IDOverrideLibrary'
-    preview: 'ImagePreview'
-    operators: bpy_prop_collection['Operator']
-    windows: bpy_prop_collection['Window']
-    keyconfigs: 'KeyConfigurations'
-    xr_session_settings: 'XrSessionSettings'
-    xr_session_state: 'XrSessionState'
-    extensions_updates: int
-    extensions_blocked: int
-    is_interface_locked: bool
-    preset_name: str
-    asset_path_dummy: str
-    addon_search: str
+    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def is_library_indirect(self) -> bool:
+        """Is this ID block linked indirectly"""
+        ...
+    @property
+    def library(self) -> Annotated[Optional['Library'], "is_animatable=False"]:
+        """Library file the data-block is linked from"""
+        ...
+    @property
+    def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
+        """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
+        ...
+    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
+    """Additional data for an asset data-block"""
+    @property
+    def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
+        """Library override data"""
+        ...
+    @property
+    def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
+        """Preview image and icon of this data-block (always None if not supported for this type of data)"""
+        ...
+    @property
+    def operators(self) -> Annotated[bpy_prop_collection['Operator'], "is_animatable=False"]:
+        """Operator registry"""
+        ...
+    @property
+    def windows(self) -> Annotated[bpy_prop_collection['Window'], "is_animatable=False"]:
+        """Open windows"""
+        ...
+    @property
+    def keyconfigs(self) -> Annotated['KeyConfigurations', "is_animatable=False"]:
+        """Registered key configurations"""
+        ...
+    @property
+    def xr_session_settings(self) -> Annotated['XrSessionSettings', "is_animatable=False"]:
+
+        ...
+    @property
+    def xr_session_state(self) -> Annotated[Optional['XrSessionState'], "is_animatable=False"]:
+        """Runtime state information about the VR session"""
+        ...
+    extensions_updates: Annotated[int, "step=1"]
+    """Number of extensions with available update"""
+    extensions_blocked: Annotated[int, "step=1"]
+    """Number of installed extensions which are blocked"""
+    @property
+    def is_interface_locked(self) -> bool:
+        """If true, the interface is currently locked by a running job and data should not be modified from application timers. Otherwise, the running job might conflict with the handler causing unexpected results or even crashes."""
+        ...
+    preset_name: Annotated[str, "is_animatable=False"]
+    """Name for new preset"""
+    @property
+    def asset_path_dummy(self) -> Annotated[str, "is_animatable=False"]:
+        """Full path to the Blender file containing the active asset"""
+        ...
+    addon_search: Annotated[str, "is_animatable=False"]
+    """Filter by add-on name, author & category"""
     addon_filter: str
-    addon_support: set[str]
-    poselib_previous_action: 'Action'
-    addon_tags: bpy_prop_collection['BlExtDummyGroup']
-    extension_tags: bpy_prop_collection['BlExtDummyGroup']
-    extension_search: str
-    extension_type: str
+    """Filter add-ons by category"""
+    addon_support: Annotated[set[str], "is_animatable=False"]
+    """Display support level"""
+    poselib_previous_action: Annotated[Optional['Action'], "is_animatable=False"]
+
+    @property
+    def addon_tags(self) -> Annotated[bpy_prop_collection['BlExtDummyGroup'], "is_animatable=False"]:
+
+        ...
+    @property
+    def extension_tags(self) -> Annotated[bpy_prop_collection['BlExtDummyGroup'], "is_animatable=False"]:
+
+        ...
+    extension_search: Annotated[str, "is_animatable=False"]
+    """Filter by extension name, author & category"""
+    extension_type: Literal['ALL', 'ADDON', 'THEME']
+    """Show extensions by type"""
     extension_show_panel_installed: bool
+    """Only show installed extensions"""
     extension_show_panel_available: bool
+    """Only show installed extensions"""
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

@@ -4,15 +4,28 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.PreferencesExtensions.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .UserExtensionRepo import UserExtensionRepo
 from .UserExtensionRepoCollection import UserExtensionRepoCollection
+from .bpy_prop_collection import bpy_prop_collection
+
 class PreferencesExtensions(bpy_struct):
+
     use_online_access_handled: bool
-    repos: 'UserExtensionRepoCollection'
-    active_repo: int
+    """The user has been shown the "Online Access" prompt and made a choice"""
+    @property
+    def repos(self) -> Annotated['UserExtensionRepoCollection', "is_animatable=False"]:
+
+        ...
+    active_repo: Annotated[int, "step=1"]
+    """Index of the extensions repository being edited in the Preferences UI"""

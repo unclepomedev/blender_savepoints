@@ -4,12 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ViewerPath.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .ViewerPathElem import ViewerPathElem
+from .bpy_prop_collection import bpy_prop_collection
+
 class ViewerPath(bpy_struct):
-    path: bpy_prop_collection['ViewerPathElem']
+
+    @property
+    def path(self) -> Annotated[bpy_prop_collection['ViewerPathElem'], "is_animatable=False"]:
+
+        ...

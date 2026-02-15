@@ -4,12 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BlenderRNA.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .Struct import Struct
+from .bpy_prop_collection import bpy_prop_collection
+
 class BlenderRNA(bpy_struct):
-    structs: bpy_prop_collection['Struct']
+
+    @property
+    def structs(self) -> Annotated[bpy_prop_collection['Struct'], "is_animatable=False"]:
+
+        ...

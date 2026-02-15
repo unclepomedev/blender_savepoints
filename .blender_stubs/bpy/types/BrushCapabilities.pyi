@@ -4,14 +4,33 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BrushCapabilities.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class BrushCapabilities(bpy_struct):
-    has_overlay: bool
-    has_random_texture_angle: bool
-    has_spacing: bool
-    has_smooth_stroke: bool
+
+    @property
+    def has_overlay(self) -> bool:
+
+        ...
+    @property
+    def has_random_texture_angle(self) -> bool:
+
+        ...
+    @property
+    def has_spacing(self) -> bool:
+
+        ...
+    @property
+    def has_smooth_stroke(self) -> bool:
+
+        ...

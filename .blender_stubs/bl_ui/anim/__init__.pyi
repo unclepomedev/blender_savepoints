@@ -5,11 +5,15 @@
 # pylint: disable=invalid-name
 
 
+
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class ANIM_MT_keyframe_insert_pie:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -48,6 +52,7 @@ class ANIM_MT_keyframe_insert_pie:
     def values(*args, **kwargs) -> Any: ...
 
 class Menu:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -86,4 +91,12 @@ class Menu:
 
 classes: Any
 def draw_action_and_slot_selector_for_id(layout, animated_id) -> Any:
+    """
+    Draw the action and slot selector for an ID, using the given layout.
+
+    The ID must be an animatable ID.
+
+    Note that the slot selector is only drawn when the ID has an assigned
+    Action.
+    """
     ...

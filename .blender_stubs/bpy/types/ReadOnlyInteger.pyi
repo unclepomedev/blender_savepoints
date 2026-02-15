@@ -4,11 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ReadOnlyInteger.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class ReadOnlyInteger(bpy_struct):
-    value: int
+
+    @property
+    def value(self) -> Annotated[int, "step=1"]:
+
+        ...

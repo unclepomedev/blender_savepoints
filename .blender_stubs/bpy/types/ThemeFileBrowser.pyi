@@ -4,14 +4,26 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ThemeFileBrowser.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .ThemeSpaceGeneric import ThemeSpaceGeneric
+
 class ThemeFileBrowser(bpy_struct):
-    space: 'ThemeSpaceGeneric'
-    selected_file: list[float]
-    row_alternate: list[float]
+
+    @property
+    def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
+        """Settings for space"""
+        ...
+    selected_file: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    row_alternate: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Overlay color on every other row"""

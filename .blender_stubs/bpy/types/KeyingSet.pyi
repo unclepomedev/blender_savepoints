@@ -4,24 +4,48 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.KeyingSet.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .KeyingSetInfo import KeyingSetInfo
 from .KeyingSetPath import KeyingSetPath
 from .KeyingSetPaths import KeyingSetPaths
+from .bpy_prop_collection import bpy_prop_collection
+
 class KeyingSet(bpy_struct):
-    bl_idname: str
-    bl_label: str
-    bl_description: str
-    type_info: 'KeyingSetInfo'
-    paths: 'KeyingSetPaths'
-    is_path_absolute: bool
+
+    bl_idname: Annotated[str, "is_animatable=False"]
+    """If this is set, the Keying Set gets a custom ID, otherwise it takes the name of the class used to define the Keying Set (for example, if the class name is "BUILTIN_KSI_location", and bl_idname is not set by the script, then bl_idname = "BUILTIN_KSI_location")"""
+    bl_label: Annotated[str, "is_animatable=False"]
+
+    bl_description: Annotated[str, "is_animatable=False"]
+    """A short description of the keying set"""
+    @property
+    def type_info(self) -> Annotated[Optional['KeyingSetInfo'], "is_animatable=False"]:
+        """Callback function defines for built-in Keying Sets"""
+        ...
+    @property
+    def paths(self) -> Annotated['KeyingSetPaths', "is_animatable=False"]:
+        """Keying Set Paths to define settings that get keyframed together"""
+        ...
+    @property
+    def is_path_absolute(self) -> bool:
+        """Keying Set defines specific paths/settings to be keyframed (i.e. is not reliant on context info)"""
+        ...
     use_insertkey_override_needed: bool
+    """Override default setting to only insert keyframes where they're needed in the relevant F-Curves"""
     use_insertkey_override_visual: bool
+    """Override default setting to insert keyframes based on 'visual transforms'"""
     use_insertkey_needed: bool
+    """Only insert keyframes where they're needed in the relevant F-Curves"""
     use_insertkey_visual: bool
+    """Insert keyframes based on 'visual transforms'"""
     def refresh(self, *args, **kwargs) -> Any: ...

@@ -4,23 +4,44 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Pose.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .AnimViz import AnimViz
 from .IKParam import IKParam
 from .PoseBone import PoseBone
+from .bpy_prop_collection import bpy_prop_collection
+
 class Pose(bpy_struct):
-    bones: bpy_prop_collection['PoseBone']
-    ik_solver: str
-    ik_param: 'IKParam'
+
+    @property
+    def bones(self) -> Annotated[bpy_prop_collection['PoseBone'], "is_animatable=False"]:
+        """Individual pose bones for the armature"""
+        ...
+    ik_solver: Literal['LEGACY', 'ITASC']
+    """Selection of IK solver for IK chain"""
+    @property
+    def ik_param(self) -> Annotated[Optional['IKParam'], "is_animatable=False"]:
+        """Parameters for IK solver"""
+        ...
     use_mirror_x: bool
+    """Apply changes to matching bone on opposite side of X-Axis"""
     use_mirror_relative: bool
+    """Apply relative transformations in X-mirror mode (not supported with Auto IK)"""
     use_auto_ik: bool
-    animation_visualization: 'AnimViz'
+    """Add temporary IK constraints while grabbing bones in Pose Mode"""
+    @property
+    def animation_visualization(self) -> Annotated['AnimViz', "is_animatable=False"]:
+        """Animation data for this data-block"""
+        ...
     def apply_pose_from_action(self, *args, **kwargs) -> Any: ...
     def blend_pose_from_action(self, *args, **kwargs) -> Any: ...
     def backup_create(self, *args, **kwargs) -> Any: ...

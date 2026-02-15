@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bmesh.types.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,15 +5,20 @@ https://docs.blender.org/api/current/bmesh.types.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bmesh.types.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class BMDeformVert:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def clear(*args, **kwargs) -> Any: ...
     def get(*args, **kwargs) -> Any: ...
@@ -28,11 +28,10 @@ class BMDeformVert:
 
 class BMEdge:
     """The BMesh edge connecting 2 verts
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def calc_face_angle(*args, **kwargs) -> Any: ...
     def calc_face_angle_signed(*args, **kwargs) -> Any: ...
@@ -65,8 +64,7 @@ class BMEdge:
 class BMEdgeSeq:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def ensure_lookup_table(*args, **kwargs) -> Any: ...
     def get(*args, **kwargs) -> Any: ...
@@ -79,15 +77,13 @@ class BMEdgeSeq:
 class BMEditSelIter:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class BMEditSelSeq:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     active: Any
     def add(*args, **kwargs) -> Any: ...
@@ -102,21 +98,19 @@ class BMElemSeq:
 
 When accessed via :class:`bmesh.types.BMesh.verts`, :class:`bmesh.types.BMesh.edges`, :class:`bmesh.types.BMesh.faces`
 there are also functions to create/remove items.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def index_update(*args, **kwargs) -> Any: ...
 
 class BMFace:
     """The BMesh face with 3 or more sides
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def calc_area(*args, **kwargs) -> Any: ...
     def calc_center_bounds(*args, **kwargs) -> Any: ...
@@ -154,8 +148,7 @@ class BMFace:
 class BMFaceSeq:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     active: Any
     def ensure_lookup_table(*args, **kwargs) -> Any: ...
@@ -169,20 +162,18 @@ class BMFaceSeq:
 class BMIter:
     """Internal BMesh type for looping over verts/faces/edges,
 used for iterating over :class:`bmesh.types.BMElemSeq` types.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class BMLayerAccessEdge:
     """Exposes custom-data layer attributes.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     bool: Any
     color: Any
@@ -194,11 +185,10 @@ class BMLayerAccessEdge:
 
 class BMLayerAccessFace:
     """Exposes custom-data layer attributes.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     bool: Any
     color: Any
@@ -210,11 +200,10 @@ class BMLayerAccessFace:
 
 class BMLayerAccessLoop:
     """Exposes custom-data layer attributes.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     bool: Any
     color: Any
@@ -227,11 +216,10 @@ class BMLayerAccessLoop:
 
 class BMLayerAccessVert:
     """Exposes custom-data layer attributes.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     bool: Any
     color: Any
@@ -246,11 +234,10 @@ class BMLayerAccessVert:
 
 class BMLayerCollection:
     """Gives access to a collection of custom-data layers of the same type and behaves like Python dictionaries, except for the ability to do list like index access.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     active: Any
     def get(*args, **kwargs) -> Any: ...
@@ -264,22 +251,20 @@ class BMLayerCollection:
 
 class BMLayerItem:
     """Exposes a single custom data layer, their main purpose is for use as item accessors to custom-data when used with vert/edge/face/loop data.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def copy_from(*args, **kwargs) -> Any: ...
     name: Any
 
 class BMLoop:
     """This is normally accessed from :class:`bmesh.types.BMFace.loops` where each face loop represents a corner of the face.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def calc_angle(*args, **kwargs) -> Any: ...
     def calc_normal(*args, **kwargs) -> Any: ...
@@ -309,27 +294,24 @@ class BMLoop:
 class BMLoopSeq:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     layers: Any
 
 class BMLoopUV:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     pin_uv: Any
     uv: Any
 
 class BMVert:
     """The BMesh vertex type
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def calc_edge_angle(*args, **kwargs) -> Any: ...
     def calc_shell_factor(*args, **kwargs) -> Any: ...
@@ -359,8 +341,7 @@ class BMVert:
 class BMVertSeq:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def ensure_lookup_table(*args, **kwargs) -> Any: ...
     def index_update(*args, **kwargs) -> Any: ...
@@ -371,11 +352,10 @@ class BMVertSeq:
 
 class BMesh:
     """The BMesh data structure
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bmesh.types.html
-    """
+    https://docs.blender.org/api/current/bmesh.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def calc_loop_triangles(*args, **kwargs) -> Any: ...
     def calc_volume(*args, **kwargs) -> Any: ...

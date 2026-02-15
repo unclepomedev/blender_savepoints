@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bpy.utils.toolsystem.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,16 +5,21 @@ https://docs.blender.org/api/current/bpy.utils.toolsystem.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.utils.toolsystem.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class ToolDef:
-    """ToolDef(idname, label, description, icon, cursor, widget_properties, widget, keymap, brush_type, data_block, operator, draw_settings, draw_cursor, options)"""
-    """
+    """ToolDef(idname, label, description, icon, cursor, widget_properties, widget, keymap, brush_type, data_block, operator, draw_settings, draw_cursor, options)
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy.utils.toolsystem.html
-    """
+    https://docs.blender.org/api/current/bpy.utils.toolsystem.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     brush_type: Any
     def count(self, value, /) -> Any: ...

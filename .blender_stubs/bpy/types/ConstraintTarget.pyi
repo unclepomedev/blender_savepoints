@@ -4,13 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ConstraintTarget.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .Object import Object
+
 class ConstraintTarget(bpy_struct):
-    target: 'Object'
-    subtarget: str
+
+    target: Annotated[Optional['Object'], "is_animatable=False"]
+    """Target object"""
+    subtarget: Annotated[str, "is_animatable=False"]
+    """Armature bone, mesh or lattice vertex group, ..."""

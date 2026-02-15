@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Speaker.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .ID import ID
 from .AnimData import AnimData
@@ -17,41 +22,109 @@ from .ImagePreview import ImagePreview
 from .Library import Library
 from .LibraryWeakReference import LibraryWeakReference
 from .Sound import Sound
+
 class Speaker(ID):
-    name: str
-    name_full: str
-    id_type: str
-    session_uid: int
-    is_evaluated: bool
-    original: 'ID'
-    users: int
+
+    name: Annotated[str, "is_animatable=False"]
+    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name_full(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name, including library one if any"""
+        ...
+    @property
+    def id_type(self) -> Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD']:
+        """Type identifier of this data-block"""
+        ...
+    @property
+    def session_uid(self) -> Annotated[int, "step=1"]:
+        """A session-wide unique identifier for the data block that remains the same across renames and internal reallocations, unchanged when reloading the file"""
+        ...
+    @property
+    def is_evaluated(self) -> bool:
+        """Whether this ID is runtime-only, evaluated data-block, or actual data from .blend file"""
+        ...
+    @property
+    def original(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
+        """Actual data-block from .blend file (Main database) that generated that evaluated one"""
+        ...
+    @property
+    def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Number of times this data-block is referenced"""
+        ...
     use_fake_user: bool
+    """Save this data-block even if it has no users"""
     use_extra_user: bool
-    is_embedded_data: bool
-    is_linked_packed: bool
-    is_missing: bool
+    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def is_embedded_data(self) -> bool:
+        """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
+        ...
+    @property
+    def is_linked_packed(self) -> bool:
+        """This data-block is linked and packed into the .blend file"""
+        ...
+    @property
+    def is_missing(self) -> bool:
+        """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
+        ...
     is_runtime_data: bool
-    is_editable: bool
+    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_editable(self) -> bool:
+        """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
+        ...
     tag: bool
-    is_library_indirect: bool
-    library: 'Library'
-    library_weak_reference: 'LibraryWeakReference'
-    asset_data: 'AssetMetaData'
-    override_library: 'IDOverrideLibrary'
-    preview: 'ImagePreview'
-    muted: bool
-    sound: 'Sound'
-    volume_max: float
-    volume_min: float
-    distance_max: float
-    distance_reference: float
-    attenuation: float
-    cone_angle_outer: float
-    cone_angle_inner: float
-    cone_volume_outer: float
-    volume: float
-    pitch: float
-    animation_data: 'AnimData'
+    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def is_library_indirect(self) -> bool:
+        """Is this ID block linked indirectly"""
+        ...
+    @property
+    def library(self) -> Annotated[Optional['Library'], "is_animatable=False"]:
+        """Library file the data-block is linked from"""
+        ...
+    @property
+    def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
+        """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
+        ...
+    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
+    """Additional data for an asset data-block"""
+    @property
+    def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
+        """Library override data"""
+        ...
+    @property
+    def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
+        """Preview image and icon of this data-block (always None if not supported for this type of data)"""
+        ...
+    muted: Annotated[bool, "is_animatable=False"]
+    """Mute the speaker"""
+    sound: Annotated[Optional['Sound'], "is_animatable=False"]
+    """Sound data-block used by this speaker"""
+    volume_max: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]
+    """Maximum volume, no matter how near the object is"""
+    volume_min: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]
+    """Minimum volume, no matter how far away the object is"""
+    distance_max: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
+    """Maximum distance for volume calculation, no matter how far away the object is"""
+    distance_reference: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
+    """Reference distance at which volume is 100%"""
+    attenuation: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
+    """How strong the distance affects volume, depending on distance model"""
+    cone_angle_outer: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
+    """Angle of the outer cone, in degrees, outside this cone the volume is the outer cone volume, between inner and outer cone the volume is interpolated"""
+    cone_angle_inner: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
+    """Angle of the inner cone, in degrees, inside the cone the volume is 100%"""
+    cone_volume_outer: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]
+    """Volume outside the outer cone"""
+    volume: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
+    """How loud the sound is"""
+    pitch: Annotated[float, "step=10.0", "precision=3"]
+    """Playback pitch of the sound"""
+    @property
+    def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
+        """Animation data for this data-block"""
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

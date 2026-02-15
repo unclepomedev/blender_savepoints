@@ -4,12 +4,20 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MeshUVLoop.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class MeshUVLoop(bpy_struct):
-    uv: list[float]
-    pin_uv: bool
+
+    uv: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+
+    pin_uv: Annotated[bool, "is_animatable=False"]

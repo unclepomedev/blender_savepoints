@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/idprop.types.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,15 +5,20 @@ https://docs.blender.org/api/current/idprop.types.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/idprop.types.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class IDPropertyArray:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def to_list(*args, **kwargs) -> Any: ...
     typecode: Any
@@ -26,8 +26,7 @@ class IDPropertyArray:
 class IDPropertyGroup:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def clear(*args, **kwargs) -> Any: ...
     def get(*args, **kwargs) -> Any: ...
@@ -42,41 +41,35 @@ class IDPropertyGroup:
 class IDPropertyGroupIterItems:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class IDPropertyGroupIterKeys:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class IDPropertyGroupIterValues:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class IDPropertyGroupViewItems:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class IDPropertyGroupViewKeys:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class IDPropertyGroupViewValues:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/idprop.types.html
-    """
+    https://docs.blender.org/api/current/idprop.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...

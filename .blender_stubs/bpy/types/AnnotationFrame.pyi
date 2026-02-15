@@ -4,14 +4,27 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.AnnotationFrame.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .AnnotationStroke import AnnotationStroke
+from .bpy_prop_collection import bpy_prop_collection
+
 class AnnotationFrame(bpy_struct):
-    strokes: bpy_prop_collection['AnnotationStroke']
-    frame_number: int
+
+    @property
+    def strokes(self) -> Annotated[bpy_prop_collection['AnnotationStroke'], "is_animatable=False"]:
+        """Freehand curves defining the sketch on this frame"""
+        ...
+    frame_number: Annotated[int, "step=1"]
+    """The frame on which this sketch appears"""
     select: bool
+    """Frame is selected for editing in the Dope Sheet"""

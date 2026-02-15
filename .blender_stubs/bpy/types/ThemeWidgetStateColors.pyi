@@ -4,25 +4,46 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.ThemeWidgetStateColors.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class ThemeWidgetStateColors(bpy_struct):
-    error: list[float]
-    warning: list[float]
-    info: list[float]
-    success: list[float]
-    inner_anim: list[float]
-    inner_anim_sel: list[float]
-    inner_key: list[float]
-    inner_key_sel: list[float]
-    inner_driven: list[float]
-    inner_driven_sel: list[float]
-    inner_overridden: list[float]
-    inner_overridden_sel: list[float]
-    inner_changed: list[float]
-    inner_changed_sel: list[float]
-    blend: float
+
+    error: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color for error items"""
+    warning: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color for warning items"""
+    info: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color for informational items"""
+    success: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color for successful items"""
+    inner_anim: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_anim_sel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_key: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_key_sel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_driven: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_driven_sel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_overridden: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_overridden_sel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_changed: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    inner_changed_sel: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+
+    blend: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]

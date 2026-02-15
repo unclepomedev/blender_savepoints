@@ -4,15 +4,29 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MeshLoopColorLayer.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .MeshLoopColor import MeshLoopColor
+from .bpy_prop_collection import bpy_prop_collection
+
 class MeshLoopColorLayer(bpy_struct):
-    name: str
-    active: bool
-    active_render: bool
-    data: bpy_prop_collection['MeshLoopColor']
+
+    name: Annotated[str, "is_animatable=False"]
+    """Name of Vertex color layer"""
+    active: Annotated[bool, "is_animatable=False"]
+    """Sets the layer as active for display and editing"""
+    active_render: Annotated[bool, "is_animatable=False"]
+    """Sets the layer as active for rendering"""
+    @property
+    def data(self) -> Annotated[bpy_prop_collection['MeshLoopColor'], "is_animatable=False"]:
+
+        ...

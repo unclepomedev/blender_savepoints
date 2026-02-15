@@ -4,14 +4,31 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.StripElement.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class StripElement(bpy_struct):
-    filename: str
-    orig_width: int
-    orig_height: int
-    orig_fps: float
+
+    filename: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]
+    """Name of the source file"""
+    @property
+    def orig_width(self) -> Annotated[int, "step=1"]:
+        """Original image width"""
+        ...
+    @property
+    def orig_height(self) -> Annotated[int, "step=1"]:
+        """Original image height"""
+        ...
+    @property
+    def orig_fps(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Original frames per second"""
+        ...

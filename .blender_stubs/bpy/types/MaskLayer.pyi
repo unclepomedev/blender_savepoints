@@ -4,24 +4,46 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MaskLayer.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .MaskSpline import MaskSpline
 from .MaskSplines import MaskSplines
+from .bpy_prop_collection import bpy_prop_collection
+
 class MaskLayer(bpy_struct):
-    name: str
-    splines: 'MaskSplines'
+
+    name: Annotated[str, "is_animatable=False"]
+    """Unique name of layer"""
+    @property
+    def splines(self) -> Annotated['MaskSplines', "is_animatable=False"]:
+        """Collection of splines which defines this layer"""
+        ...
     hide: bool
+    """Restrict visibility in the viewport"""
     hide_select: bool
+    """Restrict selection in the viewport"""
     hide_render: bool
+    """Restrict renderability"""
     select: bool
-    alpha: float
-    blend: str
+    """Layer is selected for editing in the Dope Sheet"""
+    alpha: Annotated[float, "step=0.10000000149011612", "precision=3"]
+    """Render Opacity"""
+    blend: Literal['MERGE_ADD', 'MERGE_SUBTRACT', 'ADD', 'SUBTRACT', 'LIGHTEN', 'DARKEN', 'MUL', 'REPLACE', 'DIFFERENCE']
+    """Method of blending mask layers"""
     invert: bool
-    falloff: str
+    """Invert the mask black/white"""
+    falloff: Literal['SMOOTH', 'SPHERE', 'ROOT', 'INVERSE_SQUARE', 'SHARP', 'LINEAR']
+    """Falloff type of the feather"""
     use_fill_holes: bool
+    """Calculate holes when filling overlapping curves"""
     use_fill_overlap: bool
+    """Calculate self intersections and overlap before filling"""

@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/aud.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/aud.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/aud.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 AP_LOCATION = 3
 AP_ORIENTATION = 4
@@ -22,11 +23,10 @@ AP_PITCH_SCALE = 6
 AP_TIME_STRETCH = 5
 AP_VOLUME = 0
 class AnimateableProperty:
-    """An AnimateableProperty object stores an array of float values for animating sound properties (e.g. pan, volume, pitch-scale)"""
-    """
+    """An AnimateableProperty object stores an array of float values for animating sound properties (e.g. pan, volume, pitch-scale)
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     animated: Any
     count: Any
@@ -70,11 +70,10 @@ DISTANCE_MODEL_INVERSE_CLAMPED = 2
 DISTANCE_MODEL_LINEAR = 3
 DISTANCE_MODEL_LINEAR_CLAMPED = 4
 class Device:
-    """Device objects represent an audio output backend like OpenAL or SDL, but might also represent a file output or RAM buffer output."""
-    """
+    """Device objects represent an audio output backend like OpenAL or SDL, but might also represent a file output or RAM buffer output.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     channels: Any
     distance_model: Any
@@ -93,11 +92,10 @@ class Device:
 
 class DynamicMusic:
     """The DynamicMusic object allows to play music depending on a current scene, scene changes are managed by the class, with the possibility of custom transitions.
-The default transition is a crossfade effect, and the default scene is silent and has id 0"""
-    """
+The default transition is a crossfade effect, and the default scene is silent and has id 0
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def addScene(*args, **kwargs) -> Any: ...
     def addTransition(*args, **kwargs) -> Any: ...
@@ -118,22 +116,20 @@ FORMAT_S24 = 19
 FORMAT_S32 = 20
 FORMAT_U8 = 1
 class HRTF:
-    """An HRTF object represents a set of head related transfer functions as impulse responses. It's used for binaural sound"""
-    """
+    """An HRTF object represents a set of head related transfer functions as impulse responses. It's used for binaural sound
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def addImpulseResponseFromSound(*args, **kwargs) -> Any: ...
     def loadLeftHrtfSet(*args, **kwargs) -> Any: ...
     def loadRightHrtfSet(*args, **kwargs) -> Any: ...
 
 class Handle:
-    """Handle objects are playback handles that can be used to control playback of a sound. If a sound is played back multiple times then there are as many handles."""
-    """
+    """Handle objects are playback handles that can be used to control playback of a sound. If a sound is played back multiple times then there are as many handles.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     attenuation: Any
     cone_angle_inner: Any
@@ -158,19 +154,17 @@ class Handle:
     volume_minimum: Any
 
 class ImpulseResponse:
-    """An ImpulseResponse object represents a filter with which to convolve a sound."""
-    """
+    """An ImpulseResponse object represents a filter with which to convolve a sound.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class PlaybackManager:
-    """A PlabackManager object allows to easily control groups os sounds organized in categories."""
-    """
+    """A PlabackManager object allows to easily control groups os sounds organized in categories.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def addCategory(*args, **kwargs) -> Any: ...
     def clean(*args, **kwargs) -> Any: ...
@@ -200,11 +194,10 @@ STRETCHER_QUALITY_CONSISTENT = 2
 STRETCHER_QUALITY_FAST = 1
 STRETCHER_QUALITY_HIGH = 0
 class Sequence:
-    """This sound represents sequenced entries to play a sound sequence."""
-    """
+    """This sound represents sequenced entries to play a sound sequence.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def ADSR(*args, **kwargs) -> Any: ...
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def accumulate(*args, **kwargs) -> Any: ...
@@ -259,11 +252,10 @@ class Sequence:
     def write(*args, **kwargs) -> Any: ...
 
 class SequenceEntry:
-    """SequenceEntry objects represent an entry of a sequenced sound."""
-    """
+    """SequenceEntry objects represent an entry of a sequenced sound.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     attenuation: Any
     cone_angle_inner: Any
@@ -280,11 +272,10 @@ class SequenceEntry:
     volume_minimum: Any
 
 class Sound:
-    """Sound objects are immutable and represent a sound that can be played simultaneously multiple times. They are called factories because they create reader objects internally that are used for playback."""
-    """
+    """Sound objects are immutable and represent a sound that can be played simultaneously multiple times. They are called factories because they create reader objects internally that are used for playback.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def ADSR(*args, **kwargs) -> Any: ...
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def accumulate(*args, **kwargs) -> Any: ...
@@ -329,29 +320,26 @@ class Sound:
     def write(*args, **kwargs) -> Any: ...
 
 class Source:
-    """The source object represents the source position of a binaural sound."""
-    """
+    """The source object represents the source position of a binaural sound.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     azimuth: Any
     distance: Any
     elevation: Any
 
 class ThreadPool:
-    """A ThreadPool is used to parallelize convolution efficiently."""
-    """
+    """A ThreadPool is used to parallelize convolution efficiently.
+
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class error:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/aud.html
-    """
+    https://docs.blender.org/api/current/aud.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def add_note(*args, **kwargs) -> Any: ...
     args: Any

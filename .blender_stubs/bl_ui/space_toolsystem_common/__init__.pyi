@@ -5,11 +5,15 @@
 # pylint: disable=invalid-name
 
 
+
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class Menu:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -47,6 +51,7 @@ class Menu:
     def values(*args, **kwargs) -> Any: ...
 
 class ToolActivePanelHelper:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def draw(self, context) -> Any: ...
 
@@ -111,6 +116,7 @@ class ToolSelectPanelHelper:
     def tools_from_context(context, mode=None) -> Any: ...
 
 class WM_MT_toolsystem_submenu:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -160,6 +166,20 @@ def description_from_id(context, space_type, idname, *, use_operator=True) -> An
 
 i18n_contexts: Any
 def iface_(*args, **kwargs) -> Any:
+    """.. method:: pgettext_iface(msgid, msgctxt=None)
+
+   Try to translate the given msgid (with optional msgctxt), if labels' translation is enabled.
+
+   .. note::
+      See :func:`pgettext` notes.
+
+   :arg msgid: The string to translate.
+   :type msgid: str
+   :arg msgctxt: The translation context (defaults to BLT_I18NCONTEXT_DEFAULT).
+   :type msgctxt: str | None
+   :return: The translated string (or msgid if no translation was found).
+
+"""
     ...
 
 def item_from_flat_index(context, space_type, index) -> Any:
@@ -184,4 +204,18 @@ def keymap_from_id(context, space_type, idname) -> Any:
     ...
 
 def tip_(*args, **kwargs) -> Any:
+    """.. method:: pgettext_tip(msgid, msgctxt=None)
+
+   Try to translate the given msgid (with optional msgctxt), if tooltips' translation is enabled.
+
+   .. note::
+      See :func:`pgettext` notes.
+
+   :arg msgid: The string to translate.
+   :type msgid: str
+   :arg msgctxt: The translation context (defaults to BLT_I18NCONTEXT_DEFAULT).
+   :type msgctxt: str | None
+   :return: The translated string (or msgid if no translation was found).
+
+"""
     ...

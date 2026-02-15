@@ -4,12 +4,22 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.AnimViz.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .AnimVizMotionPaths import AnimVizMotionPaths
+
 class AnimViz(bpy_struct):
-    motion_path: 'AnimVizMotionPaths'
+
+    @property
+    def motion_path(self) -> Annotated['AnimVizMotionPaths', "is_animatable=False"]:
+        """Motion Path settings for visualization"""
+        ...

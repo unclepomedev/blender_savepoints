@@ -4,17 +4,30 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.NodeTreeInterface.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .NodeTreeInterfaceItem import NodeTreeInterfaceItem
+from .bpy_prop_collection import bpy_prop_collection
+
 class NodeTreeInterface(bpy_struct):
-    items_tree: bpy_prop_collection['NodeTreeInterfaceItem']
-    active_index: int
-    active: 'NodeTreeInterfaceItem'
+
+    @property
+    def items_tree(self) -> Annotated[bpy_prop_collection['NodeTreeInterfaceItem'], "is_animatable=False"]:
+        """Items in the node interface"""
+        ...
+    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+    """Index of the active item"""
+    active: Annotated[Optional['NodeTreeInterfaceItem'], "is_animatable=False"]
+    """Active item"""
     def new_socket(self, *args, **kwargs) -> Any: ...
     def new_panel(self, *args, **kwargs) -> Any: ...
     def copy(self, *args, **kwargs) -> Any: ...

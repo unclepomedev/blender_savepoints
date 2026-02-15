@@ -4,13 +4,24 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Addon.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .AddonPreferences import AddonPreferences
+
 class Addon(bpy_struct):
-    module: str
-    preferences: 'AddonPreferences'
+
+    module: Annotated[str, "is_animatable=False"]
+    """Module name"""
+    @property
+    def preferences(self) -> Annotated[Optional['AddonPreferences'], "is_animatable=False"]:
+
+        ...

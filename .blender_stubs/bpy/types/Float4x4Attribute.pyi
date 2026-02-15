@@ -4,18 +4,45 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.Float4x4Attribute.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .Attribute import Attribute
 from .Float4x4AttributeValue import Float4x4AttributeValue
+from .bpy_prop_collection import bpy_prop_collection
+
 class Float4x4Attribute(Attribute):
-    name: str
-    data_type: str
-    storage_type: str
-    domain: str
-    is_internal: bool
-    is_required: bool
-    data: bpy_prop_collection['Float4x4AttributeValue']
+
+    name: Annotated[str, "is_animatable=False"]
+    """Name of the Attribute"""
+    @property
+    def data_type(self) -> Literal['FLOAT', 'INT', 'BOOLEAN', 'FLOAT_VECTOR', 'FLOAT_COLOR', 'QUATERNION', 'FLOAT4X4', 'STRING', 'INT8', 'INT16_2D', 'INT32_2D', 'FLOAT2', 'BYTE_COLOR']:
+        """Type of data stored in attribute"""
+        ...
+    @property
+    def storage_type(self) -> Literal['ARRAY', 'SINGLE']:
+        """Method used to store the data"""
+        ...
+    @property
+    def domain(self) -> Literal['POINT', 'EDGE', 'FACE', 'CORNER', 'CURVE', 'INSTANCE', 'LAYER']:
+        """Domain of the Attribute"""
+        ...
+    @property
+    def is_internal(self) -> bool:
+        """The attribute is meant for internal use by Blender"""
+        ...
+    @property
+    def is_required(self) -> bool:
+        """Whether the attribute can be removed or renamed"""
+        ...
+    @property
+    def data(self) -> Annotated[bpy_prop_collection['Float4x4AttributeValue'], "is_animatable=False"]:
+
+        ...

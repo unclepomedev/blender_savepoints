@@ -4,18 +4,34 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MaskSpline.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .MaskSplinePoint import MaskSplinePoint
 from .MaskSplinePoints import MaskSplinePoints
+from .bpy_prop_collection import bpy_prop_collection
+
 class MaskSpline(bpy_struct):
-    offset_mode: str
-    weight_interpolation: str
-    use_cyclic: bool
-    use_fill: bool
-    use_self_intersection_check: bool
-    points: 'MaskSplinePoints'
+
+    offset_mode: Literal['EVEN', 'SMOOTH']
+    """The method used for calculating the feather offset"""
+    weight_interpolation: Literal['LINEAR', 'EASE']
+    """The type of weight interpolation for spline"""
+    use_cyclic: Annotated[bool, "is_animatable=False"]
+    """Make this spline a closed loop"""
+    use_fill: Annotated[bool, "is_animatable=False"]
+    """Make this spline filled"""
+    use_self_intersection_check: Annotated[bool, "is_animatable=False"]
+    """Prevent feather from self-intersections"""
+    @property
+    def points(self) -> Annotated['MaskSplinePoints', "is_animatable=False"]:
+        """Collection of points"""
+        ...

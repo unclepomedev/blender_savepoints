@@ -4,19 +4,51 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.StudioLight.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .UserSolidLight import UserSolidLight
+from .bpy_prop_collection import bpy_prop_collection
+
 class StudioLight(bpy_struct):
-    index: int
-    is_user_defined: bool
-    has_specular_highlight_pass: bool
-    type: str
-    name: str
-    path: str
-    solid_lights: bpy_prop_collection['UserSolidLight']
-    light_ambient: list[float]
+
+    @property
+    def index(self) -> Annotated[int, "step=1"]:
+
+        ...
+    @property
+    def is_user_defined(self) -> bool:
+
+        ...
+    @property
+    def has_specular_highlight_pass(self) -> bool:
+        """Studio light image file has separate "diffuse" and "specular" passes"""
+        ...
+    @property
+    def type(self) -> Literal['STUDIO', 'WORLD', 'MATCAP']:
+
+        ...
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+
+        ...
+    @property
+    def path(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
+
+        ...
+    @property
+    def solid_lights(self) -> Annotated[bpy_prop_collection['UserSolidLight'], "is_animatable=False"]:
+        """Lights used to display objects in solid draw mode"""
+        ...
+    @property
+    def light_ambient(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """Color of the ambient light that uniformly lit the scene"""
+        ...

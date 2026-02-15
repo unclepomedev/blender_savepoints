@@ -4,13 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.USDHook.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class USDHook(bpy_struct):
-    bl_idname: str
-    bl_label: str
-    bl_description: str
+
+    bl_idname: Annotated[str, "is_animatable=False"]
+
+    bl_label: Annotated[str, "is_animatable=False"]
+
+    bl_description: Annotated[str, "is_animatable=False"]
+    """A short description of the USD hook"""

@@ -4,15 +4,26 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.GreasePencilTimeModifierSegment.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class GreasePencilTimeModifierSegment(bpy_struct):
-    name: str
-    segment_start: int
-    segment_end: int
-    segment_repeat: int
-    segment_mode: str
+
+    name: Annotated[str, "is_animatable=False"]
+    """Name of the dash segment"""
+    segment_start: Annotated[int, "step=1"]
+    """First frame of the segment"""
+    segment_end: Annotated[int, "step=1"]
+    """Last frame of the segment"""
+    segment_repeat: Annotated[int, "step=1"]
+    """Number of cycle repeats"""
+    segment_mode: Literal['NORMAL', 'REVERSE', 'PINGPONG']

@@ -4,14 +4,25 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.StripCrop.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class StripCrop(bpy_struct):
-    max_y: int
-    min_y: int
-    min_x: int
-    max_x: int
+
+    max_y: Annotated[int, "subtype='PIXEL'", "step=1"]
+    """Number of pixels to crop from the top"""
+    min_y: Annotated[int, "subtype='PIXEL'", "step=1"]
+    """Number of pixels to crop from the bottom"""
+    min_x: Annotated[int, "subtype='PIXEL'", "step=1"]
+    """Number of pixels to crop from the left side"""
+    max_x: Annotated[int, "subtype='PIXEL'", "step=1"]
+    """Number of pixels to crop from the right side"""

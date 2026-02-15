@@ -5,11 +5,101 @@
 # pylint: disable=invalid-name
 
 
+
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 def EnumProperty(*args, **kwargs) -> Any:
+    """.. function:: EnumProperty(items, *, name="", description="", translation_context="*", default=None, options={'ANIMATABLE'}, override=set(), tags=set(), update=None, get=None, set=None, get_transform=None, set_transform=None)
+
+   Returns a new enumerator property definition.
+
+   :arg items: sequence of enum items formatted:
+      ``[(identifier, name, description, icon, number), ...]``.
+
+      The first three elements of the tuples are mandatory.
+
+      :identifier: The identifier is used for Python access.
+         An empty identifier means that the item is a separator
+      :name: Name for the interface.
+      :description: Used for documentation and tooltips.
+      :icon: An icon string identifier or integer icon value
+         (e.g. returned by :class:`bpy.types.UILayout.icon`)
+      :number: Unique value used as the identifier for this item (stored in file data).
+         Use when the identifier may need to change. If the *ENUM_FLAG* option is used,
+         the values are bit-masks and should be powers of two.
+
+      When an item only contains 4 items they define ``(identifier, name, description, number)``.
+
+      Separators may be added using either None (nameless separator),
+      or a regular item tuple with an empty identifier string, in which case the name,
+      if non-empty, will be displayed in the UI above the separator line.
+      For dynamic values a callback can be passed which returns a list in
+      the same format as the static list.
+      This function must take 2 arguments ``(self, context)``, **context may be None**.
+
+      .. warning::
+
+         There is a known bug with using a callback,
+         Python must keep a reference to the strings returned by the callback or Blender
+         will misbehave or even crash.
+   :type items: Iterable[tuple[str, str, str] | tuple[str, str, str, int] | tuple[str, str, str, int, int] | None] | Callable[[:class:`bpy.types.bpy_struct`, :class:`bpy.types.Context` | None], Iterable[tuple[str, str, str] | tuple[str, str, str, int] | tuple[str, str, str, int, int] | None]]
+   :arg name: Name used in the user interface.
+   :type name: str
+   :arg description: Text used for the tooltip and api documentation.
+   :type description: str
+   :arg translation_context: Text used as context to disambiguate translations.
+   :type translation_context: str
+   :arg default: The default value for this enum, a string from the identifiers used in *items*, or integer matching an item number.
+      If the *ENUM_FLAG* option is used this must be a set of such string identifiers instead.
+      WARNING: Strings cannot be specified for dynamic enums
+      (i.e. if a callback function is given as *items* parameter).
+   :type default: str | int | set[str]
+   :arg options: Enumerator in :ref:`rna_enum_property_flag_enum_items`.
+   :type options: set[str]
+   :arg override: Enumerator in :ref:`rna_enum_property_override_flag_items`.
+   :type override: set[str]
+   :arg tags: Enumerator of tags that are defined by parent class.
+   :type tags: set[str]
+   :arg update: Function to be called when this value is modified,
+      This function must take 2 values (self, context) and return None.
+      *Warning* there are no safety checks to avoid infinite recursion.
+   :type update: Callable[[:class:`bpy.types.bpy_struct`, :class:`bpy.types.Context`], None]
+   :arg get: Function to be called when this value is 'read', and the default,
+      system-defined storage is not used for this property.
+      This function must take 1 value (self) and return the value of the property.
+
+      .. note:: Defining this callback without a matching ``set`` one will make the property read-only (even if ``READ_ONLY`` option is not set).
+   :type get: Callable[[:class:`bpy.types.bpy_struct`], int]
+   :arg set: Function to be called when this value is 'written', and the default,
+      system-defined storage is not used for this property.
+      This function must take 2 values (self, value) and return None.
+
+      .. note:: Defining this callback without a matching ``get`` one is invalid.
+   :type set: Callable[[:class:`bpy.types.bpy_struct`, int], None]
+   :arg get_transform: Function to be called when this value is 'read',
+      if some additional processing must be performed on the stored value.
+      This function must take three arguments (self, the stored value,
+      and a boolean indicating if the property is currently set),
+      and return the final, transformed value of the property.
+
+      .. note:: The callback is responsible to ensure that value limits of the property (min/max, length...) are respected. Otherwise a ValueError exception is raised.
+
+   :type get_transform: Callable[[:class:`bpy.types.bpy_struct`, int, bool], int]
+   :arg set_transform: Function to be called when this value is 'written',
+      if some additional processing must be performed on the given value before storing it.
+      This function must take four arguments (self, the given value to store,
+      the currently stored value ('raw' value, without any ``get_transform`` applied to it),
+      and a boolean indicating if the property is currently set),
+      and return the final, transformed value of the property.
+
+      .. note:: The callback is responsible to ensure that value limits (min/max, length...) are respected. Otherwise a ValueError exception is raised.
+
+   :type set_transform: Callable[[:class:`bpy.types.bpy_struct`, int, int, bool], int]
+"""
     ...
 
 class GenericUIListOperator:
@@ -21,6 +111,7 @@ class GenericUIListOperator:
     def set_active_index(self, context, index) -> Any: ...
 
 class Operator:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def as_keywords(self, *, ignore=()) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -53,6 +144,80 @@ class Operator:
     def values(*args, **kwargs) -> Any: ...
 
 def StringProperty(*args, **kwargs) -> Any:
+    """.. function:: StringProperty(*, name="", description="", translation_context="*", default="", maxlen=0, options={'ANIMATABLE'}, override=set(), tags=set(), subtype='NONE', update=None, get=None, set=None, get_transform=None, set_transform=None, search=None, search_options={'SUGGESTION'})
+
+   Returns a new string property definition.
+
+   :arg name: Name used in the user interface.
+   :type name: str
+   :arg description: Text used for the tooltip and api documentation.
+   :type description: str
+   :arg translation_context: Text used as context to disambiguate translations.
+   :type translation_context: str
+   :arg default: initializer string.
+   :type default: str
+   :arg maxlen: maximum length of the string.
+   :type maxlen: int
+   :arg options: Enumerator in :ref:`rna_enum_property_flag_items`.
+   :type options: set[str]
+   :arg override: Enumerator in :ref:`rna_enum_property_override_flag_items`.
+   :type override: set[str]
+   :arg tags: Enumerator of tags that are defined by parent class.
+   :type tags: set[str]
+   :arg subtype: Enumerator in :ref:`rna_enum_property_subtype_string_items`.
+   :type subtype: str
+   :arg update: Function to be called when this value is modified,
+      This function must take 2 values (self, context) and return None.
+      *Warning* there are no safety checks to avoid infinite recursion.
+   :type update: Callable[[:class:`bpy.types.bpy_struct`, :class:`bpy.types.Context`], None]
+   :arg get: Function to be called when this value is 'read', and the default,
+      system-defined storage is not used for this property.
+      This function must take 1 value (self) and return the value of the property.
+
+      .. note:: Defining this callback without a matching ``set`` one will make the property read-only (even if ``READ_ONLY`` option is not set).
+   :type get: Callable[[:class:`bpy.types.bpy_struct`], str]
+   :arg set: Function to be called when this value is 'written', and the default,
+      system-defined storage is not used for this property.
+      This function must take 2 values (self, value) and return None.
+
+      .. note:: Defining this callback without a matching ``get`` one is invalid.
+   :type set: Callable[[:class:`bpy.types.bpy_struct`, str], None]
+   :arg get_transform: Function to be called when this value is 'read',
+      if some additional processing must be performed on the stored value.
+      This function must take three arguments (self, the stored value,
+      and a boolean indicating if the property is currently set),
+      and return the final, transformed value of the property.
+
+      .. note:: The callback is responsible to ensure that value limits of the property (min/max, length...) are respected. Otherwise a ValueError exception is raised.
+
+   :type get_transform: Callable[[:class:`bpy.types.bpy_struct`, str, bool], str]
+   :arg set_transform: Function to be called when this value is 'written',
+      if some additional processing must be performed on the given value before storing it.
+      This function must take four arguments (self, the given value to store,
+      the currently stored value ('raw' value, without any ``get_transform`` applied to it),
+      and a boolean indicating if the property is currently set),
+      and return the final, transformed value of the property.
+
+      .. note:: The callback is responsible to ensure that value limits (min/max, length...) are respected. Otherwise a ValueError exception is raised.
+
+   :type set_transform: Callable[[:class:`bpy.types.bpy_struct`, str, str, bool], str]
+   :arg search: Function to be called to show candidates for this string (shown in the UI).
+      This function must take 3 values (self, context, edit_text)
+      and return a sequence, iterator or generator where each item must be:
+
+      - A single string (representing a candidate to display).
+      - A tuple-pair of strings, where the first is a candidate and the second
+        is additional information about the candidate.
+   :type search: Callable[[:class:`bpy.types.bpy_struct`, :class:`bpy.types.Context`, str], Iterable[str | tuple[str, str]]]
+   :arg search_options: Set of strings in:
+
+      - 'SORT' sorts the resulting items.
+      - 'SUGGESTION' lets the user enter values not found in search candidates.
+        **WARNING** disabling this flag causes the search callback to run on redraw,
+        so only disable this flag if it's not likely to cause performance issues.
+
+   :type search_options: set[str]
+"""
     ...
 
 class UILIST_OT_entry_add:
@@ -168,6 +333,34 @@ class UILIST_OT_entry_remove:
 
 classes: Any
 def draw_ui_list(layout, context, class_name='UI_UL_list', *, unique_id, list_path, active_index_path, insertion_operators=True, move_operators=True, menu_class_name='', **kwargs) -> Any:
+    """
+    Draw a UIList with Add/Remove/Move buttons and a menu.
+
+    :arg layout: UILayout to draw the list in.
+    :type layout: :class:`UILayout`
+    :arg context: Blender context to get the list data from.
+    :type context: :class:`Context`
+    :arg class_name: Name of the UIList class to draw. The default is the UIList class that ships with Blender.
+    :type class_name: str
+    :arg unique_id: Unique identifier to differentiate this from other UI lists.
+    :type unique_id: str
+    :arg list_path: Data path of the list relative to context, eg. "object.vertex_groups".
+    :type list_path: str
+    :arg active_index_path: Data path of the list active index integer relative to context,
+       eg. "object.vertex_groups.active_index".
+    :type active_index_path: str
+    :arg insertion_operators: Whether to draw Add/Remove buttons.
+    :type insertion_operators: bool
+    :arg move_operators: Whether to draw Move Up/Down buttons.
+    :type move_operators: str
+    :arg menu_class_name: Identifier of a Menu that should be drawn as a drop-down.
+    :type menu_class_name: str
+
+    :returns: The right side column.
+    :rtype: :class:`UILayout`
+
+    Additional keyword arguments are passed to :class:`UIList.template_list`.
+    """
     ...
 
 def register() -> Any:

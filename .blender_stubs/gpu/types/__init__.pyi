@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/gpu.types.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/gpu.types.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/gpu.types.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class Buffer:
     """.. class:: Buffer(format, dimensions, data)
@@ -27,11 +28,10 @@ class Buffer:
    :type dimensions: int
    :arg data: Optional data array.
    :type data: Buffer | Sequence[float] | Sequence[int]
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     dimensions: Any
     def to_list(*args, **kwargs) -> Any: ...
@@ -48,11 +48,10 @@ class GPUBatch:
    :type buf: :class:`gpu.types.GPUVertBuf`
    :arg elem: An optional index buffer.
    :type elem: :class:`gpu.types.GPUIndexBuf`
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def draw(*args, **kwargs) -> Any: ...
     def draw_instanced(*args, **kwargs) -> Any: ...
@@ -71,11 +70,10 @@ class GPUFrameBuffer:
    :type depth_slot: :class:`gpu.types.GPUTexture` | dict[] | None
    :arg color_slots: Tuple where each item can be a GPUTexture or a ``dict`` containing keywords: 'texture', 'layer' and 'mip'.
    :type color_slots: :class:`gpu.types.GPUTexture` | dict[str, int | :class:`gpu.types.GPUTexture`] | Sequence[:class:`gpu.types.GPUTexture` | dict[str, int | :class:`gpu.types.GPUTexture`]] | None
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def bind(*args, **kwargs) -> Any: ...
     def clear(*args, **kwargs) -> Any: ...
@@ -97,11 +95,10 @@ class GPUIndexBuf:
       Whether a 1D or 2D sequence is required depends on the type.
       Optionally the sequence can support the buffer protocol.
    :type seq: Buffer | Sequence[int] | Sequence[Sequence[int]]
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
 
 class GPUOffScreen:
@@ -119,11 +116,10 @@ class GPUOffScreen:
       ``RGBA16F``,
       ``RGBA32F``.
    :type format: str
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def bind(*args, **kwargs) -> Any: ...
     def draw_view3d(*args, **kwargs) -> Any: ...
@@ -136,8 +132,7 @@ class GPUOffScreen:
 class GPUShader:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def attr_from_name(*args, **kwargs) -> Any: ...
     def attrs_info_get(*args, **kwargs) -> Any: ...
@@ -160,11 +155,10 @@ class GPUShaderCreateInfo:
     """.. class:: GPUShaderCreateInfo()
 
    Stores and describes types and variables that are used in shader sources.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def compute_source(*args, **kwargs) -> Any: ...
     def define(*args, **kwargs) -> Any: ...
@@ -188,11 +182,10 @@ class GPUStageInterfaceInfo:
 
    :arg name: Name of the interface block.
    :type value: str
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def flat(*args, **kwargs) -> Any: ...
     name: Any
@@ -258,11 +251,10 @@ class GPUTexture:
    :type format: str
    :arg data: Buffer object to fill the texture.
    :type data: :class:`gpu.types.Buffer`
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def clear(*args, **kwargs) -> Any: ...
     format: Any
@@ -277,11 +269,10 @@ class GPUUniformBuf:
 
    :arg data: Data to fill the buffer.
    :type data: object exposing buffer interface
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def update(*args, **kwargs) -> Any: ...
 
@@ -294,11 +285,10 @@ class GPUVertBuf:
    :type format: :class:`gpu.types.GPUVertFormat`
    :arg len: Amount of vertices that will fit into this buffer.
    :type len: int
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def attr_fill(*args, **kwargs) -> Any: ...
 
@@ -306,10 +296,9 @@ class GPUVertFormat:
     """.. class:: GPUVertFormat()
 
    This object contains information about the structure of a vertex buffer.
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/gpu.types.html
-    """
+    https://docs.blender.org/api/current/gpu.types.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def attr_add(*args, **kwargs) -> Any: ...

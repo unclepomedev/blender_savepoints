@@ -1,8 +1,3 @@
-"""
-Online Documentation:
-https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-"""
-
 # Blender Probe Generated Stub for Blender 5.0.1
 # noinspection PyPep8Naming
 # noinspection PyUnresolvedReferences
@@ -10,9 +5,15 @@ https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
 # pylint: disable=invalid-name
 
 
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
+"""
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class Color:
     """.. class:: Color(rgb=(0.0, 0.0, 0.0), /)
@@ -23,11 +24,10 @@ class Color:
 
    :arg rgb: (red, green, blue) color values where (0, 0, 0) is black & (1, 1, 1) is white.
    :type rgb: Sequence[float]
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     def __init__(self, /, *args, **kwargs) -> Any: ...
     b: Any
     def copy(*args, **kwargs) -> Any: ...
@@ -95,11 +95,10 @@ class PrincipledBSDFWrapper:
     Hard coded shader setup, based in Principled BSDF.
     Should cover most common cases on import, and gives a basic nodal shaders support for export.
     Supports basic: diffuse/spec/reflect/transparency/normal, with texturing.
-    """
-    """
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     def __init__(self, material, is_readonly=True) -> Any: ...
     alpha: Any
     def alpha_get(self) -> Any: ...
@@ -170,11 +169,10 @@ class ShaderImageTextureWrapper:
     """
     Generic 'image texture'-like wrapper, handling image node, some mapping (texture coordinates transformations),
     and texture coordinates source.
-    """
-    """
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     def __init__(self, owner_shader: bpy_extras.node_shader_utils.ShaderWrapper, node_dst, socket_dst, grid_row_diff=0, use_alpha=False, colorspace_is_data=Ellipsis, colorspace_name=Ellipsis) -> Any: ...
     colorspace_is_data: Any
     colorspace_name: Any
@@ -216,11 +214,10 @@ class ShaderImageTextureWrapper:
 class ShaderWrapper:
     """
     Base class with minimal common ground for all types of shader interfaces we may want/need to implement.
-    """
-    """
+    
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     def __init__(self, material, is_readonly=True) -> Any: ...
     is_readonly: Any
     material: Any
@@ -236,11 +233,10 @@ class Vector:
 
    :arg seq: Components of the vector, must be a sequence of at least two.
    :type seq: Sequence[float]
-"""
-    """
+
+
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     def Fill(*args, **kwargs) -> Any: ...
     def Linspace(*args, **kwargs) -> Any: ...
     def Range(*args, **kwargs) -> Any: ...
@@ -659,34 +655,29 @@ class Vector:
 def node_input_value_get(node, input, default_value=None) -> Any:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     ...
 
 def node_input_value_set(node, input, value) -> Any:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     ...
 
 def rgb_to_rgba(rgb) -> Any:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     ...
 
 def rgba_to_rgb(rgba) -> Any:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     ...
 
 def values_clamp(val, minv, maxv) -> Any:
     """
     Online Documentation:
-    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html
-    """
+    https://docs.blender.org/api/current/bpy_extras.node_shader_utils.html"""
     ...

@@ -4,19 +4,50 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.IDOverrideLibraryPropertyOperation.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .ID import ID
+
 class IDOverrideLibraryPropertyOperation(bpy_struct):
-    operation: str
-    flag: set[str]
-    subitem_reference_name: str
-    subitem_local_name: str
-    subitem_reference_id: 'ID'
-    subitem_local_id: 'ID'
-    subitem_reference_index: int
-    subitem_local_index: int
+
+    @property
+    def operation(self) -> Literal['NOOP', 'REPLACE', 'DIFF_ADD', 'DIFF_SUB', 'FACT_MULTIPLY', 'INSERT_AFTER', 'INSERT_BEFORE']:
+        """What override operation is performed"""
+        ...
+    @property
+    def flag(self) -> set[str]:
+        """Status flags"""
+        ...
+    @property
+    def subitem_reference_name(self) -> Annotated[str, "is_animatable=False"]:
+        """Used to handle changes into collection"""
+        ...
+    @property
+    def subitem_local_name(self) -> Annotated[str, "is_animatable=False"]:
+        """Used to handle changes into collection"""
+        ...
+    @property
+    def subitem_reference_id(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
+        """Collection of IDs only, used to disambiguate between potential IDs with same name from different libraries"""
+        ...
+    @property
+    def subitem_local_id(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
+        """Collection of IDs only, used to disambiguate between potential IDs with same name from different libraries"""
+        ...
+    @property
+    def subitem_reference_index(self) -> Annotated[int, "step=1"]:
+        """Used to handle changes into collection"""
+        ...
+    @property
+    def subitem_local_index(self) -> Annotated[int, "step=1"]:
+        """Used to handle changes into collection"""
+        ...

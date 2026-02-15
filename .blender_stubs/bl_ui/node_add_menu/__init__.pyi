@@ -5,11 +5,15 @@
 # pylint: disable=invalid-name
 
 
+
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class AddNodeMenu:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -62,6 +66,7 @@ class AddNodeMenu:
     def values(*args, **kwargs) -> Any: ...
 
 class Menu:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -99,6 +104,7 @@ class Menu:
     def values(*args, **kwargs) -> Any: ...
 
 class NODE_MT_group_base:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -151,6 +157,7 @@ class NODE_MT_group_base:
     def values(*args, **kwargs) -> Any: ...
 
 class NODE_MT_layout_base:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -255,6 +262,7 @@ class NodeMenu:
     def values(*args, **kwargs) -> Any: ...
 
 class SwapNodeMenu:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -320,6 +328,7 @@ def add_foreach_geometry_element_zone(layout, label) -> Any:
     ...
 
 def add_node_type(layout, node_type, *, label=None, poll=None, search_weight=0.0, translate=True) -> Any:
+    """Add a node type to a menu."""
     ...
 
 def add_node_type_with_outputs(context, layout, node_type, subnames, *, label=None, search_weight=0.0) -> Any:
@@ -335,10 +344,12 @@ def add_repeat_zone(layout, label) -> Any:
     ...
 
 def add_simulation_zone(layout, label) -> Any:
+    """Add simulation zone to a menu."""
     ...
 
 classes: Any
 def draw_node_group_add_menu(context, layout) -> Any:
+    """Add items to the layout used for interacting with node groups."""
     ...
 
 def generate_menu(bl_idname: str, template: _bpy_types.Menu, layout_base: _bpy_types.Menu, pathing_dict: dict = None) -> Any:
@@ -352,6 +363,20 @@ def generate_pathing_dict(pathing_dict, menus) -> Any:
 
 i18n_contexts: Any
 def iface_(*args, **kwargs) -> Any:
+    """.. method:: pgettext_iface(msgid, msgctxt=None)
+
+   Try to translate the given msgid (with optional msgctxt), if labels' translation is enabled.
+
+   .. note::
+      See :func:`pgettext` notes.
+
+   :arg msgid: The string to translate.
+   :type msgid: str
+   :arg msgctxt: The translation context (defaults to BLT_I18NCONTEXT_DEFAULT).
+   :type msgctxt: str | None
+   :return: The translated string (or msgid if no translation was found).
+
+"""
     ...
 
 swap_base_pathing_dict: Any

@@ -4,13 +4,23 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.MovieTrackingPlaneMarker.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class MovieTrackingPlaneMarker(bpy_struct):
-    frame: int
-    corners: list[float]
+
+    frame: Annotated[int, "step=1"]
+    """Frame number marker is keyframed on"""
+    corners: Annotated[list[float], "subtype='MATRIX'", "step=1.0", "precision=5", "is_animatable=False"]
+    """Array of coordinates which represents UI rectangle corners in frame normalized coordinates"""
     mute: bool
+    """Is marker muted for current frame"""

@@ -4,21 +4,35 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.AttributeGroupMesh.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .Attribute import Attribute
+
 class AttributeGroupMesh(bpy_struct):
-    active: 'Attribute'
-    active_index: int
-    active_color: 'Attribute'
-    active_color_index: int
-    render_color_index: int
-    default_color_name: str
-    active_color_name: str
+
+    active: Annotated[Optional['Attribute'], "is_animatable=False"]
+    """Active attribute"""
+    active_index: Annotated[int, "step=1", "is_animatable=False"]
+    """Active attribute index or -1 when none are active"""
+    active_color: Annotated[Optional['Attribute'], "is_animatable=False"]
+    """Active color attribute for display and editing"""
+    active_color_index: Annotated[int, "step=1", "is_animatable=False"]
+    """Active color attribute index"""
+    render_color_index: Annotated[int, "step=1", "is_animatable=False"]
+    """The index of the color attribute used as a fallback for rendering"""
+    default_color_name: Annotated[str, "is_animatable=False"]
+    """The name of the default color attribute used as a fallback for rendering"""
+    active_color_name: Annotated[str, "is_animatable=False"]
+    """The name of the active color attribute for display and editing"""
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def domain_size(self, *args, **kwargs) -> Any: ...

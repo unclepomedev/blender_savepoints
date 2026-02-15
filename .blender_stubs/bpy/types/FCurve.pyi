@@ -4,10 +4,15 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.FCurve.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .ActionGroup import ActionGroup
@@ -17,24 +22,54 @@ from .FCurveModifiers import FCurveModifiers
 from .FCurveSample import FCurveSample
 from .FModifier import FModifier
 from .Keyframe import Keyframe
+from .bpy_prop_collection import bpy_prop_collection
+
 class FCurve(bpy_struct):
-    extrapolation: str
-    driver: 'Driver'
-    group: 'ActionGroup'
-    data_path: str
-    array_index: int
-    color_mode: str
-    color: list[float]
+
+    extrapolation: Literal['CONSTANT', 'LINEAR']
+    """Method used for evaluating value of F-Curve outside first and last keyframes"""
+    @property
+    def driver(self) -> Annotated[Optional['Driver'], "is_animatable=False"]:
+        """Channel Driver (only set for Driver F-Curves)"""
+        ...
+    group: Annotated[Optional['ActionGroup'], "is_animatable=False"]
+    """Action Group that this F-Curve belongs to"""
+    data_path: Annotated[str, "is_animatable=False"]
+    """RNA Path to property affected by F-Curve"""
+    array_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+    """Index to the specific property affected by F-Curve if applicable"""
+    color_mode: Literal['AUTO_RAINBOW', 'AUTO_RGB', 'AUTO_YRGB', 'CUSTOM']
+    """Method used to determine color of F-Curve in Graph Editor"""
+    color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    """Color of the F-Curve in the Graph Editor"""
     select: bool
+    """F-Curve is selected for editing"""
     lock: bool
+    """F-Curve's settings cannot be edited"""
     mute: bool
+    """Disable F-Curve evaluation"""
     hide: bool
-    auto_smoothing: str
+    """F-Curve and its keyframes are hidden in the Graph Editor graphs"""
+    auto_smoothing: Literal['NONE', 'CONT_ACCEL']
+    """Algorithm used to compute automatic handles"""
     is_valid: bool
-    is_empty: bool
-    sampled_points: bpy_prop_collection['FCurveSample']
-    keyframe_points: 'FCurveKeyframePoints'
-    modifiers: 'FCurveModifiers'
+    """False when F-Curve could not be evaluated in past, so should be skipped when evaluating"""
+    @property
+    def is_empty(self) -> bool:
+        """True if the curve contributes no animation due to lack of keyframes or useful modifiers, and should be deleted"""
+        ...
+    @property
+    def sampled_points(self) -> Annotated[bpy_prop_collection['FCurveSample'], "is_animatable=False"]:
+        """Sampled animation data"""
+        ...
+    @property
+    def keyframe_points(self) -> Annotated['FCurveKeyframePoints', "is_animatable=False"]:
+        """User-editable keyframes"""
+        ...
+    @property
+    def modifiers(self) -> Annotated['FCurveModifiers', "is_animatable=False"]:
+        """Modifiers affecting the shape of the F-Curve"""
+        ...
     def evaluate(self, *args, **kwargs) -> Any: ...
     def update(self, *args, **kwargs) -> Any: ...
     def range(self, *args, **kwargs) -> Any: ...

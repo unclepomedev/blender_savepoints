@@ -4,25 +4,48 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.BrushCurvesSculptSettings.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
 from .CurveMapping import CurveMapping
+
 class BrushCurvesSculptSettings(bpy_struct):
-    add_amount: int
-    points_per_curve: int
+
+    add_amount: Annotated[int, "step=1"]
+    """Number of curves added by the Add brush"""
+    points_per_curve: Annotated[int, "step=1"]
+    """Number of control points in a newly added curve"""
     use_uniform_scale: bool
-    minimum_length: float
+    """Grow or shrink curves by changing their size uniformly instead of using trimming or extrapolation"""
+    minimum_length: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    """Avoid shrinking curves shorter than this length"""
     use_length_interpolate: bool
+    """Use length of the curves in close proximity"""
     use_radius_interpolate: bool
+    """Use radius of the curves in close proximity"""
     use_point_count_interpolate: bool
+    """Use the number of points from the curves in close proximity"""
     use_shape_interpolate: bool
-    curve_length: float
-    minimum_distance: float
-    curve_radius: float
-    density_add_attempts: int
-    density_mode: str
-    curve_parameter_falloff: 'CurveMapping'
+    """Use shape of the curves in close proximity"""
+    curve_length: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    """Length of newly added curves when it is not interpolated from other curves"""
+    minimum_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.0010000000474974513", "precision=2"]
+    """Goal distance between curve roots for the Density brush"""
+    curve_radius: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.0010000000474974513", "precision=2"]
+    """Radius of newly added curves when it is not interpolated from other curves"""
+    density_add_attempts: Annotated[int, "step=1"]
+    """How many times the Density brush tries to add a new curve"""
+    density_mode: Literal['AUTO', 'ADD', 'REMOVE']
+    """Determines whether the brush adds or removes curves"""
+    @property
+    def curve_parameter_falloff(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
+        """Falloff that is applied from the tip to the root of each curve"""
+        ...

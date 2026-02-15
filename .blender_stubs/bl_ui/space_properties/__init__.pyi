@@ -5,11 +5,15 @@
 # pylint: disable=invalid-name
 
 
+
+
 import sys
 import typing
-from typing import Any, Union, Callable, Iterator
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
+
 
 class Header:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -44,6 +48,7 @@ class Header:
     def values(*args, **kwargs) -> Any: ...
 
 class PROPERTIES_HT_header:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -79,6 +84,7 @@ class PROPERTIES_HT_header:
     def values(*args, **kwargs) -> Any: ...
 
 class PROPERTIES_PT_navigation_bar:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -186,6 +192,7 @@ class PROPERTIES_PT_visibility:
     def values(*args, **kwargs) -> Any: ...
 
 class Panel:
+
     def __init__(self, /, *args, **kwargs) -> Any: ...
     def append(draw_func) -> Any: ...
     def as_pointer(*args, **kwargs) -> Any: ...
@@ -246,6 +253,20 @@ def has_hidden_tabs(space) -> Any:
     ...
 
 def iface_(*args, **kwargs) -> Any:
+    """.. method:: pgettext_iface(msgid, msgctxt=None)
+
+   Try to translate the given msgid (with optional msgctxt), if labels' translation is enabled.
+
+   .. note::
+      See :func:`pgettext` notes.
+
+   :arg msgid: The string to translate.
+   :type msgid: str
+   :arg msgctxt: The translation context (defaults to BLT_I18NCONTEXT_DEFAULT).
+   :type msgctxt: str | None
+   :return: The translated string (or msgid if no translation was found).
+
+"""
     ...
 
 tab_list: Any

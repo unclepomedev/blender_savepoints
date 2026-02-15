@@ -4,21 +4,45 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.SpaceConsole.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .Space import Space
 from .ConsoleLine import ConsoleLine
+from .bpy_prop_collection import bpy_prop_collection
+
 class SpaceConsole(Space):
-    type: str
+
+    @property
+    def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
+        """Space data type"""
+        ...
     show_locked_time: bool
+    """Synchronize the visible timeline range with other time-based editors"""
     show_region_header: bool
-    font_size: int
-    select_start: int
-    select_end: int
-    prompt: str
-    language: str
-    history: bpy_prop_collection['ConsoleLine']
-    scrollback: bpy_prop_collection['ConsoleLine']
+
+    font_size: Annotated[int, "step=1"]
+    """Font size to use for displaying the text"""
+    select_start: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+
+    select_end: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+
+    prompt: Annotated[str, "is_animatable=False"]
+    """Command line prompt"""
+    language: Annotated[str, "is_animatable=False"]
+    """Command line prompt language"""
+    @property
+    def history(self) -> Annotated[bpy_prop_collection['ConsoleLine'], "is_animatable=False"]:
+        """Command history"""
+        ...
+    @property
+    def scrollback(self) -> Annotated[bpy_prop_collection['ConsoleLine'], "is_animatable=False"]:
+        """Command output"""
+        ...

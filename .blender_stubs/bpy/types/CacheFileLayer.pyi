@@ -4,12 +4,21 @@
 # noqa: N801
 # pylint: disable=invalid-name
 
+
+"""
+Online Documentation:
+https://docs.blender.org/api/current/bpy.types.CacheFileLayer.html
+"""
+
 import sys
 import typing
-from typing import Any, Optional, Union, Sequence, Callable, Iterator
-from .bpy_prop_collection import bpy_prop_collection
+from typing import Any, Optional, Union, Sequence, Callable, Iterator, Literal, Annotated
 
 from .bpy_struct import bpy_struct
+
 class CacheFileLayer(bpy_struct):
-    filepath: str
+
+    filepath: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
+    """Path to the archive"""
     hide_layer: bool
+    """Do not load data from this layer"""
