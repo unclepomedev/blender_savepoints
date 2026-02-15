@@ -136,7 +136,11 @@ class TestBatchRenderExtras(SavePointsTestCase):
                 # Check individual strips
                 for strip in strips:
                     self.assertEqual(strip.type, "IMAGE")
-                    self.assertEqual(strip.frame_final_duration, FRAMES_PER_IMAGE)
+                    # Use duration if available (read-only, but safe for check)
+                    if hasattr(strip, "duration"):
+                        self.assertEqual(strip.duration, FRAMES_PER_IMAGE)
+                    else:
+                        self.assertEqual(strip.frame_final_duration, FRAMES_PER_IMAGE)
 
         finally:
             shutil.rmtree(temp_dir)
