@@ -154,6 +154,7 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
 
         print(f"SavePoints Error creating VSE strip: {e}")
         import traceback
+
         traceback.print_exc()
         raise
 

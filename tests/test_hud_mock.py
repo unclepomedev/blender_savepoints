@@ -63,6 +63,7 @@ class TestHud(unittest.TestCase):
         mock_blf.reset_mock()
         mock_gpu.reset_mock()
         mock_gpu_batch.reset_mock()
+        savepoints.hud._shader = None
 
     def test_draw_hud_abort_on_invalid_context(self):
         """Should abort drawing if context is missing or invalid."""
