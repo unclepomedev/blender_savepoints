@@ -116,9 +116,9 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         name="Batch Mode",
         description="Toggle batch operation mode",
         default=False,
-        update=lambda self, context: context.area.tag_redraw()
-        if context.area
-        else None,
+        update=lambda self, context: (
+            context.area.tag_redraw() if context.area else None
+        ),
     )
 
     batch_output_format: bpy.props.EnumProperty(

@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import bpy
-
 from .snapshot import find_snapshot_path
 from .storage import (
     get_history_dir,
@@ -139,7 +138,7 @@ def load_ghost(version_id: str, context: bpy.types.Context) -> int:
     return _setup_ghost_collection(collection_name, objects, context)
 
 
-def _load_objects_from_snapshot(path: str) -> list:
+def _load_objects_from_snapshot(path: str) -> list[bpy.types.Object]:
     with bpy.data.libraries.load(path, link=True) as (data_from, data_to):
         data_to.objects = data_from.objects
     return data_to.objects
@@ -186,7 +185,7 @@ def load_single_object_ghost(
         return
 
     obj = data_to.objects[0] if data_to.objects else None
-    if not obj:
+    if not isinstance(obj, bpy.types.Object):
         return
 
     col_name = f"Ghost_Single_{object_name}"
