@@ -11,9 +11,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pyright>=1.1.408",
-    "pytest>=9.0.1",
-    "ruff>=0.14.5",
-    "ty>=0.0.13",
+    "pytest>=9.0.2",
+    "ruff>=0.15.1",
+    "ty>=0.0.17",
 ]
 
 [tool.pytest.ini_options]
