@@ -15,7 +15,7 @@ license = [
 ]
 
 wheels = [
-  "./wheels/Send2Trash-1.8.3-py3-none-any.whl",
+  "./wheels/Send2Trash-2.1.0-py3-none-any.whl",
 ]
 
 [description]

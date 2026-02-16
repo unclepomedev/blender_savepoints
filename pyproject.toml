@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "send2trash==1.8.3",
+    "send2trash==2.1.0",
 ]
 
 [dependency-groups]
