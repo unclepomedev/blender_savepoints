@@ -21,7 +21,8 @@ class TestCompression(SavePointsTestCase):
     Verify that the compression setting works as expected.
     """
 
-    def is_compressed(self, file_path):
+    @staticmethod
+    def is_compressed(file_path):
         """Check if file has Gzip or Zstd magic number."""
         with open(file_path, "rb") as f:
             header = f.read(4)
@@ -42,21 +43,21 @@ class TestCompression(SavePointsTestCase):
         print("Starting Compression Test...")
 
         context = bpy.context
-        scene = context.scene
 
         # Ensure settings exist
-        if not hasattr(scene, "savepoints_settings"):
-            self.fail("savepoints_settings not found on scene")
+        addon_prefs = context.preferences.addons.get("savepoints")
+        if not addon_prefs:
+            self.fail("Addon 'savepoints' not found/enabled")
 
-        settings = scene.savepoints_settings
+        prefs = addon_prefs.preferences
 
         # --- Step 1: Compressed Snapshot ---
         with self.subTest(step="1. Compressed Snapshot"):
             try:
-                settings.use_compression = True
+                prefs.use_compression = True
             except AttributeError:
                 self.fail(
-                    "Property 'use_compression' not defined in SavePointsSettings"
+                    "Property 'use_compression' not defined in SavePointsPreferences"
                 )
 
             version_id_comp = "v_compressed"
@@ -75,7 +76,7 @@ class TestCompression(SavePointsTestCase):
 
         # --- Step 2: Uncompressed Snapshot ---
         with self.subTest(step="2. Uncompressed Snapshot"):
-            settings.use_compression = False
+            prefs.use_compression = False
 
             version_id_raw = "v_raw"
             create_snapshot(context, version_id_raw, "Raw", skip_thumbnail=True)

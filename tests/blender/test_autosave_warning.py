@@ -40,7 +40,9 @@ class TestAutosaveWarning(SavePointsTestCase):
         bpy.ops.object.mode_set(mode="EDIT")  # Unsafe mode
 
         # Mock is_dirty to be True, as it might be unreliable in test environment
-        with patch.object(AutoSaveManager, 'is_dirty', new_callable=PropertyMock) as mock_dirty:
+        with patch.object(
+            AutoSaveManager, "is_dirty", new_callable=PropertyMock
+        ) as mock_dirty:
             mock_dirty.return_value = True
             autosave_timer()
 
