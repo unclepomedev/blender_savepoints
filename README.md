@@ -34,6 +34,9 @@ SavePoints is a version control system that provides a visual UX for fast recove
 - **🏷️ Tags**: Mark versions as "Stable" or "Milestone" to keep your history organized.
 - **🛡️ Safe & Clean**: Autosaves run in the background without cluttering your list. Restoring a version automatically backs up your current state—zero data loss.
 
+> [!NOTE]
+> **Comprehensive documentation is currently under development and will be linked here soon.**
+
 ## Table of Contents
 
 - [Usage](#usage)
@@ -73,9 +76,9 @@ SavePoints is a version control system that provides a visual UX for fast recove
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
    - **Note**: Auto-save does not generate thumbnails to avoid rendering interruptions.
-   - **Safety Mode**: To prevent crashes and interruptions, auto-save is **skipped** while you are in interactive modes (e.g., Sculpt, Weight Paint) or rendering. The save is delayed and will automatically trigger shortly after you **exit these modes**.
+   - **Safety Mode**: To prevent crashes and interruptions, auto-save is **skipped** while you are in interactive modes (e.g., Sculpt, Weight Paint) or rendering. The save is delayed and will automatically trigger shortly after you **exit these modes**. If autosave is pending for too long, a warning will appear on the HUD.
 6. **Disk Management & Protection**:
-   - **Snapshot Compression**: Enabled by default in the General settings. Keep this ON to save disk space, or turn it OFF if you prioritize maximum save speed over file size.
+   - **Snapshot Compression**: Enabled by default in the **Add-on Preferences**. Keep this ON to save disk space, or turn it OFF if you prioritize maximum save speed over file size.
    - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50) excluding locked versions.
    - **Lock Versions**: Click the Lock icon next to a version to protect it. Locked versions are never auto-deleted and cannot be manually deleted unless unlocked.
    - Pruning is triggered automatically when a new version is saved or when the list is refreshed.
