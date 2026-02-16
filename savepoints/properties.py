@@ -75,12 +75,6 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         default=True,
     )
 
-    use_compression: bpy.props.BoolProperty(
-        name="Compress Snapshots",
-        description="Compresses the snapshot file. Saves disk space (~40-60%) but increases save time.",
-        default=True,
-    )
-
     use_limit_versions: bpy.props.BoolProperty(
         name="Limit Versions",
         description="Enable automatic deletion of old versions to save disk space",
@@ -196,6 +190,12 @@ class SavePointsPreferences(bpy.types.AddonPreferences):
         default="",
     )
 
+    use_compression: bpy.props.BoolProperty(
+        name="Compress Snapshots",
+        description="Compresses the snapshot file. Saves disk space (~40-60%) but increases save time.",
+        default=True,
+    )
+
     def draw(self, _context):
         layout = self.layout
         box_glb = layout.box()
@@ -211,3 +211,6 @@ class SavePointsPreferences(bpy.types.AddonPreferences):
                 text="Placeholders: {filepath}, {version}, {history_dir}, {version_dir}, {note}",
                 icon="INFO",
             )
+
+        box_comp = layout.box()
+        box_comp.prop(self, "use_compression")

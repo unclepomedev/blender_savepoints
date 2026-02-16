@@ -56,10 +56,13 @@ def create_snapshot(context, version_id, note, skip_thumbnail=False):
 
         snapshot_path = version_dir / SNAPSHOT_FILENAME
 
-        use_compress = False
-        settings = getattr(context.scene, "savepoints_settings", None)
-        if settings:
-            use_compress = settings.use_compression
+        package_name = __package__.split(".")[0] if __package__ else "savepoints"
+        try:
+            prefs = context.preferences.addons[package_name].preferences
+            use_compress = prefs.use_compression
+        except Exception:
+            # Fallback or default
+            use_compress = True
 
         bpy.ops.wm.save_as_mainfile(
             copy=True, filepath=str(snapshot_path), compress=use_compress
