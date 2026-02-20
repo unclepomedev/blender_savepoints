@@ -368,8 +368,9 @@ def _draw_empty_state(layout):
 def _draw_general_settings(layout, settings):
     box = layout.box()
     box.label(text="General", icon="PREFERENCES")
-    box.prop(settings, "show_save_dialog")
-    box.prop(settings, "show_preview")
+    col = box.column()
+    col.prop(settings, "show_save_dialog")
+    col.prop(settings, "show_preview")
 
 
 def _draw_auto_save_settings(layout, settings):

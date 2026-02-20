@@ -67,12 +67,18 @@ class SavePointsSettings(bpy.types.PropertyGroup):
         name="Show Save Dialog",
         description="Show the note input dialog when saving a version. Disable for instant 'Quick Save'",
         default=True,
+        update=lambda self, context: (
+            context.area.tag_redraw() if context.area else None
+        ),
     )
 
     show_preview: bpy.props.BoolProperty(
         name="Show Preview",
         description="Show thumbnail preview in the version details panel",
         default=True,
+        update=lambda self, context: (
+            context.area.tag_redraw() if context.area else None
+        ),
     )
 
     use_limit_versions: bpy.props.BoolProperty(
