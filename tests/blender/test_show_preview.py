@@ -48,11 +48,13 @@ class TestShowPreview(SavePointsTestCase):
         with self.subTest(step="2. General Settings UI"):
             layout_mock = MagicMock()
             box_mock = MagicMock()
+            col_mock = MagicMock()
             layout_mock.box.return_value = box_mock
+            box_mock.column.return_value = col_mock
 
             ui._draw_general_settings(layout_mock, self.settings)
 
-            prop_calls = [args[1] for args, _ in box_mock.prop.call_args_list]
+            prop_calls = [args[1] for args, _ in col_mock.prop.call_args_list]
             self.assertIn("show_preview", prop_calls)
 
         # --- Step 3: Detail View UI (Conditional Drawing) ---
