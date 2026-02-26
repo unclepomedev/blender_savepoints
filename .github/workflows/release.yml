@@ -55,7 +55,7 @@ jobs:
         run: touch success-${{ runner.os }}-${{ matrix.blender-version }}
 
       - name: Upload Success Marker
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: success-${{ runner.os }}-${{ matrix.blender-version }}
           path: success-${{ runner.os }}-${{ matrix.blender-version }}
