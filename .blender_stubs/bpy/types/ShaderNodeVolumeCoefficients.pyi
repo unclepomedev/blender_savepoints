@@ -160,80 +160,20 @@ class ShaderNodeVolumeCoefficients(ShaderNode):
     @show_texture.setter
     def show_texture(self, value: bool) -> None:
         ...
-    @property
-    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
-
-        ...
-    @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
-        """The node label"""
-        ...
-    @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_description(self) -> Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]:
-
-        ...
-    @bl_description.setter
-    def bl_description(self, value: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_icon(self) -> str:
-        """The node icon"""
-        ...
-    @bl_icon.setter
-    def bl_icon(self, value: str) -> None:
-        ...
-    @property
-    def bl_static_type(self) -> Annotated[str, "is_animatable=False"]:
-        """Legacy unique node type identifier, redundant with bl_idname property"""
-        ...
-    @property
-    def bl_width_default(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_width_default.setter
-    def bl_width_default(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_width_min(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_width_min.setter
-    def bl_width_min(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_width_max(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_width_max.setter
-    def bl_width_max(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_height_default(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_height_default.setter
-    def bl_height_default(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_height_min(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_height_min.setter
-    def bl_height_min(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_height_max(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_height_max.setter
-    def bl_height_max(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    bl_label: Annotated[str, "is_animatable=False"]
+    """The node label"""
+    bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+    bl_icon: str
+    """The node icon"""
+    bl_static_type: Annotated[str, "is_animatable=False"]
+    """Legacy unique node type identifier, redundant with bl_idname property"""
+    bl_width_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_width_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_width_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_height_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_height_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_height_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
     @property
     def phase(self) -> Literal['HENYEY_GREENSTEIN', 'FOURNIER_FORAND', 'DRAINE', 'RAYLEIGH', 'MIE']:
         """Phase function for the scattered light"""

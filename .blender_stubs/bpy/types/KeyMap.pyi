@@ -26,13 +26,8 @@ class KeyMap(bpy_struct):
     def name(self) -> Annotated[str, "is_animatable=False"]:
         """Name of the key map"""
         ...
-    @property
-    def bl_owner_id(self) -> Annotated[str, "is_animatable=False"]:
-        """Internal owner"""
-        ...
-    @bl_owner_id.setter
-    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
+    bl_owner_id: Annotated[str, "is_animatable=False"]
+    """Internal owner"""
     @property
     def space_type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Optional space type keymap is associated with"""

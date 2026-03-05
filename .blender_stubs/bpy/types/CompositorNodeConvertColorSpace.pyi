@@ -160,80 +160,20 @@ class CompositorNodeConvertColorSpace(CompositorNode):
     @show_texture.setter
     def show_texture(self, value: bool) -> None:
         ...
-    @property
-    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
-
-        ...
-    @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
-        """The node label"""
-        ...
-    @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_description(self) -> Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]:
-
-        ...
-    @bl_description.setter
-    def bl_description(self, value: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_icon(self) -> str:
-        """The node icon"""
-        ...
-    @bl_icon.setter
-    def bl_icon(self, value: str) -> None:
-        ...
-    @property
-    def bl_static_type(self) -> Annotated[str, "is_animatable=False"]:
-        """Legacy unique node type identifier, redundant with bl_idname property"""
-        ...
-    @property
-    def bl_width_default(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_width_default.setter
-    def bl_width_default(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_width_min(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_width_min.setter
-    def bl_width_min(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_width_max(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_width_max.setter
-    def bl_width_max(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_height_default(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_height_default.setter
-    def bl_height_default(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_height_min(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_height_min.setter
-    def bl_height_min(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
-    @property
-    def bl_height_max(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
-
-        ...
-    @bl_height_max.setter
-    def bl_height_max(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
-        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    bl_label: Annotated[str, "is_animatable=False"]
+    """The node label"""
+    bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+    bl_icon: str
+    """The node icon"""
+    bl_static_type: Annotated[str, "is_animatable=False"]
+    """Legacy unique node type identifier, redundant with bl_idname property"""
+    bl_width_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_width_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_width_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_height_default: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_height_min: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
+    bl_height_max: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
     @property
     def from_color_space(self) -> Literal['ACES 1.3 sRGB', 'ACES 2.0 sRGB', 'ACES2065-1', 'ACEScc', 'ACEScct', 'ACEScg', 'AgX Base sRGB', 'AgX Log', 'Display P3', 'Filmic Log', 'Filmic sRGB', 'Khronos PBR Neutral sRGB', 'Linear CIE-XYZ D65', 'Linear CIE-XYZ E', 'Linear DCI-P3 D65', 'Linear FilmLight E-Gamut', 'Linear Rec.2020', 'Linear Rec.709', 'Non-Color', 'Rec.1886', 'Rec.2020', 'Rec.2100-HLG', 'Rec.2100-PQ', 'sRGB', 'scene_linear']:
         """Color space of the input image"""

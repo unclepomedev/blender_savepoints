@@ -20,48 +20,18 @@ from .AssetShelf import AssetShelf
 
 class VIEW3D_AST_brush_gpencil_weight(AssetShelfHiddenByDefault, View3DAssetShelf, AssetShelf):
 
-    @property
-    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
-        """If this is set, the asset gets a custom ID, otherwise it takes the name of the class used to define the asset (for example, if the class name is "OBJECT_AST_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_AST_hello")"""
-        ...
-    @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_space_type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
-        """The space where the asset shelf will show up in. Ignored for popup asset shelves which can be displayed in any space."""
-        ...
-    @bl_space_type.setter
-    def bl_space_type(self, value: Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']) -> None:
-        ...
-    @property
-    def bl_options(self) -> set[str]:
-        """Options for this asset shelf type"""
-        ...
-    @bl_options.setter
-    def bl_options(self, value: set[str]) -> None:
-        ...
-    @property
-    def bl_activate_operator(self) -> Annotated[str, "is_animatable=False"]:
-        """Operator to call when activating an item with asset reference properties"""
-        ...
-    @bl_activate_operator.setter
-    def bl_activate_operator(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_drag_operator(self) -> Annotated[str, "is_animatable=False"]:
-        """Operator to call when dragging an item with asset reference properties"""
-        ...
-    @bl_drag_operator.setter
-    def bl_drag_operator(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_default_preview_size(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
-        """Default size of the asset preview thumbnails in pixels"""
-        ...
-    @bl_default_preview_size.setter
-    def bl_default_preview_size(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
-        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    """If this is set, the asset gets a custom ID, otherwise it takes the name of the class used to define the asset (for example, if the class name is "OBJECT_AST_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_AST_hello")"""
+    bl_space_type: Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']
+    """The space where the asset shelf will show up in. Ignored for popup asset shelves which can be displayed in any space."""
+    bl_options: set[str]
+    """Options for this asset shelf type"""
+    bl_activate_operator: Annotated[str, "is_animatable=False"]
+    """Operator to call when activating an item with asset reference properties"""
+    bl_drag_operator: Annotated[str, "is_animatable=False"]
+    """Operator to call when dragging an item with asset reference properties"""
+    bl_default_preview_size: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+    """Default size of the asset preview thumbnails in pixels"""
     @property
     def filter_action(self) -> bool:
         """Show Action data-blocks"""

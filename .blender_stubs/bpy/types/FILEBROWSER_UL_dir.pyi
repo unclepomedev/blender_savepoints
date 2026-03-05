@@ -18,13 +18,8 @@ from .UIList import UIList
 
 class FILEBROWSER_UL_dir(UIList):
 
-    @property
-    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
-        """If this is set, the uilist gets a custom ID, otherwise it takes the name of the class used to define the uilist (for example, if the class name is "OBJECT_UL_vgroups", and bl_idname is not set by the script, then bl_idname = "OBJECT_UL_vgroups")"""
-        ...
-    @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    """If this is set, the uilist gets a custom ID, otherwise it takes the name of the class used to define the uilist (for example, if the class name is "OBJECT_UL_vgroups", and bl_idname is not set by the script, then bl_idname = "OBJECT_UL_vgroups")"""
     @property
     def list_id(self) -> Annotated[str, "is_animatable=False"]:
         """Identifier of the list, if any was passed to the "list_id" parameter of "template_list()" """

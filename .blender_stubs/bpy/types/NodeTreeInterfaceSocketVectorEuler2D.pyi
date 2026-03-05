@@ -149,13 +149,8 @@ Deprecated. Will be remove in 5.0."""
     @default_input.setter
     def default_input(self, value: Literal['VALUE', 'INDEX', 'ID_OR_INDEX', 'NORMAL', 'POSITION', 'INSTANCE_TRANSFORM', 'HANDLE_LEFT', 'HANDLE_RIGHT']) -> None:
         ...
-    @property
-    def bl_socket_idname(self) -> Annotated[str, "is_animatable=False"]:
-        """Name of the socket type"""
-        ...
-    @bl_socket_idname.setter
-    def bl_socket_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
+    bl_socket_idname: Annotated[str, "is_animatable=False"]
+    """Name of the socket type"""
     @property
     def subtype(self) -> Annotated[Literal['DEFAULT'], "is_animatable=False"]:
         """Subtype of the default value"""

@@ -18,24 +18,7 @@ from .bpy_struct import bpy_struct
 
 class USDHook(bpy_struct):
 
-    @property
-    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
-
-        ...
-    @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
-
-        ...
-    @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_description(self) -> Annotated[str, "is_animatable=False"]:
-        """A short description of the USD hook"""
-        ...
-    @bl_description.setter
-    def bl_description(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    bl_label: Annotated[str, "is_animatable=False"]
+    bl_description: Annotated[str, "is_animatable=False"]
+    """A short description of the USD hook"""

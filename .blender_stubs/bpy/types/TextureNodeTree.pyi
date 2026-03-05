@@ -186,41 +186,14 @@ class TextureNodeTree(NodeTree):
     def interface(self) -> Annotated[Optional['NodeTreeInterface'], "is_animatable=False"]:
         """Interface declaration for this node tree"""
         ...
-    @property
-    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
-
-        ...
-    @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
-        """The node tree label"""
-        ...
-    @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_description(self) -> Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]:
-
-        ...
-    @bl_description.setter
-    def bl_description(self, value: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]) -> None:
-        ...
-    @property
-    def bl_icon(self) -> str:
-        """The node tree icon"""
-        ...
-    @bl_icon.setter
-    def bl_icon(self, value: str) -> None:
-        ...
-    @property
-    def bl_use_group_interface(self) -> bool:
-        """Determines the visibility of some UI elements related to node groups"""
-        ...
-    @bl_use_group_interface.setter
-    def bl_use_group_interface(self, value: bool) -> None:
-        ...
+    bl_idname: Annotated[str, "is_animatable=False"]
+    bl_label: Annotated[str, "is_animatable=False"]
+    """The node tree label"""
+    bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+    bl_icon: str
+    """The node tree icon"""
+    bl_use_group_interface: bool
+    """Determines the visibility of some UI elements related to node groups"""
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...
