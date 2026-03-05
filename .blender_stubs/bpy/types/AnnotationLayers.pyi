@@ -19,10 +19,20 @@ from .AnnotationLayer import AnnotationLayer
 
 class AnnotationLayers(bpy_struct):
 
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Index of active annotation layer"""
-    active_note: Literal['DEFAULT']
-    """Note/Layer to add annotation strokes to"""
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Index of active annotation layer"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def active_note(self) -> Literal['DEFAULT']:
+        """Note/Layer to add annotation strokes to"""
+        ...
+    @active_note.setter
+    def active_note(self, value: Literal['DEFAULT']):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

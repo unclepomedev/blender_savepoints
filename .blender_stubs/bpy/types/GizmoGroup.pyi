@@ -21,18 +21,48 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class GizmoGroup(bpy_struct):
 
-    bl_idname: Annotated[str, "is_animatable=False"]
+    @property
+    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_label: Annotated[str, "is_animatable=False"]
+        ...
+    @bl_idname.setter
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_space_type: Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']
-    """The space where the panel is going to be used in"""
-    bl_region_type: Literal['WINDOW', 'HEADER', 'CHANNELS', 'TEMPORARY', 'UI', 'TOOLS', 'TOOL_PROPS', 'ASSET_SHELF', 'ASSET_SHELF_HEADER', 'PREVIEW', 'HUD', 'NAVIGATION_BAR', 'EXECUTE', 'FOOTER', 'TOOL_HEADER', 'XR']
-    """The region where the panel is going to be used in"""
-    bl_owner_id: Annotated[str, "is_animatable=False"]
+        ...
+    @bl_label.setter
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_space_type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
+        """The space where the panel is going to be used in"""
+        ...
+    @bl_space_type.setter
+    def bl_space_type(self, value: Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']):
+        ...
+    @property
+    def bl_region_type(self) -> Literal['WINDOW', 'HEADER', 'CHANNELS', 'TEMPORARY', 'UI', 'TOOLS', 'TOOL_PROPS', 'ASSET_SHELF', 'ASSET_SHELF_HEADER', 'PREVIEW', 'HUD', 'NAVIGATION_BAR', 'EXECUTE', 'FOOTER', 'TOOL_HEADER', 'XR']:
+        """The region where the panel is going to be used in"""
+        ...
+    @bl_region_type.setter
+    def bl_region_type(self, value: Literal['WINDOW', 'HEADER', 'CHANNELS', 'TEMPORARY', 'UI', 'TOOLS', 'TOOL_PROPS', 'ASSET_SHELF', 'ASSET_SHELF_HEADER', 'PREVIEW', 'HUD', 'NAVIGATION_BAR', 'EXECUTE', 'FOOTER', 'TOOL_HEADER', 'XR']):
+        ...
+    @property
+    def bl_owner_id(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_options: set[str]
-    """Options for this operator type"""
+        ...
+    @bl_owner_id.setter
+    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_options(self) -> set[str]:
+        """Options for this operator type"""
+        ...
+    @bl_options.setter
+    def bl_options(self, value: set[str]):
+        ...
     @property
     def name(self) -> Annotated[str, "is_animatable=False"]:
 

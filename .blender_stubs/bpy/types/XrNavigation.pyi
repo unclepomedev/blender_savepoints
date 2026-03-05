@@ -18,13 +18,38 @@ from .bpy_struct import bpy_struct
 
 class XrNavigation(bpy_struct):
 
-    vignette_intensity: Annotated[float, "subtype='PERCENTAGE'", "step=1000.0", "precision=0"]
-    """Intensity of vignette that appears when moving"""
-    turn_speed: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1000.0", "precision=0"]
-    """Turn speed in degrees per second"""
-    turn_amount: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1000.0", "precision=0"]
-    """Amount in degrees per turn when using snap turn"""
-    snap_turn: bool
-    """Instantly rotates the camera by a fixed angle instead of smoothly turning"""
-    invert_rotation: bool
-    """Reverses the direction of rotation input"""
+    @property
+    def vignette_intensity(self) -> Annotated[float, "subtype='PERCENTAGE'", "step=1000.0", "precision=0"]:
+        """Intensity of vignette that appears when moving"""
+        ...
+    @vignette_intensity.setter
+    def vignette_intensity(self, value: Annotated[float, "subtype='PERCENTAGE'", "step=1000.0", "precision=0"]):
+        ...
+    @property
+    def turn_speed(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1000.0", "precision=0"]:
+        """Turn speed in degrees per second"""
+        ...
+    @turn_speed.setter
+    def turn_speed(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1000.0", "precision=0"]):
+        ...
+    @property
+    def turn_amount(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1000.0", "precision=0"]:
+        """Amount in degrees per turn when using snap turn"""
+        ...
+    @turn_amount.setter
+    def turn_amount(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=1000.0", "precision=0"]):
+        ...
+    @property
+    def snap_turn(self) -> bool:
+        """Instantly rotates the camera by a fixed angle instead of smoothly turning"""
+        ...
+    @snap_turn.setter
+    def snap_turn(self, value: bool):
+        ...
+    @property
+    def invert_rotation(self) -> bool:
+        """Reverses the direction of rotation input"""
+        ...
+    @invert_rotation.setter
+    def invert_rotation(self, value: bool):
+        ...

@@ -23,16 +23,52 @@ class ThemeDopeSheet(bpy_struct):
     def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
         """Settings for space"""
         ...
-    grid: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    @property
+    def grid(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
-    keyframe_border: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
-    """Color of keyframe border"""
-    keyframe_border_selected: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
-    """Color of selected keyframe border"""
-    keyframe_scale_factor: Annotated[float, "step=10.0", "precision=3"]
-    """Scale factor for adjusting the height of keyframes"""
-    summary: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
-    """Color of summary channel"""
-    interpolation_line: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
-    """Color of lines showing non-Bézier interpolation modes"""
-    simulated_frames: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+        ...
+    @grid.setter
+    def grid(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def keyframe_border(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+        """Color of keyframe border"""
+        ...
+    @keyframe_border.setter
+    def keyframe_border(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def keyframe_border_selected(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+        """Color of selected keyframe border"""
+        ...
+    @keyframe_border_selected.setter
+    def keyframe_border_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def keyframe_scale_factor(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Scale factor for adjusting the height of keyframes"""
+        ...
+    @keyframe_scale_factor.setter
+    def keyframe_scale_factor(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def summary(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+        """Color of summary channel"""
+        ...
+    @summary.setter
+    def summary(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def interpolation_line(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+        """Color of lines showing non-Bézier interpolation modes"""
+        ...
+    @interpolation_line.setter
+    def interpolation_line(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def simulated_frames(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+
+        ...
+    @simulated_frames.setter
+    def simulated_frames(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...

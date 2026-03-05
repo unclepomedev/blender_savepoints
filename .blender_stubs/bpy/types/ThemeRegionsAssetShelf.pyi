@@ -18,6 +18,17 @@ from .bpy_struct import bpy_struct
 
 class ThemeRegionsAssetShelf(bpy_struct):
 
-    back: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    @property
+    def back(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
-    header_back: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+        ...
+    @back.setter
+    def back(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def header_back(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+
+        ...
+    @header_back.setter
+    def header_back(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...

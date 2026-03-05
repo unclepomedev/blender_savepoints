@@ -19,19 +19,49 @@ from .Object import Object
 
 class BoidRuleAvoid(BoidRule):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Boid rule name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Boid rule name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['GOAL', 'AVOID', 'AVOID_COLLISION', 'SEPARATE', 'FLOCK', 'FOLLOW_LEADER', 'AVERAGE_SPEED', 'FIGHT']:
 
         ...
-    use_in_air: bool
-    """Use rule when boid is flying"""
-    use_on_land: bool
-    """Use rule when boid is on land"""
-    object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object to avoid"""
-    use_predict: bool
-    """Predict target movement"""
-    fear_factor: Annotated[float, "step=10.0", "precision=3"]
-    """Avoid object if danger from it is above this threshold"""
+    @property
+    def use_in_air(self) -> bool:
+        """Use rule when boid is flying"""
+        ...
+    @use_in_air.setter
+    def use_in_air(self, value: bool):
+        ...
+    @property
+    def use_on_land(self) -> bool:
+        """Use rule when boid is on land"""
+        ...
+    @use_on_land.setter
+    def use_on_land(self, value: bool):
+        ...
+    @property
+    def object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object to avoid"""
+        ...
+    @object.setter
+    def object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def use_predict(self) -> bool:
+        """Predict target movement"""
+        ...
+    @use_predict.setter
+    def use_predict(self, value: bool):
+        ...
+    @property
+    def fear_factor(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Avoid object if danger from it is above this threshold"""
+        ...
+    @fear_factor.setter
+    def fear_factor(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...

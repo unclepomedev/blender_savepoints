@@ -32,8 +32,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Volume(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -58,10 +63,20 @@ class Volume(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -74,14 +89,24 @@ class Volume(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -94,8 +119,13 @@ class Volume(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -104,22 +134,52 @@ class Volume(ID):
     def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
-    filepath: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
-    """Volume file used by this Volume data-block"""
+    @property
+    def filepath(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
+        """Volume file used by this Volume data-block"""
+        ...
+    @filepath.setter
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+        ...
     @property
     def packed_file(self) -> Annotated[Optional['PackedFile'], "is_animatable=False"]:
 
         ...
-    is_sequence: Annotated[bool, "is_animatable=False"]
-    """Whether the cache is separated in a series of files"""
-    frame_start: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]
-    """Global starting frame of the sequence, assuming first has a #1"""
-    frame_duration: Annotated[int, "step=1", "is_animatable=False"]
-    """Number of frames of the sequence to use"""
-    frame_offset: Annotated[int, "step=1"]
-    """Offset the number of the frame to use in the animation"""
-    sequence_mode: Annotated[Literal['CLIP', 'EXTEND', 'REPEAT', 'PING_PONG'], "is_animatable=False"]
-    """Sequence playback mode"""
+    @property
+    def is_sequence(self) -> Annotated[bool, "is_animatable=False"]:
+        """Whether the cache is separated in a series of files"""
+        ...
+    @is_sequence.setter
+    def is_sequence(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def frame_start(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]:
+        """Global starting frame of the sequence, assuming first has a #1"""
+        ...
+    @frame_start.setter
+    def frame_start(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def frame_duration(self) -> Annotated[int, "step=1", "is_animatable=False"]:
+        """Number of frames of the sequence to use"""
+        ...
+    @frame_duration.setter
+    def frame_duration(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def frame_offset(self) -> Annotated[int, "step=1"]:
+        """Offset the number of the frame to use in the animation"""
+        ...
+    @frame_offset.setter
+    def frame_offset(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def sequence_mode(self) -> Annotated[Literal['CLIP', 'EXTEND', 'REPEAT', 'PING_PONG'], "is_animatable=False"]:
+        """Sequence playback mode"""
+        ...
+    @sequence_mode.setter
+    def sequence_mode(self, value: Annotated[Literal['CLIP', 'EXTEND', 'REPEAT', 'PING_PONG'], "is_animatable=False"]):
+        ...
     @property
     def grids(self) -> Annotated['VolumeGrids', "is_animatable=False"]:
         """3D volume grids"""
@@ -136,12 +196,27 @@ class Volume(ID):
     def render(self) -> Annotated[Optional['VolumeRender'], "is_animatable=False"]:
         """Volume render settings for 3D viewport"""
         ...
-    velocity_grid: Annotated[str, "is_animatable=False"]
-    """Name of the velocity field, or the base name if the velocity is split into multiple grids"""
-    velocity_unit: Annotated[Literal['SECOND', 'FRAME'], "is_animatable=False"]
-    """Define how the velocity vectors are interpreted with regard to time, 'frame' means the delta time is 1 frame, 'second' means the delta time is 1 / FPS"""
-    velocity_scale: Annotated[float, "step=10.0", "precision=3"]
-    """Factor to control the amount of motion blur"""
+    @property
+    def velocity_grid(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of the velocity field, or the base name if the velocity is split into multiple grids"""
+        ...
+    @velocity_grid.setter
+    def velocity_grid(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def velocity_unit(self) -> Annotated[Literal['SECOND', 'FRAME'], "is_animatable=False"]:
+        """Define how the velocity vectors are interpreted with regard to time, 'frame' means the delta time is 1 frame, 'second' means the delta time is 1 / FPS"""
+        ...
+    @velocity_unit.setter
+    def velocity_unit(self, value: Annotated[Literal['SECOND', 'FRAME'], "is_animatable=False"]):
+        ...
+    @property
+    def velocity_scale(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Factor to control the amount of motion blur"""
+        ...
+    @velocity_scale.setter
+    def velocity_scale(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
     @property
     def velocity_x_grid(self) -> Annotated[str, "is_animatable=False"]:
         """Name of the grid for the X axis component of the velocity field if it was split into multiple grids"""

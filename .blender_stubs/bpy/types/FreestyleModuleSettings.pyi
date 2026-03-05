@@ -19,7 +19,17 @@ from .Text import Text
 
 class FreestyleModuleSettings(bpy_struct):
 
-    script: Annotated[Optional['Text'], "is_animatable=False"]
-    """Python script to define a style module"""
-    use: bool
-    """Enable or disable this style module during stroke rendering"""
+    @property
+    def script(self) -> Annotated[Optional['Text'], "is_animatable=False"]:
+        """Python script to define a style module"""
+        ...
+    @script.setter
+    def script(self, value: Annotated[Optional['Text'], "is_animatable=False"]):
+        ...
+    @property
+    def use(self) -> bool:
+        """Enable or disable this style module during stroke rendering"""
+        ...
+    @use.setter
+    def use(self, value: bool):
+        ...

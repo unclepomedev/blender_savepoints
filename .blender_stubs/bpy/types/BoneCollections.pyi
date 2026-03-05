@@ -19,12 +19,27 @@ from .BoneCollection import BoneCollection
 
 class BoneCollections(bpy_struct):
 
-    active: Annotated[Optional['BoneCollection'], "is_animatable=False"]
-    """Armature's active bone collection"""
-    active_index: Annotated[int, "step=1"]
-    """The index of the Armature's active bone collection; -1 when there is no active collection. Note that this is indexing the underlying array of bone collections, which may not be in the order you expect. Root collections are listed first, and siblings are always sequential. Apart from that, bone collections can be in any order, and thus incrementing or decrementing this index can make the active bone collection jump around in unexpected ways. For a more predictable interface, use ``active`` or ``active_name``."""
-    active_name: Annotated[str, "is_animatable=False"]
-    """The name of the Armature's active bone collection; empty when there is no active collection"""
+    @property
+    def active(self) -> Annotated[Optional['BoneCollection'], "is_animatable=False"]:
+        """Armature's active bone collection"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['BoneCollection'], "is_animatable=False"]):
+        ...
+    @property
+    def active_index(self) -> Annotated[int, "step=1"]:
+        """The index of the Armature's active bone collection; -1 when there is no active collection. Note that this is indexing the underlying array of bone collections, which may not be in the order you expect. Root collections are listed first, and siblings are always sequential. Apart from that, bone collections can be in any order, and thus incrementing or decrementing this index can make the active bone collection jump around in unexpected ways. For a more predictable interface, use ``active`` or ``active_name``."""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def active_name(self) -> Annotated[str, "is_animatable=False"]:
+        """The name of the Armature's active bone collection; empty when there is no active collection"""
+        ...
+    @active_name.setter
+    def active_name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def is_solo_active(self) -> bool:
         """Read-only flag that indicates there is at least one bone collection marked as 'solo'"""

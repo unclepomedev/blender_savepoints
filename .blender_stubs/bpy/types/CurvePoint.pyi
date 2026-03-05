@@ -18,10 +18,20 @@ from .bpy_struct import bpy_struct
 
 class CurvePoint(bpy_struct):
 
-    position: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    @property
+    def position(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
 
-    radius: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
+        ...
+    @position.setter
+    def position(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def radius(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
 
+        ...
+    @radius.setter
+    def radius(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
     @property
     def index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Index of this point"""

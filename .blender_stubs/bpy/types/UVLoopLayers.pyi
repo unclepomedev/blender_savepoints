@@ -19,10 +19,20 @@ from .MeshUVLoopLayer import MeshUVLoopLayer
 
 class UVLoopLayers(bpy_struct):
 
-    active: Annotated[Optional['MeshUVLoopLayer'], "is_animatable=False"]
-    """Active UV Map layer"""
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """Active UV map index"""
+    @property
+    def active(self) -> Annotated[Optional['MeshUVLoopLayer'], "is_animatable=False"]:
+        """Active UV Map layer"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['MeshUVLoopLayer'], "is_animatable=False"]):
+        ...
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """Active UV map index"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

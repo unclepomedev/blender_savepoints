@@ -31,8 +31,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Armature(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -57,10 +62,20 @@ class Armature(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -73,14 +88,24 @@ class Armature(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -93,8 +118,13 @@ class Armature(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -115,30 +145,80 @@ class Armature(ID):
     def edit_bones(self) -> Annotated['ArmatureEditBones', "is_animatable=False"]:
 
         ...
-    collections: Annotated['BoneCollections', "is_animatable=False"]
+    @property
+    def collections(self) -> Annotated['BoneCollections', "is_animatable=False"]:
 
+        ...
+    @collections.setter
+    def collections(self, value: Annotated['BoneCollections', "is_animatable=False"]):
+        ...
     @property
     def collections_all(self) -> Annotated[bpy_prop_collection['BoneCollection'], "is_animatable=False"]:
         """List of all bone collections of the armature"""
         ...
-    pose_position: Literal['POSE', 'REST']
-    """Show armature in binding pose or final posed state"""
-    display_type: Literal['OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']
+    @property
+    def pose_position(self) -> Literal['POSE', 'REST']:
+        """Show armature in binding pose or final posed state"""
+        ...
+    @pose_position.setter
+    def pose_position(self, value: Literal['POSE', 'REST']):
+        ...
+    @property
+    def display_type(self) -> Literal['OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']:
 
-    show_axes: bool
-    """Display bone axes"""
-    axes_position: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=1"]
-    """The position for the axes on the bone. Increasing the value moves it closer to the tip; decreasing moves it closer to the root."""
-    relation_line_position: Literal['TAIL', 'HEAD']
-    """The start position of the relation lines from parent to child bones"""
-    show_names: bool
-    """Display bone names"""
-    use_mirror_x: bool
-    """Apply changes to matching bone on opposite side of X-Axis"""
-    show_bone_custom_shapes: bool
-    """Display bones with their custom shapes"""
-    show_bone_colors: bool
-    """Display bone colors"""
+        ...
+    @display_type.setter
+    def display_type(self, value: Literal['OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']):
+        ...
+    @property
+    def show_axes(self) -> bool:
+        """Display bone axes"""
+        ...
+    @show_axes.setter
+    def show_axes(self, value: bool):
+        ...
+    @property
+    def axes_position(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=1"]:
+        """The position for the axes on the bone. Increasing the value moves it closer to the tip; decreasing moves it closer to the root."""
+        ...
+    @axes_position.setter
+    def axes_position(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=1"]):
+        ...
+    @property
+    def relation_line_position(self) -> Literal['TAIL', 'HEAD']:
+        """The start position of the relation lines from parent to child bones"""
+        ...
+    @relation_line_position.setter
+    def relation_line_position(self, value: Literal['TAIL', 'HEAD']):
+        ...
+    @property
+    def show_names(self) -> bool:
+        """Display bone names"""
+        ...
+    @show_names.setter
+    def show_names(self, value: bool):
+        ...
+    @property
+    def use_mirror_x(self) -> bool:
+        """Apply changes to matching bone on opposite side of X-Axis"""
+        ...
+    @use_mirror_x.setter
+    def use_mirror_x(self, value: bool):
+        ...
+    @property
+    def show_bone_custom_shapes(self) -> bool:
+        """Display bones with their custom shapes"""
+        ...
+    @show_bone_custom_shapes.setter
+    def show_bone_custom_shapes(self, value: bool):
+        ...
+    @property
+    def show_bone_colors(self) -> bool:
+        """Display bone colors"""
+        ...
+    @show_bone_colors.setter
+    def show_bone_colors(self, value: bool):
+        ...
     @property
     def is_editmode(self) -> bool:
         """True when used in editmode"""

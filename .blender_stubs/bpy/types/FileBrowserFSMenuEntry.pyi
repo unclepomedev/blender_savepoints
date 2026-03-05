@@ -18,12 +18,27 @@ from .bpy_struct import bpy_struct
 
 class FileBrowserFSMenuEntry(bpy_struct):
 
-    path: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
+    @property
+    def path(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
 
-    name: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]
+        ...
+    @path.setter
+    def path(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+        ...
+    @property
+    def name(self) -> Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]:
 
-    icon: Annotated[int, "step=1"]
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]):
+        ...
+    @property
+    def icon(self) -> Annotated[int, "step=1"]:
 
+        ...
+    @icon.setter
+    def icon(self, value: Annotated[int, "step=1"]):
+        ...
     @property
     def use_save(self) -> bool:
         """Whether this path is saved in bookmarks, or generated from OS"""

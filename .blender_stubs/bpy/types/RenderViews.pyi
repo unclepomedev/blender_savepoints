@@ -19,10 +19,20 @@ from .SceneRenderView import SceneRenderView
 
 class RenderViews(bpy_struct):
 
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Active index in render view array"""
-    active: Annotated['SceneRenderView', "is_animatable=False"]
-    """Active Render View"""
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Active index in render view array"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def active(self) -> Annotated['SceneRenderView', "is_animatable=False"]:
+        """Active Render View"""
+        ...
+    @active.setter
+    def active(self, value: Annotated['SceneRenderView', "is_animatable=False"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

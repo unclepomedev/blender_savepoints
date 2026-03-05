@@ -20,8 +20,13 @@ from .Object import Object
 
 class FollowTrackConstraint(Constraint):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Constraint name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Constraint name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['CAMERA_SOLVER', 'FOLLOW_TRACK', 'OBJECT_SOLVER', 'COPY_LOCATION', 'COPY_ROTATION', 'COPY_SCALE', 'COPY_TRANSFORMS', 'LIMIT_DISTANCE', 'LIMIT_LOCATION', 'LIMIT_ROTATION', 'LIMIT_SCALE', 'MAINTAIN_VOLUME', 'TRANSFORM', 'TRANSFORM_CACHE', 'CLAMP_TO', 'DAMPED_TRACK', 'IK', 'LOCKED_TRACK', 'SPLINE_IK', 'STRETCH_TO', 'TRACK_TO', 'ACTION', 'ARMATURE', 'CHILD_OF', 'FLOOR', 'FOLLOW_PATH', 'GEOMETRY_ATTRIBUTE', 'PIVOT', 'SHRINKWRAP']:
 
@@ -30,28 +35,73 @@ class FollowTrackConstraint(Constraint):
     def is_override_data(self) -> bool:
         """In a local override object, whether this constraint comes from the linked reference object, or is local to the override"""
         ...
-    owner_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']
-    """Space that owner is evaluated in"""
-    target_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']
-    """Space that target is evaluated in"""
-    space_object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object for Custom Space"""
-    space_subtarget: Annotated[str, "is_animatable=False"]
-    """Armature bone, mesh or lattice vertex group, ..."""
-    mute: bool
-    """Enable/Disable Constraint"""
-    enabled: bool
-    """Use the results of this constraint"""
-    show_expanded: bool
-    """Constraint's panel is expanded in UI"""
+    @property
+    def owner_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']:
+        """Space that owner is evaluated in"""
+        ...
+    @owner_space.setter
+    def owner_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']):
+        ...
+    @property
+    def target_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']:
+        """Space that target is evaluated in"""
+        ...
+    @target_space.setter
+    def target_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']):
+        ...
+    @property
+    def space_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object for Custom Space"""
+        ...
+    @space_object.setter
+    def space_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def space_subtarget(self) -> Annotated[str, "is_animatable=False"]:
+        """Armature bone, mesh or lattice vertex group, ..."""
+        ...
+    @space_subtarget.setter
+    def space_subtarget(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def mute(self) -> bool:
+        """Enable/Disable Constraint"""
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...
+    @property
+    def enabled(self) -> bool:
+        """Use the results of this constraint"""
+        ...
+    @enabled.setter
+    def enabled(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Constraint's panel is expanded in UI"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
     @property
     def is_valid(self) -> bool:
         """Constraint has valid settings and can be evaluated"""
         ...
-    active: bool
-    """Constraint is the one being edited"""
-    influence: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of influence constraint will have on the final solution"""
+    @property
+    def active(self) -> bool:
+        """Constraint is the one being edited"""
+        ...
+    @active.setter
+    def active(self, value: bool):
+        ...
+    @property
+    def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of influence constraint will have on the final solution"""
+        ...
+    @influence.setter
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
     @property
     def error_location(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in Blender space unit for constraints that work on position"""
@@ -60,21 +110,66 @@ class FollowTrackConstraint(Constraint):
     def error_rotation(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in radians for constraints that work on orientation"""
         ...
-    clip: Annotated[Optional['MovieClip'], "is_animatable=False"]
-    """Movie Clip to get tracking data from"""
-    track: Annotated[str, "is_animatable=False"]
-    """Movie tracking track to follow"""
-    use_active_clip: bool
-    """Use active clip defined in scene"""
-    use_3d_position: bool
-    """Use 3D position of track to parent to"""
-    object: Annotated[str, "is_animatable=False"]
-    """Movie tracking object to follow (if empty, camera object is used)"""
-    camera: Annotated[Optional['Object'], "is_animatable=False"]
-    """Camera to which motion is parented (if empty active scene camera is used)"""
-    depth_object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object used to define depth in camera space by projecting onto surface of this object"""
-    frame_method: Literal['STRETCH', 'FIT', 'CROP']
-    """How the footage fits in the camera frame"""
-    use_undistorted_position: bool
-    """Parent to undistorted position of 2D track"""
+    @property
+    def clip(self) -> Annotated[Optional['MovieClip'], "is_animatable=False"]:
+        """Movie Clip to get tracking data from"""
+        ...
+    @clip.setter
+    def clip(self, value: Annotated[Optional['MovieClip'], "is_animatable=False"]):
+        ...
+    @property
+    def track(self) -> Annotated[str, "is_animatable=False"]:
+        """Movie tracking track to follow"""
+        ...
+    @track.setter
+    def track(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def use_active_clip(self) -> bool:
+        """Use active clip defined in scene"""
+        ...
+    @use_active_clip.setter
+    def use_active_clip(self, value: bool):
+        ...
+    @property
+    def use_3d_position(self) -> bool:
+        """Use 3D position of track to parent to"""
+        ...
+    @use_3d_position.setter
+    def use_3d_position(self, value: bool):
+        ...
+    @property
+    def object(self) -> Annotated[str, "is_animatable=False"]:
+        """Movie tracking object to follow (if empty, camera object is used)"""
+        ...
+    @object.setter
+    def object(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def camera(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Camera to which motion is parented (if empty active scene camera is used)"""
+        ...
+    @camera.setter
+    def camera(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def depth_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object used to define depth in camera space by projecting onto surface of this object"""
+        ...
+    @depth_object.setter
+    def depth_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def frame_method(self) -> Literal['STRETCH', 'FIT', 'CROP']:
+        """How the footage fits in the camera frame"""
+        ...
+    @frame_method.setter
+    def frame_method(self, value: Literal['STRETCH', 'FIT', 'CROP']):
+        ...
+    @property
+    def use_undistorted_position(self) -> bool:
+        """Parent to undistorted position of 2D track"""
+        ...
+    @use_undistorted_position.setter
+    def use_undistorted_position(self, value: bool):
+        ...

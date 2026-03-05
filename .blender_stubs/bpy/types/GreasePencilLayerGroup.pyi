@@ -18,20 +18,55 @@ from .GreasePencilTreeNode import GreasePencilTreeNode
 
 class GreasePencilLayerGroup(GreasePencilTreeNode):
 
-    name: Annotated[str, "is_animatable=False"]
-    """The name of the tree node"""
-    hide: bool
-    """Set tree node visibility"""
-    lock: bool
-    """Protect tree node from editing"""
-    select: bool
-    """Tree node is selected"""
-    use_onion_skinning: bool
-    """Display onion skins before and after the current frame"""
-    use_masks: bool
-    """The visibility of drawings in this tree node is affected by the layers in the masks list"""
-    channel_color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """Color of the channel in the dope sheet"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """The name of the tree node"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def hide(self) -> bool:
+        """Set tree node visibility"""
+        ...
+    @hide.setter
+    def hide(self, value: bool):
+        ...
+    @property
+    def lock(self) -> bool:
+        """Protect tree node from editing"""
+        ...
+    @lock.setter
+    def lock(self, value: bool):
+        ...
+    @property
+    def select(self) -> bool:
+        """Tree node is selected"""
+        ...
+    @select.setter
+    def select(self, value: bool):
+        ...
+    @property
+    def use_onion_skinning(self) -> bool:
+        """Display onion skins before and after the current frame"""
+        ...
+    @use_onion_skinning.setter
+    def use_onion_skinning(self, value: bool):
+        ...
+    @property
+    def use_masks(self) -> bool:
+        """The visibility of drawings in this tree node is affected by the layers in the masks list"""
+        ...
+    @use_masks.setter
+    def use_masks(self, value: bool):
+        ...
+    @property
+    def channel_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """Color of the channel in the dope sheet"""
+        ...
+    @channel_color.setter
+    def channel_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...
     @property
     def next_node(self) -> Annotated[Optional['GreasePencilTreeNode'], "is_animatable=False"]:
         """The layer tree node after (i.e. above) this one"""
@@ -44,6 +79,17 @@ class GreasePencilLayerGroup(GreasePencilTreeNode):
     def parent_group(self) -> Annotated[Optional['GreasePencilLayerGroup'], "is_animatable=False"]:
         """The parent group of this layer tree node"""
         ...
-    is_expanded: bool
-    """The layer group is expanded in the UI"""
-    color_tag: Literal['NONE', 'COLOR1', 'COLOR2', 'COLOR3', 'COLOR4', 'COLOR5', 'COLOR6', 'COLOR7', 'COLOR8']
+    @property
+    def is_expanded(self) -> bool:
+        """The layer group is expanded in the UI"""
+        ...
+    @is_expanded.setter
+    def is_expanded(self, value: bool):
+        ...
+    @property
+    def color_tag(self) -> Literal['NONE', 'COLOR1', 'COLOR2', 'COLOR3', 'COLOR4', 'COLOR5', 'COLOR6', 'COLOR7', 'COLOR8']:
+
+        ...
+    @color_tag.setter
+    def color_tag(self, value: Literal['NONE', 'COLOR1', 'COLOR2', 'COLOR3', 'COLOR4', 'COLOR5', 'COLOR6', 'COLOR7', 'COLOR8']):
+        ...

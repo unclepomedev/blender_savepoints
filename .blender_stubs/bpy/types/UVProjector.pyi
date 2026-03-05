@@ -19,5 +19,10 @@ from .Object import Object
 
 class UVProjector(bpy_struct):
 
-    object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object to use as projector transform"""
+    @property
+    def object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object to use as projector transform"""
+        ...
+    @object.setter
+    def object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...

@@ -26,8 +26,13 @@ from .NodeTree import NodeTree
 
 class AreaLight(Light):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -52,10 +57,20 @@ class AreaLight(Light):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -68,14 +83,24 @@ class AreaLight(Light):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -88,8 +113,13 @@ class AreaLight(Light):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -98,42 +128,112 @@ class AreaLight(Light):
     def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
-    type: Literal['POINT', 'SUN', 'SPOT', 'AREA']
-    """Type of light"""
-    use_temperature: bool
-    """Use blackbody temperature to define a natural light color"""
-    color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """Light color"""
-    temperature: Annotated[float, "subtype='COLOR_TEMPERATURE'", "unit='COLOR_TEMPERATURE'", "step=400.0", "precision=1"]
-    """Light color temperature in Kelvin"""
+    @property
+    def type(self) -> Literal['POINT', 'SUN', 'SPOT', 'AREA']:
+        """Type of light"""
+        ...
+    @type.setter
+    def type(self, value: Literal['POINT', 'SUN', 'SPOT', 'AREA']):
+        ...
+    @property
+    def use_temperature(self) -> bool:
+        """Use blackbody temperature to define a natural light color"""
+        ...
+    @use_temperature.setter
+    def use_temperature(self, value: bool):
+        ...
+    @property
+    def color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """Light color"""
+        ...
+    @color.setter
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def temperature(self) -> Annotated[float, "subtype='COLOR_TEMPERATURE'", "unit='COLOR_TEMPERATURE'", "step=400.0", "precision=1"]:
+        """Light color temperature in Kelvin"""
+        ...
+    @temperature.setter
+    def temperature(self, value: Annotated[float, "subtype='COLOR_TEMPERATURE'", "unit='COLOR_TEMPERATURE'", "step=400.0", "precision=1"]):
+        ...
     @property
     def temperature_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color from Temperature"""
         ...
-    specular_factor: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]
-    """Specular reflection multiplier"""
-    diffuse_factor: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]
-    """Diffuse reflection multiplier"""
-    transmission_factor: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]
-    """Transmission light multiplier"""
-    volume_factor: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]
-    """Volume light multiplier"""
-    use_custom_distance: bool
-    """Use custom attenuation distance instead of global light threshold"""
-    cutoff_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]
-    """Distance at which the light influence will be set to 0"""
-    use_shadow: bool
+    @property
+    def specular_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]:
+        """Specular reflection multiplier"""
+        ...
+    @specular_factor.setter
+    def specular_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+        ...
+    @property
+    def diffuse_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]:
+        """Diffuse reflection multiplier"""
+        ...
+    @diffuse_factor.setter
+    def diffuse_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+        ...
+    @property
+    def transmission_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]:
+        """Transmission light multiplier"""
+        ...
+    @transmission_factor.setter
+    def transmission_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+        ...
+    @property
+    def volume_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]:
+        """Volume light multiplier"""
+        ...
+    @volume_factor.setter
+    def volume_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+        ...
+    @property
+    def use_custom_distance(self) -> bool:
+        """Use custom attenuation distance instead of global light threshold"""
+        ...
+    @use_custom_distance.setter
+    def use_custom_distance(self, value: bool):
+        ...
+    @property
+    def cutoff_distance(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]:
+        """Distance at which the light influence will be set to 0"""
+        ...
+    @cutoff_distance.setter
+    def cutoff_distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]):
+        ...
+    @property
+    def use_shadow(self) -> bool:
 
-    exposure: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]
-    """Scales the power of the light exponentially, multiplying the intensity by 2^exposure"""
-    normalize: Annotated[bool, "is_animatable=False"]
-    """Normalize intensity by light area, for consistent total light output regardless of size and shape"""
+        ...
+    @use_shadow.setter
+    def use_shadow(self, value: bool):
+        ...
+    @property
+    def exposure(self) -> Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]:
+        """Scales the power of the light exponentially, multiplying the intensity by 2^exposure"""
+        ...
+    @exposure.setter
+    def exposure(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]):
+        ...
+    @property
+    def normalize(self) -> Annotated[bool, "is_animatable=False"]:
+        """Normalize intensity by light area, for consistent total light output regardless of size and shape"""
+        ...
+    @normalize.setter
+    def normalize(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
         """Node tree for node based lights"""
         ...
-    use_nodes: Annotated[bool, "is_animatable=False"]
-    """Use shader nodes to render the light"""
+    @property
+    def use_nodes(self) -> Annotated[bool, "is_animatable=False"]:
+        """Use shader nodes to render the light"""
+        ...
+    @use_nodes.setter
+    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
         """Animation data for this data-block"""
@@ -142,30 +242,90 @@ class AreaLight(Light):
     def cycles(self) -> Annotated[Optional['CyclesLightSettings'], "is_animatable=False"]:
         """Cycles light settings"""
         ...
-    energy: Annotated[float, "step=10.0", "precision=3"]
-    """Light energy emitted over the entire area of the light in all directions, in units of radiant power (W)"""
-    shadow_buffer_clip_start: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Shadow map clip start, below which objects will not generate shadows"""
-    shadow_soft_size: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
-    """Light size for ray shadow sampling (Raytraced shadows)"""
-    shadow_filter_radius: Annotated[float, "step=1.0", "precision=2"]
-    """Blur shadow aliasing using Percentage Closer Filtering"""
-    shadow_maximum_resolution: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.05000000074505806", "precision=4"]
-    """Minimum size of a shadow map pixel. Higher values use less memory at the cost of shadow quality."""
-    use_shadow_jitter: bool
-    """Enable jittered soft shadows to increase shadow precision (disabled in viewport unless enabled in the render settings). Has a high performance impact."""
-    shadow_jitter_overblur: Annotated[float, "subtype='PERCENTAGE'", "step=10.0", "precision=0"]
-    """Apply shadow tracing to each jittered sample to reduce under-sampling artifacts"""
-    use_absolute_resolution: bool
-    """Limit the resolution at 1 unit from the light origin instead of relative to the shadowed pixel"""
-    shape: Literal['SQUARE', 'RECTANGLE', 'DISK', 'ELLIPSE']
-    """Shape of the area Light"""
-    size: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
-    """Size of the area of the area light, X direction size for rectangle shapes"""
-    size_y: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
-    """Size of the area of the area light in the Y direction for rectangle shapes"""
-    spread: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
-    """How widely the emitted light fans out, as in the case of a gridded softbox"""
+    @property
+    def energy(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Light energy emitted over the entire area of the light in all directions, in units of radiant power (W)"""
+        ...
+    @energy.setter
+    def energy(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def shadow_buffer_clip_start(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Shadow map clip start, below which objects will not generate shadows"""
+        ...
+    @shadow_buffer_clip_start.setter
+    def shadow_buffer_clip_start(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def shadow_soft_size(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
+        """Light size for ray shadow sampling (Raytraced shadows)"""
+        ...
+    @shadow_soft_size.setter
+    def shadow_soft_size(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def shadow_filter_radius(self) -> Annotated[float, "step=1.0", "precision=2"]:
+        """Blur shadow aliasing using Percentage Closer Filtering"""
+        ...
+    @shadow_filter_radius.setter
+    def shadow_filter_radius(self, value: Annotated[float, "step=1.0", "precision=2"]):
+        ...
+    @property
+    def shadow_maximum_resolution(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.05000000074505806", "precision=4"]:
+        """Minimum size of a shadow map pixel. Higher values use less memory at the cost of shadow quality."""
+        ...
+    @shadow_maximum_resolution.setter
+    def shadow_maximum_resolution(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.05000000074505806", "precision=4"]):
+        ...
+    @property
+    def use_shadow_jitter(self) -> bool:
+        """Enable jittered soft shadows to increase shadow precision (disabled in viewport unless enabled in the render settings). Has a high performance impact."""
+        ...
+    @use_shadow_jitter.setter
+    def use_shadow_jitter(self, value: bool):
+        ...
+    @property
+    def shadow_jitter_overblur(self) -> Annotated[float, "subtype='PERCENTAGE'", "step=10.0", "precision=0"]:
+        """Apply shadow tracing to each jittered sample to reduce under-sampling artifacts"""
+        ...
+    @shadow_jitter_overblur.setter
+    def shadow_jitter_overblur(self, value: Annotated[float, "subtype='PERCENTAGE'", "step=10.0", "precision=0"]):
+        ...
+    @property
+    def use_absolute_resolution(self) -> bool:
+        """Limit the resolution at 1 unit from the light origin instead of relative to the shadowed pixel"""
+        ...
+    @use_absolute_resolution.setter
+    def use_absolute_resolution(self, value: bool):
+        ...
+    @property
+    def shape(self) -> Literal['SQUARE', 'RECTANGLE', 'DISK', 'ELLIPSE']:
+        """Shape of the area Light"""
+        ...
+    @shape.setter
+    def shape(self, value: Literal['SQUARE', 'RECTANGLE', 'DISK', 'ELLIPSE']):
+        ...
+    @property
+    def size(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
+        """Size of the area of the area light, X direction size for rectangle shapes"""
+        ...
+    @size.setter
+    def size(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def size_y(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
+        """Size of the area of the area light in the Y direction for rectangle shapes"""
+        ...
+    @size_y.setter
+    def size_y(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def spread(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
+        """How widely the emitted light fans out, as in the case of a gridded softbox"""
+        ...
+    @spread.setter
+    def spread(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

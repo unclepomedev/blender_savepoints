@@ -19,13 +19,38 @@ from .ID import ID
 
 class MaskParent(bpy_struct):
 
-    id: Annotated[Optional['ID'], "is_animatable=False"]
-    """ID-block to which masking element would be parented to or to its property"""
-    id_type: Literal['MOVIECLIP']
-    """Type of ID-block that can be used"""
-    type: Literal['POINT_TRACK', 'PLANE_TRACK']
-    """Parent Type"""
-    parent: Annotated[str, "is_animatable=False"]
-    """Name of parent object in specified data-block to which parenting happens"""
-    sub_parent: Annotated[str, "is_animatable=False"]
-    """Name of parent sub-object in specified data-block to which parenting happens"""
+    @property
+    def id(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
+        """ID-block to which masking element would be parented to or to its property"""
+        ...
+    @id.setter
+    def id(self, value: Annotated[Optional['ID'], "is_animatable=False"]):
+        ...
+    @property
+    def id_type(self) -> Literal['MOVIECLIP']:
+        """Type of ID-block that can be used"""
+        ...
+    @id_type.setter
+    def id_type(self, value: Literal['MOVIECLIP']):
+        ...
+    @property
+    def type(self) -> Literal['POINT_TRACK', 'PLANE_TRACK']:
+        """Parent Type"""
+        ...
+    @type.setter
+    def type(self, value: Literal['POINT_TRACK', 'PLANE_TRACK']):
+        ...
+    @property
+    def parent(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of parent object in specified data-block to which parenting happens"""
+        ...
+    @parent.setter
+    def parent(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def sub_parent(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of parent sub-object in specified data-block to which parenting happens"""
+        ...
+    @sub_parent.setter
+    def sub_parent(self, value: Annotated[str, "is_animatable=False"]):
+        ...

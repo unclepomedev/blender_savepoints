@@ -18,6 +18,11 @@ from .bpy_struct import bpy_struct
 
 class PropertyGroup(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique name used in the code and scripting"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique name used in the code and scripting"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

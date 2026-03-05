@@ -18,6 +18,11 @@ from .bpy_struct import bpy_struct
 
 class RenderSlot(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Render slot name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Render slot name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     def clear(self, *args, **kwargs) -> Any: ...

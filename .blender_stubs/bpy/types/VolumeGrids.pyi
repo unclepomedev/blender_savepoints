@@ -19,8 +19,13 @@ from .VolumeGrid import VolumeGrid
 
 class VolumeGrids(bpy_struct):
 
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Index of active volume grid"""
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Index of active volume grid"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
     @property
     def error_message(self) -> Annotated[str, "is_animatable=False"]:
         """If loading grids failed, error message with details"""

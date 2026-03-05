@@ -21,8 +21,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class ActionLayer(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
 
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def strips(self) -> Annotated['ActionStrips', "is_animatable=False"]:
         """The list of strips that are on this animation layer"""

@@ -20,8 +20,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class MeshSkinVertexLayer(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name of skin layer"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of skin layer"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['MeshSkinVertex'], "is_animatable=False"]:
 

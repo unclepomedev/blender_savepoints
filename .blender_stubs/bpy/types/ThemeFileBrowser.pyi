@@ -23,7 +23,17 @@ class ThemeFileBrowser(bpy_struct):
     def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
         """Settings for space"""
         ...
-    selected_file: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    @property
+    def selected_file(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
-    row_alternate: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
-    """Overlay color on every other row"""
+        ...
+    @selected_file.setter
+    def selected_file(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def row_alternate(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+        """Overlay color on every other row"""
+        ...
+    @row_alternate.setter
+    def row_alternate(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...

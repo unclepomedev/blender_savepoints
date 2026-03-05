@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class SceneHydra(bpy_struct):
 
-    export_method: Annotated[Literal['HYDRA', 'USD'], "is_animatable=False"]
-    """How to export the Blender scene to the Hydra render engine"""
+    @property
+    def export_method(self) -> Annotated[Literal['HYDRA', 'USD'], "is_animatable=False"]:
+        """How to export the Blender scene to the Hydra render engine"""
+        ...
+    @export_method.setter
+    def export_method(self, value: Annotated[Literal['HYDRA', 'USD'], "is_animatable=False"]):
+        ...

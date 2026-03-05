@@ -18,9 +18,24 @@ from .bpy_struct import bpy_struct
 
 class FModifierEnvelopeControlPoint(bpy_struct):
 
-    min: Annotated[float, "step=10.0", "precision=3"]
-    """Lower bound of envelope at this control-point"""
-    max: Annotated[float, "step=10.0", "precision=3"]
-    """Upper bound of envelope at this control-point"""
-    frame: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
-    """Frame this control-point occurs on"""
+    @property
+    def min(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Lower bound of envelope at this control-point"""
+        ...
+    @min.setter
+    def min(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def max(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Upper bound of envelope at this control-point"""
+        ...
+    @max.setter
+    def max(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def frame(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]:
+        """Frame this control-point occurs on"""
+        ...
+    @frame.setter
+    def frame(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]):
+        ...

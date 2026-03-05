@@ -18,17 +18,52 @@ from .bpy_struct import bpy_struct
 
 class VolumeDisplay(bpy_struct):
 
-    density: Annotated[float, "step=1.0", "precision=3", "is_animatable=False"]
-    """Thickness of volume display in the viewport"""
-    wireframe_type: Literal['NONE', 'BOUNDS', 'BOXES', 'POINTS']
-    """Type of wireframe display"""
-    wireframe_detail: Literal['COARSE', 'FINE']
-    """Amount of detail for wireframe display"""
-    interpolation_method: Literal['LINEAR', 'CUBIC', 'CLOSEST']
-    """Interpolation method to use for volumes in solid mode"""
-    use_slice: bool
-    """Perform a single slice of the domain object"""
-    slice_axis: Literal['AUTO', 'X', 'Y', 'Z']
+    @property
+    def density(self) -> Annotated[float, "step=1.0", "precision=3", "is_animatable=False"]:
+        """Thickness of volume display in the viewport"""
+        ...
+    @density.setter
+    def density(self, value: Annotated[float, "step=1.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def wireframe_type(self) -> Literal['NONE', 'BOUNDS', 'BOXES', 'POINTS']:
+        """Type of wireframe display"""
+        ...
+    @wireframe_type.setter
+    def wireframe_type(self, value: Literal['NONE', 'BOUNDS', 'BOXES', 'POINTS']):
+        ...
+    @property
+    def wireframe_detail(self) -> Literal['COARSE', 'FINE']:
+        """Amount of detail for wireframe display"""
+        ...
+    @wireframe_detail.setter
+    def wireframe_detail(self, value: Literal['COARSE', 'FINE']):
+        ...
+    @property
+    def interpolation_method(self) -> Literal['LINEAR', 'CUBIC', 'CLOSEST']:
+        """Interpolation method to use for volumes in solid mode"""
+        ...
+    @interpolation_method.setter
+    def interpolation_method(self, value: Literal['LINEAR', 'CUBIC', 'CLOSEST']):
+        ...
+    @property
+    def use_slice(self) -> bool:
+        """Perform a single slice of the domain object"""
+        ...
+    @use_slice.setter
+    def use_slice(self, value: bool):
+        ...
+    @property
+    def slice_axis(self) -> Literal['AUTO', 'X', 'Y', 'Z']:
 
-    slice_depth: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=3"]
-    """Position of the slice"""
+        ...
+    @slice_axis.setter
+    def slice_axis(self, value: Literal['AUTO', 'X', 'Y', 'Z']):
+        ...
+    @property
+    def slice_depth(self) -> Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=3"]:
+        """Position of the slice"""
+        ...
+    @slice_depth.setter
+    def slice_depth(self, value: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=3"]):
+        ...

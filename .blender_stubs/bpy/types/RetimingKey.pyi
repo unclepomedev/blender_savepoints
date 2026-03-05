@@ -18,6 +18,11 @@ from .bpy_struct import bpy_struct
 
 class RetimingKey(bpy_struct):
 
-    timeline_frame: Annotated[int, "step=1"]
-    """Position of retiming key in timeline"""
+    @property
+    def timeline_frame(self) -> Annotated[int, "step=1"]:
+        """Position of retiming key in timeline"""
+        ...
+    @timeline_frame.setter
+    def timeline_frame(self, value: Annotated[int, "step=1"]):
+        ...
     def remove(self, *args, **kwargs) -> Any: ...

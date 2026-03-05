@@ -20,8 +20,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class LayerObjects(bpy_struct):
 
-    active: Annotated[Optional['Object'], "is_animatable=False"]
-    """Active object for this layer"""
+    @property
+    def active(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Active object for this layer"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
     @property
     def selected(self) -> Annotated[bpy_prop_collection['Object'], "is_animatable=False"]:
         """All the selected objects of this layer"""

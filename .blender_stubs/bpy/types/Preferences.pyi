@@ -36,10 +36,20 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Preferences(bpy_struct):
 
-    active_section: Literal['INTERFACE', 'VIEWPORT', 'LIGHTS', 'EDITING', 'ANIMATION', 'EXTENSIONS', 'ADDONS', 'THEMES', 'INPUT', 'NAVIGATION', 'KEYMAP', 'SYSTEM', 'SAVE_LOAD', 'FILE_PATHS', 'DEVELOPER_TOOLS', 'EXPERIMENTAL']
-    """Preferences"""
-    app_template: Annotated[str, "is_animatable=False"]
+    @property
+    def active_section(self) -> Literal['INTERFACE', 'VIEWPORT', 'LIGHTS', 'EDITING', 'ANIMATION', 'EXTENSIONS', 'ADDONS', 'THEMES', 'INPUT', 'NAVIGATION', 'KEYMAP', 'SYSTEM', 'SAVE_LOAD', 'FILE_PATHS', 'DEVELOPER_TOOLS', 'EXPERIMENTAL']:
+        """Preferences"""
+        ...
+    @active_section.setter
+    def active_section(self, value: Literal['INTERFACE', 'VIEWPORT', 'LIGHTS', 'EDITING', 'ANIMATION', 'EXTENSIONS', 'ADDONS', 'THEMES', 'INPUT', 'NAVIGATION', 'KEYMAP', 'SYSTEM', 'SAVE_LOAD', 'FILE_PATHS', 'DEVELOPER_TOOLS', 'EXPERIMENTAL']):
+        ...
+    @property
+    def app_template(self) -> Annotated[str, "is_animatable=False"]:
 
+        ...
+    @app_template.setter
+    def app_template(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def themes(self) -> Annotated[bpy_prop_collection['Theme'], "is_animatable=False"]:
 
@@ -56,8 +66,13 @@ class Preferences(bpy_struct):
     def autoexec_paths(self) -> Annotated['PathCompareCollection', "is_animatable=False"]:
 
         ...
-    use_recent_searches: bool
-    """Sort the recently searched items at the top"""
+    @property
+    def use_recent_searches(self) -> bool:
+        """Sort the recently searched items at the top"""
+        ...
+    @use_recent_searches.setter
+    def use_recent_searches(self, value: bool):
+        ...
     @property
     def view(self) -> Annotated['PreferencesView', "is_animatable=False"]:
         """Preferences related to viewing data"""
@@ -102,7 +117,17 @@ class Preferences(bpy_struct):
     def studio_lights(self) -> Annotated['StudioLights', "is_animatable=False"]:
 
         ...
-    use_preferences_save: bool
-    """Save preferences on exit when modified (unless factory settings have been loaded)"""
-    is_dirty: bool
-    """Preferences have changed"""
+    @property
+    def use_preferences_save(self) -> bool:
+        """Save preferences on exit when modified (unless factory settings have been loaded)"""
+        ...
+    @use_preferences_save.setter
+    def use_preferences_save(self, value: bool):
+        ...
+    @property
+    def is_dirty(self) -> bool:
+        """Preferences have changed"""
+        ...
+    @is_dirty.setter
+    def is_dirty(self, value: bool):
+        ...

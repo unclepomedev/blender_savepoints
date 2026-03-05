@@ -19,8 +19,13 @@ from .ThemeSpaceGeneric import ThemeSpaceGeneric
 
 class ThemeProperties(bpy_struct):
 
-    match: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
+    @property
+    def match(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
+        ...
+    @match.setter
+    def match(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
     @property
     def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
         """Settings for space"""

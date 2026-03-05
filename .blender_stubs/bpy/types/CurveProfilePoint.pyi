@@ -18,11 +18,31 @@ from .bpy_struct import bpy_struct
 
 class CurveProfilePoint(bpy_struct):
 
-    location: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
-    """X/Y coordinates of the path point"""
-    handle_type_1: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']
-    """Path interpolation at this point"""
-    handle_type_2: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']
-    """Path interpolation at this point"""
-    select: bool
-    """Selection state of the path point"""
+    @property
+    def location(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
+        """X/Y coordinates of the path point"""
+        ...
+    @location.setter
+    def location(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def handle_type_1(self) -> Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']:
+        """Path interpolation at this point"""
+        ...
+    @handle_type_1.setter
+    def handle_type_1(self, value: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']):
+        ...
+    @property
+    def handle_type_2(self) -> Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']:
+        """Path interpolation at this point"""
+        ...
+    @handle_type_2.setter
+    def handle_type_2(self, value: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']):
+        ...
+    @property
+    def select(self) -> bool:
+        """Selection state of the path point"""
+        ...
+    @select.setter
+    def select(self, value: bool):
+        ...

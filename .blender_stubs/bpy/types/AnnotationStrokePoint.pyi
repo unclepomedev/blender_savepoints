@@ -18,4 +18,10 @@ from .bpy_struct import bpy_struct
 
 class AnnotationStrokePoint(bpy_struct):
 
-    co: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+    @property
+    def co(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
+
+        ...
+    @co.setter
+    def co(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+        ...

@@ -19,10 +19,20 @@ from .MeshLoopColorLayer import MeshLoopColorLayer
 
 class LoopColors(bpy_struct):
 
-    active: Annotated[Optional['MeshLoopColorLayer'], "is_animatable=False"]
-    """Active vertex color layer"""
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """Active vertex color index"""
+    @property
+    def active(self) -> Annotated[Optional['MeshLoopColorLayer'], "is_animatable=False"]:
+        """Active vertex color layer"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['MeshLoopColorLayer'], "is_animatable=False"]):
+        ...
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """Active vertex color index"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

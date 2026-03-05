@@ -23,17 +23,47 @@ class VIEW3D_MT_uv_map(Menu):
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:
         """Defines the structure of the menu in the UI"""
         ...
-    bl_idname: Annotated[str, "is_animatable=False"]
-    """If this is set, the menu gets a custom ID, otherwise it takes the name of the class used to define the menu (for example, if the class name is "OBJECT_MT_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_MT_hello")"""
-    bl_label: Annotated[str, "is_animatable=False"]
-    """The menu label"""
-    bl_translation_context: Annotated[str, "is_animatable=False"]
+    @property
+    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
+        """If this is set, the menu gets a custom ID, otherwise it takes the name of the class used to define the menu (for example, if the class name is "OBJECT_MT_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_MT_hello")"""
+        ...
+    @bl_idname.setter
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
+        """The menu label"""
+        ...
+    @bl_label.setter
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_translation_context(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_description: Annotated[str, "is_animatable=False"]
+        ...
+    @bl_translation_context.setter
+    def bl_translation_context(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_description(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_owner_id: Annotated[str, "is_animatable=False"]
+        ...
+    @bl_description.setter
+    def bl_description(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_owner_id(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_options: set[str]
-    """Options for this menu type"""
+        ...
+    @bl_owner_id.setter
+    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_options(self) -> set[str]:
+        """Options for this menu type"""
+        ...
+    @bl_options.setter
+    def bl_options(self, value: set[str]):
+        ...
     def poll(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

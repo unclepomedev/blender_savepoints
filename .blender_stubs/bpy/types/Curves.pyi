@@ -35,8 +35,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Curves(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -61,10 +66,20 @@ class Curves(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -77,14 +92,24 @@ class Curves(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -97,8 +122,13 @@ class Curves(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -131,22 +161,62 @@ class Curves(ID):
     def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
 
         ...
-    surface: Annotated[Optional['Object'], "is_animatable=False"]
-    """Mesh object that the curves can be attached to"""
-    surface_uv_map: Annotated[str, "is_animatable=False"]
-    """The name of the attribute on the surface mesh used to define the attachment of each curve"""
-    use_mirror_x: bool
-    """Enable symmetry in the X axis"""
-    use_mirror_y: bool
-    """Enable symmetry in the Y axis"""
-    use_mirror_z: bool
-    """Enable symmetry in the Z axis"""
-    selection_domain: Annotated[Literal['POINT', 'CURVE'], "is_animatable=False"]
+    @property
+    def surface(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Mesh object that the curves can be attached to"""
+        ...
+    @surface.setter
+    def surface(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def surface_uv_map(self) -> Annotated[str, "is_animatable=False"]:
+        """The name of the attribute on the surface mesh used to define the attachment of each curve"""
+        ...
+    @surface_uv_map.setter
+    def surface_uv_map(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def use_mirror_x(self) -> bool:
+        """Enable symmetry in the X axis"""
+        ...
+    @use_mirror_x.setter
+    def use_mirror_x(self, value: bool):
+        ...
+    @property
+    def use_mirror_y(self) -> bool:
+        """Enable symmetry in the Y axis"""
+        ...
+    @use_mirror_y.setter
+    def use_mirror_y(self, value: bool):
+        ...
+    @property
+    def use_mirror_z(self) -> bool:
+        """Enable symmetry in the Z axis"""
+        ...
+    @use_mirror_z.setter
+    def use_mirror_z(self, value: bool):
+        ...
+    @property
+    def selection_domain(self) -> Annotated[Literal['POINT', 'CURVE'], "is_animatable=False"]:
 
-    use_sculpt_collision: Annotated[bool, "is_animatable=False"]
-    """Enable collision with the surface while sculpting"""
-    surface_collision_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.0010000000474974513", "precision=3"]
-    """Distance to keep the curves away from the surface"""
+        ...
+    @selection_domain.setter
+    def selection_domain(self, value: Annotated[Literal['POINT', 'CURVE'], "is_animatable=False"]):
+        ...
+    @property
+    def use_sculpt_collision(self) -> Annotated[bool, "is_animatable=False"]:
+        """Enable collision with the surface while sculpting"""
+        ...
+    @use_sculpt_collision.setter
+    def use_sculpt_collision(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def surface_collision_distance(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.0010000000474974513", "precision=3"]:
+        """Distance to keep the curves away from the surface"""
+        ...
+    @surface_collision_distance.setter
+    def surface_collision_distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.0010000000474974513", "precision=3"]):
+        ...
     @property
     def attributes(self) -> Annotated['AttributeGroupCurves', "is_animatable=False"]:
         """Geometry attributes"""

@@ -18,32 +18,108 @@ from .bpy_struct import bpy_struct
 
 class SpreadsheetRowFilter(bpy_struct):
 
-    enabled: bool
+    @property
+    def enabled(self) -> bool:
 
-    show_expanded: bool
+        ...
+    @enabled.setter
+    def enabled(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
 
-    column_name: Annotated[str, "is_animatable=False"]
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
+    @property
+    def column_name(self) -> Annotated[str, "is_animatable=False"]:
 
-    operation: Literal['EQUAL', 'GREATER', 'LESS']
+        ...
+    @column_name.setter
+    def column_name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def operation(self) -> Literal['EQUAL', 'GREATER', 'LESS']:
 
-    value_float: Annotated[float, "step=10.0", "precision=3"]
+        ...
+    @operation.setter
+    def operation(self, value: Literal['EQUAL', 'GREATER', 'LESS']):
+        ...
+    @property
+    def value_float(self) -> Annotated[float, "step=10.0", "precision=3"]:
 
-    value_float2: Annotated[list[float], "step=10.0", "precision=3"]
+        ...
+    @value_float.setter
+    def value_float(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def value_float2(self) -> Annotated[list[float], "step=10.0", "precision=3"]:
 
-    value_float3: Annotated[list[float], "step=10.0", "precision=3"]
+        ...
+    @value_float2.setter
+    def value_float2(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+        ...
+    @property
+    def value_float3(self) -> Annotated[list[float], "step=10.0", "precision=3"]:
 
-    value_color: Annotated[list[float], "step=10.0", "precision=3"]
+        ...
+    @value_float3.setter
+    def value_float3(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+        ...
+    @property
+    def value_color(self) -> Annotated[list[float], "step=10.0", "precision=3"]:
 
-    value_string: Annotated[str, "is_animatable=False"]
+        ...
+    @value_color.setter
+    def value_color(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+        ...
+    @property
+    def value_string(self) -> Annotated[str, "is_animatable=False"]:
 
-    threshold: Annotated[float, "step=10.0", "precision=3"]
-    """How close float values need to be to be equal"""
-    value_int: Annotated[int, "step=1"]
+        ...
+    @value_string.setter
+    def value_string(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def threshold(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """How close float values need to be to be equal"""
+        ...
+    @threshold.setter
+    def threshold(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def value_int(self) -> Annotated[int, "step=1"]:
 
-    value_int8: Annotated[int, "step=1"]
+        ...
+    @value_int.setter
+    def value_int(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def value_int8(self) -> Annotated[int, "step=1"]:
 
-    value_int2: Annotated[list[int], "step=1"]
+        ...
+    @value_int8.setter
+    def value_int8(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def value_int2(self) -> Annotated[list[int], "step=1"]:
 
-    value_int3: Annotated[list[int], "step=1"]
+        ...
+    @value_int2.setter
+    def value_int2(self, value: Annotated[list[int], "step=1"]):
+        ...
+    @property
+    def value_int3(self) -> Annotated[list[int], "step=1"]:
 
-    value_boolean: bool
+        ...
+    @value_int3.setter
+    def value_int3(self, value: Annotated[list[int], "step=1"]):
+        ...
+    @property
+    def value_boolean(self) -> bool:
+
+        ...
+    @value_boolean.setter
+    def value_boolean(self, value: bool):
+        ...

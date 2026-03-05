@@ -19,8 +19,13 @@ from .Object import Object
 
 class LimitDistanceConstraint(Constraint):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Constraint name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Constraint name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['CAMERA_SOLVER', 'FOLLOW_TRACK', 'OBJECT_SOLVER', 'COPY_LOCATION', 'COPY_ROTATION', 'COPY_SCALE', 'COPY_TRANSFORMS', 'LIMIT_DISTANCE', 'LIMIT_LOCATION', 'LIMIT_ROTATION', 'LIMIT_SCALE', 'MAINTAIN_VOLUME', 'TRANSFORM', 'TRANSFORM_CACHE', 'CLAMP_TO', 'DAMPED_TRACK', 'IK', 'LOCKED_TRACK', 'SPLINE_IK', 'STRETCH_TO', 'TRACK_TO', 'ACTION', 'ARMATURE', 'CHILD_OF', 'FLOOR', 'FOLLOW_PATH', 'GEOMETRY_ATTRIBUTE', 'PIVOT', 'SHRINKWRAP']:
 
@@ -29,28 +34,73 @@ class LimitDistanceConstraint(Constraint):
     def is_override_data(self) -> bool:
         """In a local override object, whether this constraint comes from the linked reference object, or is local to the override"""
         ...
-    owner_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']
-    """Space that owner is evaluated in"""
-    target_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']
-    """Space that target is evaluated in"""
-    space_object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object for Custom Space"""
-    space_subtarget: Annotated[str, "is_animatable=False"]
-    """Armature bone, mesh or lattice vertex group, ..."""
-    mute: bool
-    """Enable/Disable Constraint"""
-    enabled: bool
-    """Use the results of this constraint"""
-    show_expanded: bool
-    """Constraint's panel is expanded in UI"""
+    @property
+    def owner_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']:
+        """Space that owner is evaluated in"""
+        ...
+    @owner_space.setter
+    def owner_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']):
+        ...
+    @property
+    def target_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']:
+        """Space that target is evaluated in"""
+        ...
+    @target_space.setter
+    def target_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']):
+        ...
+    @property
+    def space_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object for Custom Space"""
+        ...
+    @space_object.setter
+    def space_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def space_subtarget(self) -> Annotated[str, "is_animatable=False"]:
+        """Armature bone, mesh or lattice vertex group, ..."""
+        ...
+    @space_subtarget.setter
+    def space_subtarget(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def mute(self) -> bool:
+        """Enable/Disable Constraint"""
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...
+    @property
+    def enabled(self) -> bool:
+        """Use the results of this constraint"""
+        ...
+    @enabled.setter
+    def enabled(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Constraint's panel is expanded in UI"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
     @property
     def is_valid(self) -> bool:
         """Constraint has valid settings and can be evaluated"""
         ...
-    active: bool
-    """Constraint is the one being edited"""
-    influence: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of influence constraint will have on the final solution"""
+    @property
+    def active(self) -> bool:
+        """Constraint is the one being edited"""
+        ...
+    @active.setter
+    def active(self, value: bool):
+        ...
+    @property
+    def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of influence constraint will have on the final solution"""
+        ...
+    @influence.setter
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
     @property
     def error_location(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in Blender space unit for constraints that work on position"""
@@ -59,17 +109,52 @@ class LimitDistanceConstraint(Constraint):
     def error_rotation(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in radians for constraints that work on orientation"""
         ...
-    head_tail: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Target along length of bone: Head is 0, Tail is 1"""
-    use_bbone_shape: bool
-    """Follow shape of B-Bone segments when calculating Head/Tail position"""
-    target: Annotated[Optional['Object'], "is_animatable=False"]
-    """Target object"""
-    subtarget: Annotated[str, "is_animatable=False"]
-    """Armature bone, mesh or lattice vertex group, ..."""
-    distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Radius of limiting sphere"""
-    limit_mode: Literal['LIMITDIST_INSIDE', 'LIMITDIST_OUTSIDE', 'LIMITDIST_ONSURFACE']
-    """Distances in relation to sphere of influence to allow"""
-    use_transform_limit: bool
-    """Transforms are affected by this constraint as well"""
+    @property
+    def head_tail(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Target along length of bone: Head is 0, Tail is 1"""
+        ...
+    @head_tail.setter
+    def head_tail(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def use_bbone_shape(self) -> bool:
+        """Follow shape of B-Bone segments when calculating Head/Tail position"""
+        ...
+    @use_bbone_shape.setter
+    def use_bbone_shape(self, value: bool):
+        ...
+    @property
+    def target(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Target object"""
+        ...
+    @target.setter
+    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def subtarget(self) -> Annotated[str, "is_animatable=False"]:
+        """Armature bone, mesh or lattice vertex group, ..."""
+        ...
+    @subtarget.setter
+    def subtarget(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def distance(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Radius of limiting sphere"""
+        ...
+    @distance.setter
+    def distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def limit_mode(self) -> Literal['LIMITDIST_INSIDE', 'LIMITDIST_OUTSIDE', 'LIMITDIST_ONSURFACE']:
+        """Distances in relation to sphere of influence to allow"""
+        ...
+    @limit_mode.setter
+    def limit_mode(self, value: Literal['LIMITDIST_INSIDE', 'LIMITDIST_OUTSIDE', 'LIMITDIST_ONSURFACE']):
+        ...
+    @property
+    def use_transform_limit(self) -> bool:
+        """Transforms are affected by this constraint as well"""
+        ...
+    @use_transform_limit.setter
+    def use_transform_limit(self, value: bool):
+        ...

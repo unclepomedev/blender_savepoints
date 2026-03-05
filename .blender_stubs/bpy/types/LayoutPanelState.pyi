@@ -18,4 +18,10 @@ from .bpy_struct import bpy_struct
 
 class LayoutPanelState(bpy_struct):
 
-    is_open: bool
+    @property
+    def is_open(self) -> bool:
+
+        ...
+    @is_open.setter
+    def is_open(self, value: bool):
+        ...

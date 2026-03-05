@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class Float4x4AttributeValue(bpy_struct):
 
-    value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]
-    """Matrix"""
+    @property
+    def value(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]:
+        """Matrix"""
+        ...
+    @value.setter
+    def value(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]):
+        ...

@@ -29,17 +29,42 @@ class NlaTrack(bpy_struct):
     def is_override_data(self) -> bool:
         """In a local override data, whether this NLA track comes from the linked reference data, or is local to the override"""
         ...
-    name: Annotated[str, "is_animatable=False"]
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
 
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def active(self) -> bool:
         """NLA Track is active"""
         ...
-    is_solo: bool
-    """NLA Track is evaluated itself (i.e. active Action and all other NLA Tracks in the same AnimData block are disabled)"""
-    select: bool
-    """NLA Track is selected"""
-    mute: bool
-    """Disable NLA Track evaluation"""
-    lock: bool
-    """NLA Track is locked"""
+    @property
+    def is_solo(self) -> bool:
+        """NLA Track is evaluated itself (i.e. active Action and all other NLA Tracks in the same AnimData block are disabled)"""
+        ...
+    @is_solo.setter
+    def is_solo(self, value: bool):
+        ...
+    @property
+    def select(self) -> bool:
+        """NLA Track is selected"""
+        ...
+    @select.setter
+    def select(self, value: bool):
+        ...
+    @property
+    def mute(self) -> bool:
+        """Disable NLA Track evaluation"""
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...
+    @property
+    def lock(self) -> bool:
+        """NLA Track is locked"""
+        ...
+    @lock.setter
+    def lock(self, value: bool):
+        ...

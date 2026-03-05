@@ -19,8 +19,13 @@ from .DynamicPaintSurface import DynamicPaintSurface
 
 class DynamicPaintSurfaces(bpy_struct):
 
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
 
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
     @property
     def active(self) -> Annotated[Optional['DynamicPaintSurface'], "is_animatable=False"]:
         """Active Dynamic Paint surface being displayed"""

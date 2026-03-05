@@ -18,4 +18,10 @@ from .bpy_struct import bpy_struct
 
 class BoolAttributeValue(bpy_struct):
 
-    value: bool
+    @property
+    def value(self) -> bool:
+
+        ...
+    @value.setter
+    def value(self, value: bool):
+        ...

@@ -20,10 +20,20 @@ from .NodeSocket import NodeSocket
 
 class NodeLink(bpy_struct):
 
-    is_valid: bool
-    """Link is valid"""
-    is_muted: bool
-    """Link is muted and can be ignored"""
+    @property
+    def is_valid(self) -> bool:
+        """Link is valid"""
+        ...
+    @is_valid.setter
+    def is_valid(self, value: bool):
+        ...
+    @property
+    def is_muted(self) -> bool:
+        """Link is muted and can be ignored"""
+        ...
+    @is_muted.setter
+    def is_muted(self, value: bool):
+        ...
     @property
     def from_node(self) -> Annotated[Optional['Node'], "is_animatable=False"]:
 

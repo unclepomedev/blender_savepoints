@@ -19,8 +19,13 @@ from .ThemeSpaceGeneric import ThemeSpaceGeneric
 
 class ThemeSpreadsheet(bpy_struct):
 
-    row_alternate: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
-    """Overlay color on every other row"""
+    @property
+    def row_alternate(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+        """Overlay color on every other row"""
+        ...
+    @row_alternate.setter
+    def row_alternate(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...
     @property
     def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:
         """Settings for space"""

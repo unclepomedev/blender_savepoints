@@ -19,10 +19,20 @@ from .Attribute import Attribute
 
 class AttributeGroupPointCloud(bpy_struct):
 
-    active: Annotated[Optional['Attribute'], "is_animatable=False"]
-    """Active attribute"""
-    active_index: Annotated[int, "step=1", "is_animatable=False"]
-    """Active attribute index or -1 when none are active"""
+    @property
+    def active(self) -> Annotated[Optional['Attribute'], "is_animatable=False"]:
+        """Active attribute"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['Attribute'], "is_animatable=False"]):
+        ...
+    @property
+    def active_index(self) -> Annotated[int, "step=1", "is_animatable=False"]:
+        """Active attribute index or -1 when none are active"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def domain_size(self, *args, **kwargs) -> Any: ...

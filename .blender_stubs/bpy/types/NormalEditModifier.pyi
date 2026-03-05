@@ -19,32 +19,77 @@ from .Object import Object
 
 class NormalEditModifier(Modifier):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Modifier name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Modifier name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
 
         ...
-    show_viewport: bool
-    """Display modifier in viewport"""
-    show_render: bool
-    """Use modifier during render"""
-    show_in_editmode: bool
-    """Display modifier in Edit mode"""
-    show_on_cage: bool
-    """Adjust edit cage to modifier result"""
-    show_expanded: bool
-    """Set modifier expanded in the user interface"""
-    is_active: Annotated[bool, "is_animatable=False"]
-    """The active modifier in the list"""
-    use_pin_to_last: Annotated[bool, "is_animatable=False"]
-    """Keep the modifier at the end of the list"""
+    @property
+    def show_viewport(self) -> bool:
+        """Display modifier in viewport"""
+        ...
+    @show_viewport.setter
+    def show_viewport(self, value: bool):
+        ...
+    @property
+    def show_render(self) -> bool:
+        """Use modifier during render"""
+        ...
+    @show_render.setter
+    def show_render(self, value: bool):
+        ...
+    @property
+    def show_in_editmode(self) -> bool:
+        """Display modifier in Edit mode"""
+        ...
+    @show_in_editmode.setter
+    def show_in_editmode(self, value: bool):
+        ...
+    @property
+    def show_on_cage(self) -> bool:
+        """Adjust edit cage to modifier result"""
+        ...
+    @show_on_cage.setter
+    def show_on_cage(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Set modifier expanded in the user interface"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
+    @property
+    def is_active(self) -> Annotated[bool, "is_animatable=False"]:
+        """The active modifier in the list"""
+        ...
+    @is_active.setter
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
+        """Keep the modifier at the end of the list"""
+        ...
+    @use_pin_to_last.setter
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def is_override_data(self) -> bool:
         """In a local override object, whether this modifier comes from the linked reference object, or is local to the override"""
         ...
-    use_apply_on_spline: bool
-    """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
+    @property
+    def use_apply_on_spline(self) -> bool:
+        """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
+        ...
+    @use_apply_on_spline.setter
+    def use_apply_on_spline(self, value: bool):
+        ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Time in seconds that the modifier took to evaluate. This is only set on evaluated objects. If multiple modifiers run in parallel, execution time is not a reliable metric."""
@@ -53,23 +98,73 @@ class NormalEditModifier(Modifier):
     def persistent_uid(self) -> Annotated[int, "step=1"]:
         """Uniquely identifies the modifier within the modifier stack that it is part of"""
         ...
-    mode: Literal['RADIAL', 'DIRECTIONAL']
-    """How to affect (generate) normals"""
-    offset: Annotated[list[float], "subtype='COORDINATES'", "step=1.0", "precision=3"]
-    """Offset from object's center"""
-    mix_mode: Literal['COPY', 'ADD', 'SUB', 'MUL']
-    """How to mix generated normals with existing ones"""
-    mix_factor: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """How much of generated normals to mix with existing ones"""
-    mix_limit: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
-    """Maximum angle between old and new normals"""
-    no_polynors_fix: bool
-    """Do not flip polygons when their normals are not consistent with their newly computed custom vertex normals"""
-    vertex_group: Annotated[str, "is_animatable=False"]
-    """Vertex group name for selecting/weighting the affected areas"""
-    invert_vertex_group: bool
-    """Invert vertex group influence"""
-    target: Annotated[Optional['Object'], "is_animatable=False"]
-    """Target object used to affect normals"""
-    use_direction_parallel: bool
-    """Use same direction for all normals, from origin to target's center (Directional mode only)"""
+    @property
+    def mode(self) -> Literal['RADIAL', 'DIRECTIONAL']:
+        """How to affect (generate) normals"""
+        ...
+    @mode.setter
+    def mode(self, value: Literal['RADIAL', 'DIRECTIONAL']):
+        ...
+    @property
+    def offset(self) -> Annotated[list[float], "subtype='COORDINATES'", "step=1.0", "precision=3"]:
+        """Offset from object's center"""
+        ...
+    @offset.setter
+    def offset(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=1.0", "precision=3"]):
+        ...
+    @property
+    def mix_mode(self) -> Literal['COPY', 'ADD', 'SUB', 'MUL']:
+        """How to mix generated normals with existing ones"""
+        ...
+    @mix_mode.setter
+    def mix_mode(self, value: Literal['COPY', 'ADD', 'SUB', 'MUL']):
+        ...
+    @property
+    def mix_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """How much of generated normals to mix with existing ones"""
+        ...
+    @mix_factor.setter
+    def mix_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def mix_limit(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
+        """Maximum angle between old and new normals"""
+        ...
+    @mix_limit.setter
+    def mix_limit(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def no_polynors_fix(self) -> bool:
+        """Do not flip polygons when their normals are not consistent with their newly computed custom vertex normals"""
+        ...
+    @no_polynors_fix.setter
+    def no_polynors_fix(self, value: bool):
+        ...
+    @property
+    def vertex_group(self) -> Annotated[str, "is_animatable=False"]:
+        """Vertex group name for selecting/weighting the affected areas"""
+        ...
+    @vertex_group.setter
+    def vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def invert_vertex_group(self) -> bool:
+        """Invert vertex group influence"""
+        ...
+    @invert_vertex_group.setter
+    def invert_vertex_group(self, value: bool):
+        ...
+    @property
+    def target(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Target object used to affect normals"""
+        ...
+    @target.setter
+    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def use_direction_parallel(self) -> bool:
+        """Use same direction for all normals, from origin to target's center (Directional mode only)"""
+        ...
+    @use_direction_parallel.setter
+    def use_direction_parallel(self, value: bool):
+        ...

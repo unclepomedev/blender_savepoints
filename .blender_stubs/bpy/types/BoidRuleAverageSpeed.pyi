@@ -18,19 +18,49 @@ from .BoidRule import BoidRule
 
 class BoidRuleAverageSpeed(BoidRule):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Boid rule name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Boid rule name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['GOAL', 'AVOID', 'AVOID_COLLISION', 'SEPARATE', 'FLOCK', 'FOLLOW_LEADER', 'AVERAGE_SPEED', 'FIGHT']:
 
         ...
-    use_in_air: bool
-    """Use rule when boid is flying"""
-    use_on_land: bool
-    """Use rule when boid is on land"""
-    wander: Annotated[float, "step=10.0", "precision=3"]
-    """How fast velocity's direction is randomized"""
-    level: Annotated[float, "step=10.0", "precision=3"]
-    """How much velocity's z-component is kept constant"""
-    speed: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Percentage of maximum speed"""
+    @property
+    def use_in_air(self) -> bool:
+        """Use rule when boid is flying"""
+        ...
+    @use_in_air.setter
+    def use_in_air(self, value: bool):
+        ...
+    @property
+    def use_on_land(self) -> bool:
+        """Use rule when boid is on land"""
+        ...
+    @use_on_land.setter
+    def use_on_land(self, value: bool):
+        ...
+    @property
+    def wander(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """How fast velocity's direction is randomized"""
+        ...
+    @wander.setter
+    def wander(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def level(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """How much velocity's z-component is kept constant"""
+        ...
+    @level.setter
+    def level(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def speed(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Percentage of maximum speed"""
+        ...
+    @speed.setter
+    def speed(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...

@@ -32,8 +32,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Image(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -58,10 +63,20 @@ class Image(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -74,14 +89,24 @@ class Image(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -94,8 +119,13 @@ class Image(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -104,14 +134,34 @@ class Image(ID):
     def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
-    filepath: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
-    """Image/Movie file name"""
-    filepath_raw: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
-    """Image/Movie file name (without data refreshing)"""
-    file_format: Literal['JPEG', 'OPEN_EXR', 'PNG', 'WEBP', 'BMP', 'CINEON', 'DPX', 'IRIS', 'JPEG2000', 'HDR', 'TARGA', 'TARGA_RAW', 'TIFF', 'OPEN_EXR_MULTILAYER', 'FFMPEG']
-    """Format used for re-saving this file"""
-    source: Literal['FILE', 'SEQUENCE', 'MOVIE', 'GENERATED', 'VIEWER', 'TILED']
-    """Where the image comes from"""
+    @property
+    def filepath(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
+        """Image/Movie file name"""
+        ...
+    @filepath.setter
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+        ...
+    @property
+    def filepath_raw(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
+        """Image/Movie file name (without data refreshing)"""
+        ...
+    @filepath_raw.setter
+    def filepath_raw(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+        ...
+    @property
+    def file_format(self) -> Literal['JPEG', 'OPEN_EXR', 'PNG', 'WEBP', 'BMP', 'CINEON', 'DPX', 'IRIS', 'JPEG2000', 'HDR', 'TARGA', 'TARGA_RAW', 'TIFF', 'OPEN_EXR_MULTILAYER', 'FFMPEG']:
+        """Format used for re-saving this file"""
+        ...
+    @file_format.setter
+    def file_format(self, value: Literal['JPEG', 'OPEN_EXR', 'PNG', 'WEBP', 'BMP', 'CINEON', 'DPX', 'IRIS', 'JPEG2000', 'HDR', 'TARGA', 'TARGA_RAW', 'TIFF', 'OPEN_EXR_MULTILAYER', 'FFMPEG']):
+        ...
+    @property
+    def source(self) -> Literal['FILE', 'SEQUENCE', 'MOVIE', 'GENERATED', 'VIEWER', 'TILED']:
+        """Where the image comes from"""
+        ...
+    @source.setter
+    def source(self, value: Literal['FILE', 'SEQUENCE', 'MOVIE', 'GENERATED', 'VIEWER', 'TILED']):
+        ...
     @property
     def type(self) -> Literal['IMAGE', 'MULTILAYER', 'UV_TEST', 'RENDER_RESULT', 'COMPOSITING']:
         """How to generate the image"""
@@ -124,12 +174,27 @@ class Image(ID):
     def packed_files(self) -> Annotated[bpy_prop_collection['ImagePackedFile'], "is_animatable=False"]:
         """Collection of packed images"""
         ...
-    use_view_as_render: bool
-    """Apply render part of display transformation when displaying this image on the screen"""
-    use_deinterlace: bool
-    """Deinterlace movie file on load"""
-    use_multiview: bool
-    """Use Multiple Views (when available)"""
+    @property
+    def use_view_as_render(self) -> bool:
+        """Apply render part of display transformation when displaying this image on the screen"""
+        ...
+    @use_view_as_render.setter
+    def use_view_as_render(self, value: bool):
+        ...
+    @property
+    def use_deinterlace(self) -> bool:
+        """Deinterlace movie file on load"""
+        ...
+    @use_deinterlace.setter
+    def use_deinterlace(self, value: bool):
+        ...
+    @property
+    def use_multiview(self) -> bool:
+        """Use Multiple Views (when available)"""
+        ...
+    @use_multiview.setter
+    def use_multiview(self, value: bool):
+        ...
     @property
     def is_stereo_3d(self) -> bool:
         """Image has left and right views"""
@@ -142,18 +207,48 @@ class Image(ID):
     def is_dirty(self) -> bool:
         """Image has changed and is not saved"""
         ...
-    generated_type: Annotated[Literal['BLANK', 'UV_GRID', 'COLOR_GRID'], "is_animatable=False"]
-    """Generated image type"""
-    generated_width: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]
-    """Generated image width"""
-    generated_height: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]
-    """Generated image height"""
-    use_generated_float: Annotated[bool, "is_animatable=False"]
-    """Generate floating-point buffer"""
-    generated_color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Fill color for the generated image"""
-    display_aspect: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2"]
-    """Display Aspect for this image, does not affect rendering"""
+    @property
+    def generated_type(self) -> Annotated[Literal['BLANK', 'UV_GRID', 'COLOR_GRID'], "is_animatable=False"]:
+        """Generated image type"""
+        ...
+    @generated_type.setter
+    def generated_type(self, value: Annotated[Literal['BLANK', 'UV_GRID', 'COLOR_GRID'], "is_animatable=False"]):
+        ...
+    @property
+    def generated_width(self) -> Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]:
+        """Generated image width"""
+        ...
+    @generated_width.setter
+    def generated_width(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def generated_height(self) -> Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]:
+        """Generated image height"""
+        ...
+    @generated_height.setter
+    def generated_height(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def use_generated_float(self) -> Annotated[bool, "is_animatable=False"]:
+        """Generate floating-point buffer"""
+        ...
+    @use_generated_float.setter
+    def use_generated_float(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def generated_color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Fill color for the generated image"""
+        ...
+    @generated_color.setter
+    def generated_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def display_aspect(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2"]:
+        """Display Aspect for this image, does not affect rendering"""
+        ...
+    @display_aspect.setter
+    def display_aspect(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2"]):
+        ...
     @property
     def render_slots(self) -> Annotated['RenderSlots', "is_animatable=False"]:
         """Render slots of the image"""
@@ -174,14 +269,24 @@ class Image(ID):
     def size(self) -> Annotated[list[int], "subtype='PIXEL'", "step=1"]:
         """Width and height of the image buffer in pixels, zero when image data cannot be loaded"""
         ...
-    resolution: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]
-    """X/Y pixels per meter, for the image buffer"""
+    @property
+    def resolution(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]:
+        """X/Y pixels per meter, for the image buffer"""
+        ...
+    @resolution.setter
+    def resolution(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]):
+        ...
     @property
     def frame_duration(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Duration (in frames) of the image (1 when not a video/sequence)"""
         ...
-    pixels: Annotated[list[float], "step=10.0", "precision=3"]
-    """Image buffer pixels in floating-point values"""
+    @property
+    def pixels(self) -> Annotated[list[float], "step=10.0", "precision=3"]:
+        """Image buffer pixels in floating-point values"""
+        ...
+    @pixels.setter
+    def pixels(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+        ...
     @property
     def channels(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of channels in pixels buffer"""
@@ -194,14 +299,34 @@ class Image(ID):
     def colorspace_settings(self) -> Annotated[Optional['ColorManagedInputColorspaceSettings'], "is_animatable=False"]:
         """Input color space settings"""
         ...
-    alpha_mode: Literal['STRAIGHT', 'PREMUL', 'CHANNEL_PACKED', 'NONE']
-    """Representation of alpha in the image file, to convert to and from when saving and loading the image"""
-    use_half_precision: bool
-    """Use 16 bits per channel to lower the memory usage during rendering"""
-    seam_margin: Annotated[int, "step=1"]
-    """Margin to take into account when fixing UV seams during painting. Higher number would improve seam-fixes for mipmaps, but decreases performance."""
-    views_format: Literal['INDIVIDUAL', 'STEREO_3D']
-    """Mode to load image views"""
+    @property
+    def alpha_mode(self) -> Literal['STRAIGHT', 'PREMUL', 'CHANNEL_PACKED', 'NONE']:
+        """Representation of alpha in the image file, to convert to and from when saving and loading the image"""
+        ...
+    @alpha_mode.setter
+    def alpha_mode(self, value: Literal['STRAIGHT', 'PREMUL', 'CHANNEL_PACKED', 'NONE']):
+        ...
+    @property
+    def use_half_precision(self) -> bool:
+        """Use 16 bits per channel to lower the memory usage during rendering"""
+        ...
+    @use_half_precision.setter
+    def use_half_precision(self, value: bool):
+        ...
+    @property
+    def seam_margin(self) -> Annotated[int, "step=1"]:
+        """Margin to take into account when fixing UV seams during painting. Higher number would improve seam-fixes for mipmaps, but decreases performance."""
+        ...
+    @seam_margin.setter
+    def seam_margin(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def views_format(self) -> Literal['INDIVIDUAL', 'STEREO_3D']:
+        """Mode to load image views"""
+        ...
+    @views_format.setter
+    def views_format(self, value: Literal['INDIVIDUAL', 'STEREO_3D']):
+        ...
     @property
     def stereo_3d_format(self) -> Annotated['Stereo3dFormat', "is_animatable=False"]:
         """Settings for stereo 3d"""

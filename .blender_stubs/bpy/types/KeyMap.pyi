@@ -26,8 +26,13 @@ class KeyMap(bpy_struct):
     def name(self) -> Annotated[str, "is_animatable=False"]:
         """Name of the key map"""
         ...
-    bl_owner_id: Annotated[str, "is_animatable=False"]
-    """Internal owner"""
+    @property
+    def bl_owner_id(self) -> Annotated[str, "is_animatable=False"]:
+        """Internal owner"""
+        ...
+    @bl_owner_id.setter
+    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def space_type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Optional space type keymap is associated with"""
@@ -40,16 +45,31 @@ class KeyMap(bpy_struct):
     def keymap_items(self) -> Annotated['KeyMapItems', "is_animatable=False"]:
         """Items in the keymap, linking an operator to an input event"""
         ...
-    is_user_modified: bool
-    """Keymap is defined by the user"""
+    @property
+    def is_user_modified(self) -> bool:
+        """Keymap is defined by the user"""
+        ...
+    @is_user_modified.setter
+    def is_user_modified(self, value: bool):
+        ...
     @property
     def is_modal(self) -> bool:
         """Indicates that a keymap is used for translate modal events for an operator"""
         ...
-    show_expanded_items: bool
-    """Expanded in the user interface"""
-    show_expanded_children: bool
-    """Children expanded in the user interface"""
+    @property
+    def show_expanded_items(self) -> bool:
+        """Expanded in the user interface"""
+        ...
+    @show_expanded_items.setter
+    def show_expanded_items(self, value: bool):
+        ...
+    @property
+    def show_expanded_children(self) -> bool:
+        """Children expanded in the user interface"""
+        ...
+    @show_expanded_children.setter
+    def show_expanded_children(self, value: bool):
+        ...
     @property
     def modal_event_values(self) -> Annotated[bpy_prop_collection['EnumPropertyItem'], "is_animatable=False"]:
         """Give access to the possible event values of this modal keymap's items (#KeyMapItem.propvalue), for API introspection"""

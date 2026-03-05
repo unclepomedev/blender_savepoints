@@ -18,10 +18,21 @@ from .bpy_struct import bpy_struct
 
 class NodeGeometryCaptureAttributeItem(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
 
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Color of the corresponding socket type in the node editor"""
         ...
-    data_type: Annotated[Literal['FLOAT', 'INT', 'BOOLEAN', 'FLOAT_VECTOR', 'FLOAT_COLOR', 'QUATERNION', 'FLOAT4X4', 'STRING', 'INT8', 'INT16_2D', 'INT32_2D', 'FLOAT2', 'BYTE_COLOR'], "is_animatable=False"]
+    @property
+    def data_type(self) -> Annotated[Literal['FLOAT', 'INT', 'BOOLEAN', 'FLOAT_VECTOR', 'FLOAT_COLOR', 'QUATERNION', 'FLOAT4X4', 'STRING', 'INT8', 'INT16_2D', 'INT32_2D', 'FLOAT2', 'BYTE_COLOR'], "is_animatable=False"]:
+
+        ...
+    @data_type.setter
+    def data_type(self, value: Annotated[Literal['FLOAT', 'INT', 'BOOLEAN', 'FLOAT_VECTOR', 'FLOAT_COLOR', 'QUATERNION', 'FLOAT4X4', 'STRING', 'INT8', 'INT16_2D', 'INT32_2D', 'FLOAT2', 'BYTE_COLOR'], "is_animatable=False"]):
+        ...

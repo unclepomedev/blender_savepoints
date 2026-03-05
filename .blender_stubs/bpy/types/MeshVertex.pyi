@@ -20,16 +20,31 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class MeshVertex(bpy_struct):
 
-    co: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    @property
+    def co(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
 
+        ...
+    @co.setter
+    def co(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
     @property
     def normal(self) -> Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]:
         """Vertex Normal"""
         ...
-    select: Annotated[bool, "is_animatable=False"]
+    @property
+    def select(self) -> Annotated[bool, "is_animatable=False"]:
 
-    hide: Annotated[bool, "is_animatable=False"]
+        ...
+    @select.setter
+    def select(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def hide(self) -> Annotated[bool, "is_animatable=False"]:
 
+        ...
+    @hide.setter
+    def hide(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def groups(self) -> Annotated[bpy_prop_collection['VertexGroupElement'], "is_animatable=False"]:
         """Weights for the vertex groups this vertex is member of"""

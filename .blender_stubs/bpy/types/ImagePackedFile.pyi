@@ -23,8 +23,13 @@ class ImagePackedFile(bpy_struct):
     def packed_file(self) -> Annotated[Optional['PackedFile'], "is_animatable=False"]:
 
         ...
-    filepath: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
+    @property
+    def filepath(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
 
+        ...
+    @filepath.setter
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+        ...
     @property
     def view(self) -> Annotated[int, "step=1"]:
 

@@ -36,8 +36,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class ParticleSettings(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -62,10 +67,20 @@ class ParticleSettings(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -78,14 +93,24 @@ class ParticleSettings(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -98,8 +123,13 @@ class ParticleSettings(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -112,308 +142,1033 @@ class ParticleSettings(ID):
     def texture_slots(self) -> Annotated['ParticleSettingsTextureSlots', "is_animatable=False"]:
         """Texture slots defining the mapping and influence of textures"""
         ...
-    active_texture: Annotated[Optional['Texture'], "is_animatable=False"]
-    """Active texture slot being displayed"""
-    active_texture_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Index of active texture slot"""
+    @property
+    def active_texture(self) -> Annotated[Optional['Texture'], "is_animatable=False"]:
+        """Active texture slot being displayed"""
+        ...
+    @active_texture.setter
+    def active_texture(self, value: Annotated[Optional['Texture'], "is_animatable=False"]):
+        ...
+    @property
+    def active_texture_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Index of active texture slot"""
+        ...
+    @active_texture_index.setter
+    def active_texture_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
     @property
     def is_fluid(self) -> bool:
         """Particles were created by a fluid simulation"""
         ...
-    use_react_start_end: Annotated[bool, "is_animatable=False"]
-    """Give birth to unreacted particles eventually"""
-    use_react_multiple: Annotated[bool, "is_animatable=False"]
-    """React multiple times"""
-    use_regrow_hair: bool
-    """Regrow hair for each frame"""
-    show_unborn: bool
-    """Show particles before they are emitted"""
-    use_dead: bool
-    """Show particles after they have died"""
-    use_emit_random: Annotated[bool, "is_animatable=False"]
-    """Emit in random order of elements"""
-    use_even_distribution: Annotated[bool, "is_animatable=False"]
-    """Use even distribution from faces based on face areas or edge lengths"""
-    use_die_on_collision: Annotated[bool, "is_animatable=False"]
-    """Particles die when they collide with a deflector object"""
-    use_size_deflect: Annotated[bool, "is_animatable=False"]
-    """Use particle's size in deflection"""
-    use_rotations: Annotated[bool, "is_animatable=False"]
-    """Calculate particle rotations"""
-    use_dynamic_rotation: Annotated[bool, "is_animatable=False"]
-    """Particle rotations are affected by collisions and effectors"""
-    use_multiply_size_mass: Annotated[bool, "is_animatable=False"]
-    """Multiply mass by particle size"""
-    use_advanced_hair: Annotated[bool, "is_animatable=False"]
-    """Use full physics calculations for growing hair"""
-    lock_boids_to_surface: bool
-    """Constrain boids to a surface"""
-    use_hair_bspline: bool
-    """Interpolate hair using B-Splines"""
-    invert_grid: bool
-    """Invert what is considered object and what is not"""
-    hexagonal_grid: bool
-    """Create the grid in a hexagonal pattern"""
-    apply_effector_to_children: bool
-    """Apply effectors to children"""
-    create_long_hair_children: bool
-    """Calculate children that suit long hair well"""
-    apply_guide_to_children: bool
+    @property
+    def use_react_start_end(self) -> Annotated[bool, "is_animatable=False"]:
+        """Give birth to unreacted particles eventually"""
+        ...
+    @use_react_start_end.setter
+    def use_react_start_end(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_react_multiple(self) -> Annotated[bool, "is_animatable=False"]:
+        """React multiple times"""
+        ...
+    @use_react_multiple.setter
+    def use_react_multiple(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_regrow_hair(self) -> bool:
+        """Regrow hair for each frame"""
+        ...
+    @use_regrow_hair.setter
+    def use_regrow_hair(self, value: bool):
+        ...
+    @property
+    def show_unborn(self) -> bool:
+        """Show particles before they are emitted"""
+        ...
+    @show_unborn.setter
+    def show_unborn(self, value: bool):
+        ...
+    @property
+    def use_dead(self) -> bool:
+        """Show particles after they have died"""
+        ...
+    @use_dead.setter
+    def use_dead(self, value: bool):
+        ...
+    @property
+    def use_emit_random(self) -> Annotated[bool, "is_animatable=False"]:
+        """Emit in random order of elements"""
+        ...
+    @use_emit_random.setter
+    def use_emit_random(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_even_distribution(self) -> Annotated[bool, "is_animatable=False"]:
+        """Use even distribution from faces based on face areas or edge lengths"""
+        ...
+    @use_even_distribution.setter
+    def use_even_distribution(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_die_on_collision(self) -> Annotated[bool, "is_animatable=False"]:
+        """Particles die when they collide with a deflector object"""
+        ...
+    @use_die_on_collision.setter
+    def use_die_on_collision(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_size_deflect(self) -> Annotated[bool, "is_animatable=False"]:
+        """Use particle's size in deflection"""
+        ...
+    @use_size_deflect.setter
+    def use_size_deflect(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_rotations(self) -> Annotated[bool, "is_animatable=False"]:
+        """Calculate particle rotations"""
+        ...
+    @use_rotations.setter
+    def use_rotations(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_dynamic_rotation(self) -> Annotated[bool, "is_animatable=False"]:
+        """Particle rotations are affected by collisions and effectors"""
+        ...
+    @use_dynamic_rotation.setter
+    def use_dynamic_rotation(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_multiply_size_mass(self) -> Annotated[bool, "is_animatable=False"]:
+        """Multiply mass by particle size"""
+        ...
+    @use_multiply_size_mass.setter
+    def use_multiply_size_mass(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_advanced_hair(self) -> Annotated[bool, "is_animatable=False"]:
+        """Use full physics calculations for growing hair"""
+        ...
+    @use_advanced_hair.setter
+    def use_advanced_hair(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def lock_boids_to_surface(self) -> bool:
+        """Constrain boids to a surface"""
+        ...
+    @lock_boids_to_surface.setter
+    def lock_boids_to_surface(self, value: bool):
+        ...
+    @property
+    def use_hair_bspline(self) -> bool:
+        """Interpolate hair using B-Splines"""
+        ...
+    @use_hair_bspline.setter
+    def use_hair_bspline(self, value: bool):
+        ...
+    @property
+    def invert_grid(self) -> bool:
+        """Invert what is considered object and what is not"""
+        ...
+    @invert_grid.setter
+    def invert_grid(self, value: bool):
+        ...
+    @property
+    def hexagonal_grid(self) -> bool:
+        """Create the grid in a hexagonal pattern"""
+        ...
+    @hexagonal_grid.setter
+    def hexagonal_grid(self, value: bool):
+        ...
+    @property
+    def apply_effector_to_children(self) -> bool:
+        """Apply effectors to children"""
+        ...
+    @apply_effector_to_children.setter
+    def apply_effector_to_children(self, value: bool):
+        ...
+    @property
+    def create_long_hair_children(self) -> bool:
+        """Calculate children that suit long hair well"""
+        ...
+    @create_long_hair_children.setter
+    def create_long_hair_children(self, value: bool):
+        ...
+    @property
+    def apply_guide_to_children(self) -> bool:
 
-    use_self_effect: bool
-    """Particle effectors affect themselves"""
-    type: Annotated[Literal['EMITTER', 'HAIR'], "is_animatable=False"]
-    """Particle type"""
-    emit_from: Annotated[Literal['VERT', 'FACE', 'VOLUME'], "is_animatable=False"]
-    """Where to emit particles from"""
-    distribution: Annotated[Literal['JIT', 'RAND', 'GRID'], "is_animatable=False"]
-    """How to distribute particles on selected element"""
-    physics_type: Annotated[Literal['NO', 'NEWTON', 'KEYED', 'BOIDS', 'FLUID'], "is_animatable=False"]
-    """Particle physics type"""
-    rotation_mode: Annotated[Literal['NONE', 'NOR', 'NOR_TAN', 'VEL', 'GLOB_X', 'GLOB_Y', 'GLOB_Z', 'OB_X', 'OB_Y', 'OB_Z'], "is_animatable=False"]
-    """Particle orientation axis (does not affect Explode modifier's results)"""
-    angular_velocity_mode: Annotated[Literal['NONE', 'VELOCITY', 'HORIZONTAL', 'VERTICAL', 'GLOBAL_X', 'GLOBAL_Y', 'GLOBAL_Z', 'RAND'], "is_animatable=False"]
-    """What axis is used to change particle rotation with time"""
-    react_event: Annotated[Literal['DEATH', 'COLLIDE', 'NEAR'], "is_animatable=False"]
-    """The event of target particles to react on"""
-    show_guide_hairs: bool
-    """Show guide hairs"""
-    show_hair_grid: bool
-    """Show hair simulation grid"""
-    show_velocity: bool
-    """Show particle velocity"""
-    show_size: bool
-    """Show particle size"""
-    show_health: bool
-    """Display boid health"""
-    use_absolute_path_time: bool
-    """Path timing is in absolute frames"""
-    use_parent_particles: bool
-    """Render parent particles"""
-    show_number: bool
-    """Show particle number"""
-    use_collection_pick_random: bool
-    """Pick objects from collection randomly"""
-    use_collection_count: bool
-    """Use object multiple times in the same collection"""
-    use_global_instance: bool
-    """Use object's global coordinates for duplication"""
-    use_rotation_instance: bool
-    """Use object's rotation for duplication (global x-axis is aligned particle rotation axis)"""
-    use_scale_instance: bool
-    """Use object's scale for duplication"""
-    use_render_adaptive: bool
-    """Display steps of the particle path"""
-    use_velocity_length: bool
-    """Multiply line length by particle speed"""
-    use_whole_collection: bool
-    """Use whole collection at once"""
-    use_strand_primitive: bool
-    """Use the strand primitive for rendering"""
-    display_method: Literal['NONE', 'RENDER', 'DOT', 'CIRC', 'CROSS', 'AXIS']
-    """How particles are displayed in viewport"""
-    render_type: Literal['NONE', 'HALO', 'LINE', 'PATH', 'OBJECT', 'COLLECTION']
-    """How particles are rendered"""
-    display_color: Literal['NONE', 'MATERIAL', 'VELOCITY', 'ACCELERATION']
-    """Display additional particle data as a color"""
-    display_size: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=-1"]
-    """Size of particles on viewport"""
-    child_type: Literal['NONE', 'SIMPLE', 'INTERPOLATED']
-    """Create child particles"""
-    display_step: Annotated[int, "step=1"]
-    """How many steps paths are displayed with (power of 2)"""
-    render_step: Annotated[int, "step=1"]
-    """How many steps paths are rendered with (power of 2)"""
-    hair_step: Annotated[int, "step=1", "is_animatable=False"]
-    """Number of hair segments"""
-    bending_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Random stiffness of hairs"""
-    keys_step: Annotated[int, "step=1"]
+        ...
+    @apply_guide_to_children.setter
+    def apply_guide_to_children(self, value: bool):
+        ...
+    @property
+    def use_self_effect(self) -> bool:
+        """Particle effectors affect themselves"""
+        ...
+    @use_self_effect.setter
+    def use_self_effect(self, value: bool):
+        ...
+    @property
+    def type(self) -> Annotated[Literal['EMITTER', 'HAIR'], "is_animatable=False"]:
+        """Particle type"""
+        ...
+    @type.setter
+    def type(self, value: Annotated[Literal['EMITTER', 'HAIR'], "is_animatable=False"]):
+        ...
+    @property
+    def emit_from(self) -> Annotated[Literal['VERT', 'FACE', 'VOLUME'], "is_animatable=False"]:
+        """Where to emit particles from"""
+        ...
+    @emit_from.setter
+    def emit_from(self, value: Annotated[Literal['VERT', 'FACE', 'VOLUME'], "is_animatable=False"]):
+        ...
+    @property
+    def distribution(self) -> Annotated[Literal['JIT', 'RAND', 'GRID'], "is_animatable=False"]:
+        """How to distribute particles on selected element"""
+        ...
+    @distribution.setter
+    def distribution(self, value: Annotated[Literal['JIT', 'RAND', 'GRID'], "is_animatable=False"]):
+        ...
+    @property
+    def physics_type(self) -> Annotated[Literal['NO', 'NEWTON', 'KEYED', 'BOIDS', 'FLUID'], "is_animatable=False"]:
+        """Particle physics type"""
+        ...
+    @physics_type.setter
+    def physics_type(self, value: Annotated[Literal['NO', 'NEWTON', 'KEYED', 'BOIDS', 'FLUID'], "is_animatable=False"]):
+        ...
+    @property
+    def rotation_mode(self) -> Annotated[Literal['NONE', 'NOR', 'NOR_TAN', 'VEL', 'GLOB_X', 'GLOB_Y', 'GLOB_Z', 'OB_X', 'OB_Y', 'OB_Z'], "is_animatable=False"]:
+        """Particle orientation axis (does not affect Explode modifier's results)"""
+        ...
+    @rotation_mode.setter
+    def rotation_mode(self, value: Annotated[Literal['NONE', 'NOR', 'NOR_TAN', 'VEL', 'GLOB_X', 'GLOB_Y', 'GLOB_Z', 'OB_X', 'OB_Y', 'OB_Z'], "is_animatable=False"]):
+        ...
+    @property
+    def angular_velocity_mode(self) -> Annotated[Literal['NONE', 'VELOCITY', 'HORIZONTAL', 'VERTICAL', 'GLOBAL_X', 'GLOBAL_Y', 'GLOBAL_Z', 'RAND'], "is_animatable=False"]:
+        """What axis is used to change particle rotation with time"""
+        ...
+    @angular_velocity_mode.setter
+    def angular_velocity_mode(self, value: Annotated[Literal['NONE', 'VELOCITY', 'HORIZONTAL', 'VERTICAL', 'GLOBAL_X', 'GLOBAL_Y', 'GLOBAL_Z', 'RAND'], "is_animatable=False"]):
+        ...
+    @property
+    def react_event(self) -> Annotated[Literal['DEATH', 'COLLIDE', 'NEAR'], "is_animatable=False"]:
+        """The event of target particles to react on"""
+        ...
+    @react_event.setter
+    def react_event(self, value: Annotated[Literal['DEATH', 'COLLIDE', 'NEAR'], "is_animatable=False"]):
+        ...
+    @property
+    def show_guide_hairs(self) -> bool:
+        """Show guide hairs"""
+        ...
+    @show_guide_hairs.setter
+    def show_guide_hairs(self, value: bool):
+        ...
+    @property
+    def show_hair_grid(self) -> bool:
+        """Show hair simulation grid"""
+        ...
+    @show_hair_grid.setter
+    def show_hair_grid(self, value: bool):
+        ...
+    @property
+    def show_velocity(self) -> bool:
+        """Show particle velocity"""
+        ...
+    @show_velocity.setter
+    def show_velocity(self, value: bool):
+        ...
+    @property
+    def show_size(self) -> bool:
+        """Show particle size"""
+        ...
+    @show_size.setter
+    def show_size(self, value: bool):
+        ...
+    @property
+    def show_health(self) -> bool:
+        """Display boid health"""
+        ...
+    @show_health.setter
+    def show_health(self, value: bool):
+        ...
+    @property
+    def use_absolute_path_time(self) -> bool:
+        """Path timing is in absolute frames"""
+        ...
+    @use_absolute_path_time.setter
+    def use_absolute_path_time(self, value: bool):
+        ...
+    @property
+    def use_parent_particles(self) -> bool:
+        """Render parent particles"""
+        ...
+    @use_parent_particles.setter
+    def use_parent_particles(self, value: bool):
+        ...
+    @property
+    def show_number(self) -> bool:
+        """Show particle number"""
+        ...
+    @show_number.setter
+    def show_number(self, value: bool):
+        ...
+    @property
+    def use_collection_pick_random(self) -> bool:
+        """Pick objects from collection randomly"""
+        ...
+    @use_collection_pick_random.setter
+    def use_collection_pick_random(self, value: bool):
+        ...
+    @property
+    def use_collection_count(self) -> bool:
+        """Use object multiple times in the same collection"""
+        ...
+    @use_collection_count.setter
+    def use_collection_count(self, value: bool):
+        ...
+    @property
+    def use_global_instance(self) -> bool:
+        """Use object's global coordinates for duplication"""
+        ...
+    @use_global_instance.setter
+    def use_global_instance(self, value: bool):
+        ...
+    @property
+    def use_rotation_instance(self) -> bool:
+        """Use object's rotation for duplication (global x-axis is aligned particle rotation axis)"""
+        ...
+    @use_rotation_instance.setter
+    def use_rotation_instance(self, value: bool):
+        ...
+    @property
+    def use_scale_instance(self) -> bool:
+        """Use object's scale for duplication"""
+        ...
+    @use_scale_instance.setter
+    def use_scale_instance(self, value: bool):
+        ...
+    @property
+    def use_render_adaptive(self) -> bool:
+        """Display steps of the particle path"""
+        ...
+    @use_render_adaptive.setter
+    def use_render_adaptive(self, value: bool):
+        ...
+    @property
+    def use_velocity_length(self) -> bool:
+        """Multiply line length by particle speed"""
+        ...
+    @use_velocity_length.setter
+    def use_velocity_length(self, value: bool):
+        ...
+    @property
+    def use_whole_collection(self) -> bool:
+        """Use whole collection at once"""
+        ...
+    @use_whole_collection.setter
+    def use_whole_collection(self, value: bool):
+        ...
+    @property
+    def use_strand_primitive(self) -> bool:
+        """Use the strand primitive for rendering"""
+        ...
+    @use_strand_primitive.setter
+    def use_strand_primitive(self, value: bool):
+        ...
+    @property
+    def display_method(self) -> Literal['NONE', 'RENDER', 'DOT', 'CIRC', 'CROSS', 'AXIS']:
+        """How particles are displayed in viewport"""
+        ...
+    @display_method.setter
+    def display_method(self, value: Literal['NONE', 'RENDER', 'DOT', 'CIRC', 'CROSS', 'AXIS']):
+        ...
+    @property
+    def render_type(self) -> Literal['NONE', 'HALO', 'LINE', 'PATH', 'OBJECT', 'COLLECTION']:
+        """How particles are rendered"""
+        ...
+    @render_type.setter
+    def render_type(self, value: Literal['NONE', 'HALO', 'LINE', 'PATH', 'OBJECT', 'COLLECTION']):
+        ...
+    @property
+    def display_color(self) -> Literal['NONE', 'MATERIAL', 'VELOCITY', 'ACCELERATION']:
+        """Display additional particle data as a color"""
+        ...
+    @display_color.setter
+    def display_color(self, value: Literal['NONE', 'MATERIAL', 'VELOCITY', 'ACCELERATION']):
+        ...
+    @property
+    def display_size(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=-1"]:
+        """Size of particles on viewport"""
+        ...
+    @display_size.setter
+    def display_size(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=-1"]):
+        ...
+    @property
+    def child_type(self) -> Literal['NONE', 'SIMPLE', 'INTERPOLATED']:
+        """Create child particles"""
+        ...
+    @child_type.setter
+    def child_type(self, value: Literal['NONE', 'SIMPLE', 'INTERPOLATED']):
+        ...
+    @property
+    def display_step(self) -> Annotated[int, "step=1"]:
+        """How many steps paths are displayed with (power of 2)"""
+        ...
+    @display_step.setter
+    def display_step(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def render_step(self) -> Annotated[int, "step=1"]:
+        """How many steps paths are rendered with (power of 2)"""
+        ...
+    @render_step.setter
+    def render_step(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def hair_step(self) -> Annotated[int, "step=1", "is_animatable=False"]:
+        """Number of hair segments"""
+        ...
+    @hair_step.setter
+    def hair_step(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def bending_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Random stiffness of hairs"""
+        ...
+    @bending_random.setter
+    def bending_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def keys_step(self) -> Annotated[int, "step=1"]:
 
-    adaptive_angle: Annotated[int, "step=1"]
-    """How many degrees path has to curve to make another render segment"""
-    adaptive_pixel: Annotated[int, "step=1"]
-    """How many pixels path has to cover to make another render segment"""
-    display_percentage: Annotated[int, "subtype='PERCENTAGE'", "step=1"]
-    """Percentage of particles to display in 3D view"""
-    material: Annotated[int, "step=1"]
-    """Index of material slot used for rendering particles"""
-    material_slot: Literal['DEFAULT']
-    """Material slot used for rendering particles"""
-    integrator: Literal['EULER', 'VERLET', 'MIDPOINT', 'RK4']
-    """Algorithm used to calculate physics, from the fastest to the most stable and accurate: Midpoint, Euler, Verlet, RK4"""
-    kink: Literal['NO', 'CURL', 'RADIAL', 'WAVE', 'BRAID', 'SPIRAL']
-    """Type of periodic offset on the path"""
-    kink_axis: Literal['X', 'Y', 'Z']
-    """Which axis to use for offset"""
-    color_maximum: Annotated[float, "step=10.0", "precision=3"]
-    """Maximum length of the particle color vector"""
-    frame_start: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Frame number to start emitting particles"""
-    frame_end: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Frame number to stop emitting particles"""
-    lifetime: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
-    """Life span of the particles"""
-    lifetime_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Give the particle life a random variation"""
-    time_tweak: Annotated[float, "step=1.0", "precision=3"]
-    """A multiplier for physics timestep (1.0 means one frame = 1/25 seconds)"""
-    timestep: Annotated[float, "step=1.0", "precision=3"]
-    """The simulation timestep per frame (seconds per frame)"""
-    use_adaptive_subframes: bool
-    """Automatically set the number of subframes"""
-    subframes: Annotated[int, "step=1"]
-    """Subframes to simulate for improved stability and finer granularity simulations (dt = timestep / (subframes + 1))"""
-    courant_target: Annotated[float, "step=10.0", "precision=3"]
-    """The relative distance a particle can move before requiring more subframes (target Courant number); 0.01 to 0.3 is the recommended range"""
-    jitter_factor: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
-    """Amount of jitter applied to the sampling"""
-    effect_hair: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Hair stiffness for effectors"""
-    count: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """Total number of particles"""
-    userjit: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """Emission locations per face (0 = automatic)"""
-    grid_resolution: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """The resolution of the particle grid"""
-    grid_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Add random offset to the grid locations"""
-    effector_amount: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """How many particles are effectors (0 is all particles)"""
-    normal_factor: Annotated[float, "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=3"]
-    """Let the surface normal give the particle a starting velocity"""
-    object_factor: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Let the object give the particle a starting velocity"""
-    factor_random: Annotated[float, "step=1.0", "precision=3"]
-    """Give the starting velocity a random variation"""
-    particle_factor: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Let the target particle give the particle a starting velocity"""
-    tangent_factor: Annotated[float, "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=2"]
-    """Let the surface tangent give the particle a starting velocity"""
-    tangent_phase: Annotated[float, "step=10.0", "precision=3"]
-    """Rotate the surface tangent"""
-    reactor_factor: Annotated[float, "step=10.0", "precision=3"]
-    """Let the vector away from the target particle's location give the particle a starting velocity"""
-    object_align_factor: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=3"]
-    """Let the emitter object orientation give the particle a starting velocity"""
-    angular_velocity_factor: Annotated[float, "step=10.0", "precision=3"]
-    """Angular velocity amount (in radians per second)"""
-    phase_factor: Annotated[float, "step=10.0", "precision=3"]
-    """Rotation around the chosen orientation axis"""
-    rotation_factor_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Randomize particle orientation"""
-    phase_factor_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Randomize rotation around the chosen orientation axis"""
-    hair_length: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=3"]
-    """Length of the hair"""
-    mass: Annotated[float, "subtype=''", "unit='MASS'", "step=1.0", "precision=4"]
-    """Mass of the particles"""
-    particle_size: Annotated[float, "step=1.0", "precision=3"]
-    """The size of the particles"""
-    size_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Give the particle size a random variation"""
-    collision_collection: Annotated[Optional['Collection'], "is_animatable=False"]
-    """Limit colliders to this collection"""
-    drag_factor: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of air drag"""
-    brownian_factor: Annotated[float, "step=1.0", "precision=3"]
-    """Amount of random, erratic particle movement"""
-    damping: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of damping"""
-    length_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Give path length a random variation"""
-    child_percent: Annotated[int, "step=1"]
-    """Number of children per parent"""
-    rendered_child_count: Annotated[int, "step=1"]
-    """Number of children per parent for rendering"""
-    virtual_parents: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Relative amount of virtual parents"""
-    child_size: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """A multiplier for the child particle size"""
-    child_size_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Random variation to the size of the child particles"""
-    child_radius: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
-    """Radius of children around parent"""
-    child_roundness: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Roundness of children around parent"""
-    clump_factor: Annotated[float, "step=10.0", "precision=3"]
-    """Amount of clumping"""
-    clump_shape: Annotated[float, "step=10.0", "precision=3"]
-    """Shape of clumping"""
-    use_clump_curve: bool
-    """Use a curve to define clump tapering"""
+        ...
+    @keys_step.setter
+    def keys_step(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def adaptive_angle(self) -> Annotated[int, "step=1"]:
+        """How many degrees path has to curve to make another render segment"""
+        ...
+    @adaptive_angle.setter
+    def adaptive_angle(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def adaptive_pixel(self) -> Annotated[int, "step=1"]:
+        """How many pixels path has to cover to make another render segment"""
+        ...
+    @adaptive_pixel.setter
+    def adaptive_pixel(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def display_percentage(self) -> Annotated[int, "subtype='PERCENTAGE'", "step=1"]:
+        """Percentage of particles to display in 3D view"""
+        ...
+    @display_percentage.setter
+    def display_percentage(self, value: Annotated[int, "subtype='PERCENTAGE'", "step=1"]):
+        ...
+    @property
+    def material(self) -> Annotated[int, "step=1"]:
+        """Index of material slot used for rendering particles"""
+        ...
+    @material.setter
+    def material(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def material_slot(self) -> Literal['DEFAULT']:
+        """Material slot used for rendering particles"""
+        ...
+    @material_slot.setter
+    def material_slot(self, value: Literal['DEFAULT']):
+        ...
+    @property
+    def integrator(self) -> Literal['EULER', 'VERLET', 'MIDPOINT', 'RK4']:
+        """Algorithm used to calculate physics, from the fastest to the most stable and accurate: Midpoint, Euler, Verlet, RK4"""
+        ...
+    @integrator.setter
+    def integrator(self, value: Literal['EULER', 'VERLET', 'MIDPOINT', 'RK4']):
+        ...
+    @property
+    def kink(self) -> Literal['NO', 'CURL', 'RADIAL', 'WAVE', 'BRAID', 'SPIRAL']:
+        """Type of periodic offset on the path"""
+        ...
+    @kink.setter
+    def kink(self, value: Literal['NO', 'CURL', 'RADIAL', 'WAVE', 'BRAID', 'SPIRAL']):
+        ...
+    @property
+    def kink_axis(self) -> Literal['X', 'Y', 'Z']:
+        """Which axis to use for offset"""
+        ...
+    @kink_axis.setter
+    def kink_axis(self, value: Literal['X', 'Y', 'Z']):
+        ...
+    @property
+    def color_maximum(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Maximum length of the particle color vector"""
+        ...
+    @color_maximum.setter
+    def color_maximum(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def frame_start(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Frame number to start emitting particles"""
+        ...
+    @frame_start.setter
+    def frame_start(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def frame_end(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Frame number to stop emitting particles"""
+        ...
+    @frame_end.setter
+    def frame_end(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def lifetime(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]:
+        """Life span of the particles"""
+        ...
+    @lifetime.setter
+    def lifetime(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def lifetime_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Give the particle life a random variation"""
+        ...
+    @lifetime_random.setter
+    def lifetime_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def time_tweak(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """A multiplier for physics timestep (1.0 means one frame = 1/25 seconds)"""
+        ...
+    @time_tweak.setter
+    def time_tweak(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def timestep(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """The simulation timestep per frame (seconds per frame)"""
+        ...
+    @timestep.setter
+    def timestep(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def use_adaptive_subframes(self) -> bool:
+        """Automatically set the number of subframes"""
+        ...
+    @use_adaptive_subframes.setter
+    def use_adaptive_subframes(self, value: bool):
+        ...
+    @property
+    def subframes(self) -> Annotated[int, "step=1"]:
+        """Subframes to simulate for improved stability and finer granularity simulations (dt = timestep / (subframes + 1))"""
+        ...
+    @subframes.setter
+    def subframes(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def courant_target(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """The relative distance a particle can move before requiring more subframes (target Courant number); 0.01 to 0.3 is the recommended range"""
+        ...
+    @courant_target.setter
+    def courant_target(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def jitter_factor(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
+        """Amount of jitter applied to the sampling"""
+        ...
+    @jitter_factor.setter
+    def jitter_factor(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def effect_hair(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Hair stiffness for effectors"""
+        ...
+    @effect_hair.setter
+    def effect_hair(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def count(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """Total number of particles"""
+        ...
+    @count.setter
+    def count(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def userjit(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """Emission locations per face (0 = automatic)"""
+        ...
+    @userjit.setter
+    def userjit(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def grid_resolution(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """The resolution of the particle grid"""
+        ...
+    @grid_resolution.setter
+    def grid_resolution(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def grid_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Add random offset to the grid locations"""
+        ...
+    @grid_random.setter
+    def grid_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def effector_amount(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """How many particles are effectors (0 is all particles)"""
+        ...
+    @effector_amount.setter
+    def effector_amount(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def normal_factor(self) -> Annotated[float, "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=3"]:
+        """Let the surface normal give the particle a starting velocity"""
+        ...
+    @normal_factor.setter
+    def normal_factor(self, value: Annotated[float, "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=3"]):
+        ...
+    @property
+    def object_factor(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Let the object give the particle a starting velocity"""
+        ...
+    @object_factor.setter
+    def object_factor(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def factor_random(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """Give the starting velocity a random variation"""
+        ...
+    @factor_random.setter
+    def factor_random(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def particle_factor(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Let the target particle give the particle a starting velocity"""
+        ...
+    @particle_factor.setter
+    def particle_factor(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def tangent_factor(self) -> Annotated[float, "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=2"]:
+        """Let the surface tangent give the particle a starting velocity"""
+        ...
+    @tangent_factor.setter
+    def tangent_factor(self, value: Annotated[float, "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=2"]):
+        ...
+    @property
+    def tangent_phase(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Rotate the surface tangent"""
+        ...
+    @tangent_phase.setter
+    def tangent_phase(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def reactor_factor(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Let the vector away from the target particle's location give the particle a starting velocity"""
+        ...
+    @reactor_factor.setter
+    def reactor_factor(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def object_align_factor(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=3"]:
+        """Let the emitter object orientation give the particle a starting velocity"""
+        ...
+    @object_align_factor.setter
+    def object_align_factor(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=1.0", "precision=3"]):
+        ...
+    @property
+    def angular_velocity_factor(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Angular velocity amount (in radians per second)"""
+        ...
+    @angular_velocity_factor.setter
+    def angular_velocity_factor(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def phase_factor(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Rotation around the chosen orientation axis"""
+        ...
+    @phase_factor.setter
+    def phase_factor(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def rotation_factor_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Randomize particle orientation"""
+        ...
+    @rotation_factor_random.setter
+    def rotation_factor_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def phase_factor_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Randomize rotation around the chosen orientation axis"""
+        ...
+    @phase_factor_random.setter
+    def phase_factor_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def hair_length(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=3"]:
+        """Length of the hair"""
+        ...
+    @hair_length.setter
+    def hair_length(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=3"]):
+        ...
+    @property
+    def mass(self) -> Annotated[float, "subtype=''", "unit='MASS'", "step=1.0", "precision=4"]:
+        """Mass of the particles"""
+        ...
+    @mass.setter
+    def mass(self, value: Annotated[float, "subtype=''", "unit='MASS'", "step=1.0", "precision=4"]):
+        ...
+    @property
+    def particle_size(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """The size of the particles"""
+        ...
+    @particle_size.setter
+    def particle_size(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def size_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Give the particle size a random variation"""
+        ...
+    @size_random.setter
+    def size_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def collision_collection(self) -> Annotated[Optional['Collection'], "is_animatable=False"]:
+        """Limit colliders to this collection"""
+        ...
+    @collision_collection.setter
+    def collision_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]):
+        ...
+    @property
+    def drag_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of air drag"""
+        ...
+    @drag_factor.setter
+    def drag_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def brownian_factor(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """Amount of random, erratic particle movement"""
+        ...
+    @brownian_factor.setter
+    def brownian_factor(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def damping(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of damping"""
+        ...
+    @damping.setter
+    def damping(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def length_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Give path length a random variation"""
+        ...
+    @length_random.setter
+    def length_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def child_percent(self) -> Annotated[int, "step=1"]:
+        """Number of children per parent"""
+        ...
+    @child_percent.setter
+    def child_percent(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def rendered_child_count(self) -> Annotated[int, "step=1"]:
+        """Number of children per parent for rendering"""
+        ...
+    @rendered_child_count.setter
+    def rendered_child_count(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def virtual_parents(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Relative amount of virtual parents"""
+        ...
+    @virtual_parents.setter
+    def virtual_parents(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def child_size(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """A multiplier for the child particle size"""
+        ...
+    @child_size.setter
+    def child_size(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def child_size_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Random variation to the size of the child particles"""
+        ...
+    @child_size_random.setter
+    def child_size_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def child_radius(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
+        """Radius of children around parent"""
+        ...
+    @child_radius.setter
+    def child_radius(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def child_roundness(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Roundness of children around parent"""
+        ...
+    @child_roundness.setter
+    def child_roundness(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def clump_factor(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Amount of clumping"""
+        ...
+    @clump_factor.setter
+    def clump_factor(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def clump_shape(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Shape of clumping"""
+        ...
+    @clump_shape.setter
+    def clump_shape(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def use_clump_curve(self) -> bool:
+        """Use a curve to define clump tapering"""
+        ...
+    @use_clump_curve.setter
+    def use_clump_curve(self, value: bool):
+        ...
     @property
     def clump_curve(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
         """Curve defining clump tapering"""
         ...
-    use_clump_noise: bool
-    """Create random clumps around the parent"""
-    clump_noise_size: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Size of clump noise"""
-    kink_amplitude: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]
-    """The amplitude of the offset"""
-    kink_amplitude_clump: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """How much clump affects kink amplitude"""
-    kink_amplitude_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Random variation of the amplitude"""
-    kink_frequency: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """The frequency of the offset (1/total length)"""
-    kink_shape: Annotated[float, "step=10.0", "precision=3"]
-    """Adjust the offset to the beginning/end"""
-    kink_flat: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """How flat the hairs are"""
-    kink_extra_steps: Annotated[int, "step=1"]
-    """Extra steps for resolution of special kink features"""
-    kink_axis_random: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Random variation of the orientation"""
-    roughness_1: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Amount of location dependent roughness"""
-    roughness_1_size: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Size of location dependent roughness"""
-    roughness_2: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Amount of random roughness"""
-    roughness_2_size: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Size of random roughness"""
-    roughness_2_threshold: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of particles left untouched by random roughness"""
-    roughness_endpoint: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Amount of endpoint roughness"""
-    roughness_end_shape: Annotated[float, "step=10.0", "precision=3"]
-    """Shape of endpoint roughness"""
-    use_roughness_curve: bool
-    """Use a curve to define roughness"""
+    @property
+    def use_clump_noise(self) -> bool:
+        """Create random clumps around the parent"""
+        ...
+    @use_clump_noise.setter
+    def use_clump_noise(self, value: bool):
+        ...
+    @property
+    def clump_noise_size(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Size of clump noise"""
+        ...
+    @clump_noise_size.setter
+    def clump_noise_size(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def kink_amplitude(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
+        """The amplitude of the offset"""
+        ...
+    @kink_amplitude.setter
+    def kink_amplitude(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def kink_amplitude_clump(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """How much clump affects kink amplitude"""
+        ...
+    @kink_amplitude_clump.setter
+    def kink_amplitude_clump(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def kink_amplitude_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Random variation of the amplitude"""
+        ...
+    @kink_amplitude_random.setter
+    def kink_amplitude_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def kink_frequency(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """The frequency of the offset (1/total length)"""
+        ...
+    @kink_frequency.setter
+    def kink_frequency(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def kink_shape(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Adjust the offset to the beginning/end"""
+        ...
+    @kink_shape.setter
+    def kink_shape(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def kink_flat(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """How flat the hairs are"""
+        ...
+    @kink_flat.setter
+    def kink_flat(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def kink_extra_steps(self) -> Annotated[int, "step=1"]:
+        """Extra steps for resolution of special kink features"""
+        ...
+    @kink_extra_steps.setter
+    def kink_extra_steps(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def kink_axis_random(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Random variation of the orientation"""
+        ...
+    @kink_axis_random.setter
+    def kink_axis_random(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def roughness_1(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Amount of location dependent roughness"""
+        ...
+    @roughness_1.setter
+    def roughness_1(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def roughness_1_size(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Size of location dependent roughness"""
+        ...
+    @roughness_1_size.setter
+    def roughness_1_size(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def roughness_2(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Amount of random roughness"""
+        ...
+    @roughness_2.setter
+    def roughness_2(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def roughness_2_size(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Size of random roughness"""
+        ...
+    @roughness_2_size.setter
+    def roughness_2_size(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def roughness_2_threshold(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of particles left untouched by random roughness"""
+        ...
+    @roughness_2_threshold.setter
+    def roughness_2_threshold(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def roughness_endpoint(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Amount of endpoint roughness"""
+        ...
+    @roughness_endpoint.setter
+    def roughness_endpoint(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def roughness_end_shape(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Shape of endpoint roughness"""
+        ...
+    @roughness_end_shape.setter
+    def roughness_end_shape(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def use_roughness_curve(self) -> bool:
+        """Use a curve to define roughness"""
+        ...
+    @use_roughness_curve.setter
+    def use_roughness_curve(self, value: bool):
+        ...
     @property
     def roughness_curve(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
         """Curve defining roughness"""
         ...
-    child_length: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Length of child paths"""
-    child_length_threshold: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of particles left untouched by child path length"""
-    child_parting_factor: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Create parting in the children based on parent strands"""
-    child_parting_min: Annotated[float, "step=10.0", "precision=3"]
-    """Minimum root to tip angle (tip distance/root distance for long hair)"""
-    child_parting_max: Annotated[float, "step=10.0", "precision=3"]
-    """Maximum root to tip angle (tip distance/root distance for long hair)"""
-    branch_threshold: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Threshold of branching"""
-    line_length_tail: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Length of the line's tail"""
-    line_length_head: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Length of the line's head"""
-    path_start: Annotated[float, "step=10.0", "precision=3"]
-    """Starting time of path"""
-    path_end: Annotated[float, "step=10.0", "precision=3"]
-    """End time of path"""
-    trail_count: Annotated[int, "step=1"]
-    """Number of trail particles"""
-    keyed_loops: Annotated[int, "step=1"]
-    """Number of times the keys are looped"""
-    use_modifier_stack: bool
-    """Emit particles from mesh with modifiers applied (must use same subdivision surface level for viewport and render for correct results)"""
-    instance_collection: Annotated[Optional['Collection'], "is_animatable=False"]
-    """Show objects in this collection in place of particles"""
+    @property
+    def child_length(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Length of child paths"""
+        ...
+    @child_length.setter
+    def child_length(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def child_length_threshold(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of particles left untouched by child path length"""
+        ...
+    @child_length_threshold.setter
+    def child_length_threshold(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def child_parting_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Create parting in the children based on parent strands"""
+        ...
+    @child_parting_factor.setter
+    def child_parting_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def child_parting_min(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Minimum root to tip angle (tip distance/root distance for long hair)"""
+        ...
+    @child_parting_min.setter
+    def child_parting_min(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def child_parting_max(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Maximum root to tip angle (tip distance/root distance for long hair)"""
+        ...
+    @child_parting_max.setter
+    def child_parting_max(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def branch_threshold(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Threshold of branching"""
+        ...
+    @branch_threshold.setter
+    def branch_threshold(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def line_length_tail(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Length of the line's tail"""
+        ...
+    @line_length_tail.setter
+    def line_length_tail(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def line_length_head(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Length of the line's head"""
+        ...
+    @line_length_head.setter
+    def line_length_head(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def path_start(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Starting time of path"""
+        ...
+    @path_start.setter
+    def path_start(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def path_end(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """End time of path"""
+        ...
+    @path_end.setter
+    def path_end(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def trail_count(self) -> Annotated[int, "step=1"]:
+        """Number of trail particles"""
+        ...
+    @trail_count.setter
+    def trail_count(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def keyed_loops(self) -> Annotated[int, "step=1"]:
+        """Number of times the keys are looped"""
+        ...
+    @keyed_loops.setter
+    def keyed_loops(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def use_modifier_stack(self) -> bool:
+        """Emit particles from mesh with modifiers applied (must use same subdivision surface level for viewport and render for correct results)"""
+        ...
+    @use_modifier_stack.setter
+    def use_modifier_stack(self, value: bool):
+        ...
+    @property
+    def instance_collection(self) -> Annotated[Optional['Collection'], "is_animatable=False"]:
+        """Show objects in this collection in place of particles"""
+        ...
+    @instance_collection.setter
+    def instance_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]):
+        ...
     @property
     def instance_weights(self) -> Annotated[bpy_prop_collection['ParticleDupliWeight'], "is_animatable=False"]:
         """Weights for all of the objects in the instance collection"""
@@ -422,10 +1177,20 @@ class ParticleSettings(ID):
     def active_instanceweight(self) -> Annotated[Optional['ParticleDupliWeight'], "is_animatable=False"]:
 
         ...
-    active_instanceweight_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
+    @property
+    def active_instanceweight_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
 
-    instance_object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Show this object in place of particles"""
+        ...
+    @active_instanceweight_index.setter
+    def active_instanceweight_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def instance_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Show this object in place of particles"""
+        ...
+    @instance_object.setter
+    def instance_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
     @property
     def boids(self) -> Annotated[Optional['BoidSettings'], "is_animatable=False"]:
 
@@ -450,24 +1215,59 @@ class ParticleSettings(ID):
     def force_field_2(self) -> Annotated[Optional['FieldSettings'], "is_animatable=False"]:
 
         ...
-    twist: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Number of turns around parent along the strand"""
-    use_twist_curve: bool
-    """Use a curve to define twist"""
+    @property
+    def twist(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Number of turns around parent along the strand"""
+        ...
+    @twist.setter
+    def twist(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def use_twist_curve(self) -> bool:
+        """Use a curve to define twist"""
+        ...
+    @use_twist_curve.setter
+    def use_twist_curve(self, value: bool):
+        ...
     @property
     def twist_curve(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
         """Curve defining twist"""
         ...
-    use_close_tip: bool
-    """Set tip radius to zero"""
-    shape: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Strand shape parameter"""
-    root_radius: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=2"]
-    """Strand diameter width at the root"""
-    tip_radius: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=2"]
-    """Strand diameter width at the tip"""
-    radius_scale: Annotated[float, "step=0.10000000149011612", "precision=2"]
-    """Multiplier of diameter properties"""
+    @property
+    def use_close_tip(self) -> bool:
+        """Set tip radius to zero"""
+        ...
+    @use_close_tip.setter
+    def use_close_tip(self, value: bool):
+        ...
+    @property
+    def shape(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Strand shape parameter"""
+        ...
+    @shape.setter
+    def shape(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def root_radius(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=2"]:
+        """Strand diameter width at the root"""
+        ...
+    @root_radius.setter
+    def root_radius(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=2"]):
+        ...
+    @property
+    def tip_radius(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=2"]:
+        """Strand diameter width at the tip"""
+        ...
+    @tip_radius.setter
+    def tip_radius(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=2"]):
+        ...
+    @property
+    def radius_scale(self) -> Annotated[float, "step=0.10000000149011612", "precision=2"]:
+        """Multiplier of diameter properties"""
+        ...
+    @radius_scale.setter
+    def radius_scale(self, value: Annotated[float, "step=0.10000000149011612", "precision=2"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

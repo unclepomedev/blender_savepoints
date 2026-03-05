@@ -20,32 +20,77 @@ from .Object import Object
 
 class GreasePencilOutlineModifier(Modifier):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Modifier name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Modifier name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
 
         ...
-    show_viewport: bool
-    """Display modifier in viewport"""
-    show_render: bool
-    """Use modifier during render"""
-    show_in_editmode: bool
-    """Display modifier in Edit mode"""
-    show_on_cage: bool
-    """Adjust edit cage to modifier result"""
-    show_expanded: bool
-    """Set modifier expanded in the user interface"""
-    is_active: Annotated[bool, "is_animatable=False"]
-    """The active modifier in the list"""
-    use_pin_to_last: Annotated[bool, "is_animatable=False"]
-    """Keep the modifier at the end of the list"""
+    @property
+    def show_viewport(self) -> bool:
+        """Display modifier in viewport"""
+        ...
+    @show_viewport.setter
+    def show_viewport(self, value: bool):
+        ...
+    @property
+    def show_render(self) -> bool:
+        """Use modifier during render"""
+        ...
+    @show_render.setter
+    def show_render(self, value: bool):
+        ...
+    @property
+    def show_in_editmode(self) -> bool:
+        """Display modifier in Edit mode"""
+        ...
+    @show_in_editmode.setter
+    def show_in_editmode(self, value: bool):
+        ...
+    @property
+    def show_on_cage(self) -> bool:
+        """Adjust edit cage to modifier result"""
+        ...
+    @show_on_cage.setter
+    def show_on_cage(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Set modifier expanded in the user interface"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
+    @property
+    def is_active(self) -> Annotated[bool, "is_animatable=False"]:
+        """The active modifier in the list"""
+        ...
+    @is_active.setter
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
+        """Keep the modifier at the end of the list"""
+        ...
+    @use_pin_to_last.setter
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def is_override_data(self) -> bool:
         """In a local override object, whether this modifier comes from the linked reference object, or is local to the override"""
         ...
-    use_apply_on_spline: bool
-    """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
+    @property
+    def use_apply_on_spline(self) -> bool:
+        """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
+        ...
+    @use_apply_on_spline.setter
+    def use_apply_on_spline(self, value: bool):
+        ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Time in seconds that the modifier took to evaluate. This is only set on evaluated objects. If multiple modifiers run in parallel, execution time is not a reliable metric."""
@@ -54,39 +99,129 @@ class GreasePencilOutlineModifier(Modifier):
     def persistent_uid(self) -> Annotated[int, "step=1"]:
         """Uniquely identifies the modifier within the modifier stack that it is part of"""
         ...
-    tree_node_filter: Annotated[str, "is_animatable=False"]
-    """Layer name"""
-    use_layer_pass_filter: bool
-    """Use layer pass filter"""
-    layer_pass_filter: Annotated[int, "step=1"]
-    """Layer pass filter"""
-    invert_layer_filter: bool
-    """Invert layer filter"""
-    invert_layer_pass_filter: bool
-    """Invert layer pass filter"""
-    use_layer_group_filter: bool
-    """Filter by layer group name"""
-    material_filter: Annotated[Optional['Material'], "is_animatable=False"]
-    """Material used for filtering"""
-    use_material_pass_filter: bool
-    """Use material pass filter"""
-    material_pass_filter: Annotated[int, "step=1"]
-    """Material pass"""
-    invert_material_filter: bool
-    """Invert material filter"""
-    invert_material_pass_filter: bool
-    """Invert material pass filter"""
-    open_influence_panel: bool
+    @property
+    def tree_node_filter(self) -> Annotated[str, "is_animatable=False"]:
+        """Layer name"""
+        ...
+    @tree_node_filter.setter
+    def tree_node_filter(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def use_layer_pass_filter(self) -> bool:
+        """Use layer pass filter"""
+        ...
+    @use_layer_pass_filter.setter
+    def use_layer_pass_filter(self, value: bool):
+        ...
+    @property
+    def layer_pass_filter(self) -> Annotated[int, "step=1"]:
+        """Layer pass filter"""
+        ...
+    @layer_pass_filter.setter
+    def layer_pass_filter(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def invert_layer_filter(self) -> bool:
+        """Invert layer filter"""
+        ...
+    @invert_layer_filter.setter
+    def invert_layer_filter(self, value: bool):
+        ...
+    @property
+    def invert_layer_pass_filter(self) -> bool:
+        """Invert layer pass filter"""
+        ...
+    @invert_layer_pass_filter.setter
+    def invert_layer_pass_filter(self, value: bool):
+        ...
+    @property
+    def use_layer_group_filter(self) -> bool:
+        """Filter by layer group name"""
+        ...
+    @use_layer_group_filter.setter
+    def use_layer_group_filter(self, value: bool):
+        ...
+    @property
+    def material_filter(self) -> Annotated[Optional['Material'], "is_animatable=False"]:
+        """Material used for filtering"""
+        ...
+    @material_filter.setter
+    def material_filter(self, value: Annotated[Optional['Material'], "is_animatable=False"]):
+        ...
+    @property
+    def use_material_pass_filter(self) -> bool:
+        """Use material pass filter"""
+        ...
+    @use_material_pass_filter.setter
+    def use_material_pass_filter(self, value: bool):
+        ...
+    @property
+    def material_pass_filter(self) -> Annotated[int, "step=1"]:
+        """Material pass"""
+        ...
+    @material_pass_filter.setter
+    def material_pass_filter(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def invert_material_filter(self) -> bool:
+        """Invert material filter"""
+        ...
+    @invert_material_filter.setter
+    def invert_material_filter(self, value: bool):
+        ...
+    @property
+    def invert_material_pass_filter(self) -> bool:
+        """Invert material pass filter"""
+        ...
+    @invert_material_pass_filter.setter
+    def invert_material_pass_filter(self, value: bool):
+        ...
+    @property
+    def open_influence_panel(self) -> bool:
 
-    thickness: Annotated[int, "step=1"]
-    """Thickness of the perimeter stroke"""
-    sample_length: Annotated[float, "step=0.10000000149011612", "precision=2"]
+        ...
+    @open_influence_panel.setter
+    def open_influence_panel(self, value: bool):
+        ...
+    @property
+    def thickness(self) -> Annotated[int, "step=1"]:
+        """Thickness of the perimeter stroke"""
+        ...
+    @thickness.setter
+    def thickness(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def sample_length(self) -> Annotated[float, "step=0.10000000149011612", "precision=2"]:
 
-    subdivision: Annotated[int, "step=1"]
-    """Number of subdivisions"""
-    use_keep_shape: bool
-    """Try to keep global shape"""
-    outline_material: Annotated[Optional['Material'], "is_animatable=False"]
-    """Material used for outline strokes"""
-    object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Target object to define stroke start"""
+        ...
+    @sample_length.setter
+    def sample_length(self, value: Annotated[float, "step=0.10000000149011612", "precision=2"]):
+        ...
+    @property
+    def subdivision(self) -> Annotated[int, "step=1"]:
+        """Number of subdivisions"""
+        ...
+    @subdivision.setter
+    def subdivision(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def use_keep_shape(self) -> bool:
+        """Try to keep global shape"""
+        ...
+    @use_keep_shape.setter
+    def use_keep_shape(self, value: bool):
+        ...
+    @property
+    def outline_material(self) -> Annotated[Optional['Material'], "is_animatable=False"]:
+        """Material used for outline strokes"""
+        ...
+    @outline_material.setter
+    def outline_material(self, value: Annotated[Optional['Material'], "is_animatable=False"]):
+        ...
+    @property
+    def object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Target object to define stroke start"""
+        ...
+    @object.setter
+    def object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...

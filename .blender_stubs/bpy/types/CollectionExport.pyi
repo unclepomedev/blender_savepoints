@@ -19,13 +19,28 @@ from .PropertyGroup import PropertyGroup
 
 class CollectionExport(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
 
-    is_open: bool
-    """Whether the panel is expanded or closed"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def is_open(self) -> bool:
+        """Whether the panel is expanded or closed"""
+        ...
+    @is_open.setter
+    def is_open(self, value: bool):
+        ...
     @property
     def export_properties(self) -> Annotated[Optional['PropertyGroup'], "is_animatable=False"]:
         """Properties associated with the configured exporter"""
         ...
-    filepath: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]
-    """The file path used for exporting"""
+    @property
+    def filepath(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
+        """The file path used for exporting"""
+        ...
+    @filepath.setter
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+        ...

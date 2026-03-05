@@ -18,8 +18,18 @@ from .PropertyGroup import PropertyGroup
 
 class OperatorFileListElement(PropertyGroup):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique name used in the code and scripting"""
-    name: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]
-    """Name of a file or directory within a file list"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique name used in the code and scripting"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def name(self) -> Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]:
+        """Name of a file or directory within a file list"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

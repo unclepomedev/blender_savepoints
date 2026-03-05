@@ -58,8 +58,13 @@ class MovieTracking(bpy_struct):
     def objects(self) -> Annotated['MovieTrackingObjects', "is_animatable=False"]:
         """Collection of objects in this tracking data object"""
         ...
-    active_object_index: Annotated[int, "step=1", "is_animatable=False"]
-    """Index of active object"""
+    @property
+    def active_object_index(self) -> Annotated[int, "step=1", "is_animatable=False"]:
+        """Index of active object"""
+        ...
+    @active_object_index.setter
+    def active_object_index(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...
     @property
     def dopesheet(self) -> Annotated[Optional['MovieTrackingDopesheet'], "is_animatable=False"]:
 

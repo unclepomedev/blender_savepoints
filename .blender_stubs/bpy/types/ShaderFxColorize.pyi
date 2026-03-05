@@ -18,25 +18,70 @@ from .ShaderFx import ShaderFx
 
 class ShaderFxColorize(ShaderFx):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Effect name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Effect name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['FX_BLUR', 'FX_COLORIZE', 'FX_FLIP', 'FX_GLOW', 'FX_PIXEL', 'FX_RIM', 'FX_SHADOW', 'FX_SWIRL', 'FX_WAVE']:
 
         ...
-    show_viewport: bool
-    """Display effect in viewport"""
-    show_render: bool
-    """Use effect during render"""
-    show_in_editmode: bool
-    """Display effect in Edit mode"""
-    show_expanded: bool
-    """Set effect expansion in the user interface"""
-    factor: Annotated[float, "step=10.0", "precision=3"]
-    """Mix factor"""
-    low_color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """First color used for effect"""
-    high_color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """Second color used for effect"""
-    mode: Literal['GRAYSCALE', 'SEPIA', 'DUOTONE', 'TRANSPARENT', 'CUSTOM']
-    """Effect mode"""
+    @property
+    def show_viewport(self) -> bool:
+        """Display effect in viewport"""
+        ...
+    @show_viewport.setter
+    def show_viewport(self, value: bool):
+        ...
+    @property
+    def show_render(self) -> bool:
+        """Use effect during render"""
+        ...
+    @show_render.setter
+    def show_render(self, value: bool):
+        ...
+    @property
+    def show_in_editmode(self) -> bool:
+        """Display effect in Edit mode"""
+        ...
+    @show_in_editmode.setter
+    def show_in_editmode(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Set effect expansion in the user interface"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
+    @property
+    def factor(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Mix factor"""
+        ...
+    @factor.setter
+    def factor(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def low_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """First color used for effect"""
+        ...
+    @low_color.setter
+    def low_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def high_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """Second color used for effect"""
+        ...
+    @high_color.setter
+    def high_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def mode(self) -> Literal['GRAYSCALE', 'SEPIA', 'DUOTONE', 'TRANSPARENT', 'CUSTOM']:
+        """Effect mode"""
+        ...
+    @mode.setter
+    def mode(self, value: Literal['GRAYSCALE', 'SEPIA', 'DUOTONE', 'TRANSPARENT', 'CUSTOM']):
+        ...

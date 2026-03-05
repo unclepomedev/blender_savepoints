@@ -19,8 +19,13 @@ from .AddonPreferences import AddonPreferences
 
 class Addon(bpy_struct):
 
-    module: Annotated[str, "is_animatable=False"]
-    """Module name"""
+    @property
+    def module(self) -> Annotated[str, "is_animatable=False"]:
+        """Module name"""
+        ...
+    @module.setter
+    def module(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def preferences(self) -> Annotated[Optional['AddonPreferences'], "is_animatable=False"]:
 

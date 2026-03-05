@@ -26,14 +26,34 @@ class MeshUVLoopLayer(bpy_struct):
     def data(self) -> Annotated[bpy_prop_collection['MeshUVLoop'], "is_animatable=False"]:
         """Deprecated, use 'uv', 'vertex_select', 'edge_select' or 'pin' properties instead"""
         ...
-    name: Annotated[str, "is_animatable=False"]
-    """Name of UV map"""
-    active: Annotated[bool, "is_animatable=False"]
-    """Set the map as active for display and editing"""
-    active_render: Annotated[bool, "is_animatable=False"]
-    """Set the UV map as active for rendering"""
-    active_clone: Annotated[bool, "is_animatable=False"]
-    """Set the map as active for cloning"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of UV map"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def active(self) -> Annotated[bool, "is_animatable=False"]:
+        """Set the map as active for display and editing"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def active_render(self) -> Annotated[bool, "is_animatable=False"]:
+        """Set the UV map as active for rendering"""
+        ...
+    @active_render.setter
+    def active_render(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def active_clone(self) -> Annotated[bool, "is_animatable=False"]:
+        """Set the map as active for cloning"""
+        ...
+    @active_clone.setter
+    def active_clone(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def uv(self) -> Annotated[bpy_prop_collection['Float2AttributeValue'], "is_animatable=False"]:
         """UV coordinates on face corners"""

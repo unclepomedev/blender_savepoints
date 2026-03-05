@@ -19,11 +19,21 @@ from .TransformOrientation import TransformOrientation
 
 class TransformOrientationSlot(bpy_struct):
 
-    type: Annotated[Literal['GLOBAL', 'LOCAL', 'NORMAL', 'GIMBAL', 'VIEW', 'CURSOR', 'PARENT'], "is_animatable=False"]
-    """Transformation orientation"""
+    @property
+    def type(self) -> Annotated[Literal['GLOBAL', 'LOCAL', 'NORMAL', 'GIMBAL', 'VIEW', 'CURSOR', 'PARENT'], "is_animatable=False"]:
+        """Transformation orientation"""
+        ...
+    @type.setter
+    def type(self, value: Annotated[Literal['GLOBAL', 'LOCAL', 'NORMAL', 'GIMBAL', 'VIEW', 'CURSOR', 'PARENT'], "is_animatable=False"]):
+        ...
     @property
     def custom_orientation(self) -> Annotated[Optional['TransformOrientation'], "is_animatable=False"]:
 
         ...
-    use: Annotated[bool, "is_animatable=False"]
-    """Use scene orientation instead of a custom setting"""
+    @property
+    def use(self) -> Annotated[bool, "is_animatable=False"]:
+        """Use scene orientation instead of a custom setting"""
+        ...
+    @use.setter
+    def use(self, value: Annotated[bool, "is_animatable=False"]):
+        ...

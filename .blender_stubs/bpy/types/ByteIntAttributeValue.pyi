@@ -18,4 +18,10 @@ from .bpy_struct import bpy_struct
 
 class ByteIntAttributeValue(bpy_struct):
 
-    value: Annotated[int, "step=1"]
+    @property
+    def value(self) -> Annotated[int, "step=1"]:
+
+        ...
+    @value.setter
+    def value(self, value: Annotated[int, "step=1"]):
+        ...

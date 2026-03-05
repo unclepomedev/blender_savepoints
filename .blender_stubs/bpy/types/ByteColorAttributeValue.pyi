@@ -18,7 +18,17 @@ from .bpy_struct import bpy_struct
 
 class ByteColorAttributeValue(bpy_struct):
 
-    color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """RGBA color in scene linear color space"""
-    color_srgb: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """RGBA color in sRGB color space"""
+    @property
+    def color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """RGBA color in scene linear color space"""
+        ...
+    @color.setter
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def color_srgb(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """RGBA color in sRGB color space"""
+        ...
+    @color_srgb.setter
+    def color_srgb(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...

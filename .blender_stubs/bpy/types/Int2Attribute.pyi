@@ -20,8 +20,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Int2Attribute(Attribute):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name of the Attribute"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of the Attribute"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def data_type(self) -> Literal['FLOAT', 'INT', 'BOOLEAN', 'FLOAT_VECTOR', 'FLOAT_COLOR', 'QUATERNION', 'FLOAT4X4', 'STRING', 'INT8', 'INT16_2D', 'INT32_2D', 'FLOAT2', 'BYTE_COLOR']:
         """Type of data stored in attribute"""

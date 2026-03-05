@@ -19,43 +19,133 @@ from .Object import Object
 
 class ShaderFxShadow(ShaderFx):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Effect name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Effect name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['FX_BLUR', 'FX_COLORIZE', 'FX_FLIP', 'FX_GLOW', 'FX_PIXEL', 'FX_RIM', 'FX_SHADOW', 'FX_SWIRL', 'FX_WAVE']:
 
         ...
-    show_viewport: bool
-    """Display effect in viewport"""
-    show_render: bool
-    """Use effect during render"""
-    show_in_editmode: bool
-    """Display effect in Edit mode"""
-    show_expanded: bool
-    """Set effect expansion in the user interface"""
-    object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object to determine center of rotation"""
-    offset: Annotated[list[int], "subtype='PIXEL'", "step=1"]
-    """Offset of the shadow"""
-    scale: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
-    """Scale of the shadow"""
-    shadow_color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """Color used for Shadow"""
-    orientation: Literal['HORIZONTAL', 'VERTICAL']
-    """Direction of the wave"""
-    amplitude: Annotated[float, "step=10.0", "precision=3"]
-    """Amplitude of Wave"""
-    period: Annotated[float, "step=10.0", "precision=3"]
-    """Period of Wave"""
-    phase: Annotated[float, "step=10.0", "precision=3"]
-    """Phase Shift of Wave"""
-    rotation: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=5.0", "precision=2"]
-    """Rotation around center or object"""
-    blur: Annotated[list[int], "subtype='PIXEL'", "step=1"]
-    """Number of pixels for blurring shadow (set to 0 to disable)"""
-    samples: Annotated[int, "step=2"]
-    """Number of Blur Samples (zero, disable blur)"""
-    use_object: bool
-    """Use object as center of rotation"""
-    use_wave: bool
-    """Use wave effect"""
+    @property
+    def show_viewport(self) -> bool:
+        """Display effect in viewport"""
+        ...
+    @show_viewport.setter
+    def show_viewport(self, value: bool):
+        ...
+    @property
+    def show_render(self) -> bool:
+        """Use effect during render"""
+        ...
+    @show_render.setter
+    def show_render(self, value: bool):
+        ...
+    @property
+    def show_in_editmode(self) -> bool:
+        """Display effect in Edit mode"""
+        ...
+    @show_in_editmode.setter
+    def show_in_editmode(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Set effect expansion in the user interface"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
+    @property
+    def object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object to determine center of rotation"""
+        ...
+    @object.setter
+    def object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def offset(self) -> Annotated[list[int], "subtype='PIXEL'", "step=1"]:
+        """Offset of the shadow"""
+        ...
+    @offset.setter
+    def offset(self, value: Annotated[list[int], "subtype='PIXEL'", "step=1"]):
+        ...
+    @property
+    def scale(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
+        """Scale of the shadow"""
+        ...
+    @scale.setter
+    def scale(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def shadow_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """Color used for Shadow"""
+        ...
+    @shadow_color.setter
+    def shadow_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def orientation(self) -> Literal['HORIZONTAL', 'VERTICAL']:
+        """Direction of the wave"""
+        ...
+    @orientation.setter
+    def orientation(self, value: Literal['HORIZONTAL', 'VERTICAL']):
+        ...
+    @property
+    def amplitude(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Amplitude of Wave"""
+        ...
+    @amplitude.setter
+    def amplitude(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def period(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Period of Wave"""
+        ...
+    @period.setter
+    def period(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def phase(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Phase Shift of Wave"""
+        ...
+    @phase.setter
+    def phase(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def rotation(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=5.0", "precision=2"]:
+        """Rotation around center or object"""
+        ...
+    @rotation.setter
+    def rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=5.0", "precision=2"]):
+        ...
+    @property
+    def blur(self) -> Annotated[list[int], "subtype='PIXEL'", "step=1"]:
+        """Number of pixels for blurring shadow (set to 0 to disable)"""
+        ...
+    @blur.setter
+    def blur(self, value: Annotated[list[int], "subtype='PIXEL'", "step=1"]):
+        ...
+    @property
+    def samples(self) -> Annotated[int, "step=2"]:
+        """Number of Blur Samples (zero, disable blur)"""
+        ...
+    @samples.setter
+    def samples(self, value: Annotated[int, "step=2"]):
+        ...
+    @property
+    def use_object(self) -> bool:
+        """Use object as center of rotation"""
+        ...
+    @use_object.setter
+    def use_object(self, value: bool):
+        ...
+    @property
+    def use_wave(self) -> bool:
+        """Use wave effect"""
+        ...
+    @use_wave.setter
+    def use_wave(self, value: bool):
+        ...

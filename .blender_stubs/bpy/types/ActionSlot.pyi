@@ -18,16 +18,31 @@ from .bpy_struct import bpy_struct
 
 class ActionSlot(bpy_struct):
 
-    identifier: Annotated[str, "is_animatable=False"]
-    """Used when connecting an Action to a data-block, to find the correct slot handle. This is the display name, prefixed by two characters determined by the slot's ID type"""
-    target_id_type: Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD', 'UNSPECIFIED']
-    """Type of data-block that this slot is intended to animate; can be set when 'UNSPECIFIED' but is otherwise read-only"""
+    @property
+    def identifier(self) -> Annotated[str, "is_animatable=False"]:
+        """Used when connecting an Action to a data-block, to find the correct slot handle. This is the display name, prefixed by two characters determined by the slot's ID type"""
+        ...
+    @identifier.setter
+    def identifier(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def target_id_type(self) -> Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD', 'UNSPECIFIED']:
+        """Type of data-block that this slot is intended to animate; can be set when 'UNSPECIFIED' but is otherwise read-only"""
+        ...
+    @target_id_type.setter
+    def target_id_type(self, value: Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD', 'UNSPECIFIED']):
+        ...
     @property
     def target_id_type_icon(self) -> Annotated[int, "step=1"]:
 
         ...
-    name_display: Annotated[str, "is_animatable=False"]
-    """Name of the slot, for display in the user interface. This name combined with the slot's data-block type is unique within its Action"""
+    @property
+    def name_display(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of the slot, for display in the user interface. This name combined with the slot's data-block type is unique within its Action"""
+        ...
+    @name_display.setter
+    def name_display(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def handle(self) -> Annotated[int, "step=1"]:
         """Number specific to this Slot, unique within the Action.
@@ -37,9 +52,19 @@ This is used, for example, on a ActionKeyframeStrip to look up the ActionChannel
     def active(self) -> Annotated[bool, "is_animatable=False"]:
         """Whether this is the active slot, can be set by assigning to action.slots.active"""
         ...
-    select: Annotated[bool, "is_animatable=False"]
-    """Selection state of the slot"""
-    show_expanded: Annotated[bool, "is_animatable=False"]
-    """Expanded state of the slot"""
+    @property
+    def select(self) -> Annotated[bool, "is_animatable=False"]:
+        """Selection state of the slot"""
+        ...
+    @select.setter
+    def select(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def show_expanded(self) -> Annotated[bool, "is_animatable=False"]:
+        """Expanded state of the slot"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     def users(self, *args, **kwargs) -> Any: ...
     def duplicate(self, *args, **kwargs) -> Any: ...

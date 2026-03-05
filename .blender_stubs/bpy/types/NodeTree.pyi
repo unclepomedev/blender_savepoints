@@ -31,8 +31,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class NodeTree(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -57,10 +62,20 @@ class NodeTree(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -73,14 +88,24 @@ class NodeTree(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -93,8 +118,13 @@ class NodeTree(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -103,16 +133,31 @@ class NodeTree(ID):
     def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
-    color_tag: Literal['NONE', 'ATTRIBUTE', 'COLOR', 'CONVERTER', 'DISTORT', 'FILTER', 'GEOMETRY', 'INPUT', 'MATTE', 'OUTPUT', 'SCRIPT', 'SHADER', 'TEXTURE', 'VECTOR', 'PATTERN', 'INTERFACE', 'GROUP']
-    """Color tag of the node group which influences the header color"""
-    default_group_node_width: Annotated[int, "step=1"]
-    """The width for newly created group nodes"""
+    @property
+    def color_tag(self) -> Literal['NONE', 'ATTRIBUTE', 'COLOR', 'CONVERTER', 'DISTORT', 'FILTER', 'GEOMETRY', 'INPUT', 'MATTE', 'OUTPUT', 'SCRIPT', 'SHADER', 'TEXTURE', 'VECTOR', 'PATTERN', 'INTERFACE', 'GROUP']:
+        """Color tag of the node group which influences the header color"""
+        ...
+    @color_tag.setter
+    def color_tag(self, value: Literal['NONE', 'ATTRIBUTE', 'COLOR', 'CONVERTER', 'DISTORT', 'FILTER', 'GEOMETRY', 'INPUT', 'MATTE', 'OUTPUT', 'SCRIPT', 'SHADER', 'TEXTURE', 'VECTOR', 'PATTERN', 'INTERFACE', 'GROUP']):
+        ...
+    @property
+    def default_group_node_width(self) -> Annotated[int, "step=1"]:
+        """The width for newly created group nodes"""
+        ...
+    @default_group_node_width.setter
+    def default_group_node_width(self, value: Annotated[int, "step=1"]):
+        ...
     @property
     def view_center(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
         """The current location (offset) of the view for this Node Tree"""
         ...
-    description: Annotated[str, "is_animatable=False"]
-    """Description of the node tree"""
+    @property
+    def description(self) -> Annotated[str, "is_animatable=False"]:
+        """Description of the node tree"""
+        ...
+    @description.setter
+    def description(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
         """Animation data for this data-block"""
@@ -125,8 +170,13 @@ class NodeTree(ID):
     def links(self) -> Annotated['NodeLinks', "is_animatable=False"]:
 
         ...
-    annotation: Annotated[Optional['Annotation'], "is_animatable=False"]
-    """Annotation data"""
+    @property
+    def annotation(self) -> Annotated[Optional['Annotation'], "is_animatable=False"]:
+        """Annotation data"""
+        ...
+    @annotation.setter
+    def annotation(self, value: Annotated[Optional['Annotation'], "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['UNDEFINED', 'CUSTOM', 'SHADER', 'TEXTURE', 'COMPOSITING', 'GEOMETRY']:
         """Node Tree type (deprecated, bl_idname is the actual node tree type identifier)"""
@@ -135,16 +185,41 @@ class NodeTree(ID):
     def interface(self) -> Annotated[Optional['NodeTreeInterface'], "is_animatable=False"]:
         """Interface declaration for this node tree"""
         ...
-    bl_idname: Annotated[str, "is_animatable=False"]
+    @property
+    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_label: Annotated[str, "is_animatable=False"]
-    """The node tree label"""
-    bl_description: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]
+        ...
+    @bl_idname.setter
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
+        """The node tree label"""
+        ...
+    @bl_label.setter
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_description(self) -> Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]:
 
-    bl_icon: str
-    """The node tree icon"""
-    bl_use_group_interface: bool
-    """Determines the visibility of some UI elements related to node groups"""
+        ...
+    @bl_description.setter
+    def bl_description(self, value: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]):
+        ...
+    @property
+    def bl_icon(self) -> str:
+        """The node tree icon"""
+        ...
+    @bl_icon.setter
+    def bl_icon(self, value: str):
+        ...
+    @property
+    def bl_use_group_interface(self) -> bool:
+        """Determines the visibility of some UI elements related to node groups"""
+        ...
+    @bl_use_group_interface.setter
+    def bl_use_group_interface(self, value: bool):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

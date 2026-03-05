@@ -18,4 +18,10 @@ from .bpy_struct import bpy_struct
 
 class StringAttributeValue(bpy_struct):
 
-    value: Annotated[str, "subtype='BYTE_STRING'", "is_animatable=False"]
+    @property
+    def value(self) -> Annotated[str, "subtype='BYTE_STRING'", "is_animatable=False"]:
+
+        ...
+    @value.setter
+    def value(self, value: Annotated[str, "subtype='BYTE_STRING'", "is_animatable=False"]):
+        ...

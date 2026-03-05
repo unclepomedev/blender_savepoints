@@ -27,8 +27,13 @@ from .NodeTree import NodeTree
 
 class WoodTexture(Texture):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -53,10 +58,20 @@ class WoodTexture(Texture):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -69,14 +84,24 @@ class WoodTexture(Texture):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -89,8 +114,13 @@ class WoodTexture(Texture):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -99,32 +129,87 @@ class WoodTexture(Texture):
     def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
-    type: Literal['NONE', 'BLEND', 'CLOUDS', 'DISTORTED_NOISE', 'IMAGE', 'MAGIC', 'MARBLE', 'MUSGRAVE', 'NOISE', 'STUCCI', 'VORONOI', 'WOOD']
+    @property
+    def type(self) -> Literal['NONE', 'BLEND', 'CLOUDS', 'DISTORTED_NOISE', 'IMAGE', 'MAGIC', 'MARBLE', 'MUSGRAVE', 'NOISE', 'STUCCI', 'VORONOI', 'WOOD']:
 
-    use_clamp: bool
-    """Set negative texture RGB and intensity values to zero, for some uses like displacement this option can be disabled to get the full range"""
-    use_color_ramp: bool
-    """Map the texture intensity to the color ramp. Note that the alpha value is used for image textures, enable "Calculate Alpha" for images without an alpha channel."""
+        ...
+    @type.setter
+    def type(self, value: Literal['NONE', 'BLEND', 'CLOUDS', 'DISTORTED_NOISE', 'IMAGE', 'MAGIC', 'MARBLE', 'MUSGRAVE', 'NOISE', 'STUCCI', 'VORONOI', 'WOOD']):
+        ...
+    @property
+    def use_clamp(self) -> bool:
+        """Set negative texture RGB and intensity values to zero, for some uses like displacement this option can be disabled to get the full range"""
+        ...
+    @use_clamp.setter
+    def use_clamp(self, value: bool):
+        ...
+    @property
+    def use_color_ramp(self) -> bool:
+        """Map the texture intensity to the color ramp. Note that the alpha value is used for image textures, enable "Calculate Alpha" for images without an alpha channel."""
+        ...
+    @use_color_ramp.setter
+    def use_color_ramp(self, value: bool):
+        ...
     @property
     def color_ramp(self) -> Annotated[Optional['ColorRamp'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
 
         ...
-    intensity: Annotated[float, "step=1.0", "precision=3"]
-    """Adjust the brightness of the texture"""
-    contrast: Annotated[float, "step=1.0", "precision=3"]
-    """Adjust the contrast of the texture"""
-    saturation: Annotated[float, "step=1.0", "precision=3"]
-    """Adjust the saturation of colors in the texture"""
-    factor_red: Annotated[float, "step=1.0", "precision=3"]
+    @property
+    def intensity(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """Adjust the brightness of the texture"""
+        ...
+    @intensity.setter
+    def intensity(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def contrast(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """Adjust the contrast of the texture"""
+        ...
+    @contrast.setter
+    def contrast(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def saturation(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """Adjust the saturation of colors in the texture"""
+        ...
+    @saturation.setter
+    def saturation(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def factor_red(self) -> Annotated[float, "step=1.0", "precision=3"]:
 
-    factor_green: Annotated[float, "step=1.0", "precision=3"]
+        ...
+    @factor_red.setter
+    def factor_red(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def factor_green(self) -> Annotated[float, "step=1.0", "precision=3"]:
 
-    factor_blue: Annotated[float, "step=1.0", "precision=3"]
+        ...
+    @factor_green.setter
+    def factor_green(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def factor_blue(self) -> Annotated[float, "step=1.0", "precision=3"]:
 
-    use_preview_alpha: bool
-    """Show Alpha in Preview Render"""
-    use_nodes: bool
-    """Make this a node-based texture"""
+        ...
+    @factor_blue.setter
+    def factor_blue(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def use_preview_alpha(self) -> bool:
+        """Show Alpha in Preview Render"""
+        ...
+    @use_preview_alpha.setter
+    def use_preview_alpha(self, value: bool):
+        ...
+    @property
+    def use_nodes(self) -> bool:
+        """Make this a node-based texture"""
+        ...
+    @use_nodes.setter
+    def use_nodes(self, value: bool):
+        ...
     @property
     def node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
         """Node tree for node-based textures"""
@@ -133,20 +218,55 @@ class WoodTexture(Texture):
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
         """Animation data for this data-block"""
         ...
-    noise_scale: Annotated[float, "step=1.0", "precision=2"]
-    """Scaling for noise input"""
-    turbulence: Annotated[float, "step=10.0", "precision=2"]
-    """Turbulence of the bandnoise and ringnoise types"""
-    noise_basis: Literal['BLENDER_ORIGINAL', 'ORIGINAL_PERLIN', 'IMPROVED_PERLIN', 'VORONOI_F1', 'VORONOI_F2', 'VORONOI_F3', 'VORONOI_F4', 'VORONOI_F2_F1', 'VORONOI_CRACKLE', 'CELL_NOISE']
-    """Noise basis used for turbulence"""
-    noise_type: Literal['SOFT_NOISE', 'HARD_NOISE']
+    @property
+    def noise_scale(self) -> Annotated[float, "step=1.0", "precision=2"]:
+        """Scaling for noise input"""
+        ...
+    @noise_scale.setter
+    def noise_scale(self, value: Annotated[float, "step=1.0", "precision=2"]):
+        ...
+    @property
+    def turbulence(self) -> Annotated[float, "step=10.0", "precision=2"]:
+        """Turbulence of the bandnoise and ringnoise types"""
+        ...
+    @turbulence.setter
+    def turbulence(self, value: Annotated[float, "step=10.0", "precision=2"]):
+        ...
+    @property
+    def noise_basis(self) -> Literal['BLENDER_ORIGINAL', 'ORIGINAL_PERLIN', 'IMPROVED_PERLIN', 'VORONOI_F1', 'VORONOI_F2', 'VORONOI_F3', 'VORONOI_F4', 'VORONOI_F2_F1', 'VORONOI_CRACKLE', 'CELL_NOISE']:
+        """Noise basis used for turbulence"""
+        ...
+    @noise_basis.setter
+    def noise_basis(self, value: Literal['BLENDER_ORIGINAL', 'ORIGINAL_PERLIN', 'IMPROVED_PERLIN', 'VORONOI_F1', 'VORONOI_F2', 'VORONOI_F3', 'VORONOI_F4', 'VORONOI_F2_F1', 'VORONOI_CRACKLE', 'CELL_NOISE']):
+        ...
+    @property
+    def noise_type(self) -> Literal['SOFT_NOISE', 'HARD_NOISE']:
 
-    wood_type: Literal['BANDS', 'RINGS', 'BANDNOISE', 'RINGNOISE']
+        ...
+    @noise_type.setter
+    def noise_type(self, value: Literal['SOFT_NOISE', 'HARD_NOISE']):
+        ...
+    @property
+    def wood_type(self) -> Literal['BANDS', 'RINGS', 'BANDNOISE', 'RINGNOISE']:
 
-    noise_basis_2: Literal['SIN', 'SAW', 'TRI']
+        ...
+    @wood_type.setter
+    def wood_type(self, value: Literal['BANDS', 'RINGS', 'BANDNOISE', 'RINGNOISE']):
+        ...
+    @property
+    def noise_basis_2(self) -> Literal['SIN', 'SAW', 'TRI']:
 
-    nabla: Annotated[float, "step=1.0", "precision=2"]
-    """Size of derivative offset used for calculating normal"""
+        ...
+    @noise_basis_2.setter
+    def noise_basis_2(self, value: Literal['SIN', 'SAW', 'TRI']):
+        ...
+    @property
+    def nabla(self) -> Annotated[float, "step=1.0", "precision=2"]:
+        """Size of derivative offset used for calculating normal"""
+        ...
+    @nabla.setter
+    def nabla(self, value: Annotated[float, "step=1.0", "precision=2"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

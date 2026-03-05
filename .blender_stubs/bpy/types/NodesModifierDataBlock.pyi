@@ -27,8 +27,13 @@ class NodesModifierDataBlock(bpy_struct):
     def lib_name(self) -> Annotated[str, "is_animatable=False"]:
         """Used when the data block is not local to the current .blend file but is linked from some library"""
         ...
-    id: Annotated[Optional['ID'], "is_animatable=False"]
+    @property
+    def id(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
 
+        ...
+    @id.setter
+    def id(self, value: Annotated[Optional['ID'], "is_animatable=False"]):
+        ...
     @property
     def id_type(self) -> Annotated[Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD'], "is_animatable=False"]:
 

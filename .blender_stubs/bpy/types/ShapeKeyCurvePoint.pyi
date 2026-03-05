@@ -18,9 +18,24 @@ from .bpy_struct import bpy_struct
 
 class ShapeKeyCurvePoint(bpy_struct):
 
-    co: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    @property
+    def co(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
 
-    tilt: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
-    """Tilt in 3D View"""
-    radius: Annotated[float, "step=10.0", "precision=3"]
-    """Radius for beveling"""
+        ...
+    @co.setter
+    def co(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def tilt(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
+        """Tilt in 3D View"""
+        ...
+    @tilt.setter
+    def tilt(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def radius(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Radius for beveling"""
+        ...
+    @radius.setter
+    def radius(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...

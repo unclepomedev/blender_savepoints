@@ -18,13 +18,33 @@ from .bpy_struct import bpy_struct
 
 class ParticleHairKey(bpy_struct):
 
-    time: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
-    """Relative time of key over hair length"""
-    weight: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
-    """Weight for cloth simulation"""
-    co: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Location of the hair key in object space"""
-    co_local: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Location of the hair key in its local coordinate system, relative to the emitting face"""
+    @property
+    def time(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
+        """Relative time of key over hair length"""
+        ...
+    @time.setter
+    def time(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def weight(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
+        """Weight for cloth simulation"""
+        ...
+    @weight.setter
+    def weight(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def co(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Location of the hair key in object space"""
+        ...
+    @co.setter
+    def co(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def co_local(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Location of the hair key in its local coordinate system, relative to the emitting face"""
+        ...
+    @co_local.setter
+    def co_local(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
     def co_object(self, *args, **kwargs) -> Any: ...
     def co_object_set(self, *args, **kwargs) -> Any: ...

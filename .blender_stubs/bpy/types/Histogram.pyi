@@ -18,7 +18,17 @@ from .bpy_struct import bpy_struct
 
 class Histogram(bpy_struct):
 
-    mode: Literal['LUMA', 'RGB', 'R', 'G', 'B', 'A']
-    """Channels to display in the histogram"""
-    show_line: bool
-    """Display lines rather than filled shapes"""
+    @property
+    def mode(self) -> Literal['LUMA', 'RGB', 'R', 'G', 'B', 'A']:
+        """Channels to display in the histogram"""
+        ...
+    @mode.setter
+    def mode(self, value: Literal['LUMA', 'RGB', 'R', 'G', 'B', 'A']):
+        ...
+    @property
+    def show_line(self) -> bool:
+        """Display lines rather than filled shapes"""
+        ...
+    @show_line.setter
+    def show_line(self, value: bool):
+        ...

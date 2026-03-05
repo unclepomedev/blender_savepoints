@@ -22,5 +22,10 @@ class ParticleDupliWeight(bpy_struct):
     def name(self) -> Annotated[str, "is_animatable=False"]:
         """Particle instance object name"""
         ...
-    count: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """The number of times this object is repeated with respect to other objects"""
+    @property
+    def count(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """The number of times this object is repeated with respect to other objects"""
+        ...
+    @count.setter
+    def count(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...

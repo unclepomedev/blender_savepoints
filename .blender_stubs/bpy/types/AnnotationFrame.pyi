@@ -24,7 +24,17 @@ class AnnotationFrame(bpy_struct):
     def strokes(self) -> Annotated[bpy_prop_collection['AnnotationStroke'], "is_animatable=False"]:
         """Freehand curves defining the sketch on this frame"""
         ...
-    frame_number: Annotated[int, "step=1"]
-    """The frame on which this sketch appears"""
-    select: bool
-    """Frame is selected for editing in the Dope Sheet"""
+    @property
+    def frame_number(self) -> Annotated[int, "step=1"]:
+        """The frame on which this sketch appears"""
+        ...
+    @frame_number.setter
+    def frame_number(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def select(self) -> bool:
+        """Frame is selected for editing in the Dope Sheet"""
+        ...
+    @select.setter
+    def select(self, value: bool):
+        ...

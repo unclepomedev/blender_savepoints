@@ -19,8 +19,13 @@ from .Object import Object
 
 class CopyScaleConstraint(Constraint):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Constraint name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Constraint name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['CAMERA_SOLVER', 'FOLLOW_TRACK', 'OBJECT_SOLVER', 'COPY_LOCATION', 'COPY_ROTATION', 'COPY_SCALE', 'COPY_TRANSFORMS', 'LIMIT_DISTANCE', 'LIMIT_LOCATION', 'LIMIT_ROTATION', 'LIMIT_SCALE', 'MAINTAIN_VOLUME', 'TRANSFORM', 'TRANSFORM_CACHE', 'CLAMP_TO', 'DAMPED_TRACK', 'IK', 'LOCKED_TRACK', 'SPLINE_IK', 'STRETCH_TO', 'TRACK_TO', 'ACTION', 'ARMATURE', 'CHILD_OF', 'FLOOR', 'FOLLOW_PATH', 'GEOMETRY_ATTRIBUTE', 'PIVOT', 'SHRINKWRAP']:
 
@@ -29,28 +34,73 @@ class CopyScaleConstraint(Constraint):
     def is_override_data(self) -> bool:
         """In a local override object, whether this constraint comes from the linked reference object, or is local to the override"""
         ...
-    owner_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']
-    """Space that owner is evaluated in"""
-    target_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']
-    """Space that target is evaluated in"""
-    space_object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object for Custom Space"""
-    space_subtarget: Annotated[str, "is_animatable=False"]
-    """Armature bone, mesh or lattice vertex group, ..."""
-    mute: bool
-    """Enable/Disable Constraint"""
-    enabled: bool
-    """Use the results of this constraint"""
-    show_expanded: bool
-    """Constraint's panel is expanded in UI"""
+    @property
+    def owner_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']:
+        """Space that owner is evaluated in"""
+        ...
+    @owner_space.setter
+    def owner_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']):
+        ...
+    @property
+    def target_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']:
+        """Space that target is evaluated in"""
+        ...
+    @target_space.setter
+    def target_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']):
+        ...
+    @property
+    def space_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object for Custom Space"""
+        ...
+    @space_object.setter
+    def space_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def space_subtarget(self) -> Annotated[str, "is_animatable=False"]:
+        """Armature bone, mesh or lattice vertex group, ..."""
+        ...
+    @space_subtarget.setter
+    def space_subtarget(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def mute(self) -> bool:
+        """Enable/Disable Constraint"""
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...
+    @property
+    def enabled(self) -> bool:
+        """Use the results of this constraint"""
+        ...
+    @enabled.setter
+    def enabled(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Constraint's panel is expanded in UI"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
     @property
     def is_valid(self) -> bool:
         """Constraint has valid settings and can be evaluated"""
         ...
-    active: bool
-    """Constraint is the one being edited"""
-    influence: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of influence constraint will have on the final solution"""
+    @property
+    def active(self) -> bool:
+        """Constraint is the one being edited"""
+        ...
+    @active.setter
+    def active(self, value: bool):
+        ...
+    @property
+    def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of influence constraint will have on the final solution"""
+        ...
+    @influence.setter
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
     @property
     def error_location(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in Blender space unit for constraints that work on position"""
@@ -59,21 +109,66 @@ class CopyScaleConstraint(Constraint):
     def error_rotation(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in radians for constraints that work on orientation"""
         ...
-    target: Annotated[Optional['Object'], "is_animatable=False"]
-    """Target object"""
-    subtarget: Annotated[str, "is_animatable=False"]
-    """Armature bone, mesh or lattice vertex group, ..."""
-    use_x: bool
-    """Copy the target's X scale"""
-    use_y: bool
-    """Copy the target's Y scale"""
-    use_z: bool
-    """Copy the target's Z scale"""
-    power: Annotated[float, "step=1.0", "precision=3"]
-    """Raise the target's scale to the specified power"""
-    use_make_uniform: bool
-    """Redistribute the copied change in volume equally between the three axes of the owner"""
-    use_offset: bool
-    """Combine original scale with copied scale"""
-    use_add: bool
-    """Use addition instead of multiplication to combine scale (2.7 compatibility)"""
+    @property
+    def target(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Target object"""
+        ...
+    @target.setter
+    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def subtarget(self) -> Annotated[str, "is_animatable=False"]:
+        """Armature bone, mesh or lattice vertex group, ..."""
+        ...
+    @subtarget.setter
+    def subtarget(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def use_x(self) -> bool:
+        """Copy the target's X scale"""
+        ...
+    @use_x.setter
+    def use_x(self, value: bool):
+        ...
+    @property
+    def use_y(self) -> bool:
+        """Copy the target's Y scale"""
+        ...
+    @use_y.setter
+    def use_y(self, value: bool):
+        ...
+    @property
+    def use_z(self) -> bool:
+        """Copy the target's Z scale"""
+        ...
+    @use_z.setter
+    def use_z(self, value: bool):
+        ...
+    @property
+    def power(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """Raise the target's scale to the specified power"""
+        ...
+    @power.setter
+    def power(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def use_make_uniform(self) -> bool:
+        """Redistribute the copied change in volume equally between the three axes of the owner"""
+        ...
+    @use_make_uniform.setter
+    def use_make_uniform(self, value: bool):
+        ...
+    @property
+    def use_offset(self) -> bool:
+        """Combine original scale with copied scale"""
+        ...
+    @use_offset.setter
+    def use_offset(self, value: bool):
+        ...
+    @property
+    def use_add(self) -> bool:
+        """Use addition instead of multiplication to combine scale (2.7 compatibility)"""
+        ...
+    @use_add.setter
+    def use_add(self, value: bool):
+        ...

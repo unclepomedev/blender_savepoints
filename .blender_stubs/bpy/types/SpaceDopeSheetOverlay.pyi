@@ -18,7 +18,17 @@ from .bpy_struct import bpy_struct
 
 class SpaceDopeSheetOverlay(bpy_struct):
 
-    show_overlays: bool
-    """Display overlays"""
-    show_scene_strip_range: bool
-    """When using scene time synchronization in the sequence editor, display the range of the current scene strip"""
+    @property
+    def show_overlays(self) -> bool:
+        """Display overlays"""
+        ...
+    @show_overlays.setter
+    def show_overlays(self, value: bool):
+        ...
+    @property
+    def show_scene_strip_range(self) -> bool:
+        """When using scene time synchronization in the sequence editor, display the range of the current scene strip"""
+        ...
+    @show_scene_strip_range.setter
+    def show_scene_strip_range(self, value: bool):
+        ...

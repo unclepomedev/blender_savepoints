@@ -18,5 +18,10 @@ from .LineStyleModifier import LineStyleModifier
 
 class LineStyleGeometryModifier(LineStyleModifier):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name of the modifier"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of the modifier"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
