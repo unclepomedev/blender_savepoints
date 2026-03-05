@@ -31,7 +31,7 @@ class VIEW3D_PT_tools_mask_texture(Panel, View3DPaintPanel, TextureMaskPanel):
         """XXX todo"""
         ...
     @text.setter
-    def text(self, value: Annotated[str, "is_animatable=False"]):
+    def text(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def custom_data(self) -> Annotated[Optional['Constraint'], "is_animatable=False"]:
@@ -42,98 +42,98 @@ class VIEW3D_PT_tools_mask_texture(Panel, View3DPaintPanel, TextureMaskPanel):
         """If this is set, the panel gets a custom ID, otherwise it takes the name of the class used to define the panel. For example, if the class name is "OBJECT_PT_hello", and bl_idname is not set by the script, then bl_idname = "OBJECT_PT_hello"."""
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_label(self) -> Annotated[str, "is_animatable=False"]:
         """The panel label, shows up in the panel header at the right of the triangle used to collapse the panel"""
         ...
     @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_translation_context(self) -> Annotated[str, "is_animatable=False"]:
         """Specific translation context, only define when the label needs to be disambiguated from others using the exact same label"""
         ...
     @bl_translation_context.setter
-    def bl_translation_context(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_translation_context(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_description(self) -> Annotated[str, "is_animatable=False"]:
         """The panel tooltip"""
         ...
     @bl_description.setter
-    def bl_description(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_description(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_category(self) -> Annotated[str, "is_animatable=False"]:
         """The category (tab) in which the panel will be displayed, when applicable"""
         ...
     @bl_category.setter
-    def bl_category(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_category(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_owner_id(self) -> Annotated[str, "is_animatable=False"]:
         """The ID owning the data displayed in the panel, if any"""
         ...
     @bl_owner_id.setter
-    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_space_type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """The space where the panel is going to be used in"""
         ...
     @bl_space_type.setter
-    def bl_space_type(self, value: Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']):
+    def bl_space_type(self, value: Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']) -> None:
         ...
     @property
     def bl_region_type(self) -> Literal['WINDOW', 'HEADER', 'CHANNELS', 'TEMPORARY', 'UI', 'TOOLS', 'TOOL_PROPS', 'ASSET_SHELF', 'ASSET_SHELF_HEADER', 'PREVIEW', 'HUD', 'NAVIGATION_BAR', 'EXECUTE', 'FOOTER', 'TOOL_HEADER', 'XR']:
         """The region where the panel is going to be used in"""
         ...
     @bl_region_type.setter
-    def bl_region_type(self, value: Literal['WINDOW', 'HEADER', 'CHANNELS', 'TEMPORARY', 'UI', 'TOOLS', 'TOOL_PROPS', 'ASSET_SHELF', 'ASSET_SHELF_HEADER', 'PREVIEW', 'HUD', 'NAVIGATION_BAR', 'EXECUTE', 'FOOTER', 'TOOL_HEADER', 'XR']):
+    def bl_region_type(self, value: Literal['WINDOW', 'HEADER', 'CHANNELS', 'TEMPORARY', 'UI', 'TOOLS', 'TOOL_PROPS', 'ASSET_SHELF', 'ASSET_SHELF_HEADER', 'PREVIEW', 'HUD', 'NAVIGATION_BAR', 'EXECUTE', 'FOOTER', 'TOOL_HEADER', 'XR']) -> None:
         ...
     @property
     def bl_context(self) -> Annotated[str, "is_animatable=False"]:
         """The context in which the panel belongs to. (TODO: explain the possible combinations bl_context/bl_region_type/bl_space_type)"""
         ...
     @bl_context.setter
-    def bl_context(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_context(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_options(self) -> set[str]:
         """Options for this panel type"""
         ...
     @bl_options.setter
-    def bl_options(self, value: set[str]):
+    def bl_options(self, value: set[str]) -> None:
         ...
     @property
     def bl_parent_id(self) -> Annotated[str, "is_animatable=False"]:
         """If this is set, the panel becomes a sub-panel"""
         ...
     @bl_parent_id.setter
-    def bl_parent_id(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_parent_id(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_ui_units_x(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """When set, defines popup panel width"""
         ...
     @bl_ui_units_x.setter
-    def bl_ui_units_x(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def bl_ui_units_x(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def bl_order(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Panels with lower numbers are default ordered before panels with higher numbers"""
         ...
     @bl_order.setter
-    def bl_order(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def bl_order(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def use_pin(self) -> bool:
         """Show the panel on all tabs"""
         ...
     @use_pin.setter
-    def use_pin(self, value: bool):
+    def use_pin(self, value: bool) -> None:
         ...
     @property
     def is_popover(self) -> bool:

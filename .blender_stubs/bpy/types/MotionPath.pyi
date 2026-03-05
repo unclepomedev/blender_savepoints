@@ -41,21 +41,21 @@ class MotionPath(bpy_struct):
         """Custom color for motion path before the current frame"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def color_post(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Custom color for motion path after the current frame"""
         ...
     @color_post.setter
-    def color_post(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def color_post(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def line_thickness(self) -> Annotated[int, "step=1"]:
         """Line thickness for motion path"""
         ...
     @line_thickness.setter
-    def line_thickness(self, value: Annotated[int, "step=1"]):
+    def line_thickness(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def use_bone_head(self) -> bool:
@@ -66,19 +66,19 @@ class MotionPath(bpy_struct):
         """Path is being edited"""
         ...
     @is_modified.setter
-    def is_modified(self, value: bool):
+    def is_modified(self, value: bool) -> None:
         ...
     @property
     def use_custom_color(self) -> bool:
         """Use custom color for this motion path"""
         ...
     @use_custom_color.setter
-    def use_custom_color(self, value: bool):
+    def use_custom_color(self, value: bool) -> None:
         ...
     @property
     def lines(self) -> bool:
         """Use straight lines between keyframe points"""
         ...
     @lines.setter
-    def lines(self, value: bool):
+    def lines(self, value: bool) -> None:
         ...

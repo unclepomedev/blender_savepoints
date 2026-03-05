@@ -34,7 +34,7 @@ class NlaTrack(bpy_struct):
 
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def active(self) -> bool:
@@ -45,26 +45,26 @@ class NlaTrack(bpy_struct):
         """NLA Track is evaluated itself (i.e. active Action and all other NLA Tracks in the same AnimData block are disabled)"""
         ...
     @is_solo.setter
-    def is_solo(self, value: bool):
+    def is_solo(self, value: bool) -> None:
         ...
     @property
     def select(self) -> bool:
         """NLA Track is selected"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...
     @property
     def mute(self) -> bool:
         """Disable NLA Track evaluation"""
         ...
     @mute.setter
-    def mute(self, value: bool):
+    def mute(self, value: bool) -> None:
         ...
     @property
     def lock(self) -> bool:
         """NLA Track is locked"""
         ...
     @lock.setter
-    def lock(self, value: bool):
+    def lock(self, value: bool) -> None:
         ...

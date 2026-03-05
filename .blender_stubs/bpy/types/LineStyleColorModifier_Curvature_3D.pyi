@@ -24,7 +24,7 @@ class LineStyleColorModifier_Curvature_3D(LineStyleColorModifier):
         """Name of the modifier"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['ALONG_STROKE', 'CREASE_ANGLE', 'CURVATURE_3D', 'DISTANCE_FROM_CAMERA', 'DISTANCE_FROM_OBJECT', 'MATERIAL', 'NOISE', 'TANGENT']:
@@ -35,28 +35,28 @@ class LineStyleColorModifier_Curvature_3D(LineStyleColorModifier):
         """Specify how the modifier value is blended into the base value"""
         ...
     @blend.setter
-    def blend(self, value: Literal['MIX', 'DARKEN', 'MULTIPLY', 'BURN', 'LIGHTEN', 'SCREEN', 'DODGE', 'ADD', 'OVERLAY', 'SOFT_LIGHT', 'LINEAR_LIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUBTRACT', 'DIVIDE', 'HUE', 'SATURATION', 'COLOR', 'VALUE']):
+    def blend(self, value: Literal['MIX', 'DARKEN', 'MULTIPLY', 'BURN', 'LIGHTEN', 'SCREEN', 'DODGE', 'ADD', 'OVERLAY', 'SOFT_LIGHT', 'LINEAR_LIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUBTRACT', 'DIVIDE', 'HUE', 'SATURATION', 'COLOR', 'VALUE']) -> None:
         ...
     @property
     def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Influence factor by which the modifier changes the property"""
         ...
     @influence.setter
-    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use(self) -> bool:
         """Enable or disable this modifier during stroke rendering"""
         ...
     @use.setter
-    def use(self, value: bool):
+    def use(self, value: bool) -> None:
         ...
     @property
     def expanded(self) -> bool:
         """True if the modifier tab is expanded"""
         ...
     @expanded.setter
-    def expanded(self, value: bool):
+    def expanded(self, value: bool) -> None:
         ...
     @property
     def color_ramp(self) -> Annotated[Optional['ColorRamp'], "is_animatable=False"]:
@@ -67,12 +67,12 @@ class LineStyleColorModifier_Curvature_3D(LineStyleColorModifier):
         """Minimum Curvature"""
         ...
     @curvature_min.setter
-    def curvature_min(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def curvature_min(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def curvature_max(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Maximum Curvature"""
         ...
     @curvature_max.setter
-    def curvature_max(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def curvature_max(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...

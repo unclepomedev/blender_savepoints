@@ -23,35 +23,35 @@ class MeshEdge(bpy_struct):
         """Vertex indices"""
         ...
     @vertices.setter
-    def vertices(self, value: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def vertices(self, value: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def select(self) -> Annotated[bool, "is_animatable=False"]:
 
         ...
     @select.setter
-    def select(self, value: Annotated[bool, "is_animatable=False"]):
+    def select(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def hide(self) -> Annotated[bool, "is_animatable=False"]:
 
         ...
     @hide.setter
-    def hide(self, value: Annotated[bool, "is_animatable=False"]):
+    def hide(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_seam(self) -> bool:
         """Seam edge for UV unwrapping"""
         ...
     @use_seam.setter
-    def use_seam(self, value: bool):
+    def use_seam(self, value: bool) -> None:
         ...
     @property
     def use_edge_sharp(self) -> bool:
         """Sharp edge for shading"""
         ...
     @use_edge_sharp.setter
-    def use_edge_sharp(self, value: bool):
+    def use_edge_sharp(self, value: bool) -> None:
         ...
     @property
     def is_loose(self) -> bool:

@@ -25,14 +25,14 @@ class NodeLink(bpy_struct):
         """Link is valid"""
         ...
     @is_valid.setter
-    def is_valid(self, value: bool):
+    def is_valid(self, value: bool) -> None:
         ...
     @property
     def is_muted(self) -> bool:
         """Link is muted and can be ignored"""
         ...
     @is_muted.setter
-    def is_muted(self, value: bool):
+    def is_muted(self, value: bool) -> None:
         ...
     @property
     def from_node(self) -> Annotated[Optional['Node'], "is_animatable=False"]:

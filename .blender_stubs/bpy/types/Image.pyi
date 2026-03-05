@@ -37,7 +37,7 @@ class Image(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -68,14 +68,14 @@ class Image(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -94,7 +94,7 @@ class Image(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -105,7 +105,7 @@ class Image(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -124,7 +124,7 @@ class Image(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -139,28 +139,28 @@ class Image(ID):
         """Image/Movie file name"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def filepath_raw(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
         """Image/Movie file name (without data refreshing)"""
         ...
     @filepath_raw.setter
-    def filepath_raw(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath_raw(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def file_format(self) -> Literal['JPEG', 'OPEN_EXR', 'PNG', 'WEBP', 'BMP', 'CINEON', 'DPX', 'IRIS', 'JPEG2000', 'HDR', 'TARGA', 'TARGA_RAW', 'TIFF', 'OPEN_EXR_MULTILAYER', 'FFMPEG']:
         """Format used for re-saving this file"""
         ...
     @file_format.setter
-    def file_format(self, value: Literal['JPEG', 'OPEN_EXR', 'PNG', 'WEBP', 'BMP', 'CINEON', 'DPX', 'IRIS', 'JPEG2000', 'HDR', 'TARGA', 'TARGA_RAW', 'TIFF', 'OPEN_EXR_MULTILAYER', 'FFMPEG']):
+    def file_format(self, value: Literal['JPEG', 'OPEN_EXR', 'PNG', 'WEBP', 'BMP', 'CINEON', 'DPX', 'IRIS', 'JPEG2000', 'HDR', 'TARGA', 'TARGA_RAW', 'TIFF', 'OPEN_EXR_MULTILAYER', 'FFMPEG']) -> None:
         ...
     @property
     def source(self) -> Literal['FILE', 'SEQUENCE', 'MOVIE', 'GENERATED', 'VIEWER', 'TILED']:
         """Where the image comes from"""
         ...
     @source.setter
-    def source(self, value: Literal['FILE', 'SEQUENCE', 'MOVIE', 'GENERATED', 'VIEWER', 'TILED']):
+    def source(self, value: Literal['FILE', 'SEQUENCE', 'MOVIE', 'GENERATED', 'VIEWER', 'TILED']) -> None:
         ...
     @property
     def type(self) -> Literal['IMAGE', 'MULTILAYER', 'UV_TEST', 'RENDER_RESULT', 'COMPOSITING']:
@@ -179,21 +179,21 @@ class Image(ID):
         """Apply render part of display transformation when displaying this image on the screen"""
         ...
     @use_view_as_render.setter
-    def use_view_as_render(self, value: bool):
+    def use_view_as_render(self, value: bool) -> None:
         ...
     @property
     def use_deinterlace(self) -> bool:
         """Deinterlace movie file on load"""
         ...
     @use_deinterlace.setter
-    def use_deinterlace(self, value: bool):
+    def use_deinterlace(self, value: bool) -> None:
         ...
     @property
     def use_multiview(self) -> bool:
         """Use Multiple Views (when available)"""
         ...
     @use_multiview.setter
-    def use_multiview(self, value: bool):
+    def use_multiview(self, value: bool) -> None:
         ...
     @property
     def is_stereo_3d(self) -> bool:
@@ -212,42 +212,42 @@ class Image(ID):
         """Generated image type"""
         ...
     @generated_type.setter
-    def generated_type(self, value: Annotated[Literal['BLANK', 'UV_GRID', 'COLOR_GRID'], "is_animatable=False"]):
+    def generated_type(self, value: Annotated[Literal['BLANK', 'UV_GRID', 'COLOR_GRID'], "is_animatable=False"]) -> None:
         ...
     @property
     def generated_width(self) -> Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]:
         """Generated image width"""
         ...
     @generated_width.setter
-    def generated_width(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]):
+    def generated_width(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def generated_height(self) -> Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]:
         """Generated image height"""
         ...
     @generated_height.setter
-    def generated_height(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]):
+    def generated_height(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def use_generated_float(self) -> Annotated[bool, "is_animatable=False"]:
         """Generate floating-point buffer"""
         ...
     @use_generated_float.setter
-    def use_generated_float(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_generated_float(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def generated_color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Fill color for the generated image"""
         ...
     @generated_color.setter
-    def generated_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def generated_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def display_aspect(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2"]:
         """Display Aspect for this image, does not affect rendering"""
         ...
     @display_aspect.setter
-    def display_aspect(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2"]):
+    def display_aspect(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def render_slots(self) -> Annotated['RenderSlots', "is_animatable=False"]:
@@ -274,7 +274,7 @@ class Image(ID):
         """X/Y pixels per meter, for the image buffer"""
         ...
     @resolution.setter
-    def resolution(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]):
+    def resolution(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def frame_duration(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
@@ -285,7 +285,7 @@ class Image(ID):
         """Image buffer pixels in floating-point values"""
         ...
     @pixels.setter
-    def pixels(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+    def pixels(self, value: Annotated[list[float], "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def channels(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
@@ -304,28 +304,28 @@ class Image(ID):
         """Representation of alpha in the image file, to convert to and from when saving and loading the image"""
         ...
     @alpha_mode.setter
-    def alpha_mode(self, value: Literal['STRAIGHT', 'PREMUL', 'CHANNEL_PACKED', 'NONE']):
+    def alpha_mode(self, value: Literal['STRAIGHT', 'PREMUL', 'CHANNEL_PACKED', 'NONE']) -> None:
         ...
     @property
     def use_half_precision(self) -> bool:
         """Use 16 bits per channel to lower the memory usage during rendering"""
         ...
     @use_half_precision.setter
-    def use_half_precision(self, value: bool):
+    def use_half_precision(self, value: bool) -> None:
         ...
     @property
     def seam_margin(self) -> Annotated[int, "step=1"]:
         """Margin to take into account when fixing UV seams during painting. Higher number would improve seam-fixes for mipmaps, but decreases performance."""
         ...
     @seam_margin.setter
-    def seam_margin(self, value: Annotated[int, "step=1"]):
+    def seam_margin(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def views_format(self) -> Literal['INDIVIDUAL', 'STEREO_3D']:
         """Mode to load image views"""
         ...
     @views_format.setter
-    def views_format(self, value: Literal['INDIVIDUAL', 'STEREO_3D']):
+    def views_format(self, value: Literal['INDIVIDUAL', 'STEREO_3D']) -> None:
         ...
     @property
     def stereo_3d_format(self) -> Annotated['Stereo3dFormat', "is_animatable=False"]:

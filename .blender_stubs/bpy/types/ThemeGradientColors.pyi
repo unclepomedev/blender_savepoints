@@ -23,19 +23,19 @@ class ThemeGradientColors(bpy_struct):
         """Type of background in the 3D viewport"""
         ...
     @background_type.setter
-    def background_type(self, value: Literal['SINGLE_COLOR', 'LINEAR', 'RADIAL']):
+    def background_type(self, value: Literal['SINGLE_COLOR', 'LINEAR', 'RADIAL']) -> None:
         ...
     @property
     def high_gradient(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @high_gradient.setter
-    def high_gradient(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def high_gradient(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def gradient(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @gradient.setter
-    def gradient(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def gradient(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...

@@ -28,103 +28,103 @@ class ThemeNLAEditor(bpy_struct):
 
         ...
     @grid.setter
-    def grid(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def grid(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def active_action(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Animation data-block has active action"""
         ...
     @active_action.setter
-    def active_action(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def active_action(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def active_action_unset(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Animation data-block does not have active action"""
         ...
     @active_action_unset.setter
-    def active_action_unset(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def active_action_unset(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def strips(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Unselected Action-Clip Strip"""
         ...
     @strips.setter
-    def strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def strips_selected(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Selected Action-Clip Strip"""
         ...
     @strips_selected.setter
-    def strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def transition_strips(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Unselected Transition Strip"""
         ...
     @transition_strips.setter
-    def transition_strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def transition_strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def transition_strips_selected(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Selected Transition Strip"""
         ...
     @transition_strips_selected.setter
-    def transition_strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def transition_strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def meta_strips(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Unselected Meta Strip (for grouping related strips)"""
         ...
     @meta_strips.setter
-    def meta_strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def meta_strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def meta_strips_selected(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Selected Meta Strip (for grouping related strips)"""
         ...
     @meta_strips_selected.setter
-    def meta_strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def meta_strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def sound_strips(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Unselected Sound Strip (for timing speaker sounds)"""
         ...
     @sound_strips.setter
-    def sound_strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def sound_strips(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def sound_strips_selected(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Selected Sound Strip (for timing speaker sounds)"""
         ...
     @sound_strips_selected.setter
-    def sound_strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def sound_strips_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def tweak(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Color for strip/action being "tweaked" or edited"""
         ...
     @tweak.setter
-    def tweak(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def tweak(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def tweak_duplicate(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Warning/error indicator color for strips referencing the strip being tweaked"""
         ...
     @tweak_duplicate.setter
-    def tweak_duplicate(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def tweak_duplicate(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def keyframe_border(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Color of keyframe border"""
         ...
     @keyframe_border.setter
-    def keyframe_border(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def keyframe_border(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def keyframe_border_selected(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Color of selected keyframe border"""
         ...
     @keyframe_border_selected.setter
-    def keyframe_border_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def keyframe_border_selected(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...

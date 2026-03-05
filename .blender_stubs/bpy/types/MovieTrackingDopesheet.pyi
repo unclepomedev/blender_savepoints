@@ -23,26 +23,26 @@ class MovieTrackingDopesheet(bpy_struct):
         """Method to be used to sort channels in dopesheet view"""
         ...
     @sort_method.setter
-    def sort_method(self, value: Literal['NAME', 'LONGEST', 'TOTAL', 'AVERAGE_ERROR', 'START', 'END']):
+    def sort_method(self, value: Literal['NAME', 'LONGEST', 'TOTAL', 'AVERAGE_ERROR', 'START', 'END']) -> None:
         ...
     @property
     def use_invert_sort(self) -> bool:
         """Invert sort order of dopesheet channels"""
         ...
     @use_invert_sort.setter
-    def use_invert_sort(self, value: bool):
+    def use_invert_sort(self, value: bool) -> None:
         ...
     @property
     def show_only_selected(self) -> bool:
         """Only include channels relating to selected objects and data"""
         ...
     @show_only_selected.setter
-    def show_only_selected(self, value: bool):
+    def show_only_selected(self, value: bool) -> None:
         ...
     @property
     def show_hidden(self) -> bool:
         """Include channels from objects/bone that are not visible"""
         ...
     @show_hidden.setter
-    def show_hidden(self, value: bool):
+    def show_hidden(self, value: bool) -> None:
         ...

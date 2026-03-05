@@ -23,5 +23,5 @@ class SceneHydra(bpy_struct):
         """How to export the Blender scene to the Hydra render engine"""
         ...
     @export_method.setter
-    def export_method(self, value: Annotated[Literal['HYDRA', 'USD'], "is_animatable=False"]):
+    def export_method(self, value: Annotated[Literal['HYDRA', 'USD'], "is_animatable=False"]) -> None:
         ...

@@ -23,19 +23,19 @@ class GreasePencilLayerMask(bpy_struct):
         """Mask layer name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def hide(self) -> bool:
         """Set mask Visibility"""
         ...
     @hide.setter
-    def hide(self, value: bool):
+    def hide(self, value: bool) -> None:
         ...
     @property
     def invert(self) -> bool:
         """Invert mask"""
         ...
     @invert.setter
-    def invert(self, value: bool):
+    def invert(self, value: bool) -> None:
         ...

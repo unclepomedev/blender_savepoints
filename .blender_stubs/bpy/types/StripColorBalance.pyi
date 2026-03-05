@@ -23,89 +23,89 @@ class StripColorBalance(StripColorBalanceData):
 
         ...
     @correction_method.setter
-    def correction_method(self, value: Literal['LIFT_GAMMA_GAIN', 'OFFSET_POWER_SLOPE']):
+    def correction_method(self, value: Literal['LIFT_GAMMA_GAIN', 'OFFSET_POWER_SLOPE']) -> None:
         ...
     @property
     def lift(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]:
         """Color balance lift (shadows)"""
         ...
     @lift.setter
-    def lift(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]):
+    def lift(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def gamma(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]:
         """Color balance gamma (midtones)"""
         ...
     @gamma.setter
-    def gamma(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]):
+    def gamma(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def gain(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]:
         """Color balance gain (highlights)"""
         ...
     @gain.setter
-    def gain(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]):
+    def gain(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def slope(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]:
         """Correction for highlights"""
         ...
     @slope.setter
-    def slope(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]):
+    def slope(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def offset(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]:
         """Correction for entire tonal range"""
         ...
     @offset.setter
-    def offset(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]):
+    def offset(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def power(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]:
         """Correction for midtones"""
         ...
     @power.setter
-    def power(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]):
+    def power(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def invert_lift(self) -> bool:
         """Invert the lift color"""
         ...
     @invert_lift.setter
-    def invert_lift(self, value: bool):
+    def invert_lift(self, value: bool) -> None:
         ...
     @property
     def invert_gamma(self) -> bool:
         """Invert the gamma color"""
         ...
     @invert_gamma.setter
-    def invert_gamma(self, value: bool):
+    def invert_gamma(self, value: bool) -> None:
         ...
     @property
     def invert_gain(self) -> bool:
         """Invert the gain color"""
         ...
     @invert_gain.setter
-    def invert_gain(self, value: bool):
+    def invert_gain(self, value: bool) -> None:
         ...
     @property
     def invert_slope(self) -> bool:
         """Invert the slope color"""
         ...
     @invert_slope.setter
-    def invert_slope(self, value: bool):
+    def invert_slope(self, value: bool) -> None:
         ...
     @property
     def invert_offset(self) -> bool:
         """Invert the offset color"""
         ...
     @invert_offset.setter
-    def invert_offset(self, value: bool):
+    def invert_offset(self, value: bool) -> None:
         ...
     @property
     def invert_power(self) -> bool:
         """Invert the power color"""
         ...
     @invert_power.setter
-    def invert_power(self, value: bool):
+    def invert_power(self, value: bool) -> None:
         ...

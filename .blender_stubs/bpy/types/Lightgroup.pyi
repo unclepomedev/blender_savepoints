@@ -23,5 +23,5 @@ class Lightgroup(bpy_struct):
         """Name of the Lightgroup"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

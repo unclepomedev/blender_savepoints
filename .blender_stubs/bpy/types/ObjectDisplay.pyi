@@ -23,5 +23,5 @@ class ObjectDisplay(bpy_struct):
         """Object cast shadows in the 3D viewport"""
         ...
     @show_shadows.setter
-    def show_shadows(self, value: Annotated[bool, "is_animatable=False"]):
+    def show_shadows(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...

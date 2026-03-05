@@ -24,7 +24,7 @@ class ArrayModifier(Modifier):
         """Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
@@ -35,49 +35,49 @@ class ArrayModifier(Modifier):
         """Display modifier in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use modifier during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display modifier in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_on_cage(self) -> bool:
         """Adjust edit cage to modifier result"""
         ...
     @show_on_cage.setter
-    def show_on_cage(self, value: bool):
+    def show_on_cage(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set modifier expanded in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def is_active(self) -> Annotated[bool, "is_animatable=False"]:
         """The active modifier in the list"""
         ...
     @is_active.setter
-    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
         """Keep the modifier at the end of the list"""
         ...
     @use_pin_to_last.setter
-    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_override_data(self) -> bool:
@@ -88,7 +88,7 @@ class ArrayModifier(Modifier):
         """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
         ...
     @use_apply_on_spline.setter
-    def use_apply_on_spline(self, value: bool):
+    def use_apply_on_spline(self, value: bool) -> None:
         ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -103,117 +103,117 @@ class ArrayModifier(Modifier):
         """Array length calculation method"""
         ...
     @fit_type.setter
-    def fit_type(self, value: Literal['FIXED_COUNT', 'FIT_LENGTH', 'FIT_CURVE']):
+    def fit_type(self, value: Literal['FIXED_COUNT', 'FIT_LENGTH', 'FIT_CURVE']) -> None:
         ...
     @property
     def count(self) -> Annotated[int, "step=1"]:
         """Number of duplicates to make"""
         ...
     @count.setter
-    def count(self, value: Annotated[int, "step=1"]):
+    def count(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def fit_length(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]:
         """Length to fit array within"""
         ...
     @fit_length.setter
-    def fit_length(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]):
+    def fit_length(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]) -> None:
         ...
     @property
     def curve(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Curve object to fit array length to"""
         ...
     @curve.setter
-    def curve(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def curve(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def use_constant_offset(self) -> bool:
         """Add a constant offset"""
         ...
     @use_constant_offset.setter
-    def use_constant_offset(self, value: bool):
+    def use_constant_offset(self, value: bool) -> None:
         ...
     @property
     def constant_offset_displace(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]:
         """Value for the distance between arrayed items"""
         ...
     @constant_offset_displace.setter
-    def constant_offset_displace(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]):
+    def constant_offset_displace(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]) -> None:
         ...
     @property
     def use_relative_offset(self) -> bool:
         """Add an offset relative to the object's bounding box"""
         ...
     @use_relative_offset.setter
-    def use_relative_offset(self, value: bool):
+    def use_relative_offset(self, value: bool) -> None:
         ...
     @property
     def relative_offset_displace(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
         """The size of the geometry will determine the distance between arrayed items"""
         ...
     @relative_offset_displace.setter
-    def relative_offset_displace(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def relative_offset_displace(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_merge_vertices(self) -> bool:
         """Merge vertices in adjacent duplicates"""
         ...
     @use_merge_vertices.setter
-    def use_merge_vertices(self, value: bool):
+    def use_merge_vertices(self, value: bool) -> None:
         ...
     @property
     def use_merge_vertices_cap(self) -> bool:
         """Merge vertices in first and last duplicates"""
         ...
     @use_merge_vertices_cap.setter
-    def use_merge_vertices_cap(self, value: bool):
+    def use_merge_vertices_cap(self, value: bool) -> None:
         ...
     @property
     def merge_threshold(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=4"]:
         """Limit below which to merge vertices"""
         ...
     @merge_threshold.setter
-    def merge_threshold(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=4"]):
+    def merge_threshold(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=4"]) -> None:
         ...
     @property
     def use_object_offset(self) -> bool:
         """Add another object's transformation to the total offset"""
         ...
     @use_object_offset.setter
-    def use_object_offset(self, value: bool):
+    def use_object_offset(self, value: bool) -> None:
         ...
     @property
     def offset_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Use the location and rotation of another object to determine the distance and rotational change between arrayed items"""
         ...
     @offset_object.setter
-    def offset_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def offset_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def start_cap(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Mesh object to use as a start cap"""
         ...
     @start_cap.setter
-    def start_cap(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def start_cap(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def end_cap(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Mesh object to use as an end cap"""
         ...
     @end_cap.setter
-    def end_cap(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def end_cap(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def offset_u(self) -> Annotated[float, "subtype='FACTOR'", "step=2.0", "precision=4"]:
         """Amount to offset array UVs on the U axis"""
         ...
     @offset_u.setter
-    def offset_u(self, value: Annotated[float, "subtype='FACTOR'", "step=2.0", "precision=4"]):
+    def offset_u(self, value: Annotated[float, "subtype='FACTOR'", "step=2.0", "precision=4"]) -> None:
         ...
     @property
     def offset_v(self) -> Annotated[float, "subtype='FACTOR'", "step=2.0", "precision=4"]:
         """Amount to offset array UVs on the V axis"""
         ...
     @offset_v.setter
-    def offset_v(self, value: Annotated[float, "subtype='FACTOR'", "step=2.0", "precision=4"]):
+    def offset_v(self, value: Annotated[float, "subtype='FACTOR'", "step=2.0", "precision=4"]) -> None:
         ...

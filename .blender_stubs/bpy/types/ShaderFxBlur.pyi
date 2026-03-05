@@ -23,7 +23,7 @@ class ShaderFxBlur(ShaderFx):
         """Effect name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['FX_BLUR', 'FX_COLORIZE', 'FX_FLIP', 'FX_GLOW', 'FX_PIXEL', 'FX_RIM', 'FX_SHADOW', 'FX_SWIRL', 'FX_WAVE']:
@@ -34,54 +34,54 @@ class ShaderFxBlur(ShaderFx):
         """Display effect in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use effect during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display effect in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set effect expansion in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def size(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
         """Factor of Blur"""
         ...
     @size.setter
-    def size(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def size(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def samples(self) -> Annotated[int, "step=2"]:
         """Number of Blur Samples (zero, disable blur)"""
         ...
     @samples.setter
-    def samples(self, value: Annotated[int, "step=2"]):
+    def samples(self, value: Annotated[int, "step=2"]) -> None:
         ...
     @property
     def rotation(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Rotation of the effect"""
         ...
     @rotation.setter
-    def rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_dof_mode(self) -> bool:
         """Blur using camera depth of field"""
         ...
     @use_dof_mode.setter
-    def use_dof_mode(self, value: bool):
+    def use_dof_mode(self, value: bool) -> None:
         ...

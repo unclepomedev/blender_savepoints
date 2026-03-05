@@ -34,21 +34,21 @@ class XrSessionState(bpy_struct):
         """Location offset to apply to base pose when determining viewer location"""
         ...
     @navigation_location.setter
-    def navigation_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def navigation_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def navigation_rotation(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Rotation offset to apply to base pose when determining viewer rotation"""
         ...
     @navigation_rotation.setter
-    def navigation_rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def navigation_rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def navigation_scale(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Additional scale multiplier to apply to base scale when determining viewer scale"""
         ...
     @navigation_scale.setter
-    def navigation_scale(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def navigation_scale(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def actionmaps(self) -> Annotated['XrActionMaps', "is_animatable=False"]:
@@ -59,14 +59,14 @@ class XrSessionState(bpy_struct):
 
         ...
     @active_actionmap.setter
-    def active_actionmap(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def active_actionmap(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def selected_actionmap(self) -> Annotated[int, "step=1", "is_animatable=False"]:
 
         ...
     @selected_actionmap.setter
-    def selected_actionmap(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def selected_actionmap(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     def is_running(self, *args, **kwargs) -> Any: ...
     def reset_to_base_pose(self, *args, **kwargs) -> Any: ...

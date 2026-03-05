@@ -27,33 +27,33 @@ class SpacePreferences(Space):
         """Synchronize the visible timeline range with other time-based editors"""
         ...
     @show_locked_time.setter
-    def show_locked_time(self, value: bool):
+    def show_locked_time(self, value: bool) -> None:
         ...
     @property
     def show_region_header(self) -> bool:
 
         ...
     @show_region_header.setter
-    def show_region_header(self, value: bool):
+    def show_region_header(self, value: bool) -> None:
         ...
     @property
     def show_region_ui(self) -> bool:
 
         ...
     @show_region_ui.setter
-    def show_region_ui(self, value: bool):
+    def show_region_ui(self, value: bool) -> None:
         ...
     @property
     def filter_type(self) -> Literal['NAME', 'KEY']:
         """Filter method"""
         ...
     @filter_type.setter
-    def filter_type(self, value: Literal['NAME', 'KEY']):
+    def filter_type(self, value: Literal['NAME', 'KEY']) -> None:
         ...
     @property
     def filter_text(self) -> Annotated[str, "is_animatable=False"]:
         """Search term for filtering in the UI"""
         ...
     @filter_text.setter
-    def filter_text(self, value: Annotated[str, "is_animatable=False"]):
+    def filter_text(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

@@ -23,14 +23,14 @@ class WorkSpaceTool(bpy_struct):
 
         ...
     @idname.setter
-    def idname(self, value: Annotated[str, "is_animatable=False"]):
+    def idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def idname_fallback(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @idname_fallback.setter
-    def idname_fallback(self, value: Annotated[str, "is_animatable=False"]):
+    def idname_fallback(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def index(self) -> Annotated[int, "step=1"]:

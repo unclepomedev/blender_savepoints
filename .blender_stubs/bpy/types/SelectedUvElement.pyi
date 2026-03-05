@@ -23,20 +23,20 @@ class SelectedUvElement(PropertyGroup):
         """Unique name used in the code and scripting"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def element_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
 
         ...
     @element_index.setter
-    def element_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def element_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def face_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
 
         ...
     @face_index.setter
-    def face_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def face_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

@@ -23,14 +23,14 @@ class ActionSlot(bpy_struct):
         """Used when connecting an Action to a data-block, to find the correct slot handle. This is the display name, prefixed by two characters determined by the slot's ID type"""
         ...
     @identifier.setter
-    def identifier(self, value: Annotated[str, "is_animatable=False"]):
+    def identifier(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def target_id_type(self) -> Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD', 'UNSPECIFIED']:
         """Type of data-block that this slot is intended to animate; can be set when 'UNSPECIFIED' but is otherwise read-only"""
         ...
     @target_id_type.setter
-    def target_id_type(self, value: Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD', 'UNSPECIFIED']):
+    def target_id_type(self, value: Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD', 'UNSPECIFIED']) -> None:
         ...
     @property
     def target_id_type_icon(self) -> Annotated[int, "step=1"]:
@@ -41,7 +41,7 @@ class ActionSlot(bpy_struct):
         """Name of the slot, for display in the user interface. This name combined with the slot's data-block type is unique within its Action"""
         ...
     @name_display.setter
-    def name_display(self, value: Annotated[str, "is_animatable=False"]):
+    def name_display(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def handle(self) -> Annotated[int, "step=1"]:
@@ -57,14 +57,14 @@ This is used, for example, on a ActionKeyframeStrip to look up the ActionChannel
         """Selection state of the slot"""
         ...
     @select.setter
-    def select(self, value: Annotated[bool, "is_animatable=False"]):
+    def select(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def show_expanded(self) -> Annotated[bool, "is_animatable=False"]:
         """Expanded state of the slot"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: Annotated[bool, "is_animatable=False"]):
+    def show_expanded(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     def users(self, *args, **kwargs) -> Any: ...
     def duplicate(self, *args, **kwargs) -> Any: ...

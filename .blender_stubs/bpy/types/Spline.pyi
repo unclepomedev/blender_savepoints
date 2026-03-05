@@ -36,21 +36,21 @@ class Spline(bpy_struct):
         """The type of tilt interpolation for 3D, Bézier curves"""
         ...
     @tilt_interpolation.setter
-    def tilt_interpolation(self, value: Literal['LINEAR', 'CARDINAL', 'BSPLINE', 'EASE']):
+    def tilt_interpolation(self, value: Literal['LINEAR', 'CARDINAL', 'BSPLINE', 'EASE']) -> None:
         ...
     @property
     def radius_interpolation(self) -> Literal['LINEAR', 'CARDINAL', 'BSPLINE', 'EASE']:
         """The type of radius interpolation for Bézier curves"""
         ...
     @radius_interpolation.setter
-    def radius_interpolation(self, value: Literal['LINEAR', 'CARDINAL', 'BSPLINE', 'EASE']):
+    def radius_interpolation(self, value: Literal['LINEAR', 'CARDINAL', 'BSPLINE', 'EASE']) -> None:
         ...
     @property
     def type(self) -> Literal['POLY', 'BEZIER', 'NURBS']:
         """The interpolation type for this curve element"""
         ...
     @type.setter
-    def type(self, value: Literal['POLY', 'BEZIER', 'NURBS']):
+    def type(self, value: Literal['POLY', 'BEZIER', 'NURBS']) -> None:
         ...
     @property
     def point_count_u(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
@@ -65,91 +65,91 @@ class Spline(bpy_struct):
         """NURBS order in the U direction. Higher values make each point influence a greater area, but have worse performance."""
         ...
     @order_u.setter
-    def order_u(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def order_u(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def order_v(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """NURBS order in the V direction. Higher values make each point influence a greater area, but have worse performance."""
         ...
     @order_v.setter
-    def order_v(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def order_v(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def resolution_u(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Curve or Surface subdivisions per segment"""
         ...
     @resolution_u.setter
-    def resolution_u(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def resolution_u(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def resolution_v(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Surface subdivisions per segment"""
         ...
     @resolution_v.setter
-    def resolution_v(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def resolution_v(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def use_cyclic_u(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this curve or surface a closed loop in the U direction"""
         ...
     @use_cyclic_u.setter
-    def use_cyclic_u(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_cyclic_u(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_cyclic_v(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this surface a closed loop in the V direction"""
         ...
     @use_cyclic_v.setter
-    def use_cyclic_v(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_cyclic_v(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_endpoint_u(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this nurbs curve or surface meet the endpoints in the U direction"""
         ...
     @use_endpoint_u.setter
-    def use_endpoint_u(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_endpoint_u(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_endpoint_v(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this nurbs surface meet the endpoints in the V direction"""
         ...
     @use_endpoint_v.setter
-    def use_endpoint_v(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_endpoint_v(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_bezier_u(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this nurbs curve or surface act like a Bézier spline in the U direction"""
         ...
     @use_bezier_u.setter
-    def use_bezier_u(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_bezier_u(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_bezier_v(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this nurbs surface act like a Bézier spline in the V direction"""
         ...
     @use_bezier_v.setter
-    def use_bezier_v(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_bezier_v(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_smooth(self) -> bool:
         """Smooth the normals of the surface or beveled curve"""
         ...
     @use_smooth.setter
-    def use_smooth(self, value: bool):
+    def use_smooth(self, value: bool) -> None:
         ...
     @property
     def hide(self) -> bool:
         """Hide this curve in Edit mode"""
         ...
     @hide.setter
-    def hide(self, value: bool):
+    def hide(self, value: bool) -> None:
         ...
     @property
     def material_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Material slot index of this curve"""
         ...
     @material_index.setter
-    def material_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def material_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def character_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:

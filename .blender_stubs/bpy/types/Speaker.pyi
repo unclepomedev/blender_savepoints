@@ -30,7 +30,7 @@ class Speaker(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -61,14 +61,14 @@ class Speaker(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -87,7 +87,7 @@ class Speaker(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -98,7 +98,7 @@ class Speaker(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -117,7 +117,7 @@ class Speaker(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -132,84 +132,84 @@ class Speaker(ID):
         """Mute the speaker"""
         ...
     @muted.setter
-    def muted(self, value: Annotated[bool, "is_animatable=False"]):
+    def muted(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def sound(self) -> Annotated[Optional['Sound'], "is_animatable=False"]:
         """Sound data-block used by this speaker"""
         ...
     @sound.setter
-    def sound(self, value: Annotated[Optional['Sound'], "is_animatable=False"]):
+    def sound(self, value: Annotated[Optional['Sound'], "is_animatable=False"]) -> None:
         ...
     @property
     def volume_max(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Maximum volume, no matter how near the object is"""
         ...
     @volume_max.setter
-    def volume_max(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def volume_max(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def volume_min(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Minimum volume, no matter how far away the object is"""
         ...
     @volume_min.setter
-    def volume_min(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def volume_min(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def distance_max(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Maximum distance for volume calculation, no matter how far away the object is"""
         ...
     @distance_max.setter
-    def distance_max(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def distance_max(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def distance_reference(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Reference distance at which volume is 100%"""
         ...
     @distance_reference.setter
-    def distance_reference(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def distance_reference(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def attenuation(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """How strong the distance affects volume, depending on distance model"""
         ...
     @attenuation.setter
-    def attenuation(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def attenuation(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def cone_angle_outer(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Angle of the outer cone, in degrees, outside this cone the volume is the outer cone volume, between inner and outer cone the volume is interpolated"""
         ...
     @cone_angle_outer.setter
-    def cone_angle_outer(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def cone_angle_outer(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def cone_angle_inner(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Angle of the inner cone, in degrees, inside the cone the volume is 100%"""
         ...
     @cone_angle_inner.setter
-    def cone_angle_inner(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def cone_angle_inner(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def cone_volume_outer(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Volume outside the outer cone"""
         ...
     @cone_volume_outer.setter
-    def cone_volume_outer(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def cone_volume_outer(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def volume(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """How loud the sound is"""
         ...
     @volume.setter
-    def volume(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def volume(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def pitch(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Playback pitch of the sound"""
         ...
     @pitch.setter
-    def pitch(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def pitch(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:

@@ -56,7 +56,7 @@ class Object(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -87,14 +87,14 @@ class Object(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -113,7 +113,7 @@ class Object(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -124,7 +124,7 @@ class Object(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -143,7 +143,7 @@ class Object(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -158,7 +158,7 @@ class Object(ID):
         """Object data"""
         ...
     @data.setter
-    def data(self, value: Annotated[Optional['ID'], "is_animatable=False"]):
+    def data(self, value: Annotated[Optional['ID'], "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['MESH', 'CURVE', 'SURFACE', 'META', 'FONT', 'CURVES', 'POINTCLOUD', 'VOLUME', 'GREASEPENCIL', 'ARMATURE', 'LATTICE', 'EMPTY', 'LIGHT', 'LIGHT_PROBE', 'CAMERA', 'SPEAKER']:
@@ -177,56 +177,56 @@ class Object(ID):
         """Parent object"""
         ...
     @parent.setter
-    def parent(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def parent(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def parent_type(self) -> Literal['OBJECT', 'ARMATURE', 'LATTICE', 'VERTEX', 'VERTEX_3', 'BONE']:
         """Type of parent relation"""
         ...
     @parent_type.setter
-    def parent_type(self, value: Literal['OBJECT', 'ARMATURE', 'LATTICE', 'VERTEX', 'VERTEX_3', 'BONE']):
+    def parent_type(self, value: Literal['OBJECT', 'ARMATURE', 'LATTICE', 'VERTEX', 'VERTEX_3', 'BONE']) -> None:
         ...
     @property
     def parent_vertices(self) -> Annotated[list[int], "subtype='UNSIGNED'", "step=1"]:
         """Indices of vertices in case of a vertex parenting relation"""
         ...
     @parent_vertices.setter
-    def parent_vertices(self, value: Annotated[list[int], "subtype='UNSIGNED'", "step=1"]):
+    def parent_vertices(self, value: Annotated[list[int], "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def parent_bone(self) -> Annotated[str, "is_animatable=False"]:
         """Name of parent bone in case of a bone parenting relation"""
         ...
     @parent_bone.setter
-    def parent_bone(self, value: Annotated[str, "is_animatable=False"]):
+    def parent_bone(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def use_parent_final_indices(self) -> bool:
         """Use the final evaluated indices rather than the original mesh indices"""
         ...
     @use_parent_final_indices.setter
-    def use_parent_final_indices(self, value: bool):
+    def use_parent_final_indices(self, value: bool) -> None:
         ...
     @property
     def use_camera_lock_parent(self) -> bool:
         """View Lock 3D viewport camera transformation affects the object's parent instead"""
         ...
     @use_camera_lock_parent.setter
-    def use_camera_lock_parent(self, value: bool):
+    def use_camera_lock_parent(self, value: bool) -> None:
         ...
     @property
     def track_axis(self) -> Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']:
         """Axis that points in the 'forward' direction (applies to Instance Vertices when Align to Vertex Normal is enabled)"""
         ...
     @track_axis.setter
-    def track_axis(self, value: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']):
+    def track_axis(self, value: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']) -> None:
         ...
     @property
     def up_axis(self) -> Literal['X', 'Y', 'Z']:
         """Axis that points in the upward direction (applies to Instance Vertices when Align to Vertex Normal is enabled)"""
         ...
     @up_axis.setter
-    def up_axis(self, value: Literal['X', 'Y', 'Z']):
+    def up_axis(self, value: Literal['X', 'Y', 'Z']) -> None:
         ...
     @property
     def material_slots(self) -> Annotated[bpy_prop_collection['MaterialSlot'], "is_animatable=False"]:
@@ -237,56 +237,56 @@ class Object(ID):
         """Active material being displayed"""
         ...
     @active_material.setter
-    def active_material(self, value: Annotated[Optional['Material'], "is_animatable=False"]):
+    def active_material(self, value: Annotated[Optional['Material'], "is_animatable=False"]) -> None:
         ...
     @property
     def active_material_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
         """Index of active material slot"""
         ...
     @active_material_index.setter
-    def active_material_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def active_material_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def location(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]:
         """Location of the object"""
         ...
     @location.setter
-    def location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]):
+    def location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]) -> None:
         ...
     @property
     def rotation_quaternion(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]:
         """Rotation in Quaternions"""
         ...
     @rotation_quaternion.setter
-    def rotation_quaternion(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]):
+    def rotation_quaternion(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def rotation_axis_angle(self) -> Annotated[list[float], "subtype='AXISANGLE'", "step=10.0", "precision=3"]:
         """Angle of Rotation for Axis-Angle rotation representation"""
         ...
     @rotation_axis_angle.setter
-    def rotation_axis_angle(self, value: Annotated[list[float], "subtype='AXISANGLE'", "step=10.0", "precision=3"]):
+    def rotation_axis_angle(self, value: Annotated[list[float], "subtype='AXISANGLE'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def rotation_euler(self) -> Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]:
         """Rotation in Eulers"""
         ...
     @rotation_euler.setter
-    def rotation_euler(self, value: Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]):
+    def rotation_euler(self, value: Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]) -> None:
         ...
     @property
     def rotation_mode(self) -> Literal['QUATERNION', 'XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX', 'AXIS_ANGLE']:
         """The kind of rotation to apply, values from other rotation modes are not used"""
         ...
     @rotation_mode.setter
-    def rotation_mode(self, value: Literal['QUATERNION', 'XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX', 'AXIS_ANGLE']):
+    def rotation_mode(self, value: Literal['QUATERNION', 'XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX', 'AXIS_ANGLE']) -> None:
         ...
     @property
     def scale(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]:
         """Scaling of the object"""
         ...
     @scale.setter
-    def scale(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]):
+    def scale(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def dimensions(self) -> Annotated[list[float], "subtype='XYZ_LENGTH'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]:
@@ -294,77 +294,77 @@ class Object(ID):
 Warning: Assigning to it or its members multiple consecutive times will not work correctly, as this needs up-to-date evaluated data"""
         ...
     @dimensions.setter
-    def dimensions(self, value: Annotated[list[float], "subtype='XYZ_LENGTH'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]):
+    def dimensions(self, value: Annotated[list[float], "subtype='XYZ_LENGTH'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]) -> None:
         ...
     @property
     def delta_location(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]:
         """Extra translation added to the location of the object"""
         ...
     @delta_location.setter
-    def delta_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]):
+    def delta_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]) -> None:
         ...
     @property
     def delta_rotation_euler(self) -> Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]:
         """Extra rotation added to the rotation of the object (when using Euler rotations)"""
         ...
     @delta_rotation_euler.setter
-    def delta_rotation_euler(self, value: Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]):
+    def delta_rotation_euler(self, value: Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]) -> None:
         ...
     @property
     def delta_rotation_quaternion(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]:
         """Extra rotation added to the rotation of the object (when using Quaternion rotations)"""
         ...
     @delta_rotation_quaternion.setter
-    def delta_rotation_quaternion(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]):
+    def delta_rotation_quaternion(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def delta_scale(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]:
         """Extra scaling added to the scale of the object"""
         ...
     @delta_scale.setter
-    def delta_scale(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]):
+    def delta_scale(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def lock_location(self) -> list[bool]:
         """Lock editing of location when transforming"""
         ...
     @lock_location.setter
-    def lock_location(self, value: list[bool]):
+    def lock_location(self, value: list[bool]) -> None:
         ...
     @property
     def lock_rotation(self) -> list[bool]:
         """Lock editing of rotation when transforming"""
         ...
     @lock_rotation.setter
-    def lock_rotation(self, value: list[bool]):
+    def lock_rotation(self, value: list[bool]) -> None:
         ...
     @property
     def lock_rotation_w(self) -> bool:
         """Lock editing of 'angle' component of four-component rotations when transforming"""
         ...
     @lock_rotation_w.setter
-    def lock_rotation_w(self, value: bool):
+    def lock_rotation_w(self, value: bool) -> None:
         ...
     @property
     def lock_rotations_4d(self) -> bool:
         """Lock editing of four component rotations by components (instead of as Eulers)"""
         ...
     @lock_rotations_4d.setter
-    def lock_rotations_4d(self, value: bool):
+    def lock_rotations_4d(self, value: bool) -> None:
         ...
     @property
     def lock_scale(self) -> list[bool]:
         """Lock editing of scale when transforming"""
         ...
     @lock_scale.setter
-    def lock_scale(self, value: list[bool]):
+    def lock_scale(self, value: list[bool]) -> None:
         ...
     @property
     def matrix_world(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Worldspace transformation matrix"""
         ...
     @matrix_world.setter
-    def matrix_world(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def matrix_world(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def matrix_local(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -372,21 +372,21 @@ Warning: Assigning to it or its members multiple consecutive times will not work
 Warning: Only takes into account object parenting, so e.g. in case of bone parenting you get a matrix relative to the Armature object, not to the actual parent bone"""
         ...
     @matrix_local.setter
-    def matrix_local(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def matrix_local(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def matrix_basis(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Matrix access to location, rotation and scale (including deltas), before constraints and parenting are applied"""
         ...
     @matrix_basis.setter
-    def matrix_basis(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def matrix_basis(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def matrix_parent_inverse(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]:
         """Inverse of object's parent matrix at time of parenting"""
         ...
     @matrix_parent_inverse.setter
-    def matrix_parent_inverse(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]):
+    def matrix_parent_inverse(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def modifiers(self) -> Annotated['ObjectModifiers', "is_animatable=False"]:
@@ -409,21 +409,21 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Viewport display style for empties"""
         ...
     @empty_display_type.setter
-    def empty_display_type(self, value: Literal['PLAIN_AXES', 'ARROWS', 'SINGLE_ARROW', 'CIRCLE', 'CUBE', 'SPHERE', 'CONE', 'IMAGE']):
+    def empty_display_type(self, value: Literal['PLAIN_AXES', 'ARROWS', 'SINGLE_ARROW', 'CIRCLE', 'CUBE', 'SPHERE', 'CONE', 'IMAGE']) -> None:
         ...
     @property
     def empty_display_size(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]:
         """Size of display for empties in the viewport"""
         ...
     @empty_display_size.setter
-    def empty_display_size(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]):
+    def empty_display_size(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def empty_image_offset(self) -> Annotated[list[float], "step=0.10000000149011612", "precision=2"]:
         """Origin offset distance"""
         ...
     @empty_image_offset.setter
-    def empty_image_offset(self, value: Annotated[list[float], "step=0.10000000149011612", "precision=2"]):
+    def empty_image_offset(self, value: Annotated[list[float], "step=0.10000000149011612", "precision=2"]) -> None:
         ...
     @property
     def image_user(self) -> Annotated['ImageUser', "is_animatable=False"]:
@@ -434,63 +434,63 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Determine which other objects will occlude the image"""
         ...
     @empty_image_depth.setter
-    def empty_image_depth(self, value: Literal['DEFAULT', 'FRONT', 'BACK']):
+    def empty_image_depth(self, value: Literal['DEFAULT', 'FRONT', 'BACK']) -> None:
         ...
     @property
     def show_empty_image_perspective(self) -> bool:
         """Display image in perspective mode"""
         ...
     @show_empty_image_perspective.setter
-    def show_empty_image_perspective(self, value: bool):
+    def show_empty_image_perspective(self, value: bool) -> None:
         ...
     @property
     def show_empty_image_orthographic(self) -> bool:
         """Display image in orthographic mode"""
         ...
     @show_empty_image_orthographic.setter
-    def show_empty_image_orthographic(self, value: bool):
+    def show_empty_image_orthographic(self, value: bool) -> None:
         ...
     @property
     def show_empty_image_only_axis_aligned(self) -> bool:
         """Only display the image when it is aligned with the view axis"""
         ...
     @show_empty_image_only_axis_aligned.setter
-    def show_empty_image_only_axis_aligned(self, value: bool):
+    def show_empty_image_only_axis_aligned(self, value: bool) -> None:
         ...
     @property
     def use_empty_image_alpha(self) -> bool:
         """Use alpha blending instead of alpha test (can produce sorting artifacts)"""
         ...
     @use_empty_image_alpha.setter
-    def use_empty_image_alpha(self, value: bool):
+    def use_empty_image_alpha(self, value: bool) -> None:
         ...
     @property
     def empty_image_side(self) -> Literal['DOUBLE_SIDED', 'FRONT', 'BACK']:
         """Show front/back side"""
         ...
     @empty_image_side.setter
-    def empty_image_side(self, value: Literal['DOUBLE_SIDED', 'FRONT', 'BACK']):
+    def empty_image_side(self, value: Literal['DOUBLE_SIDED', 'FRONT', 'BACK']) -> None:
         ...
     @property
     def add_rest_position_attribute(self) -> bool:
         """Add a "rest_position" attribute that is a copy of the position attribute before shape keys and modifiers are evaluated"""
         ...
     @add_rest_position_attribute.setter
-    def add_rest_position_attribute(self, value: bool):
+    def add_rest_position_attribute(self, value: bool) -> None:
         ...
     @property
     def pass_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Index number for the "Object Index" render pass"""
         ...
     @pass_index.setter
-    def pass_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def pass_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Object color and alpha, used when the Object Color mode is enabled"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def field(self) -> Annotated[Optional['FieldSettings'], "is_animatable=False"]:
@@ -521,161 +521,161 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Cache frames during simulation nodes playback"""
         ...
     @use_simulation_cache.setter
-    def use_simulation_cache(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_simulation_cache(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def hide_viewport(self) -> bool:
         """Globally disable in viewports"""
         ...
     @hide_viewport.setter
-    def hide_viewport(self, value: bool):
+    def hide_viewport(self, value: bool) -> None:
         ...
     @property
     def hide_select(self) -> Annotated[bool, "is_animatable=False"]:
         """Disable selection in viewport"""
         ...
     @hide_select.setter
-    def hide_select(self, value: Annotated[bool, "is_animatable=False"]):
+    def hide_select(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def hide_render(self) -> bool:
         """Globally disable in renders"""
         ...
     @hide_render.setter
-    def hide_render(self, value: bool):
+    def hide_render(self, value: bool) -> None:
         ...
     @property
     def hide_probe_volume(self) -> bool:
         """Globally disable in volume probes"""
         ...
     @hide_probe_volume.setter
-    def hide_probe_volume(self, value: bool):
+    def hide_probe_volume(self, value: bool) -> None:
         ...
     @property
     def hide_probe_sphere(self) -> bool:
         """Globally disable in spherical light probes"""
         ...
     @hide_probe_sphere.setter
-    def hide_probe_sphere(self, value: bool):
+    def hide_probe_sphere(self, value: bool) -> None:
         ...
     @property
     def hide_probe_plane(self) -> bool:
         """Globally disable in planar light probes"""
         ...
     @hide_probe_plane.setter
-    def hide_probe_plane(self, value: bool):
+    def hide_probe_plane(self, value: bool) -> None:
         ...
     @property
     def hide_surface_pick(self) -> bool:
         """Disable surface influence during selection, snapping and depth-picking operators. Usually used to avoid semi-transparent objects to affect scene navigation"""
         ...
     @hide_surface_pick.setter
-    def hide_surface_pick(self, value: bool):
+    def hide_surface_pick(self, value: bool) -> None:
         ...
     @property
     def show_instancer_for_render(self) -> bool:
         """Make instancer visible when rendering"""
         ...
     @show_instancer_for_render.setter
-    def show_instancer_for_render(self, value: bool):
+    def show_instancer_for_render(self, value: bool) -> None:
         ...
     @property
     def show_instancer_for_viewport(self) -> bool:
         """Make instancer visible in the viewport"""
         ...
     @show_instancer_for_viewport.setter
-    def show_instancer_for_viewport(self, value: bool):
+    def show_instancer_for_viewport(self, value: bool) -> None:
         ...
     @property
     def visible_camera(self) -> bool:
         """Object visibility to camera rays"""
         ...
     @visible_camera.setter
-    def visible_camera(self, value: bool):
+    def visible_camera(self, value: bool) -> None:
         ...
     @property
     def visible_diffuse(self) -> bool:
         """Object visibility to diffuse rays"""
         ...
     @visible_diffuse.setter
-    def visible_diffuse(self, value: bool):
+    def visible_diffuse(self, value: bool) -> None:
         ...
     @property
     def visible_glossy(self) -> bool:
         """Object visibility to glossy rays"""
         ...
     @visible_glossy.setter
-    def visible_glossy(self, value: bool):
+    def visible_glossy(self, value: bool) -> None:
         ...
     @property
     def visible_transmission(self) -> bool:
         """Object visibility to transmission rays"""
         ...
     @visible_transmission.setter
-    def visible_transmission(self, value: bool):
+    def visible_transmission(self, value: bool) -> None:
         ...
     @property
     def visible_volume_scatter(self) -> bool:
         """Object visibility to volume scattering rays"""
         ...
     @visible_volume_scatter.setter
-    def visible_volume_scatter(self, value: bool):
+    def visible_volume_scatter(self, value: bool) -> None:
         ...
     @property
     def visible_shadow(self) -> bool:
         """Object visibility to shadow rays"""
         ...
     @visible_shadow.setter
-    def visible_shadow(self, value: bool):
+    def visible_shadow(self, value: bool) -> None:
         ...
     @property
     def is_holdout(self) -> bool:
         """Render objects as a holdout or matte, creating a hole in the image with zero alpha, to fill out in compositing with real footage or another render"""
         ...
     @is_holdout.setter
-    def is_holdout(self, value: bool):
+    def is_holdout(self, value: bool) -> None:
         ...
     @property
     def is_shadow_catcher(self) -> bool:
         """Only render shadows and reflections on this object, for compositing renders into real footage. Objects with this setting are considered to already exist in the footage, objects without it are synthetic objects being composited into it."""
         ...
     @is_shadow_catcher.setter
-    def is_shadow_catcher(self, value: bool):
+    def is_shadow_catcher(self, value: bool) -> None:
         ...
     @property
     def instance_type(self) -> Literal['NONE', 'VERTS', 'FACES', 'COLLECTION']:
         """If not None, object instancing method to use"""
         ...
     @instance_type.setter
-    def instance_type(self, value: Literal['NONE', 'VERTS', 'FACES', 'COLLECTION']):
+    def instance_type(self, value: Literal['NONE', 'VERTS', 'FACES', 'COLLECTION']) -> None:
         ...
     @property
     def use_instance_vertices_rotation(self) -> bool:
         """Rotate instance according to vertex normal"""
         ...
     @use_instance_vertices_rotation.setter
-    def use_instance_vertices_rotation(self, value: bool):
+    def use_instance_vertices_rotation(self, value: bool) -> None:
         ...
     @property
     def use_instance_faces_scale(self) -> bool:
         """Scale instance based on face size"""
         ...
     @use_instance_faces_scale.setter
-    def use_instance_faces_scale(self, value: bool):
+    def use_instance_faces_scale(self, value: bool) -> None:
         ...
     @property
     def instance_faces_scale(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Scale the face instance objects"""
         ...
     @instance_faces_scale.setter
-    def instance_faces_scale(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def instance_faces_scale(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def instance_collection(self) -> Annotated[Optional['Collection'], "is_animatable=False"]:
         """Instance an existing collection"""
         ...
     @instance_collection.setter
-    def instance_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]):
+    def instance_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]) -> None:
         ...
     @property
     def is_instancer(self) -> bool:
@@ -686,77 +686,77 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """How to display object in viewport"""
         ...
     @display_type.setter
-    def display_type(self, value: Literal['BOUNDS', 'WIRE', 'SOLID', 'TEXTURED']):
+    def display_type(self, value: Literal['BOUNDS', 'WIRE', 'SOLID', 'TEXTURED']) -> None:
         ...
     @property
     def show_bounds(self) -> bool:
         """Display the object's bounds"""
         ...
     @show_bounds.setter
-    def show_bounds(self, value: bool):
+    def show_bounds(self, value: bool) -> None:
         ...
     @property
     def display_bounds_type(self) -> Literal['BOX', 'SPHERE', 'CYLINDER', 'CONE', 'CAPSULE']:
         """Object boundary display type"""
         ...
     @display_bounds_type.setter
-    def display_bounds_type(self, value: Literal['BOX', 'SPHERE', 'CYLINDER', 'CONE', 'CAPSULE']):
+    def display_bounds_type(self, value: Literal['BOX', 'SPHERE', 'CYLINDER', 'CONE', 'CAPSULE']) -> None:
         ...
     @property
     def show_name(self) -> bool:
         """Display the object's name"""
         ...
     @show_name.setter
-    def show_name(self, value: bool):
+    def show_name(self, value: bool) -> None:
         ...
     @property
     def show_axis(self) -> bool:
         """Display the object's origin and axes"""
         ...
     @show_axis.setter
-    def show_axis(self, value: bool):
+    def show_axis(self, value: bool) -> None:
         ...
     @property
     def show_texture_space(self) -> bool:
         """Display the object's texture space"""
         ...
     @show_texture_space.setter
-    def show_texture_space(self, value: bool):
+    def show_texture_space(self, value: bool) -> None:
         ...
     @property
     def show_wire(self) -> bool:
         """Display the object's wireframe over solid shading"""
         ...
     @show_wire.setter
-    def show_wire(self, value: bool):
+    def show_wire(self, value: bool) -> None:
         ...
     @property
     def show_all_edges(self) -> bool:
         """Display all edges for mesh objects"""
         ...
     @show_all_edges.setter
-    def show_all_edges(self, value: bool):
+    def show_all_edges(self, value: bool) -> None:
         ...
     @property
     def use_grease_pencil_lights(self) -> bool:
         """Lights affect Grease Pencil object"""
         ...
     @use_grease_pencil_lights.setter
-    def use_grease_pencil_lights(self, value: bool):
+    def use_grease_pencil_lights(self, value: bool) -> None:
         ...
     @property
     def show_transparent(self) -> bool:
         """Display material transparency in the object"""
         ...
     @show_transparent.setter
-    def show_transparent(self, value: bool):
+    def show_transparent(self, value: bool) -> None:
         ...
     @property
     def show_in_front(self) -> bool:
         """Make the object display in front of others"""
         ...
     @show_in_front.setter
-    def show_in_front(self, value: bool):
+    def show_in_front(self, value: bool) -> None:
         ...
     @property
     def pose(self) -> Annotated[Optional['Pose'], "is_animatable=False"]:
@@ -767,14 +767,14 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Only show the active shape key at full value"""
         ...
     @show_only_shape_key.setter
-    def show_only_shape_key(self, value: bool):
+    def show_only_shape_key(self, value: bool) -> None:
         ...
     @property
     def use_shape_key_edit_mode(self) -> bool:
         """Display shape keys in edit mode (for meshes only)"""
         ...
     @use_shape_key_edit_mode.setter
-    def use_shape_key_edit_mode(self, value: bool):
+    def use_shape_key_edit_mode(self, value: bool) -> None:
         ...
     @property
     def active_shape_key(self) -> Annotated[Optional['ShapeKey'], "is_animatable=False"]:
@@ -785,7 +785,7 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Current shape key index"""
         ...
     @active_shape_key_index.setter
-    def active_shape_key_index(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def active_shape_key_index(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def use_dynamic_topology_sculpting(self) -> bool:
@@ -812,28 +812,28 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Enable mesh symmetry in the X axis"""
         ...
     @use_mesh_mirror_x.setter
-    def use_mesh_mirror_x(self, value: bool):
+    def use_mesh_mirror_x(self, value: bool) -> None:
         ...
     @property
     def use_mesh_mirror_y(self) -> bool:
         """Enable mesh symmetry in the Y axis"""
         ...
     @use_mesh_mirror_y.setter
-    def use_mesh_mirror_y(self, value: bool):
+    def use_mesh_mirror_y(self, value: bool) -> None:
         ...
     @property
     def use_mesh_mirror_z(self) -> bool:
         """Enable mesh symmetry in the Z axis"""
         ...
     @use_mesh_mirror_z.setter
-    def use_mesh_mirror_z(self, value: bool):
+    def use_mesh_mirror_z(self, value: bool) -> None:
         ...
     @property
     def lightgroup(self) -> Annotated[str, "is_animatable=False"]:
         """Lightgroup that the object belongs to"""
         ...
     @lightgroup.setter
-    def lightgroup(self, value: Annotated[str, "is_animatable=False"]):
+    def lightgroup(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def light_linking(self) -> Annotated['ObjectLightLinking', "is_animatable=False"]:
@@ -844,21 +844,21 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Offset rays from the surface to reduce shadow terminator artifact on low poly geometry. Only affect triangles that are affected by the geometry offset"""
         ...
     @shadow_terminator_normal_offset.setter
-    def shadow_terminator_normal_offset(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.009999999776482582", "precision=4"]):
+    def shadow_terminator_normal_offset(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.009999999776482582", "precision=4"]) -> None:
         ...
     @property
     def shadow_terminator_geometry_offset(self) -> Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=2"]:
         """Offset rays from the surface to reduce shadow terminator artifact on low poly geometry. Only affects triangles at grazing angles to light"""
         ...
     @shadow_terminator_geometry_offset.setter
-    def shadow_terminator_geometry_offset(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=2"]):
+    def shadow_terminator_geometry_offset(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def shadow_terminator_shading_offset(self) -> Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=2"]:
         """Push the shadow terminator towards the light to hide artifacts on low poly geometry"""
         ...
     @shadow_terminator_shading_offset.setter
-    def shadow_terminator_shading_offset(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=2"]):
+    def shadow_terminator_shading_offset(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
@@ -881,7 +881,7 @@ Warning: Only takes into account object parenting, so e.g. in case of bone paren
         """Index of the currently active selection set"""
         ...
     @active_selection_set.setter
-    def active_selection_set(self, value: Annotated[int, "step=1"]):
+    def active_selection_set(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def cycles(self) -> Annotated[Optional['CyclesObjectSettings'], "is_animatable=False"]:

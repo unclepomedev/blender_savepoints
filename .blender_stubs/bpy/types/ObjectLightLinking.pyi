@@ -24,12 +24,12 @@ class ObjectLightLinking(bpy_struct):
         """Collection which defines light linking relation of this emitter"""
         ...
     @receiver_collection.setter
-    def receiver_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]):
+    def receiver_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]) -> None:
         ...
     @property
     def blocker_collection(self) -> Annotated[Optional['Collection'], "is_animatable=False"]:
         """Collection which defines objects which block light from this emitter"""
         ...
     @blocker_collection.setter
-    def blocker_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]):
+    def blocker_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]) -> None:
         ...

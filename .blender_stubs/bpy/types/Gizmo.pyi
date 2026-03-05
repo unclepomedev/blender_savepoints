@@ -29,7 +29,7 @@ class Gizmo(bpy_struct):
 
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def group(self) -> Annotated[Optional['GizmoGroup'], "is_animatable=False"]:
@@ -40,49 +40,49 @@ class Gizmo(bpy_struct):
 
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def alpha(self) -> Annotated[float, "step=10.0", "precision=3"]:
 
         ...
     @alpha.setter
-    def alpha(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def alpha(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def color_highlight(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @color_highlight.setter
-    def color_highlight(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def color_highlight(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def alpha_highlight(self) -> Annotated[float, "step=10.0", "precision=3"]:
 
         ...
     @alpha_highlight.setter
-    def alpha_highlight(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def alpha_highlight(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def matrix_space(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]:
 
         ...
     @matrix_space.setter
-    def matrix_space(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]):
+    def matrix_space(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def matrix_basis(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]:
 
         ...
     @matrix_basis.setter
-    def matrix_basis(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]):
+    def matrix_basis(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def matrix_offset(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]:
 
         ...
     @matrix_offset.setter
-    def matrix_offset(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]):
+    def matrix_offset(self, value: Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def matrix_world(self) -> Annotated[list[float], "subtype='MATRIX'", "step=10.0", "precision=3"]:
@@ -93,112 +93,112 @@ class Gizmo(bpy_struct):
 
         ...
     @scale_basis.setter
-    def scale_basis(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def scale_basis(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def line_width(self) -> Annotated[float, "subtype='PIXEL'", "step=10.0", "precision=3"]:
 
         ...
     @line_width.setter
-    def line_width(self, value: Annotated[float, "subtype='PIXEL'", "step=10.0", "precision=3"]):
+    def line_width(self, value: Annotated[float, "subtype='PIXEL'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def select_bias(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Depth bias used for selection"""
         ...
     @select_bias.setter
-    def select_bias(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def select_bias(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def hide(self) -> bool:
 
         ...
     @hide.setter
-    def hide(self, value: bool):
+    def hide(self, value: bool) -> None:
         ...
     @property
     def hide_select(self) -> bool:
 
         ...
     @hide_select.setter
-    def hide_select(self, value: bool):
+    def hide_select(self, value: bool) -> None:
         ...
     @property
     def hide_keymap(self) -> bool:
         """Ignore the key-map for this gizmo"""
         ...
     @hide_keymap.setter
-    def hide_keymap(self, value: bool):
+    def hide_keymap(self, value: bool) -> None:
         ...
     @property
     def use_grab_cursor(self) -> bool:
 
         ...
     @use_grab_cursor.setter
-    def use_grab_cursor(self, value: bool):
+    def use_grab_cursor(self, value: bool) -> None:
         ...
     @property
     def use_draw_hover(self) -> bool:
 
         ...
     @use_draw_hover.setter
-    def use_draw_hover(self, value: bool):
+    def use_draw_hover(self, value: bool) -> None:
         ...
     @property
     def use_draw_modal(self) -> bool:
         """Show while dragging"""
         ...
     @use_draw_modal.setter
-    def use_draw_modal(self, value: bool):
+    def use_draw_modal(self, value: bool) -> None:
         ...
     @property
     def use_draw_value(self) -> bool:
         """Show an indicator for the current value while dragging"""
         ...
     @use_draw_value.setter
-    def use_draw_value(self, value: bool):
+    def use_draw_value(self, value: bool) -> None:
         ...
     @property
     def use_draw_offset_scale(self) -> bool:
         """Scale the offset matrix (use to apply screen-space offset)"""
         ...
     @use_draw_offset_scale.setter
-    def use_draw_offset_scale(self, value: bool):
+    def use_draw_offset_scale(self, value: bool) -> None:
         ...
     @property
     def use_draw_scale(self) -> bool:
         """Use scale when calculating the matrix"""
         ...
     @use_draw_scale.setter
-    def use_draw_scale(self, value: bool):
+    def use_draw_scale(self, value: bool) -> None:
         ...
     @property
     def use_select_background(self) -> bool:
         """Don't write into the depth buffer"""
         ...
     @use_select_background.setter
-    def use_select_background(self, value: bool):
+    def use_select_background(self, value: bool) -> None:
         ...
     @property
     def use_operator_tool_properties(self) -> bool:
         """Merge active tool properties on activation (does not overwrite existing)"""
         ...
     @use_operator_tool_properties.setter
-    def use_operator_tool_properties(self, value: bool):
+    def use_operator_tool_properties(self, value: bool) -> None:
         ...
     @property
     def use_event_handle_all(self) -> bool:
         """When highlighted, do not pass events through to be handled by other keymaps"""
         ...
     @use_event_handle_all.setter
-    def use_event_handle_all(self, value: bool):
+    def use_event_handle_all(self, value: bool) -> None:
         ...
     @property
     def use_tooltip(self) -> bool:
         """Use tooltips when hovering over this gizmo"""
         ...
     @use_tooltip.setter
-    def use_tooltip(self, value: bool):
+    def use_tooltip(self, value: bool) -> None:
         ...
     @property
     def is_highlight(self) -> bool:
@@ -213,7 +213,7 @@ class Gizmo(bpy_struct):
 
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...
     def draw(self, *args, **kwargs) -> Any: ...
     def draw_select(self, *args, **kwargs) -> Any: ...

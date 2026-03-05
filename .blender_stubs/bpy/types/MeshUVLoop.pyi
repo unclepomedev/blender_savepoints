@@ -23,12 +23,12 @@ class MeshUVLoop(bpy_struct):
 
         ...
     @uv.setter
-    def uv(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def uv(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def pin_uv(self) -> Annotated[bool, "is_animatable=False"]:
 
         ...
     @pin_uv.setter
-    def pin_uv(self, value: Annotated[bool, "is_animatable=False"]):
+    def pin_uv(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...

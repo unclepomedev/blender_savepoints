@@ -36,7 +36,7 @@ class Material(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -67,14 +67,14 @@ class Material(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -93,7 +93,7 @@ class Material(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -104,7 +104,7 @@ class Material(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -123,7 +123,7 @@ class Material(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -138,147 +138,147 @@ class Material(ID):
         """Controls the blending and the compatibility with certain features"""
         ...
     @surface_render_method.setter
-    def surface_render_method(self, value: Literal['DITHERED', 'BLENDED']):
+    def surface_render_method(self, value: Literal['DITHERED', 'BLENDED']) -> None:
         ...
     @property
     def displacement_method(self) -> Literal['BUMP', 'DISPLACEMENT', 'BOTH']:
         """Method to use for the displacement"""
         ...
     @displacement_method.setter
-    def displacement_method(self, value: Literal['BUMP', 'DISPLACEMENT', 'BOTH']):
+    def displacement_method(self, value: Literal['BUMP', 'DISPLACEMENT', 'BOTH']) -> None:
         ...
     @property
     def blend_method(self) -> Literal['OPAQUE', 'CLIP', 'HASHED', 'BLEND']:
         """Blend Mode for Transparent Faces (Deprecated: use 'surface_render_method')"""
         ...
     @blend_method.setter
-    def blend_method(self, value: Literal['OPAQUE', 'CLIP', 'HASHED', 'BLEND']):
+    def blend_method(self, value: Literal['OPAQUE', 'CLIP', 'HASHED', 'BLEND']) -> None:
         ...
     @property
     def alpha_threshold(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """A pixel is rendered only if its alpha value is above this threshold"""
         ...
     @alpha_threshold.setter
-    def alpha_threshold(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def alpha_threshold(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_transparency_overlap(self) -> bool:
         """Render multiple transparent layers (may introduce transparency sorting problems)"""
         ...
     @use_transparency_overlap.setter
-    def use_transparency_overlap(self, value: bool):
+    def use_transparency_overlap(self, value: bool) -> None:
         ...
     @property
     def show_transparent_back(self) -> bool:
         """Render multiple transparent layers (may introduce transparency sorting problems) (Deprecated: use 'use_tranparency_overlap')"""
         ...
     @show_transparent_back.setter
-    def show_transparent_back(self, value: bool):
+    def show_transparent_back(self, value: bool) -> None:
         ...
     @property
     def use_backface_culling(self) -> bool:
         """Use back face culling to hide the back side of faces"""
         ...
     @use_backface_culling.setter
-    def use_backface_culling(self, value: bool):
+    def use_backface_culling(self, value: bool) -> None:
         ...
     @property
     def use_backface_culling_shadow(self) -> bool:
         """Use back face culling when casting shadows"""
         ...
     @use_backface_culling_shadow.setter
-    def use_backface_culling_shadow(self, value: bool):
+    def use_backface_culling_shadow(self, value: bool) -> None:
         ...
     @property
     def use_backface_culling_lightprobe_volume(self) -> bool:
         """Consider material single sided for light probe volume capture. Additionally helps rejecting probes inside the object to avoid light leaks."""
         ...
     @use_backface_culling_lightprobe_volume.setter
-    def use_backface_culling_lightprobe_volume(self, value: bool):
+    def use_backface_culling_lightprobe_volume(self, value: bool) -> None:
         ...
     @property
     def use_transparent_shadow(self) -> bool:
         """Use transparent shadows for this material if it contains a Transparent BSDF, disabling will render faster but not give accurate shadows"""
         ...
     @use_transparent_shadow.setter
-    def use_transparent_shadow(self, value: bool):
+    def use_transparent_shadow(self, value: bool) -> None:
         ...
     @property
     def use_raytrace_refraction(self) -> bool:
         """Use raytracing to determine transmitted color instead of using only light probes. This prevents the surface from contributing to the lighting of surfaces not using this setting."""
         ...
     @use_raytrace_refraction.setter
-    def use_raytrace_refraction(self, value: bool):
+    def use_raytrace_refraction(self, value: bool) -> None:
         ...
     @property
     def use_screen_refraction(self) -> bool:
         """Use raytracing to determine transmitted color instead of using only light probes. This prevents the surface from contributing to the lighting of surfaces not using this setting. Deprecated: use 'use_raytrace_refraction'."""
         ...
     @use_screen_refraction.setter
-    def use_screen_refraction(self, value: bool):
+    def use_screen_refraction(self, value: bool) -> None:
         ...
     @property
     def use_sss_translucency(self) -> bool:
         """Add translucency effect to subsurface (Deprecated)"""
         ...
     @use_sss_translucency.setter
-    def use_sss_translucency(self, value: bool):
+    def use_sss_translucency(self, value: bool) -> None:
         ...
     @property
     def refraction_depth(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
         """Approximate the thickness of the object to compute two refraction events (0 is disabled) (Deprecated)"""
         ...
     @refraction_depth.setter
-    def refraction_depth(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def refraction_depth(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def thickness_mode(self) -> Literal['SPHERE', 'SLAB']:
         """Approximation used to model the light interactions inside the object"""
         ...
     @thickness_mode.setter
-    def thickness_mode(self, value: Literal['SPHERE', 'SLAB']):
+    def thickness_mode(self, value: Literal['SPHERE', 'SLAB']) -> None:
         ...
     @property
     def use_thickness_from_shadow(self) -> bool:
         """Use the shadow maps from shadow casting lights to refine the thickness defined by the material node tree"""
         ...
     @use_thickness_from_shadow.setter
-    def use_thickness_from_shadow(self, value: bool):
+    def use_thickness_from_shadow(self, value: bool) -> None:
         ...
     @property
     def volume_intersection_method(self) -> Literal['FAST', 'ACCURATE']:
         """Determines which inner part of the mesh will produce volumetric effect"""
         ...
     @volume_intersection_method.setter
-    def volume_intersection_method(self, value: Literal['FAST', 'ACCURATE']):
+    def volume_intersection_method(self, value: Literal['FAST', 'ACCURATE']) -> None:
         ...
     @property
     def max_vertex_displacement(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
         """The max distance a vertex can be displaced. Displacements over this threshold may cause visibility issues."""
         ...
     @max_vertex_displacement.setter
-    def max_vertex_displacement(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def max_vertex_displacement(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def preview_render_type(self) -> Literal['FLAT', 'SPHERE', 'CUBE', 'HAIR', 'SHADERBALL', 'CLOTH', 'FLUID']:
         """Type of preview render"""
         ...
     @preview_render_type.setter
-    def preview_render_type(self, value: Literal['FLAT', 'SPHERE', 'CUBE', 'HAIR', 'SHADERBALL', 'CLOTH', 'FLUID']):
+    def preview_render_type(self, value: Literal['FLAT', 'SPHERE', 'CUBE', 'HAIR', 'SHADERBALL', 'CLOTH', 'FLUID']) -> None:
         ...
     @property
     def use_preview_world(self) -> bool:
         """Use the current world background to light the preview render"""
         ...
     @use_preview_world.setter
-    def use_preview_world(self, value: bool):
+    def use_preview_world(self, value: bool) -> None:
         ...
     @property
     def pass_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Index number for the "Material Index" render pass"""
         ...
     @pass_index.setter
-    def pass_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def pass_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
@@ -291,7 +291,7 @@ class Material(ID):
         ...
     @deprecated('Deprecated in 5.0.0, Removal in 6.0.0')
     @use_nodes.setter
-    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
@@ -310,63 +310,63 @@ class Material(ID):
         """Index of active texture paint slot"""
         ...
     @paint_active_slot.setter
-    def paint_active_slot(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def paint_active_slot(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def paint_clone_slot(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Index of clone texture paint slot"""
         ...
     @paint_clone_slot.setter
-    def paint_clone_slot(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def paint_clone_slot(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def diffuse_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Diffuse color of the material"""
         ...
     @diffuse_color.setter
-    def diffuse_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def diffuse_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def specular_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Specular color of the material"""
         ...
     @specular_color.setter
-    def specular_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def specular_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def roughness(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Roughness of the material"""
         ...
     @roughness.setter
-    def roughness(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def roughness(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def specular_intensity(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """How intense (bright) the specular reflection is"""
         ...
     @specular_intensity.setter
-    def specular_intensity(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def specular_intensity(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def metallic(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Amount of mirror reflection for raytrace"""
         ...
     @metallic.setter
-    def metallic(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def metallic(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def line_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Line color used for Freestyle line rendering"""
         ...
     @line_color.setter
-    def line_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def line_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def line_priority(self) -> Annotated[int, "step=1"]:
         """The line color of a higher priority is used at material boundaries"""
         ...
     @line_priority.setter
-    def line_priority(self, value: Annotated[int, "step=1"]):
+    def line_priority(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def grease_pencil(self) -> Annotated[Optional['MaterialGPencilStyle'], "is_animatable=False"]:

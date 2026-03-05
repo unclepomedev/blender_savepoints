@@ -23,12 +23,12 @@ class PreferencesKeymap(bpy_struct):
 
         ...
     @show_ui_keyconfig.setter
-    def show_ui_keyconfig(self, value: bool):
+    def show_ui_keyconfig(self, value: bool) -> None:
         ...
     @property
     def active_keyconfig(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
         """The name of the active key configuration"""
         ...
     @active_keyconfig.setter
-    def active_keyconfig(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]):
+    def active_keyconfig(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]) -> None:
         ...

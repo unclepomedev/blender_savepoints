@@ -23,21 +23,21 @@ class FileBrowserFSMenuEntry(bpy_struct):
 
         ...
     @path.setter
-    def path(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def path(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def name(self) -> Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]:
 
         ...
     @name.setter
-    def name(self, value: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]):
+    def name(self, value: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]) -> None:
         ...
     @property
     def icon(self) -> Annotated[int, "step=1"]:
 
         ...
     @icon.setter
-    def icon(self, value: Annotated[int, "step=1"]):
+    def icon(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def use_save(self) -> bool:

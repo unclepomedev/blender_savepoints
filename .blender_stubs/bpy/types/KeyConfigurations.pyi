@@ -24,7 +24,7 @@ class KeyConfigurations(bpy_struct):
         """Active key configuration (preset)"""
         ...
     @active.setter
-    def active(self, value: Annotated[Optional['KeyConfig'], "is_animatable=False"]):
+    def active(self, value: Annotated[Optional['KeyConfig'], "is_animatable=False"]) -> None:
         ...
     @property
     def default(self) -> Annotated[Optional['KeyConfig'], "subtype=''", "unit='MASS'", "is_animatable=False"]:

@@ -36,7 +36,7 @@ class Armature(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -67,14 +67,14 @@ class Armature(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -93,7 +93,7 @@ class Armature(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -104,7 +104,7 @@ class Armature(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -123,7 +123,7 @@ class Armature(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -150,7 +150,7 @@ class Armature(ID):
 
         ...
     @collections.setter
-    def collections(self, value: Annotated['BoneCollections', "is_animatable=False"]):
+    def collections(self, value: Annotated['BoneCollections', "is_animatable=False"]) -> None:
         ...
     @property
     def collections_all(self) -> Annotated[bpy_prop_collection['BoneCollection'], "is_animatable=False"]:
@@ -161,63 +161,63 @@ class Armature(ID):
         """Show armature in binding pose or final posed state"""
         ...
     @pose_position.setter
-    def pose_position(self, value: Literal['POSE', 'REST']):
+    def pose_position(self, value: Literal['POSE', 'REST']) -> None:
         ...
     @property
     def display_type(self) -> Literal['OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']:
 
         ...
     @display_type.setter
-    def display_type(self, value: Literal['OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']):
+    def display_type(self, value: Literal['OCTAHEDRAL', 'STICK', 'BBONE', 'ENVELOPE', 'WIRE']) -> None:
         ...
     @property
     def show_axes(self) -> bool:
         """Display bone axes"""
         ...
     @show_axes.setter
-    def show_axes(self, value: bool):
+    def show_axes(self, value: bool) -> None:
         ...
     @property
     def axes_position(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=1"]:
         """The position for the axes on the bone. Increasing the value moves it closer to the tip; decreasing moves it closer to the root."""
         ...
     @axes_position.setter
-    def axes_position(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=1"]):
+    def axes_position(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=1"]) -> None:
         ...
     @property
     def relation_line_position(self) -> Literal['TAIL', 'HEAD']:
         """The start position of the relation lines from parent to child bones"""
         ...
     @relation_line_position.setter
-    def relation_line_position(self, value: Literal['TAIL', 'HEAD']):
+    def relation_line_position(self, value: Literal['TAIL', 'HEAD']) -> None:
         ...
     @property
     def show_names(self) -> bool:
         """Display bone names"""
         ...
     @show_names.setter
-    def show_names(self, value: bool):
+    def show_names(self, value: bool) -> None:
         ...
     @property
     def use_mirror_x(self) -> bool:
         """Apply changes to matching bone on opposite side of X-Axis"""
         ...
     @use_mirror_x.setter
-    def use_mirror_x(self, value: bool):
+    def use_mirror_x(self, value: bool) -> None:
         ...
     @property
     def show_bone_custom_shapes(self) -> bool:
         """Display bones with their custom shapes"""
         ...
     @show_bone_custom_shapes.setter
-    def show_bone_custom_shapes(self, value: bool):
+    def show_bone_custom_shapes(self, value: bool) -> None:
         ...
     @property
     def show_bone_colors(self) -> bool:
         """Display bone colors"""
         ...
     @show_bone_colors.setter
-    def show_bone_colors(self, value: bool):
+    def show_bone_colors(self, value: bool) -> None:
         ...
     @property
     def is_editmode(self) -> bool:

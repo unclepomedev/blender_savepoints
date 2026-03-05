@@ -35,7 +35,7 @@ class Camera(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -66,14 +66,14 @@ class Camera(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -92,7 +92,7 @@ class Camera(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -103,7 +103,7 @@ class Camera(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -122,7 +122,7 @@ class Camera(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -137,105 +137,105 @@ class Camera(ID):
         """Camera types"""
         ...
     @type.setter
-    def type(self, value: Literal['PERSP', 'ORTHO', 'PANO', 'CUSTOM']):
+    def type(self, value: Literal['PERSP', 'ORTHO', 'PANO', 'CUSTOM']) -> None:
         ...
     @property
     def sensor_fit(self) -> Literal['AUTO', 'HORIZONTAL', 'VERTICAL']:
         """Method to fit image and field of view angle inside the sensor"""
         ...
     @sensor_fit.setter
-    def sensor_fit(self, value: Literal['AUTO', 'HORIZONTAL', 'VERTICAL']):
+    def sensor_fit(self, value: Literal['AUTO', 'HORIZONTAL', 'VERTICAL']) -> None:
         ...
     @property
     def passepartout_alpha(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Opacity (alpha) of the darkened overlay in Camera view"""
         ...
     @passepartout_alpha.setter
-    def passepartout_alpha(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def passepartout_alpha(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def angle_x(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Camera lens horizontal field of view"""
         ...
     @angle_x.setter
-    def angle_x(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def angle_x(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def angle_y(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Camera lens vertical field of view"""
         ...
     @angle_y.setter
-    def angle_y(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def angle_y(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def angle(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Camera lens field of view"""
         ...
     @angle.setter
-    def angle(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def angle(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def clip_start(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
         """Camera near clipping distance"""
         ...
     @clip_start.setter
-    def clip_start(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def clip_start(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def clip_end(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
         """Camera far clipping distance"""
         ...
     @clip_end.setter
-    def clip_end(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def clip_end(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def lens(self) -> Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]:
         """Perspective Camera focal length value in millimeters"""
         ...
     @lens.setter
-    def lens(self, value: Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]):
+    def lens(self, value: Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]) -> None:
         ...
     @property
     def sensor_width(self) -> Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]:
         """Horizontal size of the image sensor area in millimeters"""
         ...
     @sensor_width.setter
-    def sensor_width(self, value: Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]):
+    def sensor_width(self, value: Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]) -> None:
         ...
     @property
     def sensor_height(self) -> Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]:
         """Vertical size of the image sensor area in millimeters"""
         ...
     @sensor_height.setter
-    def sensor_height(self, value: Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]):
+    def sensor_height(self, value: Annotated[float, "subtype='DISTANCE_CAMERA'", "unit='CAMERA'", "step=100.0", "precision=4"]) -> None:
         ...
     @property
     def ortho_scale(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Orthographic Camera scale (similar to zoom)"""
         ...
     @ortho_scale.setter
-    def ortho_scale(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def ortho_scale(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def display_size(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]:
         """Apparent size of the Camera object in the 3D View"""
         ...
     @display_size.setter
-    def display_size(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]):
+    def display_size(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def shift_x(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Camera horizontal shift"""
         ...
     @shift_x.setter
-    def shift_x(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def shift_x(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def shift_y(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Camera vertical shift"""
         ...
     @shift_y.setter
-    def shift_y(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def shift_y(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def stereo(self) -> Annotated['CameraStereoData', "is_animatable=False"]:
@@ -246,280 +246,280 @@ class Camera(ID):
         """Display the clipping range and focus point on the camera"""
         ...
     @show_limits.setter
-    def show_limits(self, value: bool):
+    def show_limits(self, value: bool) -> None:
         ...
     @property
     def show_mist(self) -> bool:
         """Display a line from the Camera to indicate the mist area"""
         ...
     @show_mist.setter
-    def show_mist(self, value: bool):
+    def show_mist(self, value: bool) -> None:
         ...
     @property
     def show_passepartout(self) -> bool:
         """Show a darkened overlay outside the image area in Camera view"""
         ...
     @show_passepartout.setter
-    def show_passepartout(self, value: bool):
+    def show_passepartout(self, value: bool) -> None:
         ...
     @property
     def show_safe_areas(self) -> bool:
         """Show TV title safe and action safe areas in Camera view"""
         ...
     @show_safe_areas.setter
-    def show_safe_areas(self, value: bool):
+    def show_safe_areas(self, value: bool) -> None:
         ...
     @property
     def show_safe_center(self) -> bool:
         """Show safe areas to fit content in a different aspect ratio"""
         ...
     @show_safe_center.setter
-    def show_safe_center(self, value: bool):
+    def show_safe_center(self, value: bool) -> None:
         ...
     @property
     def show_name(self) -> bool:
         """Show the active Camera's name in Camera view"""
         ...
     @show_name.setter
-    def show_name(self, value: bool):
+    def show_name(self, value: bool) -> None:
         ...
     @property
     def show_sensor(self) -> bool:
         """Show sensor size (film gate) in Camera view"""
         ...
     @show_sensor.setter
-    def show_sensor(self, value: bool):
+    def show_sensor(self, value: bool) -> None:
         ...
     @property
     def show_background_images(self) -> bool:
         """Display reference images behind objects in the 3D View"""
         ...
     @show_background_images.setter
-    def show_background_images(self, value: bool):
+    def show_background_images(self, value: bool) -> None:
         ...
     @property
     def lens_unit(self) -> Literal['MILLIMETERS', 'FOV']:
         """Unit to edit lens in for the user interface"""
         ...
     @lens_unit.setter
-    def lens_unit(self, value: Literal['MILLIMETERS', 'FOV']):
+    def lens_unit(self, value: Literal['MILLIMETERS', 'FOV']) -> None:
         ...
     @property
     def composition_guide_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color and alpha for compositional guide overlays"""
         ...
     @composition_guide_color.setter
-    def composition_guide_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def composition_guide_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def show_composition_center(self) -> bool:
         """Display center composition guide inside the camera view"""
         ...
     @show_composition_center.setter
-    def show_composition_center(self, value: bool):
+    def show_composition_center(self, value: bool) -> None:
         ...
     @property
     def show_composition_center_diagonal(self) -> bool:
         """Display diagonal center composition guide inside the camera view"""
         ...
     @show_composition_center_diagonal.setter
-    def show_composition_center_diagonal(self, value: bool):
+    def show_composition_center_diagonal(self, value: bool) -> None:
         ...
     @property
     def show_composition_thirds(self) -> bool:
         """Display rule of thirds composition guide inside the camera view"""
         ...
     @show_composition_thirds.setter
-    def show_composition_thirds(self, value: bool):
+    def show_composition_thirds(self, value: bool) -> None:
         ...
     @property
     def show_composition_golden(self) -> bool:
         """Display golden ratio composition guide inside the camera view"""
         ...
     @show_composition_golden.setter
-    def show_composition_golden(self, value: bool):
+    def show_composition_golden(self, value: bool) -> None:
         ...
     @property
     def show_composition_golden_tria_a(self) -> bool:
         """Display golden triangle A composition guide inside the camera view"""
         ...
     @show_composition_golden_tria_a.setter
-    def show_composition_golden_tria_a(self, value: bool):
+    def show_composition_golden_tria_a(self, value: bool) -> None:
         ...
     @property
     def show_composition_golden_tria_b(self) -> bool:
         """Display golden triangle B composition guide inside the camera view"""
         ...
     @show_composition_golden_tria_b.setter
-    def show_composition_golden_tria_b(self, value: bool):
+    def show_composition_golden_tria_b(self, value: bool) -> None:
         ...
     @property
     def show_composition_harmony_tri_a(self) -> bool:
         """Display harmony A composition guide inside the camera view"""
         ...
     @show_composition_harmony_tri_a.setter
-    def show_composition_harmony_tri_a(self, value: bool):
+    def show_composition_harmony_tri_a(self, value: bool) -> None:
         ...
     @property
     def show_composition_harmony_tri_b(self) -> bool:
         """Display harmony B composition guide inside the camera view"""
         ...
     @show_composition_harmony_tri_b.setter
-    def show_composition_harmony_tri_b(self, value: bool):
+    def show_composition_harmony_tri_b(self, value: bool) -> None:
         ...
     @property
     def panorama_type(self) -> Literal['EQUIRECTANGULAR', 'EQUIANGULAR_CUBEMAP_FACE', 'MIRRORBALL', 'FISHEYE_EQUIDISTANT', 'FISHEYE_EQUISOLID', 'FISHEYE_LENS_POLYNOMIAL', 'CENTRAL_CYLINDRICAL']:
         """Distortion to use for the calculation"""
         ...
     @panorama_type.setter
-    def panorama_type(self, value: Literal['EQUIRECTANGULAR', 'EQUIANGULAR_CUBEMAP_FACE', 'MIRRORBALL', 'FISHEYE_EQUIDISTANT', 'FISHEYE_EQUISOLID', 'FISHEYE_LENS_POLYNOMIAL', 'CENTRAL_CYLINDRICAL']):
+    def panorama_type(self, value: Literal['EQUIRECTANGULAR', 'EQUIANGULAR_CUBEMAP_FACE', 'MIRRORBALL', 'FISHEYE_EQUIDISTANT', 'FISHEYE_EQUISOLID', 'FISHEYE_LENS_POLYNOMIAL', 'CENTRAL_CYLINDRICAL']) -> None:
         ...
     @property
     def fisheye_fov(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]:
         """Field of view for the fisheye lens"""
         ...
     @fisheye_fov.setter
-    def fisheye_fov(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]):
+    def fisheye_fov(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def fisheye_lens(self) -> Annotated[float, "step=3.0", "precision=2"]:
         """Lens focal length (mm)"""
         ...
     @fisheye_lens.setter
-    def fisheye_lens(self, value: Annotated[float, "step=3.0", "precision=2"]):
+    def fisheye_lens(self, value: Annotated[float, "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def latitude_min(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]:
         """Minimum latitude (vertical angle) for the equirectangular lens"""
         ...
     @latitude_min.setter
-    def latitude_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]):
+    def latitude_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def latitude_max(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]:
         """Maximum latitude (vertical angle) for the equirectangular lens"""
         ...
     @latitude_max.setter
-    def latitude_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]):
+    def latitude_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def longitude_min(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]:
         """Minimum longitude (horizontal angle) for the equirectangular lens"""
         ...
     @longitude_min.setter
-    def longitude_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]):
+    def longitude_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def longitude_max(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]:
         """Maximum longitude (horizontal angle) for the equirectangular lens"""
         ...
     @longitude_max.setter
-    def longitude_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]):
+    def longitude_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def fisheye_polynomial_k0(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]:
         """Coefficient K0 of the lens polynomial"""
         ...
     @fisheye_polynomial_k0.setter
-    def fisheye_polynomial_k0(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]):
+    def fisheye_polynomial_k0(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]) -> None:
         ...
     @property
     def fisheye_polynomial_k1(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]:
         """Coefficient K1 of the lens polynomial"""
         ...
     @fisheye_polynomial_k1.setter
-    def fisheye_polynomial_k1(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]):
+    def fisheye_polynomial_k1(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]) -> None:
         ...
     @property
     def fisheye_polynomial_k2(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]:
         """Coefficient K2 of the lens polynomial"""
         ...
     @fisheye_polynomial_k2.setter
-    def fisheye_polynomial_k2(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]):
+    def fisheye_polynomial_k2(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]) -> None:
         ...
     @property
     def fisheye_polynomial_k3(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]:
         """Coefficient K3 of the lens polynomial"""
         ...
     @fisheye_polynomial_k3.setter
-    def fisheye_polynomial_k3(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]):
+    def fisheye_polynomial_k3(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]) -> None:
         ...
     @property
     def fisheye_polynomial_k4(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]:
         """Coefficient K4 of the lens polynomial"""
         ...
     @fisheye_polynomial_k4.setter
-    def fisheye_polynomial_k4(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]):
+    def fisheye_polynomial_k4(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=0.10000000149011612", "precision=6"]) -> None:
         ...
     @property
     def central_cylindrical_range_u_min(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]:
         """Minimum Longitude value for the central cylindrical lens"""
         ...
     @central_cylindrical_range_u_min.setter
-    def central_cylindrical_range_u_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]):
+    def central_cylindrical_range_u_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def central_cylindrical_range_u_max(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]:
         """Maximum Longitude value for the central cylindrical lens"""
         ...
     @central_cylindrical_range_u_max.setter
-    def central_cylindrical_range_u_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]):
+    def central_cylindrical_range_u_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=3.0", "precision=2"]) -> None:
         ...
     @property
     def central_cylindrical_range_v_min(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
         """Minimum Height value for the central cylindrical lens"""
         ...
     @central_cylindrical_range_v_min.setter
-    def central_cylindrical_range_v_min(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+    def central_cylindrical_range_v_min(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def central_cylindrical_range_v_max(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
         """Maximum Height value for the central cylindrical lens"""
         ...
     @central_cylindrical_range_v_max.setter
-    def central_cylindrical_range_v_max(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+    def central_cylindrical_range_v_max(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def central_cylindrical_radius(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]:
         """Radius of the virtual cylinder"""
         ...
     @central_cylindrical_radius.setter
-    def central_cylindrical_radius(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]):
+    def central_cylindrical_radius(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def custom_filepath(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
         """Path to the shader defining the custom camera"""
         ...
     @custom_filepath.setter
-    def custom_filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def custom_filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def custom_shader(self) -> Annotated[Optional['Text'], "is_animatable=False"]:
         """Shader defining the custom camera"""
         ...
     @custom_shader.setter
-    def custom_shader(self, value: Annotated[Optional['Text'], "is_animatable=False"]):
+    def custom_shader(self, value: Annotated[Optional['Text'], "is_animatable=False"]) -> None:
         ...
     @property
     def custom_mode(self) -> Literal['INTERNAL', 'EXTERNAL']:
 
         ...
     @custom_mode.setter
-    def custom_mode(self, value: Literal['INTERNAL', 'EXTERNAL']):
+    def custom_mode(self, value: Literal['INTERNAL', 'EXTERNAL']) -> None:
         ...
     @property
     def custom_bytecode(self) -> Annotated[str, "is_animatable=False"]:
         """Compiled bytecode of the custom shader"""
         ...
     @custom_bytecode.setter
-    def custom_bytecode(self, value: Annotated[str, "is_animatable=False"]):
+    def custom_bytecode(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def custom_bytecode_hash(self) -> Annotated[str, "is_animatable=False"]:
         """Hash of the compiled bytecode of the custom shader, for quick equality checking"""
         ...
     @custom_bytecode_hash.setter
-    def custom_bytecode_hash(self, value: Annotated[str, "is_animatable=False"]):
+    def custom_bytecode_hash(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def dof(self) -> Annotated[Optional['CameraDOFSettings'], "is_animatable=False"]:

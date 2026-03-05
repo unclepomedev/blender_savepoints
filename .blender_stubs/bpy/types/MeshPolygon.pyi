@@ -23,14 +23,14 @@ class MeshPolygon(bpy_struct):
         """Vertex indices"""
         ...
     @vertices.setter
-    def vertices(self, value: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def vertices(self, value: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def loop_start(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
         """Index of the first loop of this face"""
         ...
     @loop_start.setter
-    def loop_start(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def loop_start(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def loop_total(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
@@ -41,28 +41,28 @@ class MeshPolygon(bpy_struct):
         """Material slot index of this face"""
         ...
     @material_index.setter
-    def material_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def material_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def select(self) -> Annotated[bool, "is_animatable=False"]:
 
         ...
     @select.setter
-    def select(self, value: Annotated[bool, "is_animatable=False"]):
+    def select(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def hide(self) -> Annotated[bool, "is_animatable=False"]:
 
         ...
     @hide.setter
-    def hide(self, value: Annotated[bool, "is_animatable=False"]):
+    def hide(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_smooth(self) -> bool:
 
         ...
     @use_smooth.setter
-    def use_smooth(self, value: bool):
+    def use_smooth(self, value: bool) -> None:
         ...
     @property
     def normal(self) -> Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]:

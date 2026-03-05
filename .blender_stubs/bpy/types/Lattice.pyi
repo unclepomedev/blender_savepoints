@@ -32,7 +32,7 @@ class Lattice(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -63,14 +63,14 @@ class Lattice(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -89,7 +89,7 @@ class Lattice(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -100,7 +100,7 @@ class Lattice(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -119,7 +119,7 @@ class Lattice(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -134,56 +134,56 @@ class Lattice(ID):
         """Points in U direction (cannot be changed when there are shape keys)"""
         ...
     @points_u.setter
-    def points_u(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def points_u(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def points_v(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Points in V direction (cannot be changed when there are shape keys)"""
         ...
     @points_v.setter
-    def points_v(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def points_v(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def points_w(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Points in W direction (cannot be changed when there are shape keys)"""
         ...
     @points_w.setter
-    def points_w(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def points_w(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def interpolation_type_u(self) -> Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']:
 
         ...
     @interpolation_type_u.setter
-    def interpolation_type_u(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']):
+    def interpolation_type_u(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']) -> None:
         ...
     @property
     def interpolation_type_v(self) -> Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']:
 
         ...
     @interpolation_type_v.setter
-    def interpolation_type_v(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']):
+    def interpolation_type_v(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']) -> None:
         ...
     @property
     def interpolation_type_w(self) -> Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']:
 
         ...
     @interpolation_type_w.setter
-    def interpolation_type_w(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']):
+    def interpolation_type_w(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']) -> None:
         ...
     @property
     def use_outside(self) -> bool:
         """Only display and take into account the outer vertices"""
         ...
     @use_outside.setter
-    def use_outside(self, value: bool):
+    def use_outside(self, value: bool) -> None:
         ...
     @property
     def vertex_group(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to apply the influence of the lattice"""
         ...
     @vertex_group.setter
-    def vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def shape_keys(self) -> Annotated[Optional['Key'], "is_animatable=False"]:

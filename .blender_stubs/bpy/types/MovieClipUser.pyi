@@ -23,19 +23,19 @@ class MovieClipUser(bpy_struct):
         """Current frame number in movie or image sequence"""
         ...
     @frame_current.setter
-    def frame_current(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]):
+    def frame_current(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]) -> None:
         ...
     @property
     def proxy_render_size(self) -> Literal['PROXY_25', 'PROXY_50', 'PROXY_75', 'PROXY_100', 'FULL']:
         """Display preview using full resolution or different proxy resolutions"""
         ...
     @proxy_render_size.setter
-    def proxy_render_size(self, value: Literal['PROXY_25', 'PROXY_50', 'PROXY_75', 'PROXY_100', 'FULL']):
+    def proxy_render_size(self, value: Literal['PROXY_25', 'PROXY_50', 'PROXY_75', 'PROXY_100', 'FULL']) -> None:
         ...
     @property
     def use_render_undistorted(self) -> bool:
         """Render preview using undistorted proxy"""
         ...
     @use_render_undistorted.setter
-    def use_render_undistorted(self, value: bool):
+    def use_render_undistorted(self, value: bool) -> None:
         ...

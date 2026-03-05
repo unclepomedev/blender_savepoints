@@ -40,49 +40,49 @@ class WM_OT_owner_enable(Operator):
 
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_label(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_translation_context(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @bl_translation_context.setter
-    def bl_translation_context(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_translation_context(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_description(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @bl_description.setter
-    def bl_description(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_description(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_undo_group(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @bl_undo_group.setter
-    def bl_undo_group(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_undo_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_options(self) -> set[str]:
         """Options for this operator type"""
         ...
     @bl_options.setter
-    def bl_options(self, value: set[str]):
+    def bl_options(self, value: set[str]) -> None:
         ...
     @property
     def bl_cursor_pending(self) -> Literal['DEFAULT', 'NONE', 'WAIT', 'CROSSHAIR', 'MOVE_X', 'MOVE_Y', 'KNIFE', 'TEXT', 'PAINT_BRUSH', 'PAINT_CROSS', 'DOT', 'ERASER', 'HAND', 'HAND_POINT', 'HAND_CLOSED', 'SCROLL_X', 'SCROLL_Y', 'SCROLL_XY', 'EYEDROPPER', 'PICK_AREA', 'STOP', 'COPY', 'CROSS', 'MUTE', 'ZOOM_IN', 'ZOOM_OUT']:
         """Cursor to use when waiting for the user to select a location to activate the operator (when ``bl_options`` has ``DEPENDS_ON_CURSOR`` set)"""
         ...
     @bl_cursor_pending.setter
-    def bl_cursor_pending(self, value: Literal['DEFAULT', 'NONE', 'WAIT', 'CROSSHAIR', 'MOVE_X', 'MOVE_Y', 'KNIFE', 'TEXT', 'PAINT_BRUSH', 'PAINT_CROSS', 'DOT', 'ERASER', 'HAND', 'HAND_POINT', 'HAND_CLOSED', 'SCROLL_X', 'SCROLL_Y', 'SCROLL_XY', 'EYEDROPPER', 'PICK_AREA', 'STOP', 'COPY', 'CROSS', 'MUTE', 'ZOOM_IN', 'ZOOM_OUT']):
+    def bl_cursor_pending(self, value: Literal['DEFAULT', 'NONE', 'WAIT', 'CROSSHAIR', 'MOVE_X', 'MOVE_Y', 'KNIFE', 'TEXT', 'PAINT_BRUSH', 'PAINT_CROSS', 'DOT', 'ERASER', 'HAND', 'HAND_POINT', 'HAND_CLOSED', 'SCROLL_X', 'SCROLL_Y', 'SCROLL_XY', 'EYEDROPPER', 'PICK_AREA', 'STOP', 'COPY', 'CROSS', 'MUTE', 'ZOOM_IN', 'ZOOM_OUT']) -> None:
         ...
     @property
     def layout(self) -> Annotated[Optional['UILayout'], "is_animatable=False"]:

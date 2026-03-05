@@ -23,7 +23,7 @@ class WORKSPACE_UL_addons_items(UIList):
         """If this is set, the uilist gets a custom ID, otherwise it takes the name of the class used to define the uilist (for example, if the class name is "OBJECT_UL_vgroups", and bl_idname is not set by the script, then bl_idname = "OBJECT_UL_vgroups")"""
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def list_id(self) -> Annotated[str, "is_animatable=False"]:
@@ -38,42 +38,42 @@ class WORKSPACE_UL_addons_items(UIList):
         """Show filtering options"""
         ...
     @use_filter_show.setter
-    def use_filter_show(self, value: bool):
+    def use_filter_show(self, value: bool) -> None:
         ...
     @property
     def filter_name(self) -> Annotated[str, "is_animatable=False"]:
         """Only show items matching this name (use '*' as wildcard)"""
         ...
     @filter_name.setter
-    def filter_name(self, value: Annotated[str, "is_animatable=False"]):
+    def filter_name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def use_filter_invert(self) -> bool:
         """Invert filtering (show hidden items, and vice versa)"""
         ...
     @use_filter_invert.setter
-    def use_filter_invert(self, value: bool):
+    def use_filter_invert(self, value: bool) -> None:
         ...
     @property
     def use_filter_sort_alpha(self) -> bool:
         """Sort items by their name"""
         ...
     @use_filter_sort_alpha.setter
-    def use_filter_sort_alpha(self, value: bool):
+    def use_filter_sort_alpha(self, value: bool) -> None:
         ...
     @property
     def use_filter_sort_reverse(self) -> bool:
         """Reverse the order of shown items"""
         ...
     @use_filter_sort_reverse.setter
-    def use_filter_sort_reverse(self, value: bool):
+    def use_filter_sort_reverse(self, value: bool) -> None:
         ...
     @property
     def use_filter_sort_lock(self) -> bool:
         """Lock the order of shown items (user cannot change it)"""
         ...
     @use_filter_sort_lock.setter
-    def use_filter_sort_lock(self, value: bool):
+    def use_filter_sort_lock(self, value: bool) -> None:
         ...
     @property
     def bitflag_filter_item(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:

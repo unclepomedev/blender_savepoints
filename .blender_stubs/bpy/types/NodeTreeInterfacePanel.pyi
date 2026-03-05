@@ -40,21 +40,21 @@ class NodeTreeInterfacePanel(NodeTreeInterfaceItem):
         """Panel name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def description(self) -> Annotated[str, "is_animatable=False"]:
         """Panel description"""
         ...
     @description.setter
-    def description(self, value: Annotated[str, "is_animatable=False"]):
+    def description(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def default_closed(self) -> Annotated[bool, "is_animatable=False"]:
         """Panel is closed by default on new nodes"""
         ...
     @default_closed.setter
-    def default_closed(self, value: Annotated[bool, "is_animatable=False"]):
+    def default_closed(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def interface_items(self) -> Annotated[bpy_prop_collection['NodeTreeInterfaceItem'], "is_animatable=False"]:

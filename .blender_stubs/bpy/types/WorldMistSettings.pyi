@@ -23,40 +23,40 @@ class WorldMistSettings(bpy_struct):
         """Occlude objects with the environment color as they are further away"""
         ...
     @use_mist.setter
-    def use_mist(self, value: bool):
+    def use_mist(self, value: bool) -> None:
         ...
     @property
     def intensity(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Overall minimum intensity of the mist effect"""
         ...
     @intensity.setter
-    def intensity(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def intensity(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def start(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]:
         """Starting distance of the mist, measured from the camera"""
         ...
     @start.setter
-    def start(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]):
+    def start(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]) -> None:
         ...
     @property
     def depth(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]:
         """Distance over which the mist effect fades in"""
         ...
     @depth.setter
-    def depth(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]):
+    def depth(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=2"]) -> None:
         ...
     @property
     def height(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
         """Control how much mist density decreases with height"""
         ...
     @height.setter
-    def height(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def height(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def falloff(self) -> Literal['QUADRATIC', 'LINEAR', 'INVERSE_QUADRATIC']:
         """Type of transition used to fade mist"""
         ...
     @falloff.setter
-    def falloff(self, value: Literal['QUADRATIC', 'LINEAR', 'INVERSE_QUADRATIC']):
+    def falloff(self, value: Literal['QUADRATIC', 'LINEAR', 'INVERSE_QUADRATIC']) -> None:
         ...

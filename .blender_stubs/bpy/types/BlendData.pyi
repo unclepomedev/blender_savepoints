@@ -114,7 +114,7 @@ class BlendData(bpy_struct):
         """Automatically pack all external data into .blend file"""
         ...
     @use_autopack.setter
-    def use_autopack(self, value: bool):
+    def use_autopack(self, value: bool) -> None:
         ...
     @property
     def version(self) -> Annotated[list[int], "subtype='XYZ'", "step=1"]:

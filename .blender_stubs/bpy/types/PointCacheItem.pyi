@@ -23,28 +23,28 @@ class PointCacheItem(bpy_struct):
         """Frame on which the simulation starts"""
         ...
     @frame_start.setter
-    def frame_start(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]):
+    def frame_start(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]) -> None:
         ...
     @property
     def frame_end(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]:
         """Frame on which the simulation stops"""
         ...
     @frame_end.setter
-    def frame_end(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]):
+    def frame_end(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1"]) -> None:
         ...
     @property
     def frame_step(self) -> Annotated[int, "step=1"]:
         """Number of frames between cached frames"""
         ...
     @frame_step.setter
-    def frame_step(self, value: Annotated[int, "step=1"]):
+    def frame_step(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def index(self) -> Annotated[int, "step=1"]:
         """Index number of cache files"""
         ...
     @index.setter
-    def index(self, value: Annotated[int, "step=1"]):
+    def index(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def is_baked(self) -> bool:
@@ -59,7 +59,7 @@ class PointCacheItem(bpy_struct):
         """Save cache files to disk (.blend file must be saved first)"""
         ...
     @use_disk_cache.setter
-    def use_disk_cache(self, value: bool):
+    def use_disk_cache(self, value: bool) -> None:
         ...
     @property
     def is_outdated(self) -> bool:
@@ -74,14 +74,14 @@ class PointCacheItem(bpy_struct):
         """Cache name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def filepath(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
         """Cache file path"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def info(self) -> Annotated[str, "is_animatable=False"]:
@@ -92,12 +92,12 @@ class PointCacheItem(bpy_struct):
         """Read cache from an external location"""
         ...
     @use_external.setter
-    def use_external(self, value: bool):
+    def use_external(self, value: bool) -> None:
         ...
     @property
     def use_library_path(self) -> bool:
         """Use this file's path for the disk cache when library linked into another file (for local bakes per scene file, disable this option)"""
         ...
     @use_library_path.setter
-    def use_library_path(self, value: bool):
+    def use_library_path(self, value: bool) -> None:
         ...

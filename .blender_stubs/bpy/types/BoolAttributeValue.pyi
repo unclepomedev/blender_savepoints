@@ -23,5 +23,5 @@ class BoolAttributeValue(bpy_struct):
 
         ...
     @value.setter
-    def value(self, value: bool):
+    def value(self, value: bool) -> None:
         ...

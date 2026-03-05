@@ -31,5 +31,5 @@ class ModifierViewerPathElem(ViewerPathElem):
         """The persistent UID of the modifier"""
         ...
     @modifier_uid.setter
-    def modifier_uid(self, value: Annotated[int, "step=1"]):
+    def modifier_uid(self, value: Annotated[int, "step=1"]) -> None:
         ...

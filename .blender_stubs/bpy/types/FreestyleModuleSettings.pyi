@@ -24,12 +24,12 @@ class FreestyleModuleSettings(bpy_struct):
         """Python script to define a style module"""
         ...
     @script.setter
-    def script(self, value: Annotated[Optional['Text'], "is_animatable=False"]):
+    def script(self, value: Annotated[Optional['Text'], "is_animatable=False"]) -> None:
         ...
     @property
     def use(self) -> bool:
         """Enable or disable this style module during stroke rendering"""
         ...
     @use.setter
-    def use(self, value: bool):
+    def use(self, value: bool) -> None:
         ...

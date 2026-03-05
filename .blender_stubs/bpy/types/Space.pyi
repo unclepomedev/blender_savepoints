@@ -27,12 +27,12 @@ class Space(bpy_struct):
         """Synchronize the visible timeline range with other time-based editors"""
         ...
     @show_locked_time.setter
-    def show_locked_time(self, value: bool):
+    def show_locked_time(self, value: bool) -> None:
         ...
     @property
     def show_region_header(self) -> bool:
 
         ...
     @show_region_header.setter
-    def show_region_header(self, value: bool):
+    def show_region_header(self, value: bool) -> None:
         ...

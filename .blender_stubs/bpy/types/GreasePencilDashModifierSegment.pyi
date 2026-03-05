@@ -23,47 +23,47 @@ class GreasePencilDashModifierSegment(bpy_struct):
         """Name of the dash segment"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def dash(self) -> Annotated[int, "step=1"]:
         """The number of consecutive points from the original stroke to include in this segment"""
         ...
     @dash.setter
-    def dash(self, value: Annotated[int, "step=1"]):
+    def dash(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def gap(self) -> Annotated[int, "step=1"]:
         """The number of points skipped after this segment"""
         ...
     @gap.setter
-    def gap(self, value: Annotated[int, "step=1"]):
+    def gap(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def radius(self) -> Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]:
         """The factor to apply to the original point's radius for the new points"""
         ...
     @radius.setter
-    def radius(self, value: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]):
+    def radius(self, value: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]) -> None:
         ...
     @property
     def opacity(self) -> Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]:
         """The factor to apply to the original point's opacity for the new points"""
         ...
     @opacity.setter
-    def opacity(self, value: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]):
+    def opacity(self, value: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]) -> None:
         ...
     @property
     def material_index(self) -> Annotated[int, "step=1"]:
         """Use this index on generated segment. -1 means using the existing material."""
         ...
     @material_index.setter
-    def material_index(self, value: Annotated[int, "step=1"]):
+    def material_index(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def use_cyclic(self) -> bool:
         """Enable cyclic on individual stroke dashes"""
         ...
     @use_cyclic.setter
-    def use_cyclic(self, value: bool):
+    def use_cyclic(self, value: bool) -> None:
         ...

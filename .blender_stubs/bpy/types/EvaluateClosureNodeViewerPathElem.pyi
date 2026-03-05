@@ -32,14 +32,14 @@ class EvaluateClosureNodeViewerPathElem(ViewerPathElem):
 
         ...
     @evaluate_node_id.setter
-    def evaluate_node_id(self, value: Annotated[int, "step=1"]):
+    def evaluate_node_id(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def source_output_node_id(self) -> Annotated[int, "step=1"]:
 
         ...
     @source_output_node_id.setter
-    def source_output_node_id(self, value: Annotated[int, "step=1"]):
+    def source_output_node_id(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def source_node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:

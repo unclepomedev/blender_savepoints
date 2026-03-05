@@ -23,19 +23,19 @@ class MaskSplinePointUW(bpy_struct):
         """U coordinate of point along spline segment"""
         ...
     @u.setter
-    def u(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def u(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def weight(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Weight of feather point"""
         ...
     @weight.setter
-    def weight(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def weight(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def select(self) -> bool:
         """Selection status"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...

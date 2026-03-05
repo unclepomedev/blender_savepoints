@@ -23,7 +23,7 @@ class BoidRule(bpy_struct):
         """Boid rule name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GOAL', 'AVOID', 'AVOID_COLLISION', 'SEPARATE', 'FLOCK', 'FOLLOW_LEADER', 'AVERAGE_SPEED', 'FIGHT']:
@@ -34,12 +34,12 @@ class BoidRule(bpy_struct):
         """Use rule when boid is flying"""
         ...
     @use_in_air.setter
-    def use_in_air(self, value: bool):
+    def use_in_air(self, value: bool) -> None:
         ...
     @property
     def use_on_land(self) -> bool:
         """Use rule when boid is on land"""
         ...
     @use_on_land.setter
-    def use_on_land(self, value: bool):
+    def use_on_land(self, value: bool) -> None:
         ...

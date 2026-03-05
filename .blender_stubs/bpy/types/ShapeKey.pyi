@@ -26,7 +26,7 @@ class ShapeKey(bpy_struct):
         """Name of Shape Key"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def frame(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]:
@@ -37,56 +37,56 @@ class ShapeKey(bpy_struct):
         """Value of shape key at the current frame"""
         ...
     @value.setter
-    def value(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def value(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def interpolation(self) -> Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']:
         """Interpolation type for absolute shape keys"""
         ...
     @interpolation.setter
-    def interpolation(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']):
+    def interpolation(self, value: Literal['KEY_LINEAR', 'KEY_CARDINAL', 'KEY_CATMULL_ROM', 'KEY_BSPLINE']) -> None:
         ...
     @property
     def vertex_group(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex weight group, to blend with basis shape"""
         ...
     @vertex_group.setter
-    def vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def relative_key(self) -> Annotated['ShapeKey', "is_animatable=False"]:
         """Shape used as a relative key"""
         ...
     @relative_key.setter
-    def relative_key(self, value: Annotated['ShapeKey', "is_animatable=False"]):
+    def relative_key(self, value: Annotated['ShapeKey', "is_animatable=False"]) -> None:
         ...
     @property
     def mute(self) -> bool:
         """Toggle this shape key"""
         ...
     @mute.setter
-    def mute(self, value: bool):
+    def mute(self, value: bool) -> None:
         ...
     @property
     def lock_shape(self) -> bool:
         """Protect the shape key from accidental sculpting and editing"""
         ...
     @lock_shape.setter
-    def lock_shape(self, value: bool):
+    def lock_shape(self, value: bool) -> None:
         ...
     @property
     def slider_min(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Minimum for slider"""
         ...
     @slider_min.setter
-    def slider_min(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def slider_min(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def slider_max(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Maximum for slider"""
         ...
     @slider_max.setter
-    def slider_max(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def slider_max(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['UnknownType'], "is_animatable=False"]:

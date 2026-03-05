@@ -26,7 +26,7 @@ class PreferencesExtensions(bpy_struct):
         """The user has been shown the "Online Access" prompt and made a choice"""
         ...
     @use_online_access_handled.setter
-    def use_online_access_handled(self, value: bool):
+    def use_online_access_handled(self, value: bool) -> None:
         ...
     @property
     def repos(self) -> Annotated['UserExtensionRepoCollection', "is_animatable=False"]:
@@ -37,5 +37,5 @@ class PreferencesExtensions(bpy_struct):
         """Index of the extensions repository being edited in the Preferences UI"""
         ...
     @active_repo.setter
-    def active_repo(self, value: Annotated[int, "step=1"]):
+    def active_repo(self, value: Annotated[int, "step=1"]) -> None:
         ...

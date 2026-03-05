@@ -27,7 +27,7 @@ class KeyConfig(bpy_struct):
         """Name of the key configuration"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def keymaps(self) -> Annotated['KeyMaps', "is_animatable=False"]:

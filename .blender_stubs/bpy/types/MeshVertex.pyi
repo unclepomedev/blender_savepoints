@@ -25,7 +25,7 @@ class MeshVertex(bpy_struct):
 
         ...
     @co.setter
-    def co(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def co(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def normal(self) -> Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]:
@@ -36,14 +36,14 @@ class MeshVertex(bpy_struct):
 
         ...
     @select.setter
-    def select(self, value: Annotated[bool, "is_animatable=False"]):
+    def select(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def hide(self) -> Annotated[bool, "is_animatable=False"]:
 
         ...
     @hide.setter
-    def hide(self, value: Annotated[bool, "is_animatable=False"]):
+    def hide(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def groups(self) -> Annotated[bpy_prop_collection['VertexGroupElement'], "is_animatable=False"]:

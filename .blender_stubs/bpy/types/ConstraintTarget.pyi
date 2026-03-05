@@ -24,12 +24,12 @@ class ConstraintTarget(bpy_struct):
         """Target object"""
         ...
     @target.setter
-    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def subtarget(self) -> Annotated[str, "is_animatable=False"]:
         """Armature bone, mesh or lattice vertex group, ..."""
         ...
     @subtarget.setter
-    def subtarget(self, value: Annotated[str, "is_animatable=False"]):
+    def subtarget(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

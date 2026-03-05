@@ -23,12 +23,12 @@ class WorldLighting(bpy_struct):
         """Factor for ambient occlusion blending"""
         ...
     @ao_factor.setter
-    def ao_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]):
+    def ao_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.10000000149011612", "precision=2"]) -> None:
         ...
     @property
     def distance(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
         """Length of rays, defines how far away other faces give occlusion effect"""
         ...
     @distance.setter
-    def distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...

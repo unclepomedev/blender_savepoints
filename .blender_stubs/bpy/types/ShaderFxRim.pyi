@@ -23,7 +23,7 @@ class ShaderFxRim(ShaderFx):
         """Effect name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['FX_BLUR', 'FX_COLORIZE', 'FX_FLIP', 'FX_GLOW', 'FX_PIXEL', 'FX_RIM', 'FX_SHADOW', 'FX_SWIRL', 'FX_WAVE']:
@@ -34,68 +34,68 @@ class ShaderFxRim(ShaderFx):
         """Display effect in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use effect during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display effect in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set effect expansion in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def offset(self) -> Annotated[list[int], "subtype='PIXEL'", "step=1"]:
         """Offset of the rim"""
         ...
     @offset.setter
-    def offset(self, value: Annotated[list[int], "subtype='PIXEL'", "step=1"]):
+    def offset(self, value: Annotated[list[int], "subtype='PIXEL'", "step=1"]) -> None:
         ...
     @property
     def rim_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color used for Rim"""
         ...
     @rim_color.setter
-    def rim_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def rim_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def mask_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color that must be kept"""
         ...
     @mask_color.setter
-    def mask_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def mask_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def mode(self) -> Literal['NORMAL', 'OVERLAY', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE']:
         """Blend mode"""
         ...
     @mode.setter
-    def mode(self, value: Literal['NORMAL', 'OVERLAY', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE']):
+    def mode(self, value: Literal['NORMAL', 'OVERLAY', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE']) -> None:
         ...
     @property
     def blur(self) -> Annotated[list[int], "subtype='PIXEL'", "step=1"]:
         """Number of pixels for blurring rim (set to 0 to disable)"""
         ...
     @blur.setter
-    def blur(self, value: Annotated[list[int], "subtype='PIXEL'", "step=1"]):
+    def blur(self, value: Annotated[list[int], "subtype='PIXEL'", "step=1"]) -> None:
         ...
     @property
     def samples(self) -> Annotated[int, "step=2"]:
         """Number of Blur Samples (zero, disable blur)"""
         ...
     @samples.setter
-    def samples(self, value: Annotated[int, "step=2"]):
+    def samples(self, value: Annotated[int, "step=2"]) -> None:
         ...

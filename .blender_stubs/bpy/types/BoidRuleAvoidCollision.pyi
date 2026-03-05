@@ -23,7 +23,7 @@ class BoidRuleAvoidCollision(BoidRule):
         """Boid rule name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GOAL', 'AVOID', 'AVOID_COLLISION', 'SEPARATE', 'FLOCK', 'FOLLOW_LEADER', 'AVERAGE_SPEED', 'FIGHT']:
@@ -34,33 +34,33 @@ class BoidRuleAvoidCollision(BoidRule):
         """Use rule when boid is flying"""
         ...
     @use_in_air.setter
-    def use_in_air(self, value: bool):
+    def use_in_air(self, value: bool) -> None:
         ...
     @property
     def use_on_land(self) -> bool:
         """Use rule when boid is on land"""
         ...
     @use_on_land.setter
-    def use_on_land(self, value: bool):
+    def use_on_land(self, value: bool) -> None:
         ...
     @property
     def use_avoid(self) -> bool:
         """Avoid collision with other boids"""
         ...
     @use_avoid.setter
-    def use_avoid(self, value: bool):
+    def use_avoid(self, value: bool) -> None:
         ...
     @property
     def use_avoid_collision(self) -> bool:
         """Avoid collision with deflector objects"""
         ...
     @use_avoid_collision.setter
-    def use_avoid_collision(self, value: bool):
+    def use_avoid_collision(self, value: bool) -> None:
         ...
     @property
     def look_ahead(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Time to look ahead in seconds"""
         ...
     @look_ahead.setter
-    def look_ahead(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def look_ahead(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...

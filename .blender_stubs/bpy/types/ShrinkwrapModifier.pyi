@@ -24,7 +24,7 @@ class ShrinkwrapModifier(Modifier):
         """Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
@@ -35,49 +35,49 @@ class ShrinkwrapModifier(Modifier):
         """Display modifier in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use modifier during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display modifier in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_on_cage(self) -> bool:
         """Adjust edit cage to modifier result"""
         ...
     @show_on_cage.setter
-    def show_on_cage(self, value: bool):
+    def show_on_cage(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set modifier expanded in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def is_active(self) -> Annotated[bool, "is_animatable=False"]:
         """The active modifier in the list"""
         ...
     @is_active.setter
-    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
         """Keep the modifier at the end of the list"""
         ...
     @use_pin_to_last.setter
-    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_override_data(self) -> bool:
@@ -88,7 +88,7 @@ class ShrinkwrapModifier(Modifier):
         """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
         ...
     @use_apply_on_spline.setter
-    def use_apply_on_spline(self, value: bool):
+    def use_apply_on_spline(self, value: bool) -> None:
         ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -103,110 +103,110 @@ class ShrinkwrapModifier(Modifier):
 
         ...
     @wrap_method.setter
-    def wrap_method(self, value: Literal['NEAREST_SURFACEPOINT', 'PROJECT', 'NEAREST_VERTEX', 'TARGET_PROJECT']):
+    def wrap_method(self, value: Literal['NEAREST_SURFACEPOINT', 'PROJECT', 'NEAREST_VERTEX', 'TARGET_PROJECT']) -> None:
         ...
     @property
     def wrap_mode(self) -> Literal['ON_SURFACE', 'INSIDE', 'OUTSIDE', 'OUTSIDE_SURFACE', 'ABOVE_SURFACE']:
         """Select how vertices are constrained to the target surface"""
         ...
     @wrap_mode.setter
-    def wrap_mode(self, value: Literal['ON_SURFACE', 'INSIDE', 'OUTSIDE', 'OUTSIDE_SURFACE', 'ABOVE_SURFACE']):
+    def wrap_mode(self, value: Literal['ON_SURFACE', 'INSIDE', 'OUTSIDE', 'OUTSIDE_SURFACE', 'ABOVE_SURFACE']) -> None:
         ...
     @property
     def cull_face(self) -> Literal['OFF', 'FRONT', 'BACK']:
         """Stop vertices from projecting to a face on the target when facing towards/away"""
         ...
     @cull_face.setter
-    def cull_face(self, value: Literal['OFF', 'FRONT', 'BACK']):
+    def cull_face(self, value: Literal['OFF', 'FRONT', 'BACK']) -> None:
         ...
     @property
     def target(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Mesh target to shrink to"""
         ...
     @target.setter
-    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def auxiliary_target(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Additional mesh target to shrink to"""
         ...
     @auxiliary_target.setter
-    def auxiliary_target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def auxiliary_target(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def vertex_group(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group name"""
         ...
     @vertex_group.setter
-    def vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def offset(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]:
         """Distance to keep from the target"""
         ...
     @offset.setter
-    def offset(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]):
+    def offset(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def project_limit(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]:
         """Limit the distance used for projection (zero disables)"""
         ...
     @project_limit.setter
-    def project_limit(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]):
+    def project_limit(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def use_project_x(self) -> bool:
 
         ...
     @use_project_x.setter
-    def use_project_x(self, value: bool):
+    def use_project_x(self, value: bool) -> None:
         ...
     @property
     def use_project_y(self) -> bool:
 
         ...
     @use_project_y.setter
-    def use_project_y(self, value: bool):
+    def use_project_y(self, value: bool) -> None:
         ...
     @property
     def use_project_z(self) -> bool:
 
         ...
     @use_project_z.setter
-    def use_project_z(self, value: bool):
+    def use_project_z(self, value: bool) -> None:
         ...
     @property
     def subsurf_levels(self) -> Annotated[int, "step=1"]:
         """Number of subdivisions that must be performed before extracting vertices' positions and normals"""
         ...
     @subsurf_levels.setter
-    def subsurf_levels(self, value: Annotated[int, "step=1"]):
+    def subsurf_levels(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def use_negative_direction(self) -> bool:
         """Allow vertices to move in the negative direction of axis"""
         ...
     @use_negative_direction.setter
-    def use_negative_direction(self, value: bool):
+    def use_negative_direction(self, value: bool) -> None:
         ...
     @property
     def use_positive_direction(self) -> bool:
         """Allow vertices to move in the positive direction of axis"""
         ...
     @use_positive_direction.setter
-    def use_positive_direction(self, value: bool):
+    def use_positive_direction(self, value: bool) -> None:
         ...
     @property
     def use_invert_cull(self) -> bool:
         """When projecting in the negative direction invert the face cull mode"""
         ...
     @use_invert_cull.setter
-    def use_invert_cull(self, value: bool):
+    def use_invert_cull(self, value: bool) -> None:
         ...
     @property
     def invert_vertex_group(self) -> bool:
         """Invert vertex group influence"""
         ...
     @invert_vertex_group.setter
-    def invert_vertex_group(self, value: bool):
+    def invert_vertex_group(self, value: bool) -> None:
         ...

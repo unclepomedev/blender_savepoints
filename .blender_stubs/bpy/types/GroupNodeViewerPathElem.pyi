@@ -31,5 +31,5 @@ class GroupNodeViewerPathElem(ViewerPathElem):
 
         ...
     @node_id.setter
-    def node_id(self, value: Annotated[int, "step=1"]):
+    def node_id(self, value: Annotated[int, "step=1"]) -> None:
         ...

@@ -26,7 +26,7 @@ class FModifierEnvelope(FModifier):
         """F-Curve Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['NULL', 'GENERATOR', 'FNGENERATOR', 'ENVELOPE', 'CYCLES', 'NOISE', 'LIMITS', 'STEPPED']:
@@ -37,14 +37,14 @@ class FModifierEnvelope(FModifier):
         """F-Curve Modifier's panel is expanded in UI"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def mute(self) -> bool:
         """Enable F-Curve modifier evaluation"""
         ...
     @mute.setter
-    def mute(self, value: bool):
+    def mute(self, value: bool) -> None:
         ...
     @property
     def is_valid(self) -> bool:
@@ -55,56 +55,56 @@ class FModifierEnvelope(FModifier):
         """F-Curve modifier will show settings in the editor"""
         ...
     @active.setter
-    def active(self, value: bool):
+    def active(self, value: bool) -> None:
         ...
     @property
     def use_restricted_range(self) -> bool:
         """F-Curve Modifier is only applied for the specified frame range to help mask off effects in order to chain them"""
         ...
     @use_restricted_range.setter
-    def use_restricted_range(self, value: bool):
+    def use_restricted_range(self, value: bool) -> None:
         ...
     @property
     def frame_start(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Frame that modifier's influence starts (if Restrict Frame Range is in use)"""
         ...
     @frame_start.setter
-    def frame_start(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_start(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def frame_end(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Frame that modifier's influence ends (if Restrict Frame Range is in use)"""
         ...
     @frame_end.setter
-    def frame_end(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_end(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def blend_in(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Number of frames from start frame for influence to take effect"""
         ...
     @blend_in.setter
-    def blend_in(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def blend_in(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def blend_out(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Number of frames from end frame for influence to fade out"""
         ...
     @blend_out.setter
-    def blend_out(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def blend_out(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_influence(self) -> bool:
         """F-Curve Modifier's effects will be tempered by a default factor"""
         ...
     @use_influence.setter
-    def use_influence(self, value: bool):
+    def use_influence(self, value: bool) -> None:
         ...
     @property
     def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Amount of influence F-Curve Modifier will have when not fading in/out"""
         ...
     @influence.setter
-    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def control_points(self) -> Annotated['FModifierEnvelopeControlPoints', "is_animatable=False"]:
@@ -115,19 +115,19 @@ class FModifierEnvelope(FModifier):
         """Value that envelope's influence is centered around / based on"""
         ...
     @reference_value.setter
-    def reference_value(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def reference_value(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def default_min(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Lower distance from Reference Value for 1:1 default influence"""
         ...
     @default_min.setter
-    def default_min(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def default_min(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def default_max(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Upper distance from Reference Value for 1:1 default influence"""
         ...
     @default_max.setter
-    def default_max(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def default_max(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...

@@ -23,5 +23,5 @@ class TextLine(bpy_struct):
         """Text in the line"""
         ...
     @body.setter
-    def body(self, value: Annotated[str, "is_animatable=False"]):
+    def body(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

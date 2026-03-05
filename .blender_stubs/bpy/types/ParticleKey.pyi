@@ -23,33 +23,33 @@ class ParticleKey(bpy_struct):
         """Key location"""
         ...
     @location.setter
-    def location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def velocity(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]:
         """Key velocity"""
         ...
     @velocity.setter
-    def velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]):
+    def velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def rotation(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]:
         """Key rotation quaternion"""
         ...
     @rotation.setter
-    def rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]):
+    def rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def angular_velocity(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]:
         """Key angular velocity"""
         ...
     @angular_velocity.setter
-    def angular_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]):
+    def angular_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def time(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
         """Time of key over the simulation"""
         ...
     @time.setter
-    def time(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]):
+    def time(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]) -> None:
         ...

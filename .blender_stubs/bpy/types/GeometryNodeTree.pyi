@@ -37,7 +37,7 @@ class GeometryNodeTree(NodeTree):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -68,14 +68,14 @@ class GeometryNodeTree(NodeTree):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -94,7 +94,7 @@ class GeometryNodeTree(NodeTree):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -105,7 +105,7 @@ class GeometryNodeTree(NodeTree):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -124,7 +124,7 @@ class GeometryNodeTree(NodeTree):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -139,14 +139,14 @@ class GeometryNodeTree(NodeTree):
         """Color tag of the node group which influences the header color"""
         ...
     @color_tag.setter
-    def color_tag(self, value: Literal['NONE', 'ATTRIBUTE', 'COLOR', 'CONVERTER', 'DISTORT', 'FILTER', 'GEOMETRY', 'INPUT', 'MATTE', 'OUTPUT', 'SCRIPT', 'SHADER', 'TEXTURE', 'VECTOR', 'PATTERN', 'INTERFACE', 'GROUP']):
+    def color_tag(self, value: Literal['NONE', 'ATTRIBUTE', 'COLOR', 'CONVERTER', 'DISTORT', 'FILTER', 'GEOMETRY', 'INPUT', 'MATTE', 'OUTPUT', 'SCRIPT', 'SHADER', 'TEXTURE', 'VECTOR', 'PATTERN', 'INTERFACE', 'GROUP']) -> None:
         ...
     @property
     def default_group_node_width(self) -> Annotated[int, "step=1"]:
         """The width for newly created group nodes"""
         ...
     @default_group_node_width.setter
-    def default_group_node_width(self, value: Annotated[int, "step=1"]):
+    def default_group_node_width(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def view_center(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
@@ -157,7 +157,7 @@ class GeometryNodeTree(NodeTree):
         """Description of the node tree"""
         ...
     @description.setter
-    def description(self, value: Annotated[str, "is_animatable=False"]):
+    def description(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
@@ -176,7 +176,7 @@ class GeometryNodeTree(NodeTree):
         """Annotation data"""
         ...
     @annotation.setter
-    def annotation(self, value: Annotated[Optional['Annotation'], "is_animatable=False"]):
+    def annotation(self, value: Annotated[Optional['Annotation'], "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['UNDEFINED', 'CUSTOM', 'SHADER', 'TEXTURE', 'COMPOSITING', 'GEOMETRY']:
@@ -191,119 +191,119 @@ class GeometryNodeTree(NodeTree):
 
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_label(self) -> Annotated[str, "is_animatable=False"]:
         """The node tree label"""
         ...
     @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_description(self) -> Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]:
 
         ...
     @bl_description.setter
-    def bl_description(self, value: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]):
+    def bl_description(self, value: Annotated[str, "subtype='TRANSLATION'", "unit='LENGTH'", "is_animatable=False"]) -> None:
         ...
     @property
     def bl_icon(self) -> str:
         """The node tree icon"""
         ...
     @bl_icon.setter
-    def bl_icon(self, value: str):
+    def bl_icon(self, value: str) -> None:
         ...
     @property
     def bl_use_group_interface(self) -> bool:
         """Determines the visibility of some UI elements related to node groups"""
         ...
     @bl_use_group_interface.setter
-    def bl_use_group_interface(self, value: bool):
+    def bl_use_group_interface(self, value: bool) -> None:
         ...
     @property
     def is_tool(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used as a tool"""
         ...
     @is_tool.setter
-    def is_tool(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_tool(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_modifier(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used as a geometry modifier"""
         ...
     @is_modifier.setter
-    def is_modifier(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_modifier(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_mode_object(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used in object mode"""
         ...
     @is_mode_object.setter
-    def is_mode_object(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_mode_object(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_mode_edit(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used in edit mode"""
         ...
     @is_mode_edit.setter
-    def is_mode_edit(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_mode_edit(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_mode_sculpt(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used in sculpt mode"""
         ...
     @is_mode_sculpt.setter
-    def is_mode_sculpt(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_mode_sculpt(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_mode_paint(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used in paint mode"""
         ...
     @is_mode_paint.setter
-    def is_mode_paint(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_mode_paint(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_type_mesh(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used for meshes"""
         ...
     @is_type_mesh.setter
-    def is_type_mesh(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_type_mesh(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_type_curve(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used for curves"""
         ...
     @is_type_curve.setter
-    def is_type_curve(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_type_curve(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_type_pointcloud(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used for point clouds"""
         ...
     @is_type_pointcloud.setter
-    def is_type_pointcloud(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_type_pointcloud(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_wait_for_click(self) -> Annotated[bool, "is_animatable=False"]:
         """Wait for mouse click input before running the operator from a menu"""
         ...
     @use_wait_for_click.setter
-    def use_wait_for_click(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_wait_for_click(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_type_grease_pencil(self) -> Annotated[bool, "is_animatable=False"]:
         """The node group is used for Grease Pencil"""
         ...
     @is_type_grease_pencil.setter
-    def is_type_grease_pencil(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_type_grease_pencil(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def show_modifier_manage_panel(self) -> Annotated[bool, "is_animatable=False"]:
         """Turn on the option to display the manage panel when creating a modifier"""
         ...
     @show_modifier_manage_panel.setter
-    def show_modifier_manage_panel(self, value: Annotated[bool, "is_animatable=False"]):
+    def show_modifier_manage_panel(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

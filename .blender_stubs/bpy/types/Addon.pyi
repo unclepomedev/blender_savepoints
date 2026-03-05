@@ -24,7 +24,7 @@ class Addon(bpy_struct):
         """Module name"""
         ...
     @module.setter
-    def module(self, value: Annotated[str, "is_animatable=False"]):
+    def module(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def preferences(self) -> Annotated[Optional['AddonPreferences'], "is_animatable=False"]:

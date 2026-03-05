@@ -27,21 +27,21 @@ class KeyingSet(bpy_struct):
         """If this is set, the Keying Set gets a custom ID, otherwise it takes the name of the class used to define the Keying Set (for example, if the class name is "BUILTIN_KSI_location", and bl_idname is not set by the script, then bl_idname = "BUILTIN_KSI_location")"""
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_label(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_description(self) -> Annotated[str, "is_animatable=False"]:
         """A short description of the keying set"""
         ...
     @bl_description.setter
-    def bl_description(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_description(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type_info(self) -> Annotated[Optional['KeyingSetInfo'], "is_animatable=False"]:
@@ -60,27 +60,27 @@ class KeyingSet(bpy_struct):
         """Override default setting to only insert keyframes where they're needed in the relevant F-Curves"""
         ...
     @use_insertkey_override_needed.setter
-    def use_insertkey_override_needed(self, value: bool):
+    def use_insertkey_override_needed(self, value: bool) -> None:
         ...
     @property
     def use_insertkey_override_visual(self) -> bool:
         """Override default setting to insert keyframes based on 'visual transforms'"""
         ...
     @use_insertkey_override_visual.setter
-    def use_insertkey_override_visual(self, value: bool):
+    def use_insertkey_override_visual(self, value: bool) -> None:
         ...
     @property
     def use_insertkey_needed(self) -> bool:
         """Only insert keyframes where they're needed in the relevant F-Curves"""
         ...
     @use_insertkey_needed.setter
-    def use_insertkey_needed(self, value: bool):
+    def use_insertkey_needed(self, value: bool) -> None:
         ...
     @property
     def use_insertkey_visual(self) -> bool:
         """Insert keyframes based on 'visual transforms'"""
         ...
     @use_insertkey_visual.setter
-    def use_insertkey_visual(self, value: bool):
+    def use_insertkey_visual(self, value: bool) -> None:
         ...
     def refresh(self, *args, **kwargs) -> Any: ...

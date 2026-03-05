@@ -29,12 +29,12 @@ class AnnotationFrame(bpy_struct):
         """The frame on which this sketch appears"""
         ...
     @frame_number.setter
-    def frame_number(self, value: Annotated[int, "step=1"]):
+    def frame_number(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def select(self) -> bool:
         """Frame is selected for editing in the Dope Sheet"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...

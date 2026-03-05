@@ -63,7 +63,7 @@ class MovieTracking(bpy_struct):
         """Index of active object"""
         ...
     @active_object_index.setter
-    def active_object_index(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def active_object_index(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def dopesheet(self) -> Annotated[Optional['MovieTrackingDopesheet'], "is_animatable=False"]:

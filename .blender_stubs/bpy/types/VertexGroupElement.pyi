@@ -27,5 +27,5 @@ class VertexGroupElement(bpy_struct):
         """Vertex Weight"""
         ...
     @weight.setter
-    def weight(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def weight(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...

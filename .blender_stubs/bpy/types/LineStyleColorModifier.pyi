@@ -23,5 +23,5 @@ class LineStyleColorModifier(LineStyleModifier):
         """Name of the modifier"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

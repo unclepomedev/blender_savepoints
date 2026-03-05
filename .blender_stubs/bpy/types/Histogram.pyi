@@ -23,12 +23,12 @@ class Histogram(bpy_struct):
         """Channels to display in the histogram"""
         ...
     @mode.setter
-    def mode(self, value: Literal['LUMA', 'RGB', 'R', 'G', 'B', 'A']):
+    def mode(self, value: Literal['LUMA', 'RGB', 'R', 'G', 'B', 'A']) -> None:
         ...
     @property
     def show_line(self) -> bool:
         """Display lines rather than filled shapes"""
         ...
     @show_line.setter
-    def show_line(self, value: bool):
+    def show_line(self, value: bool) -> None:
         ...

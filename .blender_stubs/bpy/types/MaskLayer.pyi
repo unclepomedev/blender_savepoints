@@ -26,7 +26,7 @@ class MaskLayer(bpy_struct):
         """Unique name of layer"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def splines(self) -> Annotated['MaskSplines', "is_animatable=False"]:
@@ -37,68 +37,68 @@ class MaskLayer(bpy_struct):
         """Restrict visibility in the viewport"""
         ...
     @hide.setter
-    def hide(self, value: bool):
+    def hide(self, value: bool) -> None:
         ...
     @property
     def hide_select(self) -> bool:
         """Restrict selection in the viewport"""
         ...
     @hide_select.setter
-    def hide_select(self, value: bool):
+    def hide_select(self, value: bool) -> None:
         ...
     @property
     def hide_render(self) -> bool:
         """Restrict renderability"""
         ...
     @hide_render.setter
-    def hide_render(self, value: bool):
+    def hide_render(self, value: bool) -> None:
         ...
     @property
     def select(self) -> bool:
         """Layer is selected for editing in the Dope Sheet"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...
     @property
     def alpha(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
         """Render Opacity"""
         ...
     @alpha.setter
-    def alpha(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+    def alpha(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def blend(self) -> Literal['MERGE_ADD', 'MERGE_SUBTRACT', 'ADD', 'SUBTRACT', 'LIGHTEN', 'DARKEN', 'MUL', 'REPLACE', 'DIFFERENCE']:
         """Method of blending mask layers"""
         ...
     @blend.setter
-    def blend(self, value: Literal['MERGE_ADD', 'MERGE_SUBTRACT', 'ADD', 'SUBTRACT', 'LIGHTEN', 'DARKEN', 'MUL', 'REPLACE', 'DIFFERENCE']):
+    def blend(self, value: Literal['MERGE_ADD', 'MERGE_SUBTRACT', 'ADD', 'SUBTRACT', 'LIGHTEN', 'DARKEN', 'MUL', 'REPLACE', 'DIFFERENCE']) -> None:
         ...
     @property
     def invert(self) -> bool:
         """Invert the mask black/white"""
         ...
     @invert.setter
-    def invert(self, value: bool):
+    def invert(self, value: bool) -> None:
         ...
     @property
     def falloff(self) -> Literal['SMOOTH', 'SPHERE', 'ROOT', 'INVERSE_SQUARE', 'SHARP', 'LINEAR']:
         """Falloff type of the feather"""
         ...
     @falloff.setter
-    def falloff(self, value: Literal['SMOOTH', 'SPHERE', 'ROOT', 'INVERSE_SQUARE', 'SHARP', 'LINEAR']):
+    def falloff(self, value: Literal['SMOOTH', 'SPHERE', 'ROOT', 'INVERSE_SQUARE', 'SHARP', 'LINEAR']) -> None:
         ...
     @property
     def use_fill_holes(self) -> bool:
         """Calculate holes when filling overlapping curves"""
         ...
     @use_fill_holes.setter
-    def use_fill_holes(self, value: bool):
+    def use_fill_holes(self, value: bool) -> None:
         ...
     @property
     def use_fill_overlap(self) -> bool:
         """Calculate self intersections and overlap before filling"""
         ...
     @use_fill_overlap.setter
-    def use_fill_overlap(self, value: bool):
+    def use_fill_overlap(self, value: bool) -> None:
         ...

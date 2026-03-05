@@ -23,7 +23,7 @@ class StripElement(bpy_struct):
         """Name of the source file"""
         ...
     @filename.setter
-    def filename(self, value: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]):
+    def filename(self, value: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]) -> None:
         ...
     @property
     def orig_width(self) -> Annotated[int, "step=1"]:

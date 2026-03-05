@@ -28,77 +28,77 @@ class SpaceNLA(Space):
         """Synchronize the visible timeline range with other time-based editors"""
         ...
     @show_locked_time.setter
-    def show_locked_time(self, value: bool):
+    def show_locked_time(self, value: bool) -> None:
         ...
     @property
     def show_region_header(self) -> bool:
 
         ...
     @show_region_header.setter
-    def show_region_header(self, value: bool):
+    def show_region_header(self, value: bool) -> None:
         ...
     @property
     def show_region_footer(self) -> bool:
 
         ...
     @show_region_footer.setter
-    def show_region_footer(self, value: bool):
+    def show_region_footer(self, value: bool) -> None:
         ...
     @property
     def show_region_channels(self) -> bool:
 
         ...
     @show_region_channels.setter
-    def show_region_channels(self, value: bool):
+    def show_region_channels(self, value: bool) -> None:
         ...
     @property
     def show_region_ui(self) -> bool:
 
         ...
     @show_region_ui.setter
-    def show_region_ui(self, value: bool):
+    def show_region_ui(self, value: bool) -> None:
         ...
     @property
     def show_region_hud(self) -> bool:
 
         ...
     @show_region_hud.setter
-    def show_region_hud(self, value: bool):
+    def show_region_hud(self, value: bool) -> None:
         ...
     @property
     def show_seconds(self) -> bool:
         """Show timing as a timecode instead of frames"""
         ...
     @show_seconds.setter
-    def show_seconds(self, value: bool):
+    def show_seconds(self, value: bool) -> None:
         ...
     @property
     def show_strip_curves(self) -> bool:
         """Show influence F-Curves on strips"""
         ...
     @show_strip_curves.setter
-    def show_strip_curves(self, value: bool):
+    def show_strip_curves(self, value: bool) -> None:
         ...
     @property
     def show_local_markers(self) -> bool:
         """Show action-local markers on the strips, useful when synchronizing timing across strips"""
         ...
     @show_local_markers.setter
-    def show_local_markers(self, value: bool):
+    def show_local_markers(self, value: bool) -> None:
         ...
     @property
     def show_markers(self) -> bool:
         """If any exists, show markers in a separate row at the bottom of the editor"""
         ...
     @show_markers.setter
-    def show_markers(self, value: bool):
+    def show_markers(self, value: bool) -> None:
         ...
     @property
     def use_realtime_update(self) -> bool:
         """When transforming strips, changes to the animation data are flushed to other views"""
         ...
     @use_realtime_update.setter
-    def use_realtime_update(self, value: bool):
+    def use_realtime_update(self, value: bool) -> None:
         ...
     @property
     def dopesheet(self) -> Annotated[Optional['DopeSheet'], "is_animatable=False"]:

@@ -34,28 +34,28 @@ class Window(bpy_struct):
         """Active scene to be edited in the window"""
         ...
     @scene.setter
-    def scene(self, value: Annotated['Scene', "is_animatable=False"]):
+    def scene(self, value: Annotated['Scene', "is_animatable=False"]) -> None:
         ...
     @property
     def workspace(self) -> Annotated['WorkSpace', "is_animatable=False"]:
         """Active workspace showing in the window"""
         ...
     @workspace.setter
-    def workspace(self, value: Annotated['WorkSpace', "is_animatable=False"]):
+    def workspace(self, value: Annotated['WorkSpace', "is_animatable=False"]) -> None:
         ...
     @property
     def screen(self) -> Annotated['Screen', "is_animatable=False"]:
         """Active workspace screen showing in the window"""
         ...
     @screen.setter
-    def screen(self, value: Annotated['Screen', "is_animatable=False"]):
+    def screen(self, value: Annotated['Screen', "is_animatable=False"]) -> None:
         ...
     @property
     def view_layer(self) -> Annotated['ViewLayer', "is_animatable=False"]:
         """The active workspace view layer showing in the window"""
         ...
     @view_layer.setter
-    def view_layer(self, value: Annotated['ViewLayer', "is_animatable=False"]):
+    def view_layer(self, value: Annotated['ViewLayer', "is_animatable=False"]) -> None:
         ...
     @property
     def x(self) -> Annotated[int, "step=1"]:

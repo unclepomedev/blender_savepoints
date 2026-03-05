@@ -36,7 +36,7 @@ class WindowManager(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -67,14 +67,14 @@ class WindowManager(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -93,7 +93,7 @@ class WindowManager(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -104,7 +104,7 @@ class WindowManager(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -123,7 +123,7 @@ class WindowManager(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -158,14 +158,14 @@ class WindowManager(ID):
         """Number of extensions with available update"""
         ...
     @extensions_updates.setter
-    def extensions_updates(self, value: Annotated[int, "step=1"]):
+    def extensions_updates(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def extensions_blocked(self) -> Annotated[int, "step=1"]:
         """Number of installed extensions which are blocked"""
         ...
     @extensions_blocked.setter
-    def extensions_blocked(self, value: Annotated[int, "step=1"]):
+    def extensions_blocked(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def is_interface_locked(self) -> bool:
@@ -176,7 +176,7 @@ class WindowManager(ID):
         """Name for new preset"""
         ...
     @preset_name.setter
-    def preset_name(self, value: Annotated[str, "is_animatable=False"]):
+    def preset_name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def asset_path_dummy(self) -> Annotated[str, "is_animatable=False"]:
@@ -187,28 +187,28 @@ class WindowManager(ID):
         """Filter by add-on name, author & category"""
         ...
     @addon_search.setter
-    def addon_search(self, value: Annotated[str, "is_animatable=False"]):
+    def addon_search(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def addon_filter(self) -> str:
         """Filter add-ons by category"""
         ...
     @addon_filter.setter
-    def addon_filter(self, value: str):
+    def addon_filter(self, value: str) -> None:
         ...
     @property
     def addon_support(self) -> Annotated[set[str], "is_animatable=False"]:
         """Display support level"""
         ...
     @addon_support.setter
-    def addon_support(self, value: Annotated[set[str], "is_animatable=False"]):
+    def addon_support(self, value: Annotated[set[str], "is_animatable=False"]) -> None:
         ...
     @property
     def poselib_previous_action(self) -> Annotated[Optional['Action'], "is_animatable=False"]:
 
         ...
     @poselib_previous_action.setter
-    def poselib_previous_action(self, value: Annotated[Optional['Action'], "is_animatable=False"]):
+    def poselib_previous_action(self, value: Annotated[Optional['Action'], "is_animatable=False"]) -> None:
         ...
     @property
     def addon_tags(self) -> Annotated[bpy_prop_collection['BlExtDummyGroup'], "is_animatable=False"]:
@@ -223,28 +223,28 @@ class WindowManager(ID):
         """Filter by extension name, author & category"""
         ...
     @extension_search.setter
-    def extension_search(self, value: Annotated[str, "is_animatable=False"]):
+    def extension_search(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def extension_type(self) -> Literal['ALL', 'ADDON', 'THEME']:
         """Show extensions by type"""
         ...
     @extension_type.setter
-    def extension_type(self, value: Literal['ALL', 'ADDON', 'THEME']):
+    def extension_type(self, value: Literal['ALL', 'ADDON', 'THEME']) -> None:
         ...
     @property
     def extension_show_panel_installed(self) -> bool:
         """Only show installed extensions"""
         ...
     @extension_show_panel_installed.setter
-    def extension_show_panel_installed(self, value: bool):
+    def extension_show_panel_installed(self, value: bool) -> None:
         ...
     @property
     def extension_show_panel_available(self) -> bool:
         """Only show installed extensions"""
         ...
     @extension_show_panel_available.setter
-    def extension_show_panel_available(self, value: bool):
+    def extension_show_panel_available(self, value: bool) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

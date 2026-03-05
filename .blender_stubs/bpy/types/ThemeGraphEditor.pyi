@@ -28,33 +28,33 @@ class ThemeGraphEditor(bpy_struct):
 
         ...
     @grid.setter
-    def grid(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def grid(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def vertex(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @vertex.setter
-    def vertex(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def vertex(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def vertex_select(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @vertex_select.setter
-    def vertex_select(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def vertex_select(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def vertex_active(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @vertex_active.setter
-    def vertex_active(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def vertex_active(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def vertex_size(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
 
         ...
     @vertex_size.setter
-    def vertex_size(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]):
+    def vertex_size(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]) -> None:
         ...

@@ -25,7 +25,7 @@ class MeshSkinVertexLayer(bpy_struct):
         """Name of skin layer"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['MeshSkinVertex'], "is_animatable=False"]:

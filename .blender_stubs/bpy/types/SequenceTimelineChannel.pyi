@@ -23,19 +23,19 @@ class SequenceTimelineChannel(bpy_struct):
 
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def lock(self) -> bool:
 
         ...
     @lock.setter
-    def lock(self, value: bool):
+    def lock(self, value: bool) -> None:
         ...
     @property
     def mute(self) -> bool:
 
         ...
     @mute.setter
-    def mute(self, value: bool):
+    def mute(self, value: bool) -> None:
         ...

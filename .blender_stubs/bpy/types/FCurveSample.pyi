@@ -23,12 +23,12 @@ class FCurveSample(bpy_struct):
         """Selection status"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...
     @property
     def co(self) -> Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]:
         """Point coordinates"""
         ...
     @co.setter
-    def co(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]):
+    def co(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]) -> None:
         ...

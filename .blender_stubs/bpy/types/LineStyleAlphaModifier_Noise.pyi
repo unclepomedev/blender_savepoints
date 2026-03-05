@@ -24,7 +24,7 @@ class LineStyleAlphaModifier_Noise(LineStyleAlphaModifier):
         """Name of the modifier"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['ALONG_STROKE', 'CREASE_ANGLE', 'CURVATURE_3D', 'DISTANCE_FROM_CAMERA', 'DISTANCE_FROM_OBJECT', 'MATERIAL', 'NOISE', 'TANGENT']:
@@ -35,42 +35,42 @@ class LineStyleAlphaModifier_Noise(LineStyleAlphaModifier):
         """Specify how the modifier value is blended into the base value"""
         ...
     @blend.setter
-    def blend(self, value: Literal['MIX', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE', 'DIFFERENCE', 'MINIMUM', 'MAXIMUM']):
+    def blend(self, value: Literal['MIX', 'ADD', 'SUBTRACT', 'MULTIPLY', 'DIVIDE', 'DIFFERENCE', 'MINIMUM', 'MAXIMUM']) -> None:
         ...
     @property
     def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Influence factor by which the modifier changes the property"""
         ...
     @influence.setter
-    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use(self) -> bool:
         """Enable or disable this modifier during stroke rendering"""
         ...
     @use.setter
-    def use(self, value: bool):
+    def use(self, value: bool) -> None:
         ...
     @property
     def expanded(self) -> bool:
         """True if the modifier tab is expanded"""
         ...
     @expanded.setter
-    def expanded(self, value: bool):
+    def expanded(self, value: bool) -> None:
         ...
     @property
     def mapping(self) -> Literal['LINEAR', 'CURVE']:
         """Select the mapping type"""
         ...
     @mapping.setter
-    def mapping(self, value: Literal['LINEAR', 'CURVE']):
+    def mapping(self, value: Literal['LINEAR', 'CURVE']) -> None:
         ...
     @property
     def invert(self) -> bool:
         """Invert the fade-out direction of the linear mapping"""
         ...
     @invert.setter
-    def invert(self, value: bool):
+    def invert(self, value: bool) -> None:
         ...
     @property
     def curve(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
@@ -81,19 +81,19 @@ class LineStyleAlphaModifier_Noise(LineStyleAlphaModifier):
         """Amplitude of the noise"""
         ...
     @amplitude.setter
-    def amplitude(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def amplitude(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def period(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Period of the noise"""
         ...
     @period.setter
-    def period(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def period(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def seed(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Seed for the noise generation"""
         ...
     @seed.setter
-    def seed(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def seed(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...

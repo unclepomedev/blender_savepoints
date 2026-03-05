@@ -23,19 +23,19 @@ class ColorRampElement(bpy_struct):
         """Set color of selected color stop"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def alpha(self) -> Annotated[float, "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Set alpha of selected color stop"""
         ...
     @alpha.setter
-    def alpha(self, value: Annotated[float, "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def alpha(self, value: Annotated[float, "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def position(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Set position of selected color stop"""
         ...
     @position.setter
-    def position(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def position(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...

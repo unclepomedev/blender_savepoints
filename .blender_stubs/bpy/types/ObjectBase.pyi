@@ -28,12 +28,12 @@ class ObjectBase(bpy_struct):
         """Object base selection state"""
         ...
     @select.setter
-    def select(self, value: Annotated[bool, "is_animatable=False"]):
+    def select(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def hide_viewport(self) -> Annotated[bool, "is_animatable=False"]:
         """Temporarily hide in viewport"""
         ...
     @hide_viewport.setter
-    def hide_viewport(self, value: Annotated[bool, "is_animatable=False"]):
+    def hide_viewport(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...

@@ -26,35 +26,35 @@ class MaskSpline(bpy_struct):
         """The method used for calculating the feather offset"""
         ...
     @offset_mode.setter
-    def offset_mode(self, value: Literal['EVEN', 'SMOOTH']):
+    def offset_mode(self, value: Literal['EVEN', 'SMOOTH']) -> None:
         ...
     @property
     def weight_interpolation(self) -> Literal['LINEAR', 'EASE']:
         """The type of weight interpolation for spline"""
         ...
     @weight_interpolation.setter
-    def weight_interpolation(self, value: Literal['LINEAR', 'EASE']):
+    def weight_interpolation(self, value: Literal['LINEAR', 'EASE']) -> None:
         ...
     @property
     def use_cyclic(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this spline a closed loop"""
         ...
     @use_cyclic.setter
-    def use_cyclic(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_cyclic(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_fill(self) -> Annotated[bool, "is_animatable=False"]:
         """Make this spline filled"""
         ...
     @use_fill.setter
-    def use_fill(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_fill(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_self_intersection_check(self) -> Annotated[bool, "is_animatable=False"]:
         """Prevent feather from self-intersections"""
         ...
     @use_self_intersection_check.setter
-    def use_self_intersection_check(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_self_intersection_check(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def points(self) -> Annotated['MaskSplinePoints', "is_animatable=False"]:

@@ -26,56 +26,56 @@ class Particle(bpy_struct):
 
         ...
     @location.setter
-    def location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def velocity(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]:
 
         ...
     @velocity.setter
-    def velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]):
+    def velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def angular_velocity(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]:
 
         ...
     @angular_velocity.setter
-    def angular_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]):
+    def angular_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def rotation(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]:
 
         ...
     @rotation.setter
-    def rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]):
+    def rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def prev_location(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
 
         ...
     @prev_location.setter
-    def prev_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+    def prev_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def prev_velocity(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]:
 
         ...
     @prev_velocity.setter
-    def prev_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]):
+    def prev_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def prev_angular_velocity(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]:
 
         ...
     @prev_angular_velocity.setter
-    def prev_angular_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]):
+    def prev_angular_velocity(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def prev_rotation(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]:
 
         ...
     @prev_rotation.setter
-    def prev_rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]):
+    def prev_rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def hair_keys(self) -> Annotated[bpy_prop_collection['ParticleHairKey'], "is_animatable=False"]:
@@ -90,28 +90,28 @@ class Particle(bpy_struct):
 
         ...
     @birth_time.setter
-    def birth_time(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]):
+    def birth_time(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def lifetime(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]:
 
         ...
     @lifetime.setter
-    def lifetime(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]):
+    def lifetime(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def die_time(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]:
 
         ...
     @die_time.setter
-    def die_time(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]):
+    def die_time(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def size(self) -> Annotated[float, "step=10.0", "precision=3"]:
 
         ...
     @size.setter
-    def size(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def size(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def is_exist(self) -> bool:
@@ -126,6 +126,6 @@ class Particle(bpy_struct):
 
         ...
     @alive_state.setter
-    def alive_state(self, value: Literal['DEAD', 'UNBORN', 'ALIVE', 'DYING']):
+    def alive_state(self, value: Literal['DEAD', 'UNBORN', 'ALIVE', 'DYING']) -> None:
         ...
     def uv_on_emitter(self, *args, **kwargs) -> Any: ...

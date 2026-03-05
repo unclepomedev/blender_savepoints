@@ -48,21 +48,21 @@ class Theme(bpy_struct):
         """Name of the theme"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def filepath(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
         """The path to the preset loaded into this theme (if any)"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def theme_area(self) -> Literal['USER_INTERFACE', 'STYLE', 'REGIONS', 'COMMON', 'VIEW_3D', 'DOPESHEET_EDITOR', 'FILE_BROWSER', 'GRAPH_EDITOR', 'IMAGE_EDITOR', 'INFO', 'CLIP_EDITOR', 'NODE_EDITOR', 'NLA_EDITOR', 'OUTLINER', 'PREFERENCES', 'PROPERTIES', 'CONSOLE', 'SPREADSHEET', 'STATUSBAR', 'TEXT_EDITOR', 'TOPBAR', 'SEQUENCE_EDITOR', 'BONE_COLOR_SETS']:
 
         ...
     @theme_area.setter
-    def theme_area(self, value: Literal['USER_INTERFACE', 'STYLE', 'REGIONS', 'COMMON', 'VIEW_3D', 'DOPESHEET_EDITOR', 'FILE_BROWSER', 'GRAPH_EDITOR', 'IMAGE_EDITOR', 'INFO', 'CLIP_EDITOR', 'NODE_EDITOR', 'NLA_EDITOR', 'OUTLINER', 'PREFERENCES', 'PROPERTIES', 'CONSOLE', 'SPREADSHEET', 'STATUSBAR', 'TEXT_EDITOR', 'TOPBAR', 'SEQUENCE_EDITOR', 'BONE_COLOR_SETS']):
+    def theme_area(self, value: Literal['USER_INTERFACE', 'STYLE', 'REGIONS', 'COMMON', 'VIEW_3D', 'DOPESHEET_EDITOR', 'FILE_BROWSER', 'GRAPH_EDITOR', 'IMAGE_EDITOR', 'INFO', 'CLIP_EDITOR', 'NODE_EDITOR', 'NLA_EDITOR', 'OUTLINER', 'PREFERENCES', 'PROPERTIES', 'CONSOLE', 'SPREADSHEET', 'STATUSBAR', 'TEXT_EDITOR', 'TOPBAR', 'SEQUENCE_EDITOR', 'BONE_COLOR_SETS']) -> None:
         ...
     @property
     def user_interface(self) -> Annotated['ThemeUserInterface', "is_animatable=False"]:

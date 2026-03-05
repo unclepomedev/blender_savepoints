@@ -23,33 +23,33 @@ class UserSolidLight(bpy_struct):
         """Enable this light in solid shading mode"""
         ...
     @use.setter
-    def use(self, value: bool):
+    def use(self, value: bool) -> None:
         ...
     @property
     def smooth(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Smooth the lighting from this light"""
         ...
     @smooth.setter
-    def smooth(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def smooth(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def direction(self) -> Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]:
         """Direction that the light is shining"""
         ...
     @direction.setter
-    def direction(self, value: Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]):
+    def direction(self, value: Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def specular_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color of the light's specular highlight"""
         ...
     @specular_color.setter
-    def specular_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def specular_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def diffuse_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color of the light's diffuse highlight"""
         ...
     @diffuse_color.setter
-    def diffuse_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def diffuse_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...

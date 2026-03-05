@@ -26,70 +26,70 @@ class PropertyGroupItem(bpy_struct):
 
         ...
     @string.setter
-    def string(self, value: Annotated[str, "is_animatable=False"]):
+    def string(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def int(self) -> Annotated[int, "step=1"]:
 
         ...
     @int.setter
-    def int(self, value: Annotated[int, "step=1"]):
+    def int(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def int_array(self) -> Annotated[list[int], "step=1"]:
 
         ...
     @int_array.setter
-    def int_array(self, value: Annotated[list[int], "step=1"]):
+    def int_array(self, value: Annotated[list[int], "step=1"]) -> None:
         ...
     @property
     def float(self) -> Annotated[float, "step=10.0", "precision=3"]:
 
         ...
     @float.setter
-    def float(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def float(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def float_array(self) -> Annotated[list[float], "step=10.0", "precision=3"]:
 
         ...
     @float_array.setter
-    def float_array(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+    def float_array(self, value: Annotated[list[float], "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def double(self) -> Annotated[float, "step=10.0", "precision=3"]:
 
         ...
     @double.setter
-    def double(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def double(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def double_array(self) -> Annotated[list[float], "step=10.0", "precision=3"]:
 
         ...
     @double_array.setter
-    def double_array(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+    def double_array(self, value: Annotated[list[float], "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def bool(self) -> bool:
 
         ...
     @bool.setter
-    def bool(self, value: bool):
+    def bool(self, value: bool) -> None:
         ...
     @property
     def bool_array(self) -> list[bool]:
 
         ...
     @bool_array.setter
-    def bool_array(self, value: list[bool]):
+    def bool_array(self, value: list[bool]) -> None:
         ...
     @property
     def enum(self) -> Literal['DEFAULT']:
 
         ...
     @enum.setter
-    def enum(self, value: Literal['DEFAULT']):
+    def enum(self, value: Literal['DEFAULT']) -> None:
         ...
     @property
     def group(self) -> Annotated[Optional['PropertyGroup'], "is_animatable=False"]:
@@ -108,5 +108,5 @@ class PropertyGroupItem(bpy_struct):
 
         ...
     @id.setter
-    def id(self, value: Annotated[Optional['ID'], "is_animatable=False"]):
+    def id(self, value: Annotated[Optional['ID'], "is_animatable=False"]) -> None:
         ...

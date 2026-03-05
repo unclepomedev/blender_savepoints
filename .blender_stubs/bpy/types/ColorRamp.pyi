@@ -30,20 +30,20 @@ class ColorRamp(bpy_struct):
         """Set interpolation between color stops"""
         ...
     @interpolation.setter
-    def interpolation(self, value: Literal['EASE', 'CARDINAL', 'LINEAR', 'B_SPLINE', 'CONSTANT']):
+    def interpolation(self, value: Literal['EASE', 'CARDINAL', 'LINEAR', 'B_SPLINE', 'CONSTANT']) -> None:
         ...
     @property
     def hue_interpolation(self) -> Literal['NEAR', 'FAR', 'CW', 'CCW']:
         """Set color interpolation"""
         ...
     @hue_interpolation.setter
-    def hue_interpolation(self, value: Literal['NEAR', 'FAR', 'CW', 'CCW']):
+    def hue_interpolation(self, value: Literal['NEAR', 'FAR', 'CW', 'CCW']) -> None:
         ...
     @property
     def color_mode(self) -> Literal['RGB', 'HSV', 'HSL']:
         """Set color mode to use for interpolation"""
         ...
     @color_mode.setter
-    def color_mode(self, value: Literal['RGB', 'HSV', 'HSL']):
+    def color_mode(self, value: Literal['RGB', 'HSV', 'HSL']) -> None:
         ...
     def evaluate(self, *args, **kwargs) -> Any: ...

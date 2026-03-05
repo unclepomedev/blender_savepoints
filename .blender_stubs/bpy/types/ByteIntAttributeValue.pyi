@@ -23,5 +23,5 @@ class ByteIntAttributeValue(bpy_struct):
 
         ...
     @value.setter
-    def value(self, value: Annotated[int, "step=1"]):
+    def value(self, value: Annotated[int, "step=1"]) -> None:
         ...

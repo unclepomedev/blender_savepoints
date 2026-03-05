@@ -23,14 +23,14 @@ class MeshLoop(bpy_struct):
         """Vertex index"""
         ...
     @vertex_index.setter
-    def vertex_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def vertex_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def edge_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
         """Edge index"""
         ...
     @edge_index.setter
-    def edge_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def edge_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:

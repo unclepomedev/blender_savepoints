@@ -23,26 +23,26 @@ class CurveProfilePoint(bpy_struct):
         """X/Y coordinates of the path point"""
         ...
     @location.setter
-    def location(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def location(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def handle_type_1(self) -> Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']:
         """Path interpolation at this point"""
         ...
     @handle_type_1.setter
-    def handle_type_1(self, value: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']):
+    def handle_type_1(self, value: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']) -> None:
         ...
     @property
     def handle_type_2(self) -> Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']:
         """Path interpolation at this point"""
         ...
     @handle_type_2.setter
-    def handle_type_2(self, value: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']):
+    def handle_type_2(self, value: Literal['AUTO', 'VECTOR', 'FREE', 'ALIGN']) -> None:
         ...
     @property
     def select(self) -> bool:
         """Selection state of the path point"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...

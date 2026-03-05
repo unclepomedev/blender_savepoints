@@ -23,5 +23,5 @@ class CollectionLightLinking(bpy_struct):
         """Light or shadow receiving state of the object or collection"""
         ...
     @link_state.setter
-    def link_state(self, value: Annotated[Literal['INCLUDE', 'EXCLUDE'], "is_animatable=False"]):
+    def link_state(self, value: Annotated[Literal['INCLUDE', 'EXCLUDE'], "is_animatable=False"]) -> None:
         ...

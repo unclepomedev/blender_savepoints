@@ -30,7 +30,7 @@ class Light(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -61,14 +61,14 @@ class Light(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -87,7 +87,7 @@ class Light(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -98,7 +98,7 @@ class Light(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -117,7 +117,7 @@ class Light(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -132,28 +132,28 @@ class Light(ID):
         """Type of light"""
         ...
     @type.setter
-    def type(self, value: Literal['POINT', 'SUN', 'SPOT', 'AREA']):
+    def type(self, value: Literal['POINT', 'SUN', 'SPOT', 'AREA']) -> None:
         ...
     @property
     def use_temperature(self) -> bool:
         """Use blackbody temperature to define a natural light color"""
         ...
     @use_temperature.setter
-    def use_temperature(self, value: bool):
+    def use_temperature(self, value: bool) -> None:
         ...
     @property
     def color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Light color"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def temperature(self) -> Annotated[float, "subtype='COLOR_TEMPERATURE'", "unit='COLOR_TEMPERATURE'", "step=400.0", "precision=1"]:
         """Light color temperature in Kelvin"""
         ...
     @temperature.setter
-    def temperature(self, value: Annotated[float, "subtype='COLOR_TEMPERATURE'", "unit='COLOR_TEMPERATURE'", "step=400.0", "precision=1"]):
+    def temperature(self, value: Annotated[float, "subtype='COLOR_TEMPERATURE'", "unit='COLOR_TEMPERATURE'", "step=400.0", "precision=1"]) -> None:
         ...
     @property
     def temperature_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
@@ -164,63 +164,63 @@ class Light(ID):
         """Specular reflection multiplier"""
         ...
     @specular_factor.setter
-    def specular_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+    def specular_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]) -> None:
         ...
     @property
     def diffuse_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]:
         """Diffuse reflection multiplier"""
         ...
     @diffuse_factor.setter
-    def diffuse_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+    def diffuse_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]) -> None:
         ...
     @property
     def transmission_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]:
         """Transmission light multiplier"""
         ...
     @transmission_factor.setter
-    def transmission_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+    def transmission_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]) -> None:
         ...
     @property
     def volume_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]:
         """Volume light multiplier"""
         ...
     @volume_factor.setter
-    def volume_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]):
+    def volume_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=0.009999999776482582", "precision=2"]) -> None:
         ...
     @property
     def use_custom_distance(self) -> bool:
         """Use custom attenuation distance instead of global light threshold"""
         ...
     @use_custom_distance.setter
-    def use_custom_distance(self, value: bool):
+    def use_custom_distance(self, value: bool) -> None:
         ...
     @property
     def cutoff_distance(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]:
         """Distance at which the light influence will be set to 0"""
         ...
     @cutoff_distance.setter
-    def cutoff_distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]):
+    def cutoff_distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def use_shadow(self) -> bool:
 
         ...
     @use_shadow.setter
-    def use_shadow(self, value: bool):
+    def use_shadow(self, value: bool) -> None:
         ...
     @property
     def exposure(self) -> Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]:
         """Scales the power of the light exponentially, multiplying the intensity by 2^exposure"""
         ...
     @exposure.setter
-    def exposure(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]):
+    def exposure(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def normalize(self) -> Annotated[bool, "is_animatable=False"]:
         """Normalize intensity by light area, for consistent total light output regardless of size and shape"""
         ...
     @normalize.setter
-    def normalize(self, value: Annotated[bool, "is_animatable=False"]):
+    def normalize(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
@@ -231,7 +231,7 @@ class Light(ID):
         """Use shader nodes to render the light"""
         ...
     @use_nodes.setter
-    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:

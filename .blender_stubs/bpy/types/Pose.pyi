@@ -31,7 +31,7 @@ class Pose(bpy_struct):
         """Selection of IK solver for IK chain"""
         ...
     @ik_solver.setter
-    def ik_solver(self, value: Literal['LEGACY', 'ITASC']):
+    def ik_solver(self, value: Literal['LEGACY', 'ITASC']) -> None:
         ...
     @property
     def ik_param(self) -> Annotated[Optional['IKParam'], "is_animatable=False"]:
@@ -42,21 +42,21 @@ class Pose(bpy_struct):
         """Apply changes to matching bone on opposite side of X-Axis"""
         ...
     @use_mirror_x.setter
-    def use_mirror_x(self, value: bool):
+    def use_mirror_x(self, value: bool) -> None:
         ...
     @property
     def use_mirror_relative(self) -> bool:
         """Apply relative transformations in X-mirror mode (not supported with Auto IK)"""
         ...
     @use_mirror_relative.setter
-    def use_mirror_relative(self, value: bool):
+    def use_mirror_relative(self, value: bool) -> None:
         ...
     @property
     def use_auto_ik(self) -> bool:
         """Add temporary IK constraints while grabbing bones in Pose Mode"""
         ...
     @use_auto_ik.setter
-    def use_auto_ik(self, value: bool):
+    def use_auto_ik(self, value: bool) -> None:
         ...
     @property
     def animation_visualization(self) -> Annotated['AnimViz', "is_animatable=False"]:

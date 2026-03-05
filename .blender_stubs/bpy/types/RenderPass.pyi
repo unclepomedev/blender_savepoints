@@ -39,7 +39,7 @@ class RenderPass(bpy_struct):
 
         ...
     @rect.setter
-    def rect(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+    def rect(self, value: Annotated[list[float], "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def view_id(self) -> Annotated[int, "step=1"]:

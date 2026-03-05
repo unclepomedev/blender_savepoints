@@ -35,7 +35,7 @@ class WorkSpace(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -66,14 +66,14 @@ class WorkSpace(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -92,7 +92,7 @@ class WorkSpace(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -103,7 +103,7 @@ class WorkSpace(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -122,7 +122,7 @@ class WorkSpace(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -149,49 +149,49 @@ class WorkSpace(ID):
         """Switch to this object mode when activating the workspace"""
         ...
     @object_mode.setter
-    def object_mode(self, value: Literal['OBJECT', 'EDIT', 'POSE', 'SCULPT', 'VERTEX_PAINT', 'WEIGHT_PAINT', 'TEXTURE_PAINT', 'PARTICLE_EDIT', 'EDIT_GPENCIL', 'SCULPT_GREASE_PENCIL', 'PAINT_GREASE_PENCIL', 'VERTEX_GREASE_PENCIL', 'WEIGHT_GREASE_PENCIL']):
+    def object_mode(self, value: Literal['OBJECT', 'EDIT', 'POSE', 'SCULPT', 'VERTEX_PAINT', 'WEIGHT_PAINT', 'TEXTURE_PAINT', 'PARTICLE_EDIT', 'EDIT_GPENCIL', 'SCULPT_GREASE_PENCIL', 'PAINT_GREASE_PENCIL', 'VERTEX_GREASE_PENCIL', 'WEIGHT_GREASE_PENCIL']) -> None:
         ...
     @property
     def use_pin_scene(self) -> bool:
         """Remember the last used scene for the workspace and switch to it whenever this workspace is activated again"""
         ...
     @use_pin_scene.setter
-    def use_pin_scene(self, value: bool):
+    def use_pin_scene(self, value: bool) -> None:
         ...
     @property
     def use_filter_by_owner(self) -> Annotated[bool, "is_animatable=False"]:
         """Filter the UI by tags"""
         ...
     @use_filter_by_owner.setter
-    def use_filter_by_owner(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_filter_by_owner(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def asset_library_reference(self) -> Literal['ALL', 'LOCAL', 'ESSENTIALS', 'CUSTOM']:
         """Active asset library to show in the UI, not used by the Asset Browser (which has its own active asset library)"""
         ...
     @asset_library_reference.setter
-    def asset_library_reference(self, value: Literal['ALL', 'LOCAL', 'ESSENTIALS', 'CUSTOM']):
+    def asset_library_reference(self, value: Literal['ALL', 'LOCAL', 'ESSENTIALS', 'CUSTOM']) -> None:
         ...
     @property
     def sequencer_scene(self) -> Annotated[Optional['Scene'], "is_animatable=False"]:
 
         ...
     @sequencer_scene.setter
-    def sequencer_scene(self, value: Annotated[Optional['Scene'], "is_animatable=False"]):
+    def sequencer_scene(self, value: Annotated[Optional['Scene'], "is_animatable=False"]) -> None:
         ...
     @property
     def use_scene_time_sync(self) -> bool:
         """Set the active scene and time based on the current scene strip"""
         ...
     @use_scene_time_sync.setter
-    def use_scene_time_sync(self, value: bool):
+    def use_scene_time_sync(self, value: bool) -> None:
         ...
     @property
     def active_addon(self) -> Annotated[int, "step=1"]:
         """Active Add-on in the Workspace Add-ons filter"""
         ...
     @active_addon.setter
-    def active_addon(self, value: Annotated[int, "step=1"]):
+    def active_addon(self, value: Annotated[int, "step=1"]) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

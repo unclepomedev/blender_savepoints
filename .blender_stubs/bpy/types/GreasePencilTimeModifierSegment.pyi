@@ -23,33 +23,33 @@ class GreasePencilTimeModifierSegment(bpy_struct):
         """Name of the dash segment"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def segment_start(self) -> Annotated[int, "step=1"]:
         """First frame of the segment"""
         ...
     @segment_start.setter
-    def segment_start(self, value: Annotated[int, "step=1"]):
+    def segment_start(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def segment_end(self) -> Annotated[int, "step=1"]:
         """Last frame of the segment"""
         ...
     @segment_end.setter
-    def segment_end(self, value: Annotated[int, "step=1"]):
+    def segment_end(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def segment_repeat(self) -> Annotated[int, "step=1"]:
         """Number of cycle repeats"""
         ...
     @segment_repeat.setter
-    def segment_repeat(self, value: Annotated[int, "step=1"]):
+    def segment_repeat(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def segment_mode(self) -> Literal['NORMAL', 'REVERSE', 'PINGPONG']:
 
         ...
     @segment_mode.setter
-    def segment_mode(self, value: Literal['NORMAL', 'REVERSE', 'PINGPONG']):
+    def segment_mode(self, value: Literal['NORMAL', 'REVERSE', 'PINGPONG']) -> None:
         ...

@@ -27,5 +27,5 @@ class ParticleDupliWeight(bpy_struct):
         """The number of times this object is repeated with respect to other objects"""
         ...
     @count.setter
-    def count(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def count(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...

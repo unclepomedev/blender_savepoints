@@ -24,196 +24,196 @@ class MaterialGPencilStyle(bpy_struct):
 
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def fill_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color for filling region bounded by each stroke"""
         ...
     @fill_color.setter
-    def fill_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def fill_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def mix_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color for mixing with primary filling color"""
         ...
     @mix_color.setter
-    def mix_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def mix_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def mix_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Mix Factor"""
         ...
     @mix_factor.setter
-    def mix_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def mix_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def mix_stroke_factor(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Mix Stroke Factor"""
         ...
     @mix_stroke_factor.setter
-    def mix_stroke_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def mix_stroke_factor(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def texture_angle(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Texture Orientation Angle"""
         ...
     @texture_angle.setter
-    def texture_angle(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def texture_angle(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def texture_scale(self) -> Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]:
         """Scale Factor for Texture"""
         ...
     @texture_scale.setter
-    def texture_scale(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]):
+    def texture_scale(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def texture_offset(self) -> Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]:
         """Shift Texture in 2d Space"""
         ...
     @texture_offset.setter
-    def texture_offset(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]):
+    def texture_offset(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def pixel_size(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Texture Pixel Size factor along the stroke"""
         ...
     @pixel_size.setter
-    def pixel_size(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def pixel_size(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def hide(self) -> bool:
         """Set color Visibility"""
         ...
     @hide.setter
-    def hide(self, value: bool):
+    def hide(self, value: bool) -> None:
         ...
     @property
     def lock(self) -> bool:
         """Protect color from further editing and/or frame changes"""
         ...
     @lock.setter
-    def lock(self, value: bool):
+    def lock(self, value: bool) -> None:
         ...
     @property
     def ghost(self) -> bool:
         """Display strokes using this color when showing onion skins"""
         ...
     @ghost.setter
-    def ghost(self, value: bool):
+    def ghost(self, value: bool) -> None:
         ...
     @property
     def texture_clamp(self) -> bool:
         """Do not repeat texture and clamp to one instance only"""
         ...
     @texture_clamp.setter
-    def texture_clamp(self, value: bool):
+    def texture_clamp(self, value: bool) -> None:
         ...
     @property
     def flip(self) -> bool:
         """Flip filling colors"""
         ...
     @flip.setter
-    def flip(self, value: bool):
+    def flip(self, value: bool) -> None:
         ...
     @property
     def use_overlap_strokes(self) -> bool:
         """Disable stencil and overlap self intersections with alpha materials"""
         ...
     @use_overlap_strokes.setter
-    def use_overlap_strokes(self, value: bool):
+    def use_overlap_strokes(self, value: bool) -> None:
         ...
     @property
     def use_stroke_holdout(self) -> bool:
         """Remove the color from underneath this stroke by using it as a mask"""
         ...
     @use_stroke_holdout.setter
-    def use_stroke_holdout(self, value: bool):
+    def use_stroke_holdout(self, value: bool) -> None:
         ...
     @property
     def use_fill_holdout(self) -> bool:
         """Remove the color from underneath this stroke by using it as a mask"""
         ...
     @use_fill_holdout.setter
-    def use_fill_holdout(self, value: bool):
+    def use_fill_holdout(self, value: bool) -> None:
         ...
     @property
     def show_stroke(self) -> bool:
         """Show stroke lines of this material"""
         ...
     @show_stroke.setter
-    def show_stroke(self, value: bool):
+    def show_stroke(self, value: bool) -> None:
         ...
     @property
     def show_fill(self) -> bool:
         """Show stroke fills of this material"""
         ...
     @show_fill.setter
-    def show_fill(self, value: bool):
+    def show_fill(self, value: bool) -> None:
         ...
     @property
     def alignment_mode(self) -> Literal['PATH', 'OBJECT', 'FIXED']:
         """Defines how align Dots and Boxes with drawing path and object rotation"""
         ...
     @alignment_mode.setter
-    def alignment_mode(self, value: Literal['PATH', 'OBJECT', 'FIXED']):
+    def alignment_mode(self, value: Literal['PATH', 'OBJECT', 'FIXED']) -> None:
         ...
     @property
     def alignment_rotation(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Additional rotation applied to dots and square texture of strokes. Only applies in texture shading mode."""
         ...
     @alignment_rotation.setter
-    def alignment_rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def alignment_rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def pass_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Index number for the "Color Index" pass"""
         ...
     @pass_index.setter
-    def pass_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def pass_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def mode(self) -> Literal['LINE', 'DOTS', 'BOX']:
         """Select line type for strokes"""
         ...
     @mode.setter
-    def mode(self, value: Literal['LINE', 'DOTS', 'BOX']):
+    def mode(self, value: Literal['LINE', 'DOTS', 'BOX']) -> None:
         ...
     @property
     def stroke_style(self) -> Literal['SOLID', 'TEXTURE']:
         """Select style used to draw strokes"""
         ...
     @stroke_style.setter
-    def stroke_style(self, value: Literal['SOLID', 'TEXTURE']):
+    def stroke_style(self, value: Literal['SOLID', 'TEXTURE']) -> None:
         ...
     @property
     def stroke_image(self) -> Annotated[Optional['Image'], "is_animatable=False"]:
 
         ...
     @stroke_image.setter
-    def stroke_image(self, value: Annotated[Optional['Image'], "is_animatable=False"]):
+    def stroke_image(self, value: Annotated[Optional['Image'], "is_animatable=False"]) -> None:
         ...
     @property
     def fill_style(self) -> Literal['SOLID', 'GRADIENT', 'TEXTURE']:
         """Select style used to fill strokes"""
         ...
     @fill_style.setter
-    def fill_style(self, value: Literal['SOLID', 'GRADIENT', 'TEXTURE']):
+    def fill_style(self, value: Literal['SOLID', 'GRADIENT', 'TEXTURE']) -> None:
         ...
     @property
     def gradient_type(self) -> Literal['LINEAR', 'RADIAL']:
         """Select type of gradient used to fill strokes"""
         ...
     @gradient_type.setter
-    def gradient_type(self, value: Literal['LINEAR', 'RADIAL']):
+    def gradient_type(self, value: Literal['LINEAR', 'RADIAL']) -> None:
         ...
     @property
     def fill_image(self) -> Annotated[Optional['Image'], "is_animatable=False"]:
 
         ...
     @fill_image.setter
-    def fill_image(self, value: Annotated[Optional['Image'], "is_animatable=False"]):
+    def fill_image(self, value: Annotated[Optional['Image'], "is_animatable=False"]) -> None:
         ...
     @property
     def is_stroke_visible(self) -> bool:

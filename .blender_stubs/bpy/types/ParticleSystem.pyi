@@ -31,14 +31,14 @@ class ParticleSystem(bpy_struct):
         """Particle system name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def settings(self) -> Annotated['ParticleSettings', "is_animatable=False"]:
         """Particle system settings"""
         ...
     @settings.setter
-    def settings(self, value: Annotated['ParticleSettings', "is_animatable=False"]):
+    def settings(self, value: Annotated['ParticleSettings', "is_animatable=False"]) -> None:
         ...
     @property
     def particles(self) -> Annotated[bpy_prop_collection['Particle'], "is_animatable=False"]:
@@ -53,14 +53,14 @@ class ParticleSystem(bpy_struct):
         """Offset in the random number table, to get a different randomized result"""
         ...
     @seed.setter
-    def seed(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def seed(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def child_seed(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Offset in the random number table for child particles, to get a different randomized result"""
         ...
     @child_seed.setter
-    def child_seed(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def child_seed(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def is_global_hair(self) -> bool:
@@ -71,7 +71,7 @@ class ParticleSystem(bpy_struct):
         """Enable hair dynamics using cloth simulation"""
         ...
     @use_hair_dynamics.setter
-    def use_hair_dynamics(self, value: bool):
+    def use_hair_dynamics(self, value: bool) -> None:
         ...
     @property
     def cloth(self) -> Annotated['ClothModifier', "is_animatable=False"]:
@@ -82,21 +82,21 @@ class ParticleSystem(bpy_struct):
         """For reactor systems, the object that has the target particle system (empty if same object)"""
         ...
     @reactor_target_object.setter
-    def reactor_target_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def reactor_target_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def reactor_target_particle_system(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """For reactor systems, index of particle system on the target object"""
         ...
     @reactor_target_particle_system.setter
-    def reactor_target_particle_system(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def reactor_target_particle_system(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def use_keyed_timing(self) -> Annotated[bool, "is_animatable=False"]:
         """Use key times"""
         ...
     @use_keyed_timing.setter
-    def use_keyed_timing(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_keyed_timing(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def targets(self) -> Annotated[bpy_prop_collection['ParticleTarget'], "is_animatable=False"]:
@@ -111,189 +111,189 @@ class ParticleSystem(bpy_struct):
 
         ...
     @active_particle_target_index.setter
-    def active_particle_target_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def active_particle_target_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def vertex_group_density(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control density"""
         ...
     @vertex_group_density.setter
-    def vertex_group_density(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_density(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_density(self) -> bool:
         """Negate the effect of the density vertex group"""
         ...
     @invert_vertex_group_density.setter
-    def invert_vertex_group_density(self, value: bool):
+    def invert_vertex_group_density(self, value: bool) -> None:
         ...
     @property
     def vertex_group_velocity(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control velocity"""
         ...
     @vertex_group_velocity.setter
-    def vertex_group_velocity(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_velocity(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_velocity(self) -> bool:
         """Negate the effect of the velocity vertex group"""
         ...
     @invert_vertex_group_velocity.setter
-    def invert_vertex_group_velocity(self, value: bool):
+    def invert_vertex_group_velocity(self, value: bool) -> None:
         ...
     @property
     def vertex_group_length(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control length"""
         ...
     @vertex_group_length.setter
-    def vertex_group_length(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_length(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_length(self) -> bool:
         """Negate the effect of the length vertex group"""
         ...
     @invert_vertex_group_length.setter
-    def invert_vertex_group_length(self, value: bool):
+    def invert_vertex_group_length(self, value: bool) -> None:
         ...
     @property
     def vertex_group_clump(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control clump"""
         ...
     @vertex_group_clump.setter
-    def vertex_group_clump(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_clump(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_clump(self) -> bool:
         """Negate the effect of the clump vertex group"""
         ...
     @invert_vertex_group_clump.setter
-    def invert_vertex_group_clump(self, value: bool):
+    def invert_vertex_group_clump(self, value: bool) -> None:
         ...
     @property
     def vertex_group_kink(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control kink"""
         ...
     @vertex_group_kink.setter
-    def vertex_group_kink(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_kink(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_kink(self) -> bool:
         """Negate the effect of the kink vertex group"""
         ...
     @invert_vertex_group_kink.setter
-    def invert_vertex_group_kink(self, value: bool):
+    def invert_vertex_group_kink(self, value: bool) -> None:
         ...
     @property
     def vertex_group_roughness_1(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control roughness 1"""
         ...
     @vertex_group_roughness_1.setter
-    def vertex_group_roughness_1(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_roughness_1(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_roughness_1(self) -> bool:
         """Negate the effect of the roughness 1 vertex group"""
         ...
     @invert_vertex_group_roughness_1.setter
-    def invert_vertex_group_roughness_1(self, value: bool):
+    def invert_vertex_group_roughness_1(self, value: bool) -> None:
         ...
     @property
     def vertex_group_roughness_2(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control roughness 2"""
         ...
     @vertex_group_roughness_2.setter
-    def vertex_group_roughness_2(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_roughness_2(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_roughness_2(self) -> bool:
         """Negate the effect of the roughness 2 vertex group"""
         ...
     @invert_vertex_group_roughness_2.setter
-    def invert_vertex_group_roughness_2(self, value: bool):
+    def invert_vertex_group_roughness_2(self, value: bool) -> None:
         ...
     @property
     def vertex_group_roughness_end(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control roughness end"""
         ...
     @vertex_group_roughness_end.setter
-    def vertex_group_roughness_end(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_roughness_end(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_roughness_end(self) -> bool:
         """Negate the effect of the roughness end vertex group"""
         ...
     @invert_vertex_group_roughness_end.setter
-    def invert_vertex_group_roughness_end(self, value: bool):
+    def invert_vertex_group_roughness_end(self, value: bool) -> None:
         ...
     @property
     def vertex_group_size(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control size"""
         ...
     @vertex_group_size.setter
-    def vertex_group_size(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_size(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_size(self) -> bool:
         """Negate the effect of the size vertex group"""
         ...
     @invert_vertex_group_size.setter
-    def invert_vertex_group_size(self, value: bool):
+    def invert_vertex_group_size(self, value: bool) -> None:
         ...
     @property
     def vertex_group_tangent(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control tangent"""
         ...
     @vertex_group_tangent.setter
-    def vertex_group_tangent(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_tangent(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_tangent(self) -> bool:
         """Negate the effect of the tangent vertex group"""
         ...
     @invert_vertex_group_tangent.setter
-    def invert_vertex_group_tangent(self, value: bool):
+    def invert_vertex_group_tangent(self, value: bool) -> None:
         ...
     @property
     def vertex_group_rotation(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control rotation"""
         ...
     @vertex_group_rotation.setter
-    def vertex_group_rotation(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_rotation(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_rotation(self) -> bool:
         """Negate the effect of the rotation vertex group"""
         ...
     @invert_vertex_group_rotation.setter
-    def invert_vertex_group_rotation(self, value: bool):
+    def invert_vertex_group_rotation(self, value: bool) -> None:
         ...
     @property
     def vertex_group_field(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control field"""
         ...
     @vertex_group_field.setter
-    def vertex_group_field(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_field(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_field(self) -> bool:
         """Negate the effect of the field vertex group"""
         ...
     @invert_vertex_group_field.setter
-    def invert_vertex_group_field(self, value: bool):
+    def invert_vertex_group_field(self, value: bool) -> None:
         ...
     @property
     def vertex_group_twist(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group to control twist"""
         ...
     @vertex_group_twist.setter
-    def vertex_group_twist(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group_twist(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group_twist(self) -> bool:
         """Negate the effect of the twist vertex group"""
         ...
     @invert_vertex_group_twist.setter
-    def invert_vertex_group_twist(self, value: bool):
+    def invert_vertex_group_twist(self, value: bool) -> None:
         ...
     @property
     def point_cache(self) -> Annotated['PointCache', "is_animatable=False"]:
@@ -308,7 +308,7 @@ class ParticleSystem(bpy_struct):
         """Use this object's coordinate system instead of global coordinate system"""
         ...
     @parent.setter
-    def parent(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def parent(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def is_editable(self) -> bool:

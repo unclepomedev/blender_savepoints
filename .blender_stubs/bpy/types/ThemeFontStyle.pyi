@@ -23,47 +23,47 @@ class ThemeFontStyle(bpy_struct):
         """Font size in points"""
         ...
     @points.setter
-    def points(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=1"]):
+    def points(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=1"]) -> None:
         ...
     @property
     def character_weight(self) -> Annotated[int, "step=50"]:
         """Weight of the characters. 100-900, 400 is normal."""
         ...
     @character_weight.setter
-    def character_weight(self, value: Annotated[int, "step=50"]):
+    def character_weight(self, value: Annotated[int, "step=50"]) -> None:
         ...
     @property
     def shadow(self) -> Annotated[int, "step=1"]:
         """Shadow type (0 none, 3, 5 blur, 6 outline)"""
         ...
     @shadow.setter
-    def shadow(self, value: Annotated[int, "step=1"]):
+    def shadow(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def shadow_offset_x(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
         """Shadow offset in pixels"""
         ...
     @shadow_offset_x.setter
-    def shadow_offset_x(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]):
+    def shadow_offset_x(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]) -> None:
         ...
     @property
     def shadow_offset_y(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
         """Shadow offset in pixels"""
         ...
     @shadow_offset_y.setter
-    def shadow_offset_y(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]):
+    def shadow_offset_y(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]) -> None:
         ...
     @property
     def shadow_alpha(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
 
         ...
     @shadow_alpha.setter
-    def shadow_alpha(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def shadow_alpha(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def shadow_value(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Shadow color in gray value"""
         ...
     @shadow_value.setter
-    def shadow_value(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def shadow_value(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...

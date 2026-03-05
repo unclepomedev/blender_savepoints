@@ -24,7 +24,7 @@ class ThemeProperties(bpy_struct):
 
         ...
     @match.setter
-    def match(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def match(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:

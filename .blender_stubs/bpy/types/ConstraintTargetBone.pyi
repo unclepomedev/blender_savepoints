@@ -24,19 +24,19 @@ class ConstraintTargetBone(bpy_struct):
         """Target armature"""
         ...
     @target.setter
-    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def subtarget(self) -> Annotated[str, "is_animatable=False"]:
         """Target armature bone"""
         ...
     @subtarget.setter
-    def subtarget(self, value: Annotated[str, "is_animatable=False"]):
+    def subtarget(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def weight(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Blending weight of this bone"""
         ...
     @weight.setter
-    def weight(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def weight(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...

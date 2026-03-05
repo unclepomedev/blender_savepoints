@@ -31,7 +31,7 @@ class KeyMap(bpy_struct):
         """Internal owner"""
         ...
     @bl_owner_id.setter
-    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_owner_id(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def space_type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
@@ -50,7 +50,7 @@ class KeyMap(bpy_struct):
         """Keymap is defined by the user"""
         ...
     @is_user_modified.setter
-    def is_user_modified(self, value: bool):
+    def is_user_modified(self, value: bool) -> None:
         ...
     @property
     def is_modal(self) -> bool:
@@ -61,14 +61,14 @@ class KeyMap(bpy_struct):
         """Expanded in the user interface"""
         ...
     @show_expanded_items.setter
-    def show_expanded_items(self, value: bool):
+    def show_expanded_items(self, value: bool) -> None:
         ...
     @property
     def show_expanded_children(self) -> bool:
         """Children expanded in the user interface"""
         ...
     @show_expanded_children.setter
-    def show_expanded_children(self, value: bool):
+    def show_expanded_children(self, value: bool) -> None:
         ...
     @property
     def modal_event_values(self) -> Annotated[bpy_prop_collection['EnumPropertyItem'], "is_animatable=False"]:

@@ -26,7 +26,7 @@ class AnnotationLayer(bpy_struct):
         """Layer name"""
         ...
     @info.setter
-    def info(self, value: Annotated[str, "is_animatable=False"]):
+    def info(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def frames(self) -> Annotated['AnnotationFrames', "is_animatable=False"]:
@@ -41,84 +41,84 @@ class AnnotationLayer(bpy_struct):
         """Annotation Layer Opacity"""
         ...
     @annotation_opacity.setter
-    def annotation_opacity(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def annotation_opacity(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Color for all strokes in this layer"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def thickness(self) -> Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]:
         """Thickness of annotation strokes"""
         ...
     @thickness.setter
-    def thickness(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]):
+    def thickness(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def use_annotation_onion_skinning(self) -> Annotated[bool, "is_animatable=False"]:
         """Display annotation onion skins before and after the current frame"""
         ...
     @use_annotation_onion_skinning.setter
-    def use_annotation_onion_skinning(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_annotation_onion_skinning(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def annotation_onion_before_range(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Maximum number of frames to show before current frame"""
         ...
     @annotation_onion_before_range.setter
-    def annotation_onion_before_range(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def annotation_onion_before_range(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def annotation_onion_after_range(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Maximum number of frames to show after current frame"""
         ...
     @annotation_onion_after_range.setter
-    def annotation_onion_after_range(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def annotation_onion_after_range(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def annotation_onion_before_color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Base color for ghosts before the active frame"""
         ...
     @annotation_onion_before_color.setter
-    def annotation_onion_before_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def annotation_onion_before_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def annotation_onion_after_color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Base color for ghosts after the active frame"""
         ...
     @annotation_onion_after_color.setter
-    def annotation_onion_after_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def annotation_onion_after_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def annotation_onion_use_custom_color(self) -> Annotated[bool, "is_animatable=False"]:
         """Use custom colors for onion skinning instead of the theme"""
         ...
     @annotation_onion_use_custom_color.setter
-    def annotation_onion_use_custom_color(self, value: Annotated[bool, "is_animatable=False"]):
+    def annotation_onion_use_custom_color(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def annotation_hide(self) -> Annotated[bool, "is_animatable=False"]:
         """Set annotation Visibility"""
         ...
     @annotation_hide.setter
-    def annotation_hide(self, value: Annotated[bool, "is_animatable=False"]):
+    def annotation_hide(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def lock(self) -> bool:
         """Protect layer from further editing and/or frame changes"""
         ...
     @lock.setter
-    def lock(self, value: bool):
+    def lock(self, value: bool) -> None:
         ...
     @property
     def lock_frame(self) -> Annotated[bool, "is_animatable=False"]:
         """Lock current frame displayed by layer"""
         ...
     @lock_frame.setter
-    def lock_frame(self, value: Annotated[bool, "is_animatable=False"]):
+    def lock_frame(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_ruler(self) -> bool:
@@ -129,12 +129,12 @@ class AnnotationLayer(bpy_struct):
         """Layer is selected for editing in the Dope Sheet"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...
     @property
     def show_in_front(self) -> bool:
         """Make the layer display in front of objects"""
         ...
     @show_in_front.setter
-    def show_in_front(self, value: bool):
+    def show_in_front(self, value: bool) -> None:
         ...

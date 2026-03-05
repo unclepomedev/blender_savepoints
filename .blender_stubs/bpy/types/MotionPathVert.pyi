@@ -23,12 +23,12 @@ class MotionPathVert(bpy_struct):
 
         ...
     @co.setter
-    def co(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def co(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def select(self) -> bool:
         """Path point is selected for editing"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...

@@ -31,7 +31,7 @@ class TexPaintSlot(bpy_struct):
         """Name of UV map"""
         ...
     @uv_layer.setter
-    def uv_layer(self, value: Annotated[str, "is_animatable=False"]):
+    def uv_layer(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def is_valid(self) -> bool:

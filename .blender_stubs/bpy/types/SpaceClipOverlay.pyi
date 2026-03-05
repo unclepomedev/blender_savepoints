@@ -23,12 +23,12 @@ class SpaceClipOverlay(bpy_struct):
         """Display overlays like cursor and annotations"""
         ...
     @show_overlays.setter
-    def show_overlays(self, value: bool):
+    def show_overlays(self, value: bool) -> None:
         ...
     @property
     def show_cursor(self) -> bool:
         """Display 2D cursor"""
         ...
     @show_cursor.setter
-    def show_cursor(self, value: bool):
+    def show_cursor(self, value: bool) -> None:
         ...

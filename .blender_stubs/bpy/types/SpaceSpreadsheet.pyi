@@ -32,63 +32,63 @@ class SpaceSpreadsheet(Space):
         """Synchronize the visible timeline range with other time-based editors"""
         ...
     @show_locked_time.setter
-    def show_locked_time(self, value: bool):
+    def show_locked_time(self, value: bool) -> None:
         ...
     @property
     def show_region_header(self) -> bool:
 
         ...
     @show_region_header.setter
-    def show_region_header(self, value: bool):
+    def show_region_header(self, value: bool) -> None:
         ...
     @property
     def show_region_footer(self) -> bool:
 
         ...
     @show_region_footer.setter
-    def show_region_footer(self, value: bool):
+    def show_region_footer(self, value: bool) -> None:
         ...
     @property
     def show_region_toolbar(self) -> bool:
 
         ...
     @show_region_toolbar.setter
-    def show_region_toolbar(self, value: bool):
+    def show_region_toolbar(self, value: bool) -> None:
         ...
     @property
     def show_region_channels(self) -> bool:
 
         ...
     @show_region_channels.setter
-    def show_region_channels(self, value: bool):
+    def show_region_channels(self, value: bool) -> None:
         ...
     @property
     def show_region_ui(self) -> bool:
 
         ...
     @show_region_ui.setter
-    def show_region_ui(self, value: bool):
+    def show_region_ui(self, value: bool) -> None:
         ...
     @property
     def is_pinned(self) -> bool:
         """Context path is pinned"""
         ...
     @is_pinned.setter
-    def is_pinned(self, value: bool):
+    def is_pinned(self, value: bool) -> None:
         ...
     @property
     def show_internal_attributes(self) -> bool:
         """Display attributes with names starting with a period that are meant for internal use"""
         ...
     @show_internal_attributes.setter
-    def show_internal_attributes(self, value: bool):
+    def show_internal_attributes(self, value: bool) -> None:
         ...
     @property
     def use_filter(self) -> bool:
 
         ...
     @use_filter.setter
-    def use_filter(self, value: bool):
+    def use_filter(self, value: bool) -> None:
         ...
     @property
     def viewer_path(self) -> Annotated[Optional['ViewerPath'], "is_animatable=False"]:
@@ -99,28 +99,28 @@ class SpaceSpreadsheet(Space):
         """Only include rows that correspond to selected elements"""
         ...
     @show_only_selected.setter
-    def show_only_selected(self, value: bool):
+    def show_only_selected(self, value: bool) -> None:
         ...
     @property
     def geometry_component_type(self) -> Literal['MESH', 'POINTCLOUD', 'CURVE', 'INSTANCES', 'GREASEPENCIL']:
         """Part of the geometry to display data from"""
         ...
     @geometry_component_type.setter
-    def geometry_component_type(self, value: Literal['MESH', 'POINTCLOUD', 'CURVE', 'INSTANCES', 'GREASEPENCIL']):
+    def geometry_component_type(self, value: Literal['MESH', 'POINTCLOUD', 'CURVE', 'INSTANCES', 'GREASEPENCIL']) -> None:
         ...
     @property
     def attribute_domain(self) -> Literal['POINT', 'EDGE', 'FACE', 'CORNER', 'CURVE', 'INSTANCE', 'LAYER']:
         """Attribute domain to display"""
         ...
     @attribute_domain.setter
-    def attribute_domain(self, value: Literal['POINT', 'EDGE', 'FACE', 'CORNER', 'CURVE', 'INSTANCE', 'LAYER']):
+    def attribute_domain(self, value: Literal['POINT', 'EDGE', 'FACE', 'CORNER', 'CURVE', 'INSTANCE', 'LAYER']) -> None:
         ...
     @property
     def object_eval_state(self) -> Literal['EVALUATED', 'ORIGINAL', 'VIEWER_NODE']:
 
         ...
     @object_eval_state.setter
-    def object_eval_state(self, value: Literal['EVALUATED', 'ORIGINAL', 'VIEWER_NODE']):
+    def object_eval_state(self, value: Literal['EVALUATED', 'ORIGINAL', 'VIEWER_NODE']) -> None:
         ...
     @property
     def tables(self) -> Annotated['SpreadsheetTables', "is_animatable=False"]:

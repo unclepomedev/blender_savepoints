@@ -25,7 +25,7 @@ class UVProjectModifier(Modifier):
         """Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
@@ -36,49 +36,49 @@ class UVProjectModifier(Modifier):
         """Display modifier in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use modifier during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display modifier in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_on_cage(self) -> bool:
         """Adjust edit cage to modifier result"""
         ...
     @show_on_cage.setter
-    def show_on_cage(self, value: bool):
+    def show_on_cage(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set modifier expanded in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def is_active(self) -> Annotated[bool, "is_animatable=False"]:
         """The active modifier in the list"""
         ...
     @is_active.setter
-    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
         """Keep the modifier at the end of the list"""
         ...
     @use_pin_to_last.setter
-    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_override_data(self) -> bool:
@@ -89,7 +89,7 @@ class UVProjectModifier(Modifier):
         """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
         ...
     @use_apply_on_spline.setter
-    def use_apply_on_spline(self, value: bool):
+    def use_apply_on_spline(self, value: bool) -> None:
         ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -104,14 +104,14 @@ class UVProjectModifier(Modifier):
         """UV map name"""
         ...
     @uv_layer.setter
-    def uv_layer(self, value: Annotated[str, "is_animatable=False"]):
+    def uv_layer(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def projector_count(self) -> Annotated[int, "step=1"]:
         """Number of projectors to use"""
         ...
     @projector_count.setter
-    def projector_count(self, value: Annotated[int, "step=1"]):
+    def projector_count(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def projectors(self) -> Annotated[bpy_prop_collection['UVProjector'], "is_animatable=False"]:
@@ -122,26 +122,26 @@ class UVProjectModifier(Modifier):
         """Horizontal aspect ratio (only used for camera projectors)"""
         ...
     @aspect_x.setter
-    def aspect_x(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def aspect_x(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def aspect_y(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Vertical aspect ratio (only used for camera projectors)"""
         ...
     @aspect_y.setter
-    def aspect_y(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def aspect_y(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def scale_x(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Horizontal scale (only used for camera projectors)"""
         ...
     @scale_x.setter
-    def scale_x(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def scale_x(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def scale_y(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Vertical scale (only used for camera projectors)"""
         ...
     @scale_y.setter
-    def scale_y(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def scale_y(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...

@@ -32,7 +32,7 @@ class NodesModifierDataBlock(bpy_struct):
 
         ...
     @id.setter
-    def id(self, value: Annotated[Optional['ID'], "is_animatable=False"]):
+    def id(self, value: Annotated[Optional['ID'], "is_animatable=False"]) -> None:
         ...
     @property
     def id_type(self) -> Annotated[Literal['ACTION', 'ARMATURE', 'BRUSH', 'CACHEFILE', 'CAMERA', 'COLLECTION', 'CURVE', 'CURVES', 'FONT', 'GREASEPENCIL', 'GREASEPENCIL_V3', 'IMAGE', 'KEY', 'LATTICE', 'LIBRARY', 'LIGHT', 'LIGHT_PROBE', 'LINESTYLE', 'MASK', 'MATERIAL', 'MESH', 'META', 'MOVIECLIP', 'NODETREE', 'OBJECT', 'PAINTCURVE', 'PALETTE', 'PARTICLE', 'POINTCLOUD', 'SCENE', 'SCREEN', 'SOUND', 'SPEAKER', 'TEXT', 'TEXTURE', 'VOLUME', 'WINDOWMANAGER', 'WORKSPACE', 'WORLD'], "is_animatable=False"]:

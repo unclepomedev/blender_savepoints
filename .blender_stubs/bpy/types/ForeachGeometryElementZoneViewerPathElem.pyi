@@ -31,5 +31,5 @@ class ForeachGeometryElementZoneViewerPathElem(ViewerPathElem):
 
         ...
     @zone_output_node_id.setter
-    def zone_output_node_id(self, value: Annotated[int, "step=1"]):
+    def zone_output_node_id(self, value: Annotated[int, "step=1"]) -> None:
         ...

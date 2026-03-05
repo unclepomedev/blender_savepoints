@@ -23,5 +23,5 @@ class AssetTag(bpy_struct):
         """The identifier that makes up this tag"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

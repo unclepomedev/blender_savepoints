@@ -24,7 +24,7 @@ class GreasePencilFrame(bpy_struct):
         """A Grease Pencil drawing"""
         ...
     @drawing.setter
-    def drawing(self, value: Annotated[Optional['GreasePencilDrawing'], "is_animatable=False"]):
+    def drawing(self, value: Annotated[Optional['GreasePencilDrawing'], "is_animatable=False"]) -> None:
         ...
     @property
     def frame_number(self) -> Annotated[int, "step=1"]:
@@ -35,12 +35,12 @@ class GreasePencilFrame(bpy_struct):
         """Frame Selection in the Dope Sheet"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...
     @property
     def keyframe_type(self) -> Annotated[Literal['KEYFRAME', 'BREAKDOWN', 'MOVING_HOLD', 'EXTREME', 'JITTER', 'GENERATED'], "is_animatable=False"]:
         """Type of keyframe"""
         ...
     @keyframe_type.setter
-    def keyframe_type(self, value: Annotated[Literal['KEYFRAME', 'BREAKDOWN', 'MOVING_HOLD', 'EXTREME', 'JITTER', 'GENERATED'], "is_animatable=False"]):
+    def keyframe_type(self, value: Annotated[Literal['KEYFRAME', 'BREAKDOWN', 'MOVING_HOLD', 'EXTREME', 'JITTER', 'GENERATED'], "is_animatable=False"]) -> None:
         ...

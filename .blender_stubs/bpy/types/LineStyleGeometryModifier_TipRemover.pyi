@@ -23,7 +23,7 @@ class LineStyleGeometryModifier_TipRemover(LineStyleGeometryModifier):
         """Name of the modifier"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['2D_OFFSET', '2D_TRANSFORM', 'BACKBONE_STRETCHER', 'BEZIER_CURVE', 'BLUEPRINT', 'GUIDING_LINES', 'PERLIN_NOISE_1D', 'PERLIN_NOISE_2D', 'POLYGONIZATION', 'SAMPLING', 'SIMPLIFICATION', 'SINUS_DISPLACEMENT', 'SPATIAL_NOISE', 'TIP_REMOVER']:
@@ -34,19 +34,19 @@ class LineStyleGeometryModifier_TipRemover(LineStyleGeometryModifier):
         """Enable or disable this modifier during stroke rendering"""
         ...
     @use.setter
-    def use(self, value: bool):
+    def use(self, value: bool) -> None:
         ...
     @property
     def expanded(self) -> bool:
         """True if the modifier tab is expanded"""
         ...
     @expanded.setter
-    def expanded(self, value: bool):
+    def expanded(self, value: bool) -> None:
         ...
     @property
     def tip_length(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Length of tips to be removed"""
         ...
     @tip_length.setter
-    def tip_length(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def tip_length(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...

@@ -25,7 +25,7 @@ class LayerObjects(bpy_struct):
         """Active object for this layer"""
         ...
     @active.setter
-    def active(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def active(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def selected(self) -> Annotated[bpy_prop_collection['Object'], "is_animatable=False"]:

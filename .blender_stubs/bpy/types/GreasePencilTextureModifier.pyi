@@ -24,7 +24,7 @@ class GreasePencilTextureModifier(Modifier):
         """Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
@@ -35,49 +35,49 @@ class GreasePencilTextureModifier(Modifier):
         """Display modifier in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use modifier during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display modifier in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_on_cage(self) -> bool:
         """Adjust edit cage to modifier result"""
         ...
     @show_on_cage.setter
-    def show_on_cage(self, value: bool):
+    def show_on_cage(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set modifier expanded in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def is_active(self) -> Annotated[bool, "is_animatable=False"]:
         """The active modifier in the list"""
         ...
     @is_active.setter
-    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
         """Keep the modifier at the end of the list"""
         ...
     @use_pin_to_last.setter
-    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_override_data(self) -> bool:
@@ -88,7 +88,7 @@ class GreasePencilTextureModifier(Modifier):
         """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
         ...
     @use_apply_on_spline.setter
-    def use_apply_on_spline(self, value: bool):
+    def use_apply_on_spline(self, value: bool) -> None:
         ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -103,138 +103,138 @@ class GreasePencilTextureModifier(Modifier):
         """Layer name"""
         ...
     @tree_node_filter.setter
-    def tree_node_filter(self, value: Annotated[str, "is_animatable=False"]):
+    def tree_node_filter(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def use_layer_pass_filter(self) -> bool:
         """Use layer pass filter"""
         ...
     @use_layer_pass_filter.setter
-    def use_layer_pass_filter(self, value: bool):
+    def use_layer_pass_filter(self, value: bool) -> None:
         ...
     @property
     def layer_pass_filter(self) -> Annotated[int, "step=1"]:
         """Layer pass filter"""
         ...
     @layer_pass_filter.setter
-    def layer_pass_filter(self, value: Annotated[int, "step=1"]):
+    def layer_pass_filter(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def invert_layer_filter(self) -> bool:
         """Invert layer filter"""
         ...
     @invert_layer_filter.setter
-    def invert_layer_filter(self, value: bool):
+    def invert_layer_filter(self, value: bool) -> None:
         ...
     @property
     def invert_layer_pass_filter(self) -> bool:
         """Invert layer pass filter"""
         ...
     @invert_layer_pass_filter.setter
-    def invert_layer_pass_filter(self, value: bool):
+    def invert_layer_pass_filter(self, value: bool) -> None:
         ...
     @property
     def use_layer_group_filter(self) -> bool:
         """Filter by layer group name"""
         ...
     @use_layer_group_filter.setter
-    def use_layer_group_filter(self, value: bool):
+    def use_layer_group_filter(self, value: bool) -> None:
         ...
     @property
     def material_filter(self) -> Annotated[Optional['Material'], "is_animatable=False"]:
         """Material used for filtering"""
         ...
     @material_filter.setter
-    def material_filter(self, value: Annotated[Optional['Material'], "is_animatable=False"]):
+    def material_filter(self, value: Annotated[Optional['Material'], "is_animatable=False"]) -> None:
         ...
     @property
     def use_material_pass_filter(self) -> bool:
         """Use material pass filter"""
         ...
     @use_material_pass_filter.setter
-    def use_material_pass_filter(self, value: bool):
+    def use_material_pass_filter(self, value: bool) -> None:
         ...
     @property
     def material_pass_filter(self) -> Annotated[int, "step=1"]:
         """Material pass"""
         ...
     @material_pass_filter.setter
-    def material_pass_filter(self, value: Annotated[int, "step=1"]):
+    def material_pass_filter(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def invert_material_filter(self) -> bool:
         """Invert material filter"""
         ...
     @invert_material_filter.setter
-    def invert_material_filter(self, value: bool):
+    def invert_material_filter(self, value: bool) -> None:
         ...
     @property
     def invert_material_pass_filter(self) -> bool:
         """Invert material pass filter"""
         ...
     @invert_material_pass_filter.setter
-    def invert_material_pass_filter(self, value: bool):
+    def invert_material_pass_filter(self, value: bool) -> None:
         ...
     @property
     def open_influence_panel(self) -> bool:
 
         ...
     @open_influence_panel.setter
-    def open_influence_panel(self, value: bool):
+    def open_influence_panel(self, value: bool) -> None:
         ...
     @property
     def uv_offset(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
         """Offset value to add to stroke UVs"""
         ...
     @uv_offset.setter
-    def uv_offset(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+    def uv_offset(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def uv_scale(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
         """Factor to scale the UVs"""
         ...
     @uv_scale.setter
-    def uv_scale(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+    def uv_scale(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]) -> None:
         ...
     @property
     def alignment_rotation(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Additional rotation applied to dots and square strokes"""
         ...
     @alignment_rotation.setter
-    def alignment_rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def alignment_rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def fill_rotation(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Additional rotation of the fill UV"""
         ...
     @fill_rotation.setter
-    def fill_rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def fill_rotation(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def fill_offset(self) -> Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]:
         """Additional offset of the fill UV"""
         ...
     @fill_offset.setter
-    def fill_offset(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]):
+    def fill_offset(self, value: Annotated[list[float], "subtype='COORDINATES'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def fill_scale(self) -> Annotated[float, "subtype='COORDINATES'", "step=10.0", "precision=3"]:
         """Additional scale of the fill UV"""
         ...
     @fill_scale.setter
-    def fill_scale(self, value: Annotated[float, "subtype='COORDINATES'", "step=10.0", "precision=3"]):
+    def fill_scale(self, value: Annotated[float, "subtype='COORDINATES'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def fit_method(self) -> Literal['CONSTANT_LENGTH', 'FIT_STROKE']:
 
         ...
     @fit_method.setter
-    def fit_method(self, value: Literal['CONSTANT_LENGTH', 'FIT_STROKE']):
+    def fit_method(self, value: Literal['CONSTANT_LENGTH', 'FIT_STROKE']) -> None:
         ...
     @property
     def mode(self) -> Literal['STROKE', 'FILL', 'STROKE_AND_FILL']:
 
         ...
     @mode.setter
-    def mode(self, value: Literal['STROKE', 'FILL', 'STROKE_AND_FILL']):
+    def mode(self, value: Literal['STROKE', 'FILL', 'STROKE_AND_FILL']) -> None:
         ...

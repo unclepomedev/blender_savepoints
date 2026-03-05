@@ -24,7 +24,7 @@ class BevelModifier(Modifier):
         """Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
@@ -35,49 +35,49 @@ class BevelModifier(Modifier):
         """Display modifier in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use modifier during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display modifier in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_on_cage(self) -> bool:
         """Adjust edit cage to modifier result"""
         ...
     @show_on_cage.setter
-    def show_on_cage(self, value: bool):
+    def show_on_cage(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set modifier expanded in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def is_active(self) -> Annotated[bool, "is_animatable=False"]:
         """The active modifier in the list"""
         ...
     @is_active.setter
-    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
         """Keep the modifier at the end of the list"""
         ...
     @use_pin_to_last.setter
-    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_override_data(self) -> bool:
@@ -88,7 +88,7 @@ class BevelModifier(Modifier):
         """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
         ...
     @use_apply_on_spline.setter
-    def use_apply_on_spline(self, value: bool):
+    def use_apply_on_spline(self, value: bool) -> None:
         ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -103,161 +103,161 @@ class BevelModifier(Modifier):
         """Bevel amount"""
         ...
     @width.setter
-    def width(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=4"]):
+    def width(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=4"]) -> None:
         ...
     @property
     def width_pct(self) -> Annotated[float, "subtype='PERCENTAGE'", "step=5.0", "precision=2"]:
         """Bevel amount for percentage method"""
         ...
     @width_pct.setter
-    def width_pct(self, value: Annotated[float, "subtype='PERCENTAGE'", "step=5.0", "precision=2"]):
+    def width_pct(self, value: Annotated[float, "subtype='PERCENTAGE'", "step=5.0", "precision=2"]) -> None:
         ...
     @property
     def segments(self) -> Annotated[int, "step=1"]:
         """Number of segments for round edges/verts"""
         ...
     @segments.setter
-    def segments(self, value: Annotated[int, "step=1"]):
+    def segments(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def affect(self) -> Literal['VERTICES', 'EDGES']:
         """Affect edges or vertices"""
         ...
     @affect.setter
-    def affect(self, value: Literal['VERTICES', 'EDGES']):
+    def affect(self, value: Literal['VERTICES', 'EDGES']) -> None:
         ...
     @property
     def limit_method(self) -> Literal['NONE', 'ANGLE', 'WEIGHT', 'VGROUP']:
 
         ...
     @limit_method.setter
-    def limit_method(self, value: Literal['NONE', 'ANGLE', 'WEIGHT', 'VGROUP']):
+    def limit_method(self, value: Literal['NONE', 'ANGLE', 'WEIGHT', 'VGROUP']) -> None:
         ...
     @property
     def edge_weight(self) -> Annotated[str, "is_animatable=False"]:
         """Attribute name for edge weight"""
         ...
     @edge_weight.setter
-    def edge_weight(self, value: Annotated[str, "is_animatable=False"]):
+    def edge_weight(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def vertex_weight(self) -> Annotated[str, "is_animatable=False"]:
         """Attribute name for vertex weight"""
         ...
     @vertex_weight.setter
-    def vertex_weight(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_weight(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def angle_limit(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=4"]:
         """Angle above which to bevel edges"""
         ...
     @angle_limit.setter
-    def angle_limit(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=4"]):
+    def angle_limit(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=4"]) -> None:
         ...
     @property
     def vertex_group(self) -> Annotated[str, "is_animatable=False"]:
         """Vertex group name"""
         ...
     @vertex_group.setter
-    def vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_vertex_group(self) -> bool:
         """Invert vertex group influence"""
         ...
     @invert_vertex_group.setter
-    def invert_vertex_group(self, value: bool):
+    def invert_vertex_group(self, value: bool) -> None:
         ...
     @property
     def use_clamp_overlap(self) -> bool:
         """Clamp the width to avoid overlap"""
         ...
     @use_clamp_overlap.setter
-    def use_clamp_overlap(self, value: bool):
+    def use_clamp_overlap(self, value: bool) -> None:
         ...
     @property
     def offset_type(self) -> Literal['OFFSET', 'WIDTH', 'DEPTH', 'PERCENT', 'ABSOLUTE']:
         """What distance Width measures"""
         ...
     @offset_type.setter
-    def offset_type(self, value: Literal['OFFSET', 'WIDTH', 'DEPTH', 'PERCENT', 'ABSOLUTE']):
+    def offset_type(self, value: Literal['OFFSET', 'WIDTH', 'DEPTH', 'PERCENT', 'ABSOLUTE']) -> None:
         ...
     @property
     def profile_type(self) -> Literal['SUPERELLIPSE', 'CUSTOM']:
         """The type of shape used to rebuild a beveled section"""
         ...
     @profile_type.setter
-    def profile_type(self, value: Literal['SUPERELLIPSE', 'CUSTOM']):
+    def profile_type(self, value: Literal['SUPERELLIPSE', 'CUSTOM']) -> None:
         ...
     @property
     def profile(self) -> Annotated[float, "subtype='FACTOR'", "step=0.05000000074505806", "precision=2"]:
         """The profile shape (0.5 = round)"""
         ...
     @profile.setter
-    def profile(self, value: Annotated[float, "subtype='FACTOR'", "step=0.05000000074505806", "precision=2"]):
+    def profile(self, value: Annotated[float, "subtype='FACTOR'", "step=0.05000000074505806", "precision=2"]) -> None:
         ...
     @property
     def material(self) -> Annotated[int, "step=1"]:
         """Material index of generated faces, -1 for automatic"""
         ...
     @material.setter
-    def material(self, value: Annotated[int, "step=1"]):
+    def material(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def loop_slide(self) -> bool:
         """Prefer sliding along edges to having even widths"""
         ...
     @loop_slide.setter
-    def loop_slide(self, value: bool):
+    def loop_slide(self, value: bool) -> None:
         ...
     @property
     def mark_seam(self) -> bool:
         """Mark Seams along beveled edges"""
         ...
     @mark_seam.setter
-    def mark_seam(self, value: bool):
+    def mark_seam(self, value: bool) -> None:
         ...
     @property
     def mark_sharp(self) -> bool:
         """Mark beveled edges as sharp"""
         ...
     @mark_sharp.setter
-    def mark_sharp(self, value: bool):
+    def mark_sharp(self, value: bool) -> None:
         ...
     @property
     def harden_normals(self) -> bool:
         """Match normals of new faces to adjacent faces"""
         ...
     @harden_normals.setter
-    def harden_normals(self, value: bool):
+    def harden_normals(self, value: bool) -> None:
         ...
     @property
     def face_strength_mode(self) -> Literal['FSTR_NONE', 'FSTR_NEW', 'FSTR_AFFECTED', 'FSTR_ALL']:
         """Whether to set face strength, and which faces to set it on"""
         ...
     @face_strength_mode.setter
-    def face_strength_mode(self, value: Literal['FSTR_NONE', 'FSTR_NEW', 'FSTR_AFFECTED', 'FSTR_ALL']):
+    def face_strength_mode(self, value: Literal['FSTR_NONE', 'FSTR_NEW', 'FSTR_AFFECTED', 'FSTR_ALL']) -> None:
         ...
     @property
     def miter_outer(self) -> Literal['MITER_SHARP', 'MITER_PATCH', 'MITER_ARC']:
         """Pattern to use for outside of miters"""
         ...
     @miter_outer.setter
-    def miter_outer(self, value: Literal['MITER_SHARP', 'MITER_PATCH', 'MITER_ARC']):
+    def miter_outer(self, value: Literal['MITER_SHARP', 'MITER_PATCH', 'MITER_ARC']) -> None:
         ...
     @property
     def miter_inner(self) -> Literal['MITER_SHARP', 'MITER_ARC']:
         """Pattern to use for inside of miters"""
         ...
     @miter_inner.setter
-    def miter_inner(self, value: Literal['MITER_SHARP', 'MITER_ARC']):
+    def miter_inner(self, value: Literal['MITER_SHARP', 'MITER_ARC']) -> None:
         ...
     @property
     def spread(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=4"]:
         """Spread distance for inner miter arcs"""
         ...
     @spread.setter
-    def spread(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=4"]):
+    def spread(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.10000000149011612", "precision=4"]) -> None:
         ...
     @property
     def custom_profile(self) -> Annotated[Optional['CurveProfile'], "is_animatable=False"]:
@@ -268,5 +268,5 @@ class BevelModifier(Modifier):
         """The method to use to create the mesh at intersections"""
         ...
     @vmesh_method.setter
-    def vmesh_method(self, value: Literal['ADJ', 'CUTOFF']):
+    def vmesh_method(self, value: Literal['ADJ', 'CUTOFF']) -> None:
         ...

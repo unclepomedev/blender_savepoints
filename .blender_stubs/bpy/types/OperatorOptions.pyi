@@ -39,5 +39,5 @@ class OperatorOptions(bpy_struct):
         """Enable to use the region under the cursor for modal execution"""
         ...
     @use_cursor_region.setter
-    def use_cursor_region(self, value: bool):
+    def use_cursor_region(self, value: bool) -> None:
         ...

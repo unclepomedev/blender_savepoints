@@ -23,19 +23,19 @@ class PreferencesApps(bpy_struct):
         """Split and join editors by dragging from corners"""
         ...
     @show_corner_split.setter
-    def show_corner_split(self, value: bool):
+    def show_corner_split(self, value: bool) -> None:
         ...
     @property
     def show_edge_resize(self) -> bool:
         """Resize editors by dragging from the edges"""
         ...
     @show_edge_resize.setter
-    def show_edge_resize(self, value: bool):
+    def show_edge_resize(self, value: bool) -> None:
         ...
     @property
     def show_regions_visibility_toggle(self) -> bool:
         """Header and side bars visibility toggles"""
         ...
     @show_regions_visibility_toggle.setter
-    def show_regions_visibility_toggle(self, value: bool):
+    def show_regions_visibility_toggle(self, value: bool) -> None:
         ...

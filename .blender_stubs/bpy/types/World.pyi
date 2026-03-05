@@ -33,7 +33,7 @@ class World(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -64,14 +64,14 @@ class World(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -90,7 +90,7 @@ class World(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -101,7 +101,7 @@ class World(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -120,7 +120,7 @@ class World(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -139,14 +139,14 @@ class World(ID):
         """The world's volume used to be rendered by EEVEE Legacy. Conversion is needed for it to render properly."""
         ...
     @use_eevee_finite_volume.setter
-    def use_eevee_finite_volume(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_eevee_finite_volume(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Color of the background"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def light_settings(self) -> Annotated['WorldLighting', "is_animatable=False"]:
@@ -167,70 +167,70 @@ class World(ID):
         ...
     @deprecated('Deprecated in 5.0.0, Removal in 6.0.0')
     @use_nodes.setter
-    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def lightgroup(self) -> Annotated[str, "is_animatable=False"]:
         """Lightgroup that the world belongs to"""
         ...
     @lightgroup.setter
-    def lightgroup(self, value: Annotated[str, "is_animatable=False"]):
+    def lightgroup(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def probe_resolution(self) -> Literal['128', '256', '512', '1024', '2048', '4096']:
         """Resolution when baked to a texture"""
         ...
     @probe_resolution.setter
-    def probe_resolution(self, value: Literal['128', '256', '512', '1024', '2048', '4096']):
+    def probe_resolution(self, value: Literal['128', '256', '512', '1024', '2048', '4096']) -> None:
         ...
     @property
     def sun_threshold(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """If non-zero, the maximum value for world contribution that will be recorded inside the world light probe. The excess contribution is converted to a sun light. This reduces the light bleeding caused by very bright light sources."""
         ...
     @sun_threshold.setter
-    def sun_threshold(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def sun_threshold(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def sun_angle(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Angular diameter of the Sun as seen from the Earth"""
         ...
     @sun_angle.setter
-    def sun_angle(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def sun_angle(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_sun_shadow(self) -> bool:
         """Enable sun shadow casting"""
         ...
     @use_sun_shadow.setter
-    def use_sun_shadow(self, value: bool):
+    def use_sun_shadow(self, value: bool) -> None:
         ...
     @property
     def sun_shadow_maximum_resolution(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.05000000074505806", "precision=4"]:
         """Maximum size of a shadow map pixel. Higher values use less memory at the cost of shadow quality."""
         ...
     @sun_shadow_maximum_resolution.setter
-    def sun_shadow_maximum_resolution(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.05000000074505806", "precision=4"]):
+    def sun_shadow_maximum_resolution(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=0.05000000074505806", "precision=4"]) -> None:
         ...
     @property
     def sun_shadow_filter_radius(self) -> Annotated[float, "step=1.0", "precision=2"]:
         """Blur shadow aliasing using Percentage Closer Filtering"""
         ...
     @sun_shadow_filter_radius.setter
-    def sun_shadow_filter_radius(self, value: Annotated[float, "step=1.0", "precision=2"]):
+    def sun_shadow_filter_radius(self, value: Annotated[float, "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def use_sun_shadow_jitter(self) -> bool:
         """Enable jittered soft shadows to increase shadow precision (disabled in viewport unless enabled in the render settings). Has a high performance impact."""
         ...
     @use_sun_shadow_jitter.setter
-    def use_sun_shadow_jitter(self, value: bool):
+    def use_sun_shadow_jitter(self, value: bool) -> None:
         ...
     @property
     def sun_shadow_jitter_overblur(self) -> Annotated[float, "subtype='PERCENTAGE'", "step=10.0", "precision=0"]:
         """Apply shadow tracing to each jittered sample to reduce under-sampling artifacts"""
         ...
     @sun_shadow_jitter_overblur.setter
-    def sun_shadow_jitter_overblur(self, value: Annotated[float, "subtype='PERCENTAGE'", "step=10.0", "precision=0"]):
+    def sun_shadow_jitter_overblur(self, value: Annotated[float, "subtype='PERCENTAGE'", "step=10.0", "precision=0"]) -> None:
         ...
     @property
     def cycles(self) -> Annotated[Optional['CyclesWorldSettings'], "is_animatable=False"]:

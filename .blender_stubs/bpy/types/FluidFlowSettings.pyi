@@ -25,194 +25,194 @@ class FluidFlowSettings(bpy_struct):
 
         ...
     @density.setter
-    def density(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=4"]):
+    def density(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=4"]) -> None:
         ...
     @property
     def smoke_color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Color of smoke"""
         ...
     @smoke_color.setter
-    def smoke_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def smoke_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def fuel_amount(self) -> Annotated[float, "step=1.0", "precision=4"]:
 
         ...
     @fuel_amount.setter
-    def fuel_amount(self, value: Annotated[float, "step=1.0", "precision=4"]):
+    def fuel_amount(self, value: Annotated[float, "step=1.0", "precision=4"]) -> None:
         ...
     @property
     def temperature(self) -> Annotated[float, "step=1.0", "precision=1"]:
         """Temperature difference to ambient temperature"""
         ...
     @temperature.setter
-    def temperature(self, value: Annotated[float, "step=1.0", "precision=1"]):
+    def temperature(self, value: Annotated[float, "step=1.0", "precision=1"]) -> None:
         ...
     @property
     def particle_system(self) -> Annotated[Optional['ParticleSystem'], "is_animatable=False"]:
         """Particle systems emitted from the object"""
         ...
     @particle_system.setter
-    def particle_system(self, value: Annotated[Optional['ParticleSystem'], "is_animatable=False"]):
+    def particle_system(self, value: Annotated[Optional['ParticleSystem'], "is_animatable=False"]) -> None:
         ...
     @property
     def flow_type(self) -> Literal['SMOKE', 'BOTH', 'FIRE', 'LIQUID']:
         """Change type of fluid in the simulation"""
         ...
     @flow_type.setter
-    def flow_type(self, value: Literal['SMOKE', 'BOTH', 'FIRE', 'LIQUID']):
+    def flow_type(self, value: Literal['SMOKE', 'BOTH', 'FIRE', 'LIQUID']) -> None:
         ...
     @property
     def flow_behavior(self) -> Literal['INFLOW', 'OUTFLOW', 'GEOMETRY']:
         """Change flow behavior in the simulation"""
         ...
     @flow_behavior.setter
-    def flow_behavior(self, value: Literal['INFLOW', 'OUTFLOW', 'GEOMETRY']):
+    def flow_behavior(self, value: Literal['INFLOW', 'OUTFLOW', 'GEOMETRY']) -> None:
         ...
     @property
     def flow_source(self) -> Literal['NONE']:
         """Change how fluid is emitted"""
         ...
     @flow_source.setter
-    def flow_source(self, value: Literal['NONE']):
+    def flow_source(self, value: Literal['NONE']) -> None:
         ...
     @property
     def use_absolute(self) -> bool:
         """Only allow given density value in emitter area and will not add up"""
         ...
     @use_absolute.setter
-    def use_absolute(self, value: bool):
+    def use_absolute(self, value: bool) -> None:
         ...
     @property
     def use_initial_velocity(self) -> bool:
         """Fluid has some initial velocity when it is emitted"""
         ...
     @use_initial_velocity.setter
-    def use_initial_velocity(self, value: bool):
+    def use_initial_velocity(self, value: bool) -> None:
         ...
     @property
     def velocity_factor(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Multiplier of source velocity passed to fluid (source velocity is non-zero only if object is moving)"""
         ...
     @velocity_factor.setter
-    def velocity_factor(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def velocity_factor(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...
     @property
     def velocity_normal(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Amount of normal directional velocity"""
         ...
     @velocity_normal.setter
-    def velocity_normal(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def velocity_normal(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...
     @property
     def velocity_random(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Amount of random velocity"""
         ...
     @velocity_random.setter
-    def velocity_random(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def velocity_random(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...
     @property
     def velocity_coord(self) -> Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]:
         """Additional initial velocity in X, Y and Z direction (added to source velocity)"""
         ...
     @velocity_coord.setter
-    def velocity_coord(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]):
+    def velocity_coord(self, value: Annotated[list[float], "subtype='VELOCITY'", "unit='VELOCITY'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def volume_density(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Controls fluid emission from within the mesh (higher value results in greater emissions from inside the mesh)"""
         ...
     @volume_density.setter
-    def volume_density(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def volume_density(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...
     @property
     def surface_distance(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Height (in domain grid units) of fluid emission above the mesh surface. Higher values result in emission further away from the mesh surface. If this value and the emitter size are smaller than the domain grid unit, fluid will not be created"""
         ...
     @surface_distance.setter
-    def surface_distance(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def surface_distance(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...
     @property
     def use_plane_init(self) -> bool:
         """Treat this object as a planar and unclosed mesh. Fluid will only be emitted from the mesh surface and based on the surface emission value."""
         ...
     @use_plane_init.setter
-    def use_plane_init(self, value: bool):
+    def use_plane_init(self, value: bool) -> None:
         ...
     @property
     def particle_size(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Particle size in simulation cells"""
         ...
     @particle_size.setter
-    def particle_size(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def particle_size(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...
     @property
     def use_particle_size(self) -> bool:
         """Set particle size in simulation cells or use nearest cell"""
         ...
     @use_particle_size.setter
-    def use_particle_size(self, value: bool):
+    def use_particle_size(self, value: bool) -> None:
         ...
     @property
     def use_inflow(self) -> bool:
         """Control when to apply fluid flow"""
         ...
     @use_inflow.setter
-    def use_inflow(self, value: bool):
+    def use_inflow(self, value: bool) -> None:
         ...
     @property
     def subframes(self) -> Annotated[int, "step=1"]:
         """Number of additional samples to take between frames to improve quality of fast moving flows"""
         ...
     @subframes.setter
-    def subframes(self, value: Annotated[int, "step=1"]):
+    def subframes(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def density_vertex_group(self) -> Annotated[str, "is_animatable=False"]:
         """Name of vertex group which determines surface emission rate"""
         ...
     @density_vertex_group.setter
-    def density_vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+    def density_vertex_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def use_texture(self) -> bool:
         """Use a texture to control emission strength"""
         ...
     @use_texture.setter
-    def use_texture(self, value: bool):
+    def use_texture(self, value: bool) -> None:
         ...
     @property
     def texture_map_type(self) -> Literal['AUTO', 'UV']:
         """Texture mapping type"""
         ...
     @texture_map_type.setter
-    def texture_map_type(self, value: Literal['AUTO', 'UV']):
+    def texture_map_type(self, value: Literal['AUTO', 'UV']) -> None:
         ...
     @property
     def uv_layer(self) -> Annotated[str, "is_animatable=False"]:
         """UV map name"""
         ...
     @uv_layer.setter
-    def uv_layer(self, value: Annotated[str, "is_animatable=False"]):
+    def uv_layer(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def noise_texture(self) -> Annotated[Optional['Texture'], "is_animatable=False"]:
         """Texture that controls emission strength"""
         ...
     @noise_texture.setter
-    def noise_texture(self, value: Annotated[Optional['Texture'], "is_animatable=False"]):
+    def noise_texture(self, value: Annotated[Optional['Texture'], "is_animatable=False"]) -> None:
         ...
     @property
     def texture_size(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Size of texture mapping"""
         ...
     @texture_size.setter
-    def texture_size(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def texture_size(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...
     @property
     def texture_offset(self) -> Annotated[float, "step=0.05000000074505806", "precision=5"]:
         """Z-offset of texture mapping"""
         ...
     @texture_offset.setter
-    def texture_offset(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]):
+    def texture_offset(self, value: Annotated[float, "step=0.05000000074505806", "precision=5"]) -> None:
         ...

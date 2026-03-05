@@ -26,28 +26,28 @@ class CurveProfile(bpy_struct):
 
         ...
     @preset.setter
-    def preset(self, value: Literal['LINE', 'SUPPORTS', 'CORNICE', 'CROWN', 'STEPS']):
+    def preset(self, value: Literal['LINE', 'SUPPORTS', 'CORNICE', 'CROWN', 'STEPS']) -> None:
         ...
     @property
     def use_clip(self) -> bool:
         """Force the path view to fit a defined boundary"""
         ...
     @use_clip.setter
-    def use_clip(self, value: bool):
+    def use_clip(self, value: bool) -> None:
         ...
     @property
     def use_sample_straight_edges(self) -> bool:
         """Sample edges with vector handles"""
         ...
     @use_sample_straight_edges.setter
-    def use_sample_straight_edges(self, value: bool):
+    def use_sample_straight_edges(self, value: bool) -> None:
         ...
     @property
     def use_sample_even_lengths(self) -> bool:
         """Sample edges with even lengths"""
         ...
     @use_sample_even_lengths.setter
-    def use_sample_even_lengths(self, value: bool):
+    def use_sample_even_lengths(self, value: bool) -> None:
         ...
     @property
     def points(self) -> Annotated['CurveProfilePoints', "is_animatable=False"]:

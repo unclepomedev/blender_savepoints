@@ -23,14 +23,14 @@ class UDIMTile(bpy_struct):
         """Tile label"""
         ...
     @label.setter
-    def label(self, value: Annotated[str, "is_animatable=False"]):
+    def label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def number(self) -> Annotated[int, "step=1"]:
         """Number of the position that this tile covers"""
         ...
     @number.setter
-    def number(self, value: Annotated[int, "step=1"]):
+    def number(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def size(self) -> Annotated[list[int], "subtype='PIXEL'", "step=1"]:
@@ -45,28 +45,28 @@ class UDIMTile(bpy_struct):
         """Generated image type"""
         ...
     @generated_type.setter
-    def generated_type(self, value: Annotated[Literal['BLANK', 'UV_GRID', 'COLOR_GRID'], "is_animatable=False"]):
+    def generated_type(self, value: Annotated[Literal['BLANK', 'UV_GRID', 'COLOR_GRID'], "is_animatable=False"]) -> None:
         ...
     @property
     def generated_width(self) -> Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]:
         """Generated image width"""
         ...
     @generated_width.setter
-    def generated_width(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]):
+    def generated_width(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def generated_height(self) -> Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]:
         """Generated image height"""
         ...
     @generated_height.setter
-    def generated_height(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]):
+    def generated_height(self, value: Annotated[int, "subtype='PIXEL'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def use_generated_float(self) -> Annotated[bool, "is_animatable=False"]:
         """Generate floating-point buffer"""
         ...
     @use_generated_float.setter
-    def use_generated_float(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_generated_float(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_generated_tile(self) -> bool:
@@ -77,5 +77,5 @@ class UDIMTile(bpy_struct):
         """Fill color for the generated image"""
         ...
     @generated_color.setter
-    def generated_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def generated_color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...

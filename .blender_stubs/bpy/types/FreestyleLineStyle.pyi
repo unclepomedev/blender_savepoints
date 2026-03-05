@@ -42,7 +42,7 @@ class FreestyleLineStyle(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -73,14 +73,14 @@ class FreestyleLineStyle(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -99,7 +99,7 @@ class FreestyleLineStyle(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -110,7 +110,7 @@ class FreestyleLineStyle(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -129,7 +129,7 @@ class FreestyleLineStyle(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -148,56 +148,56 @@ class FreestyleLineStyle(ID):
         """Active texture slot being displayed"""
         ...
     @active_texture.setter
-    def active_texture(self, value: Annotated[Optional['Texture'], "is_animatable=False"]):
+    def active_texture(self, value: Annotated[Optional['Texture'], "is_animatable=False"]) -> None:
         ...
     @property
     def active_texture_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Index of active texture slot"""
         ...
     @active_texture_index.setter
-    def active_texture_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def active_texture_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def panel(self) -> Annotated[Literal['STROKES', 'COLOR', 'ALPHA', 'THICKNESS', 'GEOMETRY', 'TEXTURE'], "is_animatable=False"]:
         """Select the property panel to be shown"""
         ...
     @panel.setter
-    def panel(self, value: Annotated[Literal['STROKES', 'COLOR', 'ALPHA', 'THICKNESS', 'GEOMETRY', 'TEXTURE'], "is_animatable=False"]):
+    def panel(self, value: Annotated[Literal['STROKES', 'COLOR', 'ALPHA', 'THICKNESS', 'GEOMETRY', 'TEXTURE'], "is_animatable=False"]) -> None:
         ...
     @property
     def color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """Base line color, possibly modified by line color modifiers"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def alpha(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Base alpha transparency, possibly modified by alpha transparency modifiers"""
         ...
     @alpha.setter
-    def alpha(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def alpha(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def thickness(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Base line thickness, possibly modified by line thickness modifiers"""
         ...
     @thickness.setter
-    def thickness(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def thickness(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def thickness_position(self) -> Literal['CENTER', 'INSIDE', 'OUTSIDE', 'RELATIVE']:
         """Thickness position of silhouettes and border edges (applicable when plain chaining is used with the Same Object option)"""
         ...
     @thickness_position.setter
-    def thickness_position(self, value: Literal['CENTER', 'INSIDE', 'OUTSIDE', 'RELATIVE']):
+    def thickness_position(self, value: Literal['CENTER', 'INSIDE', 'OUTSIDE', 'RELATIVE']) -> None:
         ...
     @property
     def thickness_ratio(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """A number between 0 (inside) and 1 (outside) specifying the relative position of stroke thickness"""
         ...
     @thickness_ratio.setter
-    def thickness_ratio(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def thickness_ratio(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def color_modifiers(self) -> Annotated['LineStyleColorModifiers', "is_animatable=False"]:
@@ -220,266 +220,266 @@ class FreestyleLineStyle(ID):
         """Enable chaining of feature edges"""
         ...
     @use_chaining.setter
-    def use_chaining(self, value: bool):
+    def use_chaining(self, value: bool) -> None:
         ...
     @property
     def chaining(self) -> Literal['PLAIN', 'SKETCHY']:
         """Select the way how feature edges are jointed to form chains"""
         ...
     @chaining.setter
-    def chaining(self, value: Literal['PLAIN', 'SKETCHY']):
+    def chaining(self, value: Literal['PLAIN', 'SKETCHY']) -> None:
         ...
     @property
     def rounds(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of rounds in a sketchy multiple touch"""
         ...
     @rounds.setter
-    def rounds(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def rounds(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def use_same_object(self) -> bool:
         """If true, only feature edges of the same object are joined"""
         ...
     @use_same_object.setter
-    def use_same_object(self, value: bool):
+    def use_same_object(self, value: bool) -> None:
         ...
     @property
     def use_split_length(self) -> bool:
         """Enable chain splitting by curvilinear 2D length"""
         ...
     @use_split_length.setter
-    def use_split_length(self, value: bool):
+    def use_split_length(self, value: bool) -> None:
         ...
     @property
     def split_length(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Curvilinear 2D length for chain splitting"""
         ...
     @split_length.setter
-    def split_length(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def split_length(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_angle_min(self) -> bool:
         """Split chains at points with angles smaller than the minimum 2D angle"""
         ...
     @use_angle_min.setter
-    def use_angle_min(self, value: bool):
+    def use_angle_min(self, value: bool) -> None:
         ...
     @property
     def angle_min(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Minimum 2D angle for splitting chains"""
         ...
     @angle_min.setter
-    def angle_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def angle_min(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_angle_max(self) -> bool:
         """Split chains at points with angles larger than the maximum 2D angle"""
         ...
     @use_angle_max.setter
-    def use_angle_max(self, value: bool):
+    def use_angle_max(self, value: bool) -> None:
         ...
     @property
     def angle_max(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
         """Maximum 2D angle for splitting chains"""
         ...
     @angle_max.setter
-    def angle_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+    def angle_max(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_length_min(self) -> bool:
         """Enable the selection of chains by a minimum 2D length"""
         ...
     @use_length_min.setter
-    def use_length_min(self, value: bool):
+    def use_length_min(self, value: bool) -> None:
         ...
     @property
     def length_min(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Minimum curvilinear 2D length for the selection of chains"""
         ...
     @length_min.setter
-    def length_min(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def length_min(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_length_max(self) -> bool:
         """Enable the selection of chains by a maximum 2D length"""
         ...
     @use_length_max.setter
-    def use_length_max(self, value: bool):
+    def use_length_max(self, value: bool) -> None:
         ...
     @property
     def length_max(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Maximum curvilinear 2D length for the selection of chains"""
         ...
     @length_max.setter
-    def length_max(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def length_max(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_chain_count(self) -> bool:
         """Enable the selection of first N chains"""
         ...
     @use_chain_count.setter
-    def use_chain_count(self, value: bool):
+    def use_chain_count(self, value: bool) -> None:
         ...
     @property
     def chain_count(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Chain count for the selection of first N chains"""
         ...
     @chain_count.setter
-    def chain_count(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def chain_count(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def use_split_pattern(self) -> bool:
         """Enable chain splitting by dashed line patterns"""
         ...
     @use_split_pattern.setter
-    def use_split_pattern(self, value: bool):
+    def use_split_pattern(self, value: bool) -> None:
         ...
     @property
     def split_dash1(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 1st dash for splitting"""
         ...
     @split_dash1.setter
-    def split_dash1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def split_dash1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def split_gap1(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 1st gap for splitting"""
         ...
     @split_gap1.setter
-    def split_gap1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def split_gap1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def split_dash2(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 2nd dash for splitting"""
         ...
     @split_dash2.setter
-    def split_dash2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def split_dash2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def split_gap2(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 2nd gap for splitting"""
         ...
     @split_gap2.setter
-    def split_gap2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def split_gap2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def split_dash3(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 3rd dash for splitting"""
         ...
     @split_dash3.setter
-    def split_dash3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def split_dash3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def split_gap3(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 3rd gap for splitting"""
         ...
     @split_gap3.setter
-    def split_gap3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def split_gap3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def material_boundary(self) -> bool:
         """If true, chains of feature edges are split at material boundaries"""
         ...
     @material_boundary.setter
-    def material_boundary(self, value: bool):
+    def material_boundary(self, value: bool) -> None:
         ...
     @property
     def use_sorting(self) -> bool:
         """Arrange the stacking order of strokes"""
         ...
     @use_sorting.setter
-    def use_sorting(self, value: bool):
+    def use_sorting(self, value: bool) -> None:
         ...
     @property
     def sort_key(self) -> Literal['DISTANCE_FROM_CAMERA', '2D_LENGTH', 'PROJECTED_X', 'PROJECTED_Y']:
         """Select the sort key to determine the stacking order of chains"""
         ...
     @sort_key.setter
-    def sort_key(self, value: Literal['DISTANCE_FROM_CAMERA', '2D_LENGTH', 'PROJECTED_X', 'PROJECTED_Y']):
+    def sort_key(self, value: Literal['DISTANCE_FROM_CAMERA', '2D_LENGTH', 'PROJECTED_X', 'PROJECTED_Y']) -> None:
         ...
     @property
     def sort_order(self) -> Literal['DEFAULT', 'REVERSE']:
         """Select the sort order"""
         ...
     @sort_order.setter
-    def sort_order(self, value: Literal['DEFAULT', 'REVERSE']):
+    def sort_order(self, value: Literal['DEFAULT', 'REVERSE']) -> None:
         ...
     @property
     def integration_type(self) -> Literal['MEAN', 'MIN', 'MAX', 'FIRST', 'LAST']:
         """Select the way how the sort key is computed for each chain"""
         ...
     @integration_type.setter
-    def integration_type(self, value: Literal['MEAN', 'MIN', 'MAX', 'FIRST', 'LAST']):
+    def integration_type(self, value: Literal['MEAN', 'MIN', 'MAX', 'FIRST', 'LAST']) -> None:
         ...
     @property
     def use_dashed_line(self) -> bool:
         """Enable or disable dashed line"""
         ...
     @use_dashed_line.setter
-    def use_dashed_line(self, value: bool):
+    def use_dashed_line(self, value: bool) -> None:
         ...
     @property
     def caps(self) -> Literal['BUTT', 'ROUND', 'SQUARE']:
         """Select the shape of both ends of strokes"""
         ...
     @caps.setter
-    def caps(self, value: Literal['BUTT', 'ROUND', 'SQUARE']):
+    def caps(self, value: Literal['BUTT', 'ROUND', 'SQUARE']) -> None:
         ...
     @property
     def dash1(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 1st dash for dashed lines"""
         ...
     @dash1.setter
-    def dash1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def dash1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def gap1(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 1st gap for dashed lines"""
         ...
     @gap1.setter
-    def gap1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def gap1(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def dash2(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 2nd dash for dashed lines"""
         ...
     @dash2.setter
-    def dash2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def dash2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def gap2(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 2nd gap for dashed lines"""
         ...
     @gap2.setter
-    def gap2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def gap2(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def dash3(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 3rd dash for dashed lines"""
         ...
     @dash3.setter
-    def dash3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def dash3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def gap3(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Length of the 3rd gap for dashed lines"""
         ...
     @gap3.setter
-    def gap3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def gap3(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def use_texture(self) -> bool:
         """Enable or disable textured strokes"""
         ...
     @use_texture.setter
-    def use_texture(self, value: bool):
+    def use_texture(self, value: bool) -> None:
         ...
     @property
     def texture_spacing(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Spacing for textures along stroke length"""
         ...
     @texture_spacing.setter
-    def texture_spacing(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def texture_spacing(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
@@ -494,7 +494,7 @@ class FreestyleLineStyle(ID):
         """Use shader nodes for the line style"""
         ...
     @use_nodes.setter
-    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_nodes(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

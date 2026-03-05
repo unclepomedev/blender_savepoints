@@ -38,7 +38,7 @@ class GreasePencil(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -69,14 +69,14 @@ class GreasePencil(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -95,7 +95,7 @@ class GreasePencil(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -106,7 +106,7 @@ class GreasePencil(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -125,7 +125,7 @@ class GreasePencil(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -164,84 +164,84 @@ class GreasePencil(ID):
         """Automatically lock all layers except the active one to avoid accidental changes"""
         ...
     @use_autolock_layers.setter
-    def use_autolock_layers(self, value: bool):
+    def use_autolock_layers(self, value: bool) -> None:
         ...
     @property
     def stroke_depth_order(self) -> Literal['2D', '3D']:
         """Defines how the strokes are ordered in 3D space (for objects not displayed 'In Front')"""
         ...
     @stroke_depth_order.setter
-    def stroke_depth_order(self, value: Literal['2D', '3D']):
+    def stroke_depth_order(self, value: Literal['2D', '3D']) -> None:
         ...
     @property
     def ghost_before_range(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Maximum number of frames to show before current frame (0 = don't show any frames before current)"""
         ...
     @ghost_before_range.setter
-    def ghost_before_range(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def ghost_before_range(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def ghost_after_range(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Maximum number of frames to show after current frame (0 = don't show any frames after current)"""
         ...
     @ghost_after_range.setter
-    def ghost_after_range(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def ghost_after_range(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def use_ghost_custom_colors(self) -> Annotated[bool, "is_animatable=False"]:
         """Use custom colors for ghost frames"""
         ...
     @use_ghost_custom_colors.setter
-    def use_ghost_custom_colors(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_ghost_custom_colors(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def before_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Base color for ghosts before the active frame"""
         ...
     @before_color.setter
-    def before_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def before_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def after_color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Base color for ghosts after the active frame"""
         ...
     @after_color.setter
-    def after_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def after_color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def onion_mode(self) -> Annotated[Literal['ABSOLUTE', 'RELATIVE', 'SELECTED'], "is_animatable=False"]:
         """Mode to display frames"""
         ...
     @onion_mode.setter
-    def onion_mode(self, value: Annotated[Literal['ABSOLUTE', 'RELATIVE', 'SELECTED'], "is_animatable=False"]):
+    def onion_mode(self, value: Annotated[Literal['ABSOLUTE', 'RELATIVE', 'SELECTED'], "is_animatable=False"]) -> None:
         ...
     @property
     def onion_keyframe_type(self) -> Annotated[Literal['ALL', 'KEYFRAME', 'BREAKDOWN', 'MOVING_HOLD', 'EXTREME', 'JITTER', 'GENERATED'], "is_animatable=False"]:
         """Type of keyframe (for filtering)"""
         ...
     @onion_keyframe_type.setter
-    def onion_keyframe_type(self, value: Annotated[Literal['ALL', 'KEYFRAME', 'BREAKDOWN', 'MOVING_HOLD', 'EXTREME', 'JITTER', 'GENERATED'], "is_animatable=False"]):
+    def onion_keyframe_type(self, value: Annotated[Literal['ALL', 'KEYFRAME', 'BREAKDOWN', 'MOVING_HOLD', 'EXTREME', 'JITTER', 'GENERATED'], "is_animatable=False"]) -> None:
         ...
     @property
     def use_onion_fade(self) -> Annotated[bool, "is_animatable=False"]:
         """Display onion keyframes with a fade in color transparency"""
         ...
     @use_onion_fade.setter
-    def use_onion_fade(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_onion_fade(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_onion_loop(self) -> Annotated[bool, "is_animatable=False"]:
         """Display onion keyframes for looping animations"""
         ...
     @use_onion_loop.setter
-    def use_onion_loop(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_onion_loop(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def onion_factor(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Change fade opacity of displayed onion frames"""
         ...
     @onion_factor.setter
-    def onion_factor(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def onion_factor(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

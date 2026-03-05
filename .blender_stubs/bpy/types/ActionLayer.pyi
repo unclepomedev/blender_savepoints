@@ -26,7 +26,7 @@ class ActionLayer(bpy_struct):
 
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def strips(self) -> Annotated['ActionStrips', "is_animatable=False"]:

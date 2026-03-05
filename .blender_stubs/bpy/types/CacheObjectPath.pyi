@@ -23,5 +23,5 @@ class CacheObjectPath(bpy_struct):
         """Object path"""
         ...
     @path.setter
-    def path(self, value: Annotated[str, "is_animatable=False"]):
+    def path(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

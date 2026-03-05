@@ -31,5 +31,5 @@ class SimulationZoneViewerPathElem(ViewerPathElem):
 
         ...
     @sim_output_node_id.setter
-    def sim_output_node_id(self, value: Annotated[int, "step=1"]):
+    def sim_output_node_id(self, value: Annotated[int, "step=1"]) -> None:
         ...

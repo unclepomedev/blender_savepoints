@@ -24,7 +24,7 @@ class ThemeSpreadsheet(bpy_struct):
         """Overlay color on every other row"""
         ...
     @row_alternate.setter
-    def row_alternate(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def row_alternate(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def space(self) -> Annotated['ThemeSpaceGeneric', "is_animatable=False"]:

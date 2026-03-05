@@ -23,12 +23,12 @@ class LibraryWeakReference(bpy_struct):
         """Path to the library .blend file"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def id_name(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
         """Full ID name in the library .blend file (including the two leading 'id type' chars)"""
         ...
     @id_name.setter
-    def id_name(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def id_name(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...

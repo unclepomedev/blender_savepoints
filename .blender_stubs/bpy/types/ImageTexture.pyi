@@ -34,7 +34,7 @@ class ImageTexture(Texture):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -65,14 +65,14 @@ class ImageTexture(Texture):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -91,7 +91,7 @@ class ImageTexture(Texture):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -102,7 +102,7 @@ class ImageTexture(Texture):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -121,7 +121,7 @@ class ImageTexture(Texture):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -136,21 +136,21 @@ class ImageTexture(Texture):
 
         ...
     @type.setter
-    def type(self, value: Literal['NONE', 'BLEND', 'CLOUDS', 'DISTORTED_NOISE', 'IMAGE', 'MAGIC', 'MARBLE', 'MUSGRAVE', 'NOISE', 'STUCCI', 'VORONOI', 'WOOD']):
+    def type(self, value: Literal['NONE', 'BLEND', 'CLOUDS', 'DISTORTED_NOISE', 'IMAGE', 'MAGIC', 'MARBLE', 'MUSGRAVE', 'NOISE', 'STUCCI', 'VORONOI', 'WOOD']) -> None:
         ...
     @property
     def use_clamp(self) -> bool:
         """Set negative texture RGB and intensity values to zero, for some uses like displacement this option can be disabled to get the full range"""
         ...
     @use_clamp.setter
-    def use_clamp(self, value: bool):
+    def use_clamp(self, value: bool) -> None:
         ...
     @property
     def use_color_ramp(self) -> bool:
         """Map the texture intensity to the color ramp. Note that the alpha value is used for image textures, enable "Calculate Alpha" for images without an alpha channel."""
         ...
     @use_color_ramp.setter
-    def use_color_ramp(self, value: bool):
+    def use_color_ramp(self, value: bool) -> None:
         ...
     @property
     def color_ramp(self) -> Annotated[Optional['ColorRamp'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
@@ -161,56 +161,56 @@ class ImageTexture(Texture):
         """Adjust the brightness of the texture"""
         ...
     @intensity.setter
-    def intensity(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def intensity(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def contrast(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Adjust the contrast of the texture"""
         ...
     @contrast.setter
-    def contrast(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def contrast(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def saturation(self) -> Annotated[float, "step=1.0", "precision=3"]:
         """Adjust the saturation of colors in the texture"""
         ...
     @saturation.setter
-    def saturation(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def saturation(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def factor_red(self) -> Annotated[float, "step=1.0", "precision=3"]:
 
         ...
     @factor_red.setter
-    def factor_red(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def factor_red(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def factor_green(self) -> Annotated[float, "step=1.0", "precision=3"]:
 
         ...
     @factor_green.setter
-    def factor_green(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def factor_green(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def factor_blue(self) -> Annotated[float, "step=1.0", "precision=3"]:
 
         ...
     @factor_blue.setter
-    def factor_blue(self, value: Annotated[float, "step=1.0", "precision=3"]):
+    def factor_blue(self, value: Annotated[float, "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def use_preview_alpha(self) -> bool:
         """Show Alpha in Preview Render"""
         ...
     @use_preview_alpha.setter
-    def use_preview_alpha(self, value: bool):
+    def use_preview_alpha(self, value: bool) -> None:
         ...
     @property
     def use_nodes(self) -> bool:
         """Make this a node-based texture"""
         ...
     @use_nodes.setter
-    def use_nodes(self, value: bool):
+    def use_nodes(self, value: bool) -> None:
         ...
     @property
     def node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
@@ -225,133 +225,133 @@ class ImageTexture(Texture):
         """Interpolate pixels using selected filter"""
         ...
     @use_interpolation.setter
-    def use_interpolation(self, value: bool):
+    def use_interpolation(self, value: bool) -> None:
         ...
     @property
     def use_flip_axis(self) -> bool:
         """Flip the texture's X and Y axis"""
         ...
     @use_flip_axis.setter
-    def use_flip_axis(self, value: bool):
+    def use_flip_axis(self, value: bool) -> None:
         ...
     @property
     def use_alpha(self) -> bool:
         """Use the alpha channel information in the image"""
         ...
     @use_alpha.setter
-    def use_alpha(self, value: bool):
+    def use_alpha(self, value: bool) -> None:
         ...
     @property
     def use_calculate_alpha(self) -> bool:
         """Calculate an alpha channel based on RGB values in the image"""
         ...
     @use_calculate_alpha.setter
-    def use_calculate_alpha(self, value: bool):
+    def use_calculate_alpha(self, value: bool) -> None:
         ...
     @property
     def invert_alpha(self) -> bool:
         """Invert all the alpha values in the image"""
         ...
     @invert_alpha.setter
-    def invert_alpha(self, value: bool):
+    def invert_alpha(self, value: bool) -> None:
         ...
     @property
     def filter_size(self) -> Annotated[float, "step=1.0", "precision=2"]:
         """Multiply the filter size used by interpolation"""
         ...
     @filter_size.setter
-    def filter_size(self, value: Annotated[float, "step=1.0", "precision=2"]):
+    def filter_size(self, value: Annotated[float, "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def extension(self) -> Literal['EXTEND', 'CLIP', 'CLIP_CUBE', 'REPEAT', 'CHECKER']:
         """How the image is extrapolated past its original bounds"""
         ...
     @extension.setter
-    def extension(self, value: Literal['EXTEND', 'CLIP', 'CLIP_CUBE', 'REPEAT', 'CHECKER']):
+    def extension(self, value: Literal['EXTEND', 'CLIP', 'CLIP_CUBE', 'REPEAT', 'CHECKER']) -> None:
         ...
     @property
     def repeat_x(self) -> Annotated[int, "step=1"]:
         """Repetition multiplier in the X direction"""
         ...
     @repeat_x.setter
-    def repeat_x(self, value: Annotated[int, "step=1"]):
+    def repeat_x(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def repeat_y(self) -> Annotated[int, "step=1"]:
         """Repetition multiplier in the Y direction"""
         ...
     @repeat_y.setter
-    def repeat_y(self, value: Annotated[int, "step=1"]):
+    def repeat_y(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def use_mirror_x(self) -> bool:
         """Mirror the image repetition on the X direction"""
         ...
     @use_mirror_x.setter
-    def use_mirror_x(self, value: bool):
+    def use_mirror_x(self, value: bool) -> None:
         ...
     @property
     def use_mirror_y(self) -> bool:
         """Mirror the image repetition on the Y direction"""
         ...
     @use_mirror_y.setter
-    def use_mirror_y(self, value: bool):
+    def use_mirror_y(self, value: bool) -> None:
         ...
     @property
     def use_checker_odd(self) -> bool:
         """Odd checker tiles"""
         ...
     @use_checker_odd.setter
-    def use_checker_odd(self, value: bool):
+    def use_checker_odd(self, value: bool) -> None:
         ...
     @property
     def use_checker_even(self) -> bool:
         """Even checker tiles"""
         ...
     @use_checker_even.setter
-    def use_checker_even(self, value: bool):
+    def use_checker_even(self, value: bool) -> None:
         ...
     @property
     def checker_distance(self) -> Annotated[float, "step=0.10000000149011612", "precision=2"]:
         """Distance between checker tiles"""
         ...
     @checker_distance.setter
-    def checker_distance(self, value: Annotated[float, "step=0.10000000149011612", "precision=2"]):
+    def checker_distance(self, value: Annotated[float, "step=0.10000000149011612", "precision=2"]) -> None:
         ...
     @property
     def crop_min_x(self) -> Annotated[float, "step=1.0", "precision=2"]:
         """Minimum X value to crop the image"""
         ...
     @crop_min_x.setter
-    def crop_min_x(self, value: Annotated[float, "step=1.0", "precision=2"]):
+    def crop_min_x(self, value: Annotated[float, "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def crop_min_y(self) -> Annotated[float, "step=1.0", "precision=2"]:
         """Minimum Y value to crop the image"""
         ...
     @crop_min_y.setter
-    def crop_min_y(self, value: Annotated[float, "step=1.0", "precision=2"]):
+    def crop_min_y(self, value: Annotated[float, "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def crop_max_x(self) -> Annotated[float, "step=1.0", "precision=2"]:
         """Maximum X value to crop the image"""
         ...
     @crop_max_x.setter
-    def crop_max_x(self, value: Annotated[float, "step=1.0", "precision=2"]):
+    def crop_max_x(self, value: Annotated[float, "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def crop_max_y(self) -> Annotated[float, "step=1.0", "precision=2"]:
         """Maximum Y value to crop the image"""
         ...
     @crop_max_y.setter
-    def crop_max_y(self, value: Annotated[float, "step=1.0", "precision=2"]):
+    def crop_max_y(self, value: Annotated[float, "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def image(self) -> Annotated[Optional['Image'], "is_animatable=False"]:
 
         ...
     @image.setter
-    def image(self, value: Annotated[Optional['Image'], "is_animatable=False"]):
+    def image(self, value: Annotated[Optional['Image'], "is_animatable=False"]) -> None:
         ...
     @property
     def image_user(self) -> Annotated[Optional['ImageUser'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
@@ -362,7 +362,7 @@ class ImageTexture(Texture):
         """Use image RGB values for normal mapping"""
         ...
     @use_normal_map.setter
-    def use_normal_map(self, value: bool):
+    def use_normal_map(self, value: bool) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...

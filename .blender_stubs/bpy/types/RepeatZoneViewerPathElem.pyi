@@ -31,5 +31,5 @@ class RepeatZoneViewerPathElem(ViewerPathElem):
 
         ...
     @repeat_output_node_id.setter
-    def repeat_output_node_id(self, value: Annotated[int, "step=1"]):
+    def repeat_output_node_id(self, value: Annotated[int, "step=1"]) -> None:
         ...

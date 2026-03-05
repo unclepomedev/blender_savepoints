@@ -23,5 +23,5 @@ class QuaternionAttributeValue(bpy_struct):
         """Quaternion"""
         ...
     @value.setter
-    def value(self, value: Annotated[list[float], "step=10.0", "precision=3"]):
+    def value(self, value: Annotated[list[float], "step=10.0", "precision=3"]) -> None:
         ...

@@ -24,14 +24,14 @@ class CollectionExport(bpy_struct):
 
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def is_open(self) -> bool:
         """Whether the panel is expanded or closed"""
         ...
     @is_open.setter
-    def is_open(self, value: bool):
+    def is_open(self, value: bool) -> None:
         ...
     @property
     def export_properties(self) -> Annotated[Optional['PropertyGroup'], "is_animatable=False"]:
@@ -42,5 +42,5 @@ class CollectionExport(bpy_struct):
         """The file path used for exporting"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...

@@ -23,75 +23,75 @@ class ThemeWidgetColors(bpy_struct):
 
         ...
     @outline.setter
-    def outline(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def outline(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def outline_sel(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @outline_sel.setter
-    def outline_sel(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def outline_sel(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def inner(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @inner.setter
-    def inner(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def inner(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def inner_sel(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @inner_sel.setter
-    def inner_sel(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def inner_sel(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def item(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @item.setter
-    def item(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def item(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def text(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @text.setter
-    def text(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def text(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def text_sel(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
 
         ...
     @text_sel.setter
-    def text_sel(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def text_sel(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def show_shaded(self) -> bool:
 
         ...
     @show_shaded.setter
-    def show_shaded(self, value: bool):
+    def show_shaded(self, value: bool) -> None:
         ...
     @property
     def shadetop(self) -> Annotated[int, "step=1"]:
 
         ...
     @shadetop.setter
-    def shadetop(self, value: Annotated[int, "step=1"]):
+    def shadetop(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def shadedown(self) -> Annotated[int, "step=1"]:
 
         ...
     @shadedown.setter
-    def shadedown(self, value: Annotated[int, "step=1"]):
+    def shadedown(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def roundness(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Amount of edge rounding"""
         ...
     @roundness.setter
-    def roundness(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def roundness(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...

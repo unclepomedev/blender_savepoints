@@ -23,5 +23,5 @@ class NodesModifierPanel(bpy_struct):
         """Whether the panel is expanded or closed"""
         ...
     @is_open.setter
-    def is_open(self, value: bool):
+    def is_open(self, value: bool) -> None:
         ...

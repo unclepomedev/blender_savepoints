@@ -24,7 +24,7 @@ class TransformOrientationSlot(bpy_struct):
         """Transformation orientation"""
         ...
     @type.setter
-    def type(self, value: Annotated[Literal['GLOBAL', 'LOCAL', 'NORMAL', 'GIMBAL', 'VIEW', 'CURSOR', 'PARENT'], "is_animatable=False"]):
+    def type(self, value: Annotated[Literal['GLOBAL', 'LOCAL', 'NORMAL', 'GIMBAL', 'VIEW', 'CURSOR', 'PARENT'], "is_animatable=False"]) -> None:
         ...
     @property
     def custom_orientation(self) -> Annotated[Optional['TransformOrientation'], "is_animatable=False"]:
@@ -35,5 +35,5 @@ class TransformOrientationSlot(bpy_struct):
         """Use scene orientation instead of a custom setting"""
         ...
     @use.setter
-    def use(self, value: Annotated[bool, "is_animatable=False"]):
+    def use(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...

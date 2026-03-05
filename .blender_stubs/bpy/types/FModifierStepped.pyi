@@ -23,7 +23,7 @@ class FModifierStepped(FModifier):
         """F-Curve Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['NULL', 'GENERATOR', 'FNGENERATOR', 'ENVELOPE', 'CYCLES', 'NOISE', 'LIMITS', 'STEPPED']:
@@ -34,14 +34,14 @@ class FModifierStepped(FModifier):
         """F-Curve Modifier's panel is expanded in UI"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def mute(self) -> bool:
         """Enable F-Curve modifier evaluation"""
         ...
     @mute.setter
-    def mute(self, value: bool):
+    def mute(self, value: bool) -> None:
         ...
     @property
     def is_valid(self) -> bool:
@@ -52,96 +52,96 @@ class FModifierStepped(FModifier):
         """F-Curve modifier will show settings in the editor"""
         ...
     @active.setter
-    def active(self, value: bool):
+    def active(self, value: bool) -> None:
         ...
     @property
     def use_restricted_range(self) -> bool:
         """F-Curve Modifier is only applied for the specified frame range to help mask off effects in order to chain them"""
         ...
     @use_restricted_range.setter
-    def use_restricted_range(self, value: bool):
+    def use_restricted_range(self, value: bool) -> None:
         ...
     @property
     def frame_start(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Frame that modifier's influence starts (if Restrict Frame Range is in use)"""
         ...
     @frame_start.setter
-    def frame_start(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_start(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def frame_end(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Frame that modifier's influence ends (if Restrict Frame Range is in use)"""
         ...
     @frame_end.setter
-    def frame_end(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_end(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def blend_in(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Number of frames from start frame for influence to take effect"""
         ...
     @blend_in.setter
-    def blend_in(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def blend_in(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def blend_out(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Number of frames from end frame for influence to fade out"""
         ...
     @blend_out.setter
-    def blend_out(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def blend_out(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_influence(self) -> bool:
         """F-Curve Modifier's effects will be tempered by a default factor"""
         ...
     @use_influence.setter
-    def use_influence(self, value: bool):
+    def use_influence(self, value: bool) -> None:
         ...
     @property
     def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Amount of influence F-Curve Modifier will have when not fading in/out"""
         ...
     @influence.setter
-    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def frame_step(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Number of frames to hold each value"""
         ...
     @frame_step.setter
-    def frame_step(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_step(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def frame_offset(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Reference number of frames before frames get held (use to get hold for '1-3' vs '5-7' holding patterns)"""
         ...
     @frame_offset.setter
-    def frame_offset(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_offset(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_frame_start(self) -> bool:
         """Restrict modifier to only act after its 'start' frame"""
         ...
     @use_frame_start.setter
-    def use_frame_start(self, value: bool):
+    def use_frame_start(self, value: bool) -> None:
         ...
     @property
     def use_frame_end(self) -> bool:
         """Restrict modifier to only act before its 'end' frame"""
         ...
     @use_frame_end.setter
-    def use_frame_end(self, value: bool):
+    def use_frame_end(self, value: bool) -> None:
         ...
     @property
     def frame_start(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Frame that modifier's influence starts (if applicable)"""
         ...
     @frame_start.setter
-    def frame_start(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_start(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def frame_end(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Frame that modifier's influence ends (if applicable)"""
         ...
     @frame_end.setter
-    def frame_end(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_end(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...

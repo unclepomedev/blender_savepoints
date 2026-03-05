@@ -60,7 +60,7 @@ class Scene(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -91,14 +91,14 @@ class Scene(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -117,7 +117,7 @@ class Scene(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -128,7 +128,7 @@ class Scene(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -147,7 +147,7 @@ class Scene(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -162,21 +162,21 @@ class Scene(ID):
         """Active camera, used for rendering the scene"""
         ...
     @camera.setter
-    def camera(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def camera(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def background_set(self) -> Annotated[Optional['Scene'], "is_animatable=False"]:
         """Background set scene"""
         ...
     @background_set.setter
-    def background_set(self, value: Annotated[Optional['Scene'], "is_animatable=False"]):
+    def background_set(self, value: Annotated[Optional['Scene'], "is_animatable=False"]) -> None:
         ...
     @property
     def world(self) -> Annotated[Optional['World'], "is_animatable=False"]:
         """World used for rendering the scene"""
         ...
     @world.setter
-    def world(self, value: Annotated[Optional['World'], "is_animatable=False"]):
+    def world(self, value: Annotated[Optional['World'], "is_animatable=False"]) -> None:
         ...
     @property
     def objects(self) -> Annotated['SceneObjects', "is_animatable=False"]:
@@ -187,56 +187,56 @@ class Scene(ID):
         """Current frame, to update animation data from Python frame_set() instead"""
         ...
     @frame_current.setter
-    def frame_current(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]):
+    def frame_current(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_subframe(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.009999999776482582", "precision=2", "is_animatable=False"]:
 
         ...
     @frame_subframe.setter
-    def frame_subframe(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.009999999776482582", "precision=2", "is_animatable=False"]):
+    def frame_subframe(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.009999999776482582", "precision=2", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_float(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.10000000149011612", "precision=2", "is_animatable=False"]:
 
         ...
     @frame_float.setter
-    def frame_float(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.10000000149011612", "precision=2", "is_animatable=False"]):
+    def frame_float(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=0.10000000149011612", "precision=2", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_start(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]:
         """First frame of the playback/rendering range"""
         ...
     @frame_start.setter
-    def frame_start(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]):
+    def frame_start(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_end(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]:
         """Final frame of the playback/rendering range"""
         ...
     @frame_end.setter
-    def frame_end(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]):
+    def frame_end(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_step(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]:
         """Number of frames to skip forward while rendering/playing back each frame"""
         ...
     @frame_step.setter
-    def frame_step(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]):
+    def frame_step(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def time_jump_unit(self) -> Annotated[Literal['FRAME', 'SECOND'], "is_animatable=False"]:
         """Which unit to use for time jumps in the timeline"""
         ...
     @time_jump_unit.setter
-    def time_jump_unit(self, value: Annotated[Literal['FRAME', 'SECOND'], "is_animatable=False"]):
+    def time_jump_unit(self, value: Annotated[Literal['FRAME', 'SECOND'], "is_animatable=False"]) -> None:
         ...
     @property
     def time_jump_delta(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Number of frames or seconds to jump forward or backward"""
         ...
     @time_jump_delta.setter
-    def time_jump_delta(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def time_jump_delta(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_current_final(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -247,49 +247,49 @@ class Scene(ID):
         """Don't allow frame to be selected with mouse outside of frame range"""
         ...
     @lock_frame_selection_to_range.setter
-    def lock_frame_selection_to_range(self, value: Annotated[bool, "is_animatable=False"]):
+    def lock_frame_selection_to_range(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_preview_range(self) -> Annotated[bool, "is_animatable=False"]:
         """Use an alternative start/end frame range for animation playback and view renders"""
         ...
     @use_preview_range.setter
-    def use_preview_range(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_preview_range(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def frame_preview_start(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]:
         """Alternative start frame for UI playback"""
         ...
     @frame_preview_start.setter
-    def frame_preview_start(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]):
+    def frame_preview_start(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_preview_end(self) -> Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]:
         """Alternative end frame for UI playback"""
         ...
     @frame_preview_end.setter
-    def frame_preview_end(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]):
+    def frame_preview_end(self, value: Annotated[int, "subtype='TIME'", "unit='TIME'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def show_subframe(self) -> Annotated[bool, "is_animatable=False"]:
         """Display and allow setting fractional frame values for the current frame"""
         ...
     @show_subframe.setter
-    def show_subframe(self, value: Annotated[bool, "is_animatable=False"]):
+    def show_subframe(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def show_keys_from_selected_only(self) -> bool:
         """Only include channels relating to selected objects and data"""
         ...
     @show_keys_from_selected_only.setter
-    def show_keys_from_selected_only(self, value: bool):
+    def show_keys_from_selected_only(self, value: bool) -> None:
         ...
     @property
     def use_stamp_note(self) -> Annotated[str, "is_animatable=False"]:
         """User defined note for the render stamping"""
         ...
     @use_stamp_note.setter
-    def use_stamp_note(self, value: Annotated[str, "is_animatable=False"]):
+    def use_stamp_note(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
@@ -304,35 +304,35 @@ class Scene(ID):
         """Use a simulation range that is different from the scene range for simulation nodes that don't override the frame range themselves"""
         ...
     @use_custom_simulation_range.setter
-    def use_custom_simulation_range(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_custom_simulation_range(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def simulation_frame_start(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Frame at which simulations start"""
         ...
     @simulation_frame_start.setter
-    def simulation_frame_start(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def simulation_frame_start(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def simulation_frame_end(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Frame at which simulations end"""
         ...
     @simulation_frame_end.setter
-    def simulation_frame_end(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def simulation_frame_end(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def sync_mode(self) -> Literal['NONE', 'FRAME_DROP', 'AUDIO_SYNC']:
         """How to sync playback"""
         ...
     @sync_mode.setter
-    def sync_mode(self, value: Literal['NONE', 'FRAME_DROP', 'AUDIO_SYNC']):
+    def sync_mode(self, value: Literal['NONE', 'FRAME_DROP', 'AUDIO_SYNC']) -> None:
         ...
     @property
     def compositing_node_group(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
         """Compositor Nodes"""
         ...
     @compositing_node_group.setter
-    def compositing_node_group(self, value: Annotated[Optional['NodeTree'], "is_animatable=False"]):
+    def compositing_node_group(self, value: Annotated[Optional['NodeTree'], "is_animatable=False"]) -> None:
         ...
     @deprecated('Deprecated in 5.0.0, Removal in 6.0.0')
     @property
@@ -341,7 +341,7 @@ class Scene(ID):
         ...
     @deprecated('Deprecated in 5.0.0, Removal in 6.0.0')
     @use_nodes.setter
-    def use_nodes(self, value: bool):
+    def use_nodes(self, value: bool) -> None:
         ...
     @property
     def sequence_editor(self) -> Annotated[Optional['SequenceEditor'], "is_animatable=False"]:
@@ -372,14 +372,14 @@ class Scene(ID):
         """Constant acceleration in a given direction"""
         ...
     @gravity.setter
-    def gravity(self, value: Annotated[list[float], "subtype='ACCELERATION'", "unit='ACCELERATION'", "step=1.0", "precision=2"]):
+    def gravity(self, value: Annotated[list[float], "subtype='ACCELERATION'", "unit='ACCELERATION'", "step=1.0", "precision=2"]) -> None:
         ...
     @property
     def use_gravity(self) -> bool:
         """Use global gravity for all dynamics"""
         ...
     @use_gravity.setter
-    def use_gravity(self, value: bool):
+    def use_gravity(self, value: bool) -> None:
         ...
     @property
     def render(self) -> Annotated['RenderSettings', "is_animatable=False"]:
@@ -406,56 +406,56 @@ class Scene(ID):
         """Play back of audio from Sequence Editor, otherwise mute audio"""
         ...
     @use_audio.setter
-    def use_audio(self, value: bool):
+    def use_audio(self, value: bool) -> None:
         ...
     @property
     def use_audio_scrub(self) -> bool:
         """Play audio from Sequence Editor while scrubbing"""
         ...
     @use_audio_scrub.setter
-    def use_audio_scrub(self, value: bool):
+    def use_audio_scrub(self, value: bool) -> None:
         ...
     @property
     def audio_doppler_speed(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Speed of sound for Doppler effect calculation"""
         ...
     @audio_doppler_speed.setter
-    def audio_doppler_speed(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def audio_doppler_speed(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def audio_doppler_factor(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
         """Pitch factor for Doppler effect calculation"""
         ...
     @audio_doppler_factor.setter
-    def audio_doppler_factor(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def audio_doppler_factor(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def audio_distance_model(self) -> Annotated[Literal['NONE', 'INVERSE', 'INVERSE_CLAMPED', 'LINEAR', 'LINEAR_CLAMPED', 'EXPONENT', 'EXPONENT_CLAMPED'], "is_animatable=False"]:
         """Distance model for distance attenuation calculation"""
         ...
     @audio_distance_model.setter
-    def audio_distance_model(self, value: Annotated[Literal['NONE', 'INVERSE', 'INVERSE_CLAMPED', 'LINEAR', 'LINEAR_CLAMPED', 'EXPONENT', 'EXPONENT_CLAMPED'], "is_animatable=False"]):
+    def audio_distance_model(self, value: Annotated[Literal['NONE', 'INVERSE', 'INVERSE_CLAMPED', 'LINEAR', 'LINEAR_CLAMPED', 'EXPONENT', 'EXPONENT_CLAMPED'], "is_animatable=False"]) -> None:
         ...
     @property
     def audio_volume(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Audio volume"""
         ...
     @audio_volume.setter
-    def audio_volume(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def audio_volume(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def annotation(self) -> Annotated[Optional['Annotation'], "is_animatable=False"]:
         """Data-block used for annotations in the 3D view"""
         ...
     @annotation.setter
-    def annotation(self, value: Annotated[Optional['Annotation'], "is_animatable=False"]):
+    def annotation(self, value: Annotated[Optional['Annotation'], "is_animatable=False"]) -> None:
         ...
     @property
     def active_clip(self) -> Annotated[Optional['MovieClip'], "is_animatable=False"]:
         """Active Movie Clip that can be used by motion tracking constraints or as a camera's background image"""
         ...
     @active_clip.setter
-    def active_clip(self, value: Annotated[Optional['MovieClip'], "is_animatable=False"]):
+    def active_clip(self, value: Annotated[Optional['MovieClip'], "is_animatable=False"]) -> None:
         ...
     @property
     def view_settings(self) -> Annotated[Optional['ColorManagedViewSettings'], "is_animatable=False"]:

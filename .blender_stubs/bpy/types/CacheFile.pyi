@@ -34,7 +34,7 @@ class CacheFile(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -65,14 +65,14 @@ class CacheFile(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -91,7 +91,7 @@ class CacheFile(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -102,7 +102,7 @@ class CacheFile(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -121,7 +121,7 @@ class CacheFile(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -136,56 +136,56 @@ class CacheFile(ID):
         """Path to external displacements file"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def is_sequence(self) -> bool:
         """Whether the cache is separated in a series of files"""
         ...
     @is_sequence.setter
-    def is_sequence(self, value: bool):
+    def is_sequence(self, value: bool) -> None:
         ...
     @property
     def override_frame(self) -> bool:
         """Whether to use a custom frame for looking up data in the cache file, instead of using the current scene frame"""
         ...
     @override_frame.setter
-    def override_frame(self, value: bool):
+    def override_frame(self, value: bool) -> None:
         ...
     @property
     def frame(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """The time to use for looking up the data in the cache file, or to determine which file to use in a file sequence"""
         ...
     @frame.setter
-    def frame(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def frame_offset(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Subtracted from the current frame to use for looking up the data in the cache file, or to determine which file to use in a file sequence"""
         ...
     @frame_offset.setter
-    def frame_offset(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def frame_offset(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def forward_axis(self) -> Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']:
 
         ...
     @forward_axis.setter
-    def forward_axis(self, value: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']):
+    def forward_axis(self, value: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']) -> None:
         ...
     @property
     def up_axis(self) -> Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']:
 
         ...
     @up_axis.setter
-    def up_axis(self, value: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']):
+    def up_axis(self, value: Literal['POS_X', 'POS_Y', 'POS_Z', 'NEG_X', 'NEG_Y', 'NEG_Z']) -> None:
         ...
     @property
     def scale(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Value by which to enlarge or shrink the object with respect to the world's origin (only applicable through a Transform Cache constraint)"""
         ...
     @scale.setter
-    def scale(self, value: Annotated[float, "step=10.0", "precision=3"]):
+    def scale(self, value: Annotated[float, "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def object_paths(self) -> Annotated['CacheObjectPaths', "is_animatable=False"]:
@@ -196,14 +196,14 @@ class CacheFile(ID):
         """Name of the Alembic attribute used for generating motion blur data"""
         ...
     @velocity_name.setter
-    def velocity_name(self, value: Annotated[str, "is_animatable=False"]):
+    def velocity_name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def velocity_unit(self) -> Annotated[Literal['SECOND', 'FRAME'], "is_animatable=False"]:
         """Define how the velocity vectors are interpreted with regard to time, 'frame' means the delta time is 1 frame, 'second' means the delta time is 1 / FPS"""
         ...
     @velocity_unit.setter
-    def velocity_unit(self, value: Annotated[Literal['SECOND', 'FRAME'], "is_animatable=False"]):
+    def velocity_unit(self, value: Annotated[Literal['SECOND', 'FRAME'], "is_animatable=False"]) -> None:
         ...
     @property
     def layers(self) -> Annotated['CacheFileLayers', "is_animatable=False"]:
@@ -214,7 +214,7 @@ class CacheFile(ID):
 
         ...
     @active_index.setter
-    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:

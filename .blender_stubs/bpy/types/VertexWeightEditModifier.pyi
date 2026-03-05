@@ -26,7 +26,7 @@ class VertexWeightEditModifier(Modifier):
         """Modifier name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def type(self) -> Literal['GREASE_PENCIL_VERTEX_WEIGHT_PROXIMITY', 'DATA_TRANSFER', 'MESH_CACHE', 'MESH_SEQUENCE_CACHE', 'NORMAL_EDIT', 'WEIGHTED_NORMAL', 'UV_PROJECT', 'UV_WARP', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_PROXIMITY', 'GREASE_PENCIL_COLOR', 'GREASE_PENCIL_TINT', 'GREASE_PENCIL_OPACITY', 'GREASE_PENCIL_VERTEX_WEIGHT_ANGLE', 'GREASE_PENCIL_TIME', 'GREASE_PENCIL_TEXTURE', 'ARRAY', 'BEVEL', 'BOOLEAN', 'BUILD', 'DECIMATE', 'EDGE_SPLIT', 'NODES', 'MASK', 'MIRROR', 'MESH_TO_VOLUME', 'MULTIRES', 'REMESH', 'SCREW', 'SKIN', 'SOLIDIFY', 'SUBSURF', 'TRIANGULATE', 'VOLUME_TO_MESH', 'WELD', 'WIREFRAME', 'GREASE_PENCIL_ARRAY', 'GREASE_PENCIL_BUILD', 'GREASE_PENCIL_LENGTH', 'LINEART', 'GREASE_PENCIL_MIRROR', 'GREASE_PENCIL_MULTIPLY', 'GREASE_PENCIL_SIMPLIFY', 'GREASE_PENCIL_SUBDIV', 'GREASE_PENCIL_ENVELOPE', 'GREASE_PENCIL_OUTLINE', 'ARMATURE', 'CAST', 'CURVE', 'DISPLACE', 'HOOK', 'LAPLACIANDEFORM', 'LATTICE', 'MESH_DEFORM', 'SHRINKWRAP', 'SIMPLE_DEFORM', 'SMOOTH', 'CORRECTIVE_SMOOTH', 'LAPLACIANSMOOTH', 'SURFACE_DEFORM', 'WARP', 'WAVE', 'VOLUME_DISPLACE', 'GREASE_PENCIL_HOOK', 'GREASE_PENCIL_NOISE', 'GREASE_PENCIL_OFFSET', 'GREASE_PENCIL_SMOOTH', 'GREASE_PENCIL_THICKNESS', 'GREASE_PENCIL_LATTICE', 'GREASE_PENCIL_DASH', 'GREASE_PENCIL_ARMATURE', 'GREASE_PENCIL_SHRINKWRAP', 'CLOTH', 'COLLISION', 'DYNAMIC_PAINT', 'EXPLODE', 'FLUID', 'OCEAN', 'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM', 'SOFT_BODY', 'SURFACE']:
@@ -37,49 +37,49 @@ class VertexWeightEditModifier(Modifier):
         """Display modifier in viewport"""
         ...
     @show_viewport.setter
-    def show_viewport(self, value: bool):
+    def show_viewport(self, value: bool) -> None:
         ...
     @property
     def show_render(self) -> bool:
         """Use modifier during render"""
         ...
     @show_render.setter
-    def show_render(self, value: bool):
+    def show_render(self, value: bool) -> None:
         ...
     @property
     def show_in_editmode(self) -> bool:
         """Display modifier in Edit mode"""
         ...
     @show_in_editmode.setter
-    def show_in_editmode(self, value: bool):
+    def show_in_editmode(self, value: bool) -> None:
         ...
     @property
     def show_on_cage(self) -> bool:
         """Adjust edit cage to modifier result"""
         ...
     @show_on_cage.setter
-    def show_on_cage(self, value: bool):
+    def show_on_cage(self, value: bool) -> None:
         ...
     @property
     def show_expanded(self) -> bool:
         """Set modifier expanded in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def is_active(self) -> Annotated[bool, "is_animatable=False"]:
         """The active modifier in the list"""
         ...
     @is_active.setter
-    def is_active(self, value: Annotated[bool, "is_animatable=False"]):
+    def is_active(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_pin_to_last(self) -> Annotated[bool, "is_animatable=False"]:
         """Keep the modifier at the end of the list"""
         ...
     @use_pin_to_last.setter
-    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_pin_to_last(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_override_data(self) -> bool:
@@ -90,7 +90,7 @@ class VertexWeightEditModifier(Modifier):
         """Apply this and all preceding deformation modifiers on splines' points rather than on filled curve/surface"""
         ...
     @use_apply_on_spline.setter
-    def use_apply_on_spline(self, value: bool):
+    def use_apply_on_spline(self, value: bool) -> None:
         ...
     @property
     def execution_time(self) -> Annotated[float, "subtype='TIME_ABSOLUTE'", "unit='TIME_ABSOLUTE'", "step=10.0", "precision=3", "is_animatable=False"]:
@@ -105,28 +105,28 @@ class VertexWeightEditModifier(Modifier):
         """Vertex group name"""
         ...
     @vertex_group.setter
-    def vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+    def vertex_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def falloff_type(self) -> Literal['LINEAR', 'CURVE', 'SHARP', 'SMOOTH', 'ROOT', 'ICON_SPHERECURVE', 'RANDOM', 'STEP']:
         """How weights are mapped to their new values"""
         ...
     @falloff_type.setter
-    def falloff_type(self, value: Literal['LINEAR', 'CURVE', 'SHARP', 'SMOOTH', 'ROOT', 'ICON_SPHERECURVE', 'RANDOM', 'STEP']):
+    def falloff_type(self, value: Literal['LINEAR', 'CURVE', 'SHARP', 'SMOOTH', 'ROOT', 'ICON_SPHERECURVE', 'RANDOM', 'STEP']) -> None:
         ...
     @property
     def invert_falloff(self) -> bool:
         """Invert the resulting falloff weight"""
         ...
     @invert_falloff.setter
-    def invert_falloff(self, value: bool):
+    def invert_falloff(self, value: bool) -> None:
         ...
     @property
     def normalize(self) -> bool:
         """Normalize the resulting weights (otherwise they are only clamped within 0.0 to 1.0 range)"""
         ...
     @normalize.setter
-    def normalize(self, value: bool):
+    def normalize(self, value: bool) -> None:
         ...
     @property
     def map_curve(self) -> Annotated[Optional['CurveMapping'], "is_animatable=False"]:
@@ -137,96 +137,96 @@ class VertexWeightEditModifier(Modifier):
         """Add vertices with weight over threshold to vgroup"""
         ...
     @use_add.setter
-    def use_add(self, value: bool):
+    def use_add(self, value: bool) -> None:
         ...
     @property
     def use_remove(self) -> bool:
         """Remove vertices with weight below threshold from vgroup"""
         ...
     @use_remove.setter
-    def use_remove(self, value: bool):
+    def use_remove(self, value: bool) -> None:
         ...
     @property
     def default_weight(self) -> Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=-1"]:
         """Default weight a vertex will have if it is not in the vgroup"""
         ...
     @default_weight.setter
-    def default_weight(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=-1"]):
+    def default_weight(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=-1"]) -> None:
         ...
     @property
     def add_threshold(self) -> Annotated[float, "step=1.0", "precision=-1"]:
         """Lower (inclusive) bound for a vertex's weight to be added to the vgroup"""
         ...
     @add_threshold.setter
-    def add_threshold(self, value: Annotated[float, "step=1.0", "precision=-1"]):
+    def add_threshold(self, value: Annotated[float, "step=1.0", "precision=-1"]) -> None:
         ...
     @property
     def remove_threshold(self) -> Annotated[float, "step=1.0", "precision=-1"]:
         """Upper (inclusive) bound for a vertex's weight to be removed from the vgroup"""
         ...
     @remove_threshold.setter
-    def remove_threshold(self, value: Annotated[float, "step=1.0", "precision=-1"]):
+    def remove_threshold(self, value: Annotated[float, "step=1.0", "precision=-1"]) -> None:
         ...
     @property
     def mask_constant(self) -> Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=-1"]:
         """Global influence of current modifications on vgroup"""
         ...
     @mask_constant.setter
-    def mask_constant(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=-1"]):
+    def mask_constant(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=-1"]) -> None:
         ...
     @property
     def mask_vertex_group(self) -> Annotated[str, "is_animatable=False"]:
         """Masking vertex group name"""
         ...
     @mask_vertex_group.setter
-    def mask_vertex_group(self, value: Annotated[str, "is_animatable=False"]):
+    def mask_vertex_group(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def invert_mask_vertex_group(self) -> bool:
         """Invert vertex group mask influence"""
         ...
     @invert_mask_vertex_group.setter
-    def invert_mask_vertex_group(self, value: bool):
+    def invert_mask_vertex_group(self, value: bool) -> None:
         ...
     @property
     def mask_texture(self) -> Annotated[Optional['Texture'], "is_animatable=False"]:
         """Masking texture"""
         ...
     @mask_texture.setter
-    def mask_texture(self, value: Annotated[Optional['Texture'], "is_animatable=False"]):
+    def mask_texture(self, value: Annotated[Optional['Texture'], "is_animatable=False"]) -> None:
         ...
     @property
     def mask_tex_use_channel(self) -> Literal['INT', 'RED', 'GREEN', 'BLUE', 'HUE', 'SAT', 'VAL', 'ALPHA']:
         """Which texture channel to use for masking"""
         ...
     @mask_tex_use_channel.setter
-    def mask_tex_use_channel(self, value: Literal['INT', 'RED', 'GREEN', 'BLUE', 'HUE', 'SAT', 'VAL', 'ALPHA']):
+    def mask_tex_use_channel(self, value: Literal['INT', 'RED', 'GREEN', 'BLUE', 'HUE', 'SAT', 'VAL', 'ALPHA']) -> None:
         ...
     @property
     def mask_tex_mapping(self) -> Literal['LOCAL', 'GLOBAL', 'OBJECT', 'UV']:
         """Which texture coordinates to use for mapping"""
         ...
     @mask_tex_mapping.setter
-    def mask_tex_mapping(self, value: Literal['LOCAL', 'GLOBAL', 'OBJECT', 'UV']):
+    def mask_tex_mapping(self, value: Literal['LOCAL', 'GLOBAL', 'OBJECT', 'UV']) -> None:
         ...
     @property
     def mask_tex_uv_layer(self) -> Annotated[str, "is_animatable=False"]:
         """UV map name"""
         ...
     @mask_tex_uv_layer.setter
-    def mask_tex_uv_layer(self, value: Annotated[str, "is_animatable=False"]):
+    def mask_tex_uv_layer(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def mask_tex_map_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Which object to take texture coordinates from"""
         ...
     @mask_tex_map_object.setter
-    def mask_tex_map_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+    def mask_tex_map_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]) -> None:
         ...
     @property
     def mask_tex_map_bone(self) -> Annotated[str, "is_animatable=False"]:
         """Which bone to take texture coordinates from"""
         ...
     @mask_tex_map_bone.setter
-    def mask_tex_map_bone(self, value: Annotated[str, "is_animatable=False"]):
+    def mask_tex_map_bone(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

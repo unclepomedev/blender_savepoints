@@ -33,7 +33,7 @@ class MovieClip(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -64,14 +64,14 @@ class MovieClip(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -90,7 +90,7 @@ class MovieClip(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -101,7 +101,7 @@ class MovieClip(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -120,7 +120,7 @@ class MovieClip(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -135,7 +135,7 @@ class MovieClip(ID):
         """Filename of the movie or sequence file"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def tracking(self) -> Annotated[Optional['MovieTracking'], "is_animatable=False"]:
@@ -150,7 +150,7 @@ class MovieClip(ID):
         """Use a preview proxy and/or timecode index for this clip"""
         ...
     @use_proxy.setter
-    def use_proxy(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_proxy(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def size(self) -> Annotated[list[int], "subtype='XYZ'", "step=1"]:
@@ -161,7 +161,7 @@ class MovieClip(ID):
         """Display Aspect for this clip, does not affect rendering"""
         ...
     @display_aspect.setter
-    def display_aspect(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2", "is_animatable=False"]):
+    def display_aspect(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=2", "is_animatable=False"]) -> None:
         ...
     @property
     def source(self) -> Literal['SEQUENCE', 'MOVIE']:
@@ -172,28 +172,28 @@ class MovieClip(ID):
         """Create proxy images in a custom directory (default is movie location)"""
         ...
     @use_proxy_custom_directory.setter
-    def use_proxy_custom_directory(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_proxy_custom_directory(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def annotation(self) -> Annotated[Optional['Annotation'], "is_animatable=False"]:
         """Annotation data for this movie clip"""
         ...
     @annotation.setter
-    def annotation(self, value: Annotated[Optional['Annotation'], "is_animatable=False"]):
+    def annotation(self, value: Annotated[Optional['Annotation'], "is_animatable=False"]) -> None:
         ...
     @property
     def frame_start(self) -> Annotated[int, "step=1"]:
         """Global scene frame number at which this movie starts playing (affects all data associated with a clip)"""
         ...
     @frame_start.setter
-    def frame_start(self, value: Annotated[int, "step=1"]):
+    def frame_start(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def frame_offset(self) -> Annotated[int, "step=1"]:
         """Offset of footage first frame relative to its file name (affects only how footage is loading, does not change data associated with a clip)"""
         ...
     @frame_offset.setter
-    def frame_offset(self, value: Annotated[int, "step=1"]):
+    def frame_offset(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def frame_duration(self) -> Annotated[int, "step=1"]:

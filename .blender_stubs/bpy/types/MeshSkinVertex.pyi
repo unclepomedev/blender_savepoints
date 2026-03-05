@@ -23,19 +23,19 @@ class MeshSkinVertex(bpy_struct):
         """Radius of the skin"""
         ...
     @radius.setter
-    def radius(self, value: Annotated[list[float], "subtype='UNSIGNED'", "step=1.0", "precision=3"]):
+    def radius(self, value: Annotated[list[float], "subtype='UNSIGNED'", "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def use_root(self) -> bool:
         """Vertex is a root for rotation calculations and armature generation, setting this flag does not clear other roots in the same mesh island"""
         ...
     @use_root.setter
-    def use_root(self, value: bool):
+    def use_root(self, value: bool) -> None:
         ...
     @property
     def use_loose(self) -> bool:
         """If vertex has multiple adjacent edges, it is hulled to them directly"""
         ...
     @use_loose.setter
-    def use_loose(self, value: bool):
+    def use_loose(self, value: bool) -> None:
         ...

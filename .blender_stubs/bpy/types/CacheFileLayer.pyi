@@ -23,12 +23,12 @@ class CacheFileLayer(bpy_struct):
         """Path to the archive"""
         ...
     @filepath.setter
-    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def filepath(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def hide_layer(self) -> bool:
         """Do not load data from this layer"""
         ...
     @hide_layer.setter
-    def hide_layer(self, value: bool):
+    def hide_layer(self, value: bool) -> None:
         ...

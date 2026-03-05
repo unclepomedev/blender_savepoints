@@ -23,12 +23,12 @@ class PathCompare(bpy_struct):
 
         ...
     @path.setter
-    def path(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]):
+    def path(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def use_glob(self) -> bool:
         """Enable wildcard globbing"""
         ...
     @use_glob.setter
-    def use_glob(self, value: bool):
+    def use_glob(self, value: bool) -> None:
         ...

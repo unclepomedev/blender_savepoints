@@ -26,14 +26,14 @@ class Driver(bpy_struct):
         """Driver type"""
         ...
     @type.setter
-    def type(self, value: Literal['AVERAGE', 'SUM', 'SCRIPTED', 'MIN', 'MAX']):
+    def type(self, value: Literal['AVERAGE', 'SUM', 'SCRIPTED', 'MIN', 'MAX']) -> None:
         ...
     @property
     def expression(self) -> Annotated[str, "is_animatable=False"]:
         """Expression to use for Scripted Expression"""
         ...
     @expression.setter
-    def expression(self, value: Annotated[str, "is_animatable=False"]):
+    def expression(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def variables(self) -> Annotated['ChannelDriverVariables', "is_animatable=False"]:
@@ -44,14 +44,14 @@ class Driver(bpy_struct):
         """Include a 'self' variable in the name-space, so drivers can easily reference the data being modified (object, bone, etc...)"""
         ...
     @use_self.setter
-    def use_self(self, value: bool):
+    def use_self(self, value: bool) -> None:
         ...
     @property
     def is_valid(self) -> bool:
         """Driver could not be evaluated in past, so should be skipped"""
         ...
     @is_valid.setter
-    def is_valid(self, value: bool):
+    def is_valid(self, value: bool) -> None:
         ...
     @property
     def is_simple_expression(self) -> bool:

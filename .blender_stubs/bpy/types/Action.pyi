@@ -35,7 +35,7 @@ class Action(ID):
         """Unique data-block ID name (within a same type and library)"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
@@ -66,14 +66,14 @@ class Action(ID):
         """Save this data-block even if it has no users"""
         ...
     @use_fake_user.setter
-    def use_fake_user(self, value: bool):
+    def use_fake_user(self, value: bool) -> None:
         ...
     @property
     def use_extra_user(self) -> bool:
         """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
         ...
     @use_extra_user.setter
-    def use_extra_user(self, value: bool):
+    def use_extra_user(self, value: bool) -> None:
         ...
     @property
     def is_embedded_data(self) -> bool:
@@ -92,7 +92,7 @@ class Action(ID):
         """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
         ...
     @is_runtime_data.setter
-    def is_runtime_data(self, value: bool):
+    def is_runtime_data(self, value: bool) -> None:
         ...
     @property
     def is_editable(self) -> bool:
@@ -103,7 +103,7 @@ class Action(ID):
         """Tools can use this to tag data for their own purposes (initial state is undefined)"""
         ...
     @tag.setter
-    def tag(self, value: bool):
+    def tag(self, value: bool) -> None:
         ...
     @property
     def is_library_indirect(self) -> bool:
@@ -122,7 +122,7 @@ class Action(ID):
         """Additional data for an asset data-block"""
         ...
     @asset_data.setter
-    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]) -> None:
         ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
@@ -161,35 +161,35 @@ class Action(ID):
         """Manually specify the intended playback frame range for the action (this range is used by some tools, but does not affect animation evaluation)"""
         ...
     @use_frame_range.setter
-    def use_frame_range(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_frame_range(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def use_cyclic(self) -> Annotated[bool, "is_animatable=False"]:
         """The action is intended to be used as a cycle looping over its manually set playback frame range (enabling this does not automatically make it loop)"""
         ...
     @use_cyclic.setter
-    def use_cyclic(self, value: Annotated[bool, "is_animatable=False"]):
+    def use_cyclic(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def frame_start(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
         """The start frame of the manually set intended playback range"""
         ...
     @frame_start.setter
-    def frame_start(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def frame_start(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_end(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
         """The end frame of the manually set intended playback range"""
         ...
     @frame_end.setter
-    def frame_end(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def frame_end(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def frame_range(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]:
         """The intended playback frame range of this action, using the manually set range if available, or the combined frame range of all F-Curves within this action if not (assigning sets the manual frame range)"""
         ...
     @frame_range.setter
-    def frame_range(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]):
+    def frame_range(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]) -> None:
         ...
     @property
     def curve_frame_range(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]:

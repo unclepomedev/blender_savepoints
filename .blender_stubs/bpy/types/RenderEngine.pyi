@@ -25,14 +25,14 @@ class RenderEngine(bpy_struct):
 
         ...
     @is_animation.setter
-    def is_animation(self, value: bool):
+    def is_animation(self, value: bool) -> None:
         ...
     @property
     def is_preview(self) -> bool:
 
         ...
     @is_preview.setter
-    def is_preview(self, value: bool):
+    def is_preview(self, value: bool) -> None:
         ...
     @property
     def camera_override(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
@@ -43,7 +43,7 @@ class RenderEngine(bpy_struct):
 
         ...
     @layer_override.setter
-    def layer_override(self, value: Annotated[list[bool], "subtype='LAYER_MEMBER'"]):
+    def layer_override(self, value: Annotated[list[bool], "subtype='LAYER_MEMBER'"]) -> None:
         ...
     @property
     def resolution_x(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
@@ -66,91 +66,91 @@ class RenderEngine(bpy_struct):
 
         ...
     @use_highlight_tiles.setter
-    def use_highlight_tiles(self, value: bool):
+    def use_highlight_tiles(self, value: bool) -> None:
         ...
     @property
     def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_label(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_use_preview(self) -> bool:
         """Render engine supports being used for rendering previews of materials, lights and worlds"""
         ...
     @bl_use_preview.setter
-    def bl_use_preview(self, value: bool):
+    def bl_use_preview(self, value: bool) -> None:
         ...
     @property
     def bl_use_postprocess(self) -> bool:
         """Apply compositing on render results"""
         ...
     @bl_use_postprocess.setter
-    def bl_use_postprocess(self, value: bool):
+    def bl_use_postprocess(self, value: bool) -> None:
         ...
     @property
     def bl_use_eevee_viewport(self) -> bool:
         """Uses EEVEE for viewport shading in Material Preview shading mode"""
         ...
     @bl_use_eevee_viewport.setter
-    def bl_use_eevee_viewport(self, value: bool):
+    def bl_use_eevee_viewport(self, value: bool) -> None:
         ...
     @property
     def bl_use_custom_freestyle(self) -> bool:
         """Handles freestyle rendering on its own, instead of delegating it to EEVEE"""
         ...
     @bl_use_custom_freestyle.setter
-    def bl_use_custom_freestyle(self, value: bool):
+    def bl_use_custom_freestyle(self, value: bool) -> None:
         ...
     @property
     def bl_use_image_save(self) -> bool:
         """Save images/movie to disk while rendering an animation. Disabling image saving is only supported when bl_use_postprocess is also disabled."""
         ...
     @bl_use_image_save.setter
-    def bl_use_image_save(self, value: bool):
+    def bl_use_image_save(self, value: bool) -> None:
         ...
     @property
     def bl_use_gpu_context(self) -> bool:
         """Enable OpenGL context for the render method, for engines that render using OpenGL"""
         ...
     @bl_use_gpu_context.setter
-    def bl_use_gpu_context(self, value: bool):
+    def bl_use_gpu_context(self, value: bool) -> None:
         ...
     @property
     def bl_use_shading_nodes_custom(self) -> bool:
         """Don't expose Cycles and EEVEE shading nodes in the node editor user interface, so separate nodes can be used instead"""
         ...
     @bl_use_shading_nodes_custom.setter
-    def bl_use_shading_nodes_custom(self, value: bool):
+    def bl_use_shading_nodes_custom(self, value: bool) -> None:
         ...
     @property
     def bl_use_spherical_stereo(self) -> bool:
         """Support spherical stereo camera models"""
         ...
     @bl_use_spherical_stereo.setter
-    def bl_use_spherical_stereo(self, value: bool):
+    def bl_use_spherical_stereo(self, value: bool) -> None:
         ...
     @property
     def bl_use_stereo_viewport(self) -> bool:
         """Support rendering stereo 3D viewport"""
         ...
     @bl_use_stereo_viewport.setter
-    def bl_use_stereo_viewport(self, value: bool):
+    def bl_use_stereo_viewport(self, value: bool) -> None:
         ...
     @property
     def bl_use_materialx(self) -> bool:
         """Use MaterialX for exporting materials to Hydra"""
         ...
     @bl_use_materialx.setter
-    def bl_use_materialx(self, value: bool):
+    def bl_use_materialx(self, value: bool) -> None:
         ...
     def update(self, *args, **kwargs) -> Any: ...
     def render(self, *args, **kwargs) -> Any: ...

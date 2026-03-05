@@ -27,47 +27,47 @@ class SpaceInfo(Space):
         """Synchronize the visible timeline range with other time-based editors"""
         ...
     @show_locked_time.setter
-    def show_locked_time(self, value: bool):
+    def show_locked_time(self, value: bool) -> None:
         ...
     @property
     def show_region_header(self) -> bool:
 
         ...
     @show_region_header.setter
-    def show_region_header(self, value: bool):
+    def show_region_header(self, value: bool) -> None:
         ...
     @property
     def show_report_debug(self) -> bool:
         """Display debug reporting info"""
         ...
     @show_report_debug.setter
-    def show_report_debug(self, value: bool):
+    def show_report_debug(self, value: bool) -> None:
         ...
     @property
     def show_report_info(self) -> bool:
         """Display general information"""
         ...
     @show_report_info.setter
-    def show_report_info(self, value: bool):
+    def show_report_info(self, value: bool) -> None:
         ...
     @property
     def show_report_operator(self) -> bool:
         """Display the operator log"""
         ...
     @show_report_operator.setter
-    def show_report_operator(self, value: bool):
+    def show_report_operator(self, value: bool) -> None:
         ...
     @property
     def show_report_warning(self) -> bool:
         """Display warnings"""
         ...
     @show_report_warning.setter
-    def show_report_warning(self, value: bool):
+    def show_report_warning(self, value: bool) -> None:
         ...
     @property
     def show_report_error(self) -> bool:
         """Display error text"""
         ...
     @show_report_error.setter
-    def show_report_error(self, value: bool):
+    def show_report_error(self, value: bool) -> None:
         ...

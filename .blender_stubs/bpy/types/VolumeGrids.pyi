@@ -24,7 +24,7 @@ class VolumeGrids(bpy_struct):
         """Index of active volume grid"""
         ...
     @active_index.setter
-    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def error_message(self) -> Annotated[str, "is_animatable=False"]:

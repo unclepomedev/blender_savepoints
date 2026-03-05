@@ -43,7 +43,7 @@ class SequenceEditor(bpy_struct):
         """Sequencer's active strip"""
         ...
     @active_strip.setter
-    def active_strip(self, value: Annotated[Optional['Strip'], "is_animatable=False"]):
+    def active_strip(self, value: Annotated[Optional['Strip'], "is_animatable=False"]) -> None:
         ...
     @property
     def selected_retiming_keys(self) -> bool:
@@ -54,63 +54,63 @@ class SequenceEditor(bpy_struct):
         """Partial overlay on top of the sequencer with a frame offset"""
         ...
     @show_overlay_frame.setter
-    def show_overlay_frame(self, value: bool):
+    def show_overlay_frame(self, value: bool) -> None:
         ...
     @property
     def use_overlay_frame_lock(self) -> bool:
 
         ...
     @use_overlay_frame_lock.setter
-    def use_overlay_frame_lock(self, value: bool):
+    def use_overlay_frame_lock(self, value: bool) -> None:
         ...
     @property
     def show_missing_media(self) -> bool:
         """Render missing images/movies with a solid magenta color"""
         ...
     @show_missing_media.setter
-    def show_missing_media(self, value: bool):
+    def show_missing_media(self, value: bool) -> None:
         ...
     @property
     def overlay_frame(self) -> Annotated[int, "step=1"]:
         """Number of frames to offset"""
         ...
     @overlay_frame.setter
-    def overlay_frame(self, value: Annotated[int, "step=1"]):
+    def overlay_frame(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def proxy_storage(self) -> Literal['PER_STRIP', 'PROJECT']:
         """How to store proxies for this project"""
         ...
     @proxy_storage.setter
-    def proxy_storage(self, value: Literal['PER_STRIP', 'PROJECT']):
+    def proxy_storage(self, value: Literal['PER_STRIP', 'PROJECT']) -> None:
         ...
     @property
     def proxy_dir(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
 
         ...
     @proxy_dir.setter
-    def proxy_dir(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]):
+    def proxy_dir(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]) -> None:
         ...
     @property
     def use_cache_raw(self) -> bool:
         """Cache raw images read from disk, for faster tweaking of strip parameters at the cost of memory usage"""
         ...
     @use_cache_raw.setter
-    def use_cache_raw(self, value: bool):
+    def use_cache_raw(self, value: bool) -> None:
         ...
     @property
     def use_cache_final(self) -> bool:
         """Cache final image for each frame"""
         ...
     @use_cache_final.setter
-    def use_cache_final(self, value: bool):
+    def use_cache_final(self, value: bool) -> None:
         ...
     @property
     def use_prefetch(self) -> bool:
         """Render frames ahead of current frame in the background for faster playback"""
         ...
     @use_prefetch.setter
-    def use_prefetch(self, value: bool):
+    def use_prefetch(self, value: bool) -> None:
         ...
     @property
     def cache_raw_size(self) -> Annotated[int, "step=1", "is_animatable=False"]:

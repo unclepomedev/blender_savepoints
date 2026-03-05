@@ -23,5 +23,5 @@ class ThemeStripColor(bpy_struct):
         """Strip Color"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...

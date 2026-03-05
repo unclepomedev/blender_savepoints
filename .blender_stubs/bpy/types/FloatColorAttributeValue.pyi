@@ -23,12 +23,12 @@ class FloatColorAttributeValue(bpy_struct):
         """RGBA color in scene linear color space"""
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def color_srgb(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
         """RGBA color in sRGB color space"""
         ...
     @color_srgb.setter
-    def color_srgb(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+    def color_srgb(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]) -> None:
         ...

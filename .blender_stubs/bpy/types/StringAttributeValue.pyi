@@ -23,5 +23,5 @@ class StringAttributeValue(bpy_struct):
 
         ...
     @value.setter
-    def value(self, value: Annotated[str, "subtype='BYTE_STRING'", "is_animatable=False"]):
+    def value(self, value: Annotated[str, "subtype='BYTE_STRING'", "is_animatable=False"]) -> None:
         ...

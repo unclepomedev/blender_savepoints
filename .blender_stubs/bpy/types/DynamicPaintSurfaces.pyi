@@ -24,7 +24,7 @@ class DynamicPaintSurfaces(bpy_struct):
 
         ...
     @active_index.setter
-    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def active(self) -> Annotated[Optional['DynamicPaintSurface'], "is_animatable=False"]:

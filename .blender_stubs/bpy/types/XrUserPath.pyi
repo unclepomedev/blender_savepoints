@@ -23,5 +23,5 @@ class XrUserPath(bpy_struct):
         """OpenXR user path"""
         ...
     @path.setter
-    def path(self, value: Annotated[str, "is_animatable=False"]):
+    def path(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

@@ -23,12 +23,12 @@ class ColorManagedDisplaySettings(bpy_struct):
         """Display name. For viewing, this is the display device that will be emulated by limiting the gamut and HDR colors. For image and video output, this is the display space used for writing."""
         ...
     @display_device.setter
-    def display_device(self, value: Literal['NONE']):
+    def display_device(self, value: Literal['NONE']) -> None:
         ...
     @property
     def emulation(self) -> Literal['OFF', 'AUTO']:
         """Control how images in the chosen display are mapped to the physical display"""
         ...
     @emulation.setter
-    def emulation(self, value: Literal['OFF', 'AUTO']):
+    def emulation(self, value: Literal['OFF', 'AUTO']) -> None:
         ...

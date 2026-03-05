@@ -23,19 +23,19 @@ class CurveMapPoint(bpy_struct):
         """X/Y coordinates of the curve point"""
         ...
     @location.setter
-    def location(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def location(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def handle_type(self) -> Literal['AUTO', 'AUTO_CLAMPED', 'VECTOR']:
         """Curve interpolation at this point: Bézier or vector"""
         ...
     @handle_type.setter
-    def handle_type(self, value: Literal['AUTO', 'AUTO_CLAMPED', 'VECTOR']):
+    def handle_type(self, value: Literal['AUTO', 'AUTO_CLAMPED', 'VECTOR']) -> None:
         ...
     @property
     def select(self) -> bool:
         """Selection state of the curve point"""
         ...
     @select.setter
-    def select(self, value: bool):
+    def select(self, value: bool) -> None:
         ...

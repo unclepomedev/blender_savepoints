@@ -24,7 +24,7 @@ class NodeSocketStringFilePath(NodeSocketStandard):
         """Socket name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def label(self) -> Annotated[str, "is_animatable=False"]:
@@ -39,7 +39,7 @@ class NodeSocketStringFilePath(NodeSocketStandard):
         """Socket tooltip"""
         ...
     @description.setter
-    def description(self, value: Annotated[str, "is_animatable=False"]):
+    def description(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def is_output(self) -> bool:
@@ -54,21 +54,21 @@ class NodeSocketStringFilePath(NodeSocketStandard):
         """Hide the socket"""
         ...
     @hide.setter
-    def hide(self, value: bool):
+    def hide(self, value: bool) -> None:
         ...
     @property
     def enabled(self) -> bool:
         """Enable the socket"""
         ...
     @enabled.setter
-    def enabled(self, value: bool):
+    def enabled(self, value: bool) -> None:
         ...
     @property
     def link_limit(self) -> Annotated[int, "step=1"]:
         """Max number of links allowed for this socket"""
         ...
     @link_limit.setter
-    def link_limit(self, value: Annotated[int, "step=1"]):
+    def link_limit(self, value: Annotated[int, "step=1"]) -> None:
         ...
     @property
     def is_linked(self) -> bool:
@@ -87,7 +87,7 @@ class NodeSocketStringFilePath(NodeSocketStandard):
         """Socket links are expanded in the user interface"""
         ...
     @show_expanded.setter
-    def show_expanded(self, value: bool):
+    def show_expanded(self, value: bool) -> None:
         ...
     @property
     def is_inactive(self) -> bool:
@@ -102,14 +102,14 @@ class NodeSocketStringFilePath(NodeSocketStandard):
         """Hide the socket input value"""
         ...
     @hide_value.setter
-    def hide_value(self, value: bool):
+    def hide_value(self, value: bool) -> None:
         ...
     @property
     def pin_gizmo(self) -> Annotated[bool, "is_animatable=False"]:
         """Keep gizmo visible even when the node is not selected"""
         ...
     @pin_gizmo.setter
-    def pin_gizmo(self, value: Annotated[bool, "is_animatable=False"]):
+    def pin_gizmo(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def node(self) -> Annotated[Optional['Node'], "is_animatable=False"]:
@@ -120,14 +120,14 @@ class NodeSocketStringFilePath(NodeSocketStandard):
         """Data type"""
         ...
     @type.setter
-    def type(self, value: Literal['CUSTOM', 'VALUE', 'INT', 'BOOLEAN', 'VECTOR', 'ROTATION', 'MATRIX', 'STRING', 'RGBA', 'SHADER', 'OBJECT', 'IMAGE', 'GEOMETRY', 'COLLECTION', 'TEXTURE', 'MATERIAL', 'MENU', 'BUNDLE', 'CLOSURE']):
+    def type(self, value: Literal['CUSTOM', 'VALUE', 'INT', 'BOOLEAN', 'VECTOR', 'ROTATION', 'MATRIX', 'STRING', 'RGBA', 'SHADER', 'OBJECT', 'IMAGE', 'GEOMETRY', 'COLLECTION', 'TEXTURE', 'MATERIAL', 'MENU', 'BUNDLE', 'CLOSURE']) -> None:
         ...
     @property
     def display_shape(self) -> Literal['CIRCLE', 'SQUARE', 'DIAMOND', 'CIRCLE_DOT', 'SQUARE_DOT', 'DIAMOND_DOT', 'LINE', 'VOLUME_GRID', 'LIST']:
         """Socket shape"""
         ...
     @display_shape.setter
-    def display_shape(self, value: Literal['CIRCLE', 'SQUARE', 'DIAMOND', 'CIRCLE_DOT', 'SQUARE_DOT', 'DIAMOND_DOT', 'LINE', 'VOLUME_GRID', 'LIST']):
+    def display_shape(self, value: Literal['CIRCLE', 'SQUARE', 'DIAMOND', 'CIRCLE_DOT', 'SQUARE_DOT', 'DIAMOND_DOT', 'LINE', 'VOLUME_GRID', 'LIST']) -> None:
         ...
     @property
     def inferred_structure_type(self) -> Literal['AUTO', 'DYNAMIC', 'FIELD', 'GRID', 'LIST', 'SINGLE']:
@@ -138,28 +138,28 @@ class NodeSocketStringFilePath(NodeSocketStandard):
 
         ...
     @bl_idname.setter
-    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_label(self) -> Annotated[str, "is_animatable=False"]:
         """Label to display for the socket type in the UI"""
         ...
     @bl_label.setter
-    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def bl_subtype_label(self) -> Annotated[str, "is_animatable=False"]:
         """Label to display for the socket subtype in the UI"""
         ...
     @bl_subtype_label.setter
-    def bl_subtype_label(self, value: Annotated[str, "is_animatable=False"]):
+    def bl_subtype_label(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def default_value(self) -> Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]:
         """Input value used for unconnected socket"""
         ...
     @default_value.setter
-    def default_value(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]):
+    def default_value(self, value: Annotated[str, "subtype='FILE_PATH'", "is_animatable=False"]) -> None:
         ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...

@@ -23,82 +23,82 @@ class TexMapping(bpy_struct):
         """Type of vector that the mapping transforms"""
         ...
     @vector_type.setter
-    def vector_type(self, value: Literal['POINT', 'TEXTURE', 'VECTOR', 'NORMAL']):
+    def vector_type(self, value: Literal['POINT', 'TEXTURE', 'VECTOR', 'NORMAL']) -> None:
         ...
     @property
     def translation(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]:
 
         ...
     @translation.setter
-    def translation(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]):
+    def translation(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]) -> None:
         ...
     @property
     def rotation(self) -> Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]:
 
         ...
     @rotation.setter
-    def rotation(self, value: Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]):
+    def rotation(self, value: Annotated[list[float], "subtype='EULER'", "unit='ROTATION'", "step=100.0", "precision=5"]) -> None:
         ...
     @property
     def scale(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
 
         ...
     @scale.setter
-    def scale(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def scale(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def min(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
         """Minimum value for clipping"""
         ...
     @min.setter
-    def min(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def min(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def max(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
         """Maximum value for clipping"""
         ...
     @max.setter
-    def max(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+    def max(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def use_min(self) -> bool:
         """Whether to use minimum clipping value"""
         ...
     @use_min.setter
-    def use_min(self, value: bool):
+    def use_min(self, value: bool) -> None:
         ...
     @property
     def use_max(self) -> bool:
         """Whether to use maximum clipping value"""
         ...
     @use_max.setter
-    def use_max(self, value: bool):
+    def use_max(self, value: bool) -> None:
         ...
     @property
     def mapping_x(self) -> Literal['NONE', 'X', 'Y', 'Z']:
 
         ...
     @mapping_x.setter
-    def mapping_x(self, value: Literal['NONE', 'X', 'Y', 'Z']):
+    def mapping_x(self, value: Literal['NONE', 'X', 'Y', 'Z']) -> None:
         ...
     @property
     def mapping_y(self) -> Literal['NONE', 'X', 'Y', 'Z']:
 
         ...
     @mapping_y.setter
-    def mapping_y(self, value: Literal['NONE', 'X', 'Y', 'Z']):
+    def mapping_y(self, value: Literal['NONE', 'X', 'Y', 'Z']) -> None:
         ...
     @property
     def mapping_z(self) -> Literal['NONE', 'X', 'Y', 'Z']:
 
         ...
     @mapping_z.setter
-    def mapping_z(self, value: Literal['NONE', 'X', 'Y', 'Z']):
+    def mapping_z(self, value: Literal['NONE', 'X', 'Y', 'Z']) -> None:
         ...
     @property
     def mapping(self) -> Literal['FLAT', 'CUBE', 'TUBE', 'SPHERE']:
 
         ...
     @mapping.setter
-    def mapping(self, value: Literal['FLAT', 'CUBE', 'TUBE', 'SPHERE']):
+    def mapping(self, value: Literal['FLAT', 'CUBE', 'TUBE', 'SPHERE']) -> None:
         ...

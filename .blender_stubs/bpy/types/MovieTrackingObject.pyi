@@ -29,7 +29,7 @@ class MovieTrackingObject(bpy_struct):
         """Unique name of object"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def is_camera(self) -> bool:
@@ -52,19 +52,19 @@ class MovieTrackingObject(bpy_struct):
         """Scale of object solution in camera space"""
         ...
     @scale.setter
-    def scale(self, value: Annotated[float, "step=1.0", "precision=4", "is_animatable=False"]):
+    def scale(self, value: Annotated[float, "step=1.0", "precision=4", "is_animatable=False"]) -> None:
         ...
     @property
     def keyframe_a(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """First keyframe used for reconstruction initialization"""
         ...
     @keyframe_a.setter
-    def keyframe_a(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def keyframe_a(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def keyframe_b(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Second keyframe used for reconstruction initialization"""
         ...
     @keyframe_b.setter
-    def keyframe_b(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def keyframe_b(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...

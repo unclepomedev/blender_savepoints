@@ -37,28 +37,28 @@ class LayerCollection(bpy_struct):
         """Exclude from view layer"""
         ...
     @exclude.setter
-    def exclude(self, value: Annotated[bool, "is_animatable=False"]):
+    def exclude(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def holdout(self) -> Annotated[bool, "is_animatable=False"]:
         """Mask out objects in collection from view layer"""
         ...
     @holdout.setter
-    def holdout(self, value: Annotated[bool, "is_animatable=False"]):
+    def holdout(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def indirect_only(self) -> Annotated[bool, "is_animatable=False"]:
         """Objects in collection only contribute indirectly (through shadows and reflections) in the view layer"""
         ...
     @indirect_only.setter
-    def indirect_only(self, value: Annotated[bool, "is_animatable=False"]):
+    def indirect_only(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def hide_viewport(self) -> Annotated[bool, "is_animatable=False"]:
         """Temporarily hide in viewport"""
         ...
     @hide_viewport.setter
-    def hide_viewport(self, value: Annotated[bool, "is_animatable=False"]):
+    def hide_viewport(self, value: Annotated[bool, "is_animatable=False"]) -> None:
         ...
     @property
     def is_visible(self) -> Annotated[bool, "is_animatable=False"]:

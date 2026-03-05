@@ -24,49 +24,49 @@ class AttributeGroupMesh(bpy_struct):
         """Active attribute"""
         ...
     @active.setter
-    def active(self, value: Annotated[Optional['Attribute'], "is_animatable=False"]):
+    def active(self, value: Annotated[Optional['Attribute'], "is_animatable=False"]) -> None:
         ...
     @property
     def active_index(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Active attribute index or -1 when none are active"""
         ...
     @active_index.setter
-    def active_index(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def active_index(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def active_color(self) -> Annotated[Optional['Attribute'], "is_animatable=False"]:
         """Active color attribute for display and editing"""
         ...
     @active_color.setter
-    def active_color(self, value: Annotated[Optional['Attribute'], "is_animatable=False"]):
+    def active_color(self, value: Annotated[Optional['Attribute'], "is_animatable=False"]) -> None:
         ...
     @property
     def active_color_index(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Active color attribute index"""
         ...
     @active_color_index.setter
-    def active_color_index(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def active_color_index(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def render_color_index(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """The index of the color attribute used as a fallback for rendering"""
         ...
     @render_color_index.setter
-    def render_color_index(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def render_color_index(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...
     @property
     def default_color_name(self) -> Annotated[str, "is_animatable=False"]:
         """The name of the default color attribute used as a fallback for rendering"""
         ...
     @default_color_name.setter
-    def default_color_name(self, value: Annotated[str, "is_animatable=False"]):
+    def default_color_name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def active_color_name(self) -> Annotated[str, "is_animatable=False"]:
         """The name of the active color attribute for display and editing"""
         ...
     @active_color_name.setter
-    def active_color_name(self, value: Annotated[str, "is_animatable=False"]):
+    def active_color_name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...

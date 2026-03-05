@@ -24,14 +24,14 @@ class MaterialSlot(bpy_struct):
         """Link material to object or the object's data"""
         ...
     @link.setter
-    def link(self, value: Annotated[Literal['OBJECT', 'DATA'], "is_animatable=False"]):
+    def link(self, value: Annotated[Literal['OBJECT', 'DATA'], "is_animatable=False"]) -> None:
         ...
     @property
     def material(self) -> Annotated[Optional['Material'], "is_animatable=False"]:
         """Material data-block used by this material slot"""
         ...
     @material.setter
-    def material(self, value: Annotated[Optional['Material'], "is_animatable=False"]):
+    def material(self, value: Annotated[Optional['Material'], "is_animatable=False"]) -> None:
         ...
     @property
     def slot_index(self) -> Annotated[int, "step=1", "is_animatable=False"]:

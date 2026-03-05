@@ -36,35 +36,35 @@ class ViewLayer(bpy_struct):
         """View layer name"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def material_override(self) -> Annotated[Optional['Material'], "is_animatable=False"]:
         """Material to override all other materials in this view layer"""
         ...
     @material_override.setter
-    def material_override(self, value: Annotated[Optional['Material'], "is_animatable=False"]):
+    def material_override(self, value: Annotated[Optional['Material'], "is_animatable=False"]) -> None:
         ...
     @property
     def world_override(self) -> Annotated[Optional['World'], "is_animatable=False"]:
         """Override world in this view layer"""
         ...
     @world_override.setter
-    def world_override(self, value: Annotated[Optional['World'], "is_animatable=False"]):
+    def world_override(self, value: Annotated[Optional['World'], "is_animatable=False"]) -> None:
         ...
     @property
     def samples(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Override number of render samples for this view layer, 0 will use the scene setting"""
         ...
     @samples.setter
-    def samples(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def samples(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def pass_alpha_threshold(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
         """Z, Index, normal, UV and vector passes are only affected by surfaces with alpha transparency equal to or higher than this threshold"""
         ...
     @pass_alpha_threshold.setter
-    def pass_alpha_threshold(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+    def pass_alpha_threshold(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def eevee(self) -> Annotated['ViewLayerEEVEE', "is_animatable=False"]:
@@ -83,7 +83,7 @@ class ViewLayer(bpy_struct):
         """Index of active AOV"""
         ...
     @active_aov_index.setter
-    def active_aov_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def active_aov_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def lightgroups(self) -> Annotated['Lightgroups', "is_animatable=False"]:
@@ -98,266 +98,266 @@ class ViewLayer(bpy_struct):
         """Index of active lightgroup"""
         ...
     @active_lightgroup_index.setter
-    def active_lightgroup_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+    def active_lightgroup_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]) -> None:
         ...
     @property
     def use_pass_cryptomatte_object(self) -> bool:
         """Render cryptomatte object pass, for isolating objects in compositing"""
         ...
     @use_pass_cryptomatte_object.setter
-    def use_pass_cryptomatte_object(self, value: bool):
+    def use_pass_cryptomatte_object(self, value: bool) -> None:
         ...
     @property
     def use_pass_cryptomatte_material(self) -> bool:
         """Render cryptomatte material pass, for isolating materials in compositing"""
         ...
     @use_pass_cryptomatte_material.setter
-    def use_pass_cryptomatte_material(self, value: bool):
+    def use_pass_cryptomatte_material(self, value: bool) -> None:
         ...
     @property
     def use_pass_cryptomatte_asset(self) -> bool:
         """Render cryptomatte asset pass, for isolating groups of objects with the same parent"""
         ...
     @use_pass_cryptomatte_asset.setter
-    def use_pass_cryptomatte_asset(self, value: bool):
+    def use_pass_cryptomatte_asset(self, value: bool) -> None:
         ...
     @property
     def pass_cryptomatte_depth(self) -> Annotated[int, "step=2"]:
         """Sets how many unique objects can be distinguished per pixel"""
         ...
     @pass_cryptomatte_depth.setter
-    def pass_cryptomatte_depth(self, value: Annotated[int, "step=2"]):
+    def pass_cryptomatte_depth(self, value: Annotated[int, "step=2"]) -> None:
         ...
     @property
     def use_pass_cryptomatte_accurate(self) -> bool:
         """Generate a more accurate cryptomatte pass"""
         ...
     @use_pass_cryptomatte_accurate.setter
-    def use_pass_cryptomatte_accurate(self, value: bool):
+    def use_pass_cryptomatte_accurate(self, value: bool) -> None:
         ...
     @property
     def use_solid(self) -> bool:
         """Render Solid faces in this Layer"""
         ...
     @use_solid.setter
-    def use_solid(self, value: bool):
+    def use_solid(self, value: bool) -> None:
         ...
     @property
     def use_sky(self) -> bool:
         """Render Sky in this Layer"""
         ...
     @use_sky.setter
-    def use_sky(self, value: bool):
+    def use_sky(self, value: bool) -> None:
         ...
     @property
     def use_ao(self) -> bool:
         """Render Ambient Occlusion in this Layer"""
         ...
     @use_ao.setter
-    def use_ao(self, value: bool):
+    def use_ao(self, value: bool) -> None:
         ...
     @property
     def use_strand(self) -> bool:
         """Render Strands in this Layer"""
         ...
     @use_strand.setter
-    def use_strand(self, value: bool):
+    def use_strand(self, value: bool) -> None:
         ...
     @property
     def use_volumes(self) -> bool:
         """Render volumes in this Layer"""
         ...
     @use_volumes.setter
-    def use_volumes(self, value: bool):
+    def use_volumes(self, value: bool) -> None:
         ...
     @property
     def use_motion_blur(self) -> bool:
         """Render motion blur in this Layer, if enabled in the scene"""
         ...
     @use_motion_blur.setter
-    def use_motion_blur(self, value: bool):
+    def use_motion_blur(self, value: bool) -> None:
         ...
     @property
     def use_grease_pencil(self) -> bool:
         """Render Grease Pencil on this layer"""
         ...
     @use_grease_pencil.setter
-    def use_grease_pencil(self, value: bool):
+    def use_grease_pencil(self, value: bool) -> None:
         ...
     @property
     def use_pass_combined(self) -> bool:
         """Deliver full combined RGBA buffer"""
         ...
     @use_pass_combined.setter
-    def use_pass_combined(self, value: bool):
+    def use_pass_combined(self, value: bool) -> None:
         ...
     @property
     def use_pass_z(self) -> bool:
         """Deliver depth values pass"""
         ...
     @use_pass_z.setter
-    def use_pass_z(self, value: bool):
+    def use_pass_z(self, value: bool) -> None:
         ...
     @property
     def use_pass_vector(self) -> bool:
         """Deliver speed vector pass"""
         ...
     @use_pass_vector.setter
-    def use_pass_vector(self, value: bool):
+    def use_pass_vector(self, value: bool) -> None:
         ...
     @property
     def use_pass_position(self) -> bool:
         """Deliver position pass"""
         ...
     @use_pass_position.setter
-    def use_pass_position(self, value: bool):
+    def use_pass_position(self, value: bool) -> None:
         ...
     @property
     def use_pass_normal(self) -> bool:
         """Deliver normal pass"""
         ...
     @use_pass_normal.setter
-    def use_pass_normal(self, value: bool):
+    def use_pass_normal(self, value: bool) -> None:
         ...
     @property
     def use_pass_uv(self) -> bool:
         """Deliver texture UV pass"""
         ...
     @use_pass_uv.setter
-    def use_pass_uv(self, value: bool):
+    def use_pass_uv(self, value: bool) -> None:
         ...
     @property
     def use_pass_mist(self) -> bool:
         """Deliver mist factor pass (0.0 to 1.0)"""
         ...
     @use_pass_mist.setter
-    def use_pass_mist(self, value: bool):
+    def use_pass_mist(self, value: bool) -> None:
         ...
     @property
     def use_pass_object_index(self) -> bool:
         """Deliver object index pass"""
         ...
     @use_pass_object_index.setter
-    def use_pass_object_index(self, value: bool):
+    def use_pass_object_index(self, value: bool) -> None:
         ...
     @property
     def use_pass_material_index(self) -> bool:
         """Deliver material index pass"""
         ...
     @use_pass_material_index.setter
-    def use_pass_material_index(self, value: bool):
+    def use_pass_material_index(self, value: bool) -> None:
         ...
     @property
     def use_pass_shadow(self) -> bool:
         """Deliver shadow pass"""
         ...
     @use_pass_shadow.setter
-    def use_pass_shadow(self, value: bool):
+    def use_pass_shadow(self, value: bool) -> None:
         ...
     @property
     def use_pass_ambient_occlusion(self) -> bool:
         """Deliver Ambient Occlusion pass"""
         ...
     @use_pass_ambient_occlusion.setter
-    def use_pass_ambient_occlusion(self, value: bool):
+    def use_pass_ambient_occlusion(self, value: bool) -> None:
         ...
     @property
     def use_pass_emit(self) -> bool:
         """Deliver emission pass"""
         ...
     @use_pass_emit.setter
-    def use_pass_emit(self, value: bool):
+    def use_pass_emit(self, value: bool) -> None:
         ...
     @property
     def use_pass_environment(self) -> bool:
         """Deliver environment lighting pass"""
         ...
     @use_pass_environment.setter
-    def use_pass_environment(self, value: bool):
+    def use_pass_environment(self, value: bool) -> None:
         ...
     @property
     def use_pass_diffuse_direct(self) -> bool:
         """Deliver diffuse direct pass"""
         ...
     @use_pass_diffuse_direct.setter
-    def use_pass_diffuse_direct(self, value: bool):
+    def use_pass_diffuse_direct(self, value: bool) -> None:
         ...
     @property
     def use_pass_diffuse_indirect(self) -> bool:
         """Deliver diffuse indirect pass"""
         ...
     @use_pass_diffuse_indirect.setter
-    def use_pass_diffuse_indirect(self, value: bool):
+    def use_pass_diffuse_indirect(self, value: bool) -> None:
         ...
     @property
     def use_pass_diffuse_color(self) -> bool:
         """Deliver diffuse color pass"""
         ...
     @use_pass_diffuse_color.setter
-    def use_pass_diffuse_color(self, value: bool):
+    def use_pass_diffuse_color(self, value: bool) -> None:
         ...
     @property
     def use_pass_glossy_direct(self) -> bool:
         """Deliver glossy direct pass"""
         ...
     @use_pass_glossy_direct.setter
-    def use_pass_glossy_direct(self, value: bool):
+    def use_pass_glossy_direct(self, value: bool) -> None:
         ...
     @property
     def use_pass_glossy_indirect(self) -> bool:
         """Deliver glossy indirect pass"""
         ...
     @use_pass_glossy_indirect.setter
-    def use_pass_glossy_indirect(self, value: bool):
+    def use_pass_glossy_indirect(self, value: bool) -> None:
         ...
     @property
     def use_pass_glossy_color(self) -> bool:
         """Deliver glossy color pass"""
         ...
     @use_pass_glossy_color.setter
-    def use_pass_glossy_color(self, value: bool):
+    def use_pass_glossy_color(self, value: bool) -> None:
         ...
     @property
     def use_pass_transmission_direct(self) -> bool:
         """Deliver transmission direct pass"""
         ...
     @use_pass_transmission_direct.setter
-    def use_pass_transmission_direct(self, value: bool):
+    def use_pass_transmission_direct(self, value: bool) -> None:
         ...
     @property
     def use_pass_transmission_indirect(self) -> bool:
         """Deliver transmission indirect pass"""
         ...
     @use_pass_transmission_indirect.setter
-    def use_pass_transmission_indirect(self, value: bool):
+    def use_pass_transmission_indirect(self, value: bool) -> None:
         ...
     @property
     def use_pass_transmission_color(self) -> bool:
         """Deliver transmission color pass"""
         ...
     @use_pass_transmission_color.setter
-    def use_pass_transmission_color(self, value: bool):
+    def use_pass_transmission_color(self, value: bool) -> None:
         ...
     @property
     def use_pass_subsurface_direct(self) -> bool:
         """Deliver subsurface direct pass"""
         ...
     @use_pass_subsurface_direct.setter
-    def use_pass_subsurface_direct(self, value: bool):
+    def use_pass_subsurface_direct(self, value: bool) -> None:
         ...
     @property
     def use_pass_subsurface_indirect(self) -> bool:
         """Deliver subsurface indirect pass"""
         ...
     @use_pass_subsurface_indirect.setter
-    def use_pass_subsurface_indirect(self, value: bool):
+    def use_pass_subsurface_indirect(self, value: bool) -> None:
         ...
     @property
     def use_pass_subsurface_color(self) -> bool:
         """Deliver subsurface color pass"""
         ...
     @use_pass_subsurface_color.setter
-    def use_pass_subsurface_color(self, value: bool):
+    def use_pass_subsurface_color(self, value: bool) -> None:
         ...
     @property
     def layer_collection(self) -> Annotated['LayerCollection', "is_animatable=False"]:
@@ -368,7 +368,7 @@ class ViewLayer(bpy_struct):
         """Active layer collection in this view layer's hierarchy"""
         ...
     @active_layer_collection.setter
-    def active_layer_collection(self, value: Annotated['LayerCollection', "is_animatable=False"]):
+    def active_layer_collection(self, value: Annotated['LayerCollection', "is_animatable=False"]) -> None:
         ...
     @property
     def objects(self) -> Annotated['LayerObjects', "is_animatable=False"]:
@@ -379,7 +379,7 @@ class ViewLayer(bpy_struct):
         """Enable or disable rendering of this View Layer"""
         ...
     @use.setter
-    def use(self, value: bool):
+    def use(self, value: bool) -> None:
         ...
     @property
     def has_export_collections(self) -> bool:
@@ -390,7 +390,7 @@ class ViewLayer(bpy_struct):
         """Render stylized strokes in this Layer"""
         ...
     @use_freestyle.setter
-    def use_freestyle(self, value: bool):
+    def use_freestyle(self, value: bool) -> None:
         ...
     @property
     def freestyle_settings(self) -> Annotated['FreestyleSettings', "is_animatable=False"]:
@@ -401,7 +401,7 @@ class ViewLayer(bpy_struct):
         """Deliver Grease Pencil render result in a separate pass"""
         ...
     @use_pass_grease_pencil.setter
-    def use_pass_grease_pencil(self, value: bool):
+    def use_pass_grease_pencil(self, value: bool) -> None:
         ...
     @property
     def depsgraph(self) -> Annotated[Optional['Depsgraph'], "is_animatable=False"]:

@@ -23,5 +23,5 @@ class Short2AttributeValue(bpy_struct):
         """2D vector"""
         ...
     @value.setter
-    def value(self, value: Annotated[list[int], "step=1"]):
+    def value(self, value: Annotated[list[int], "step=1"]) -> None:
         ...

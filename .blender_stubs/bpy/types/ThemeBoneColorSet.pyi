@@ -23,26 +23,26 @@ class ThemeBoneColorSet(bpy_struct):
         """Color used for the surface of bones"""
         ...
     @normal.setter
-    def normal(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def normal(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def select(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Color used for selected bones"""
         ...
     @select.setter
-    def select(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def select(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def active(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
         """Color used for active bones"""
         ...
     @active.setter
-    def active(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+    def active(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]) -> None:
         ...
     @property
     def show_colored_constraints(self) -> bool:
         """Allow the use of colors indicating constraints/keyed status"""
         ...
     @show_colored_constraints.setter
-    def show_colored_constraints(self, value: bool):
+    def show_colored_constraints(self, value: bool) -> None:
         ...

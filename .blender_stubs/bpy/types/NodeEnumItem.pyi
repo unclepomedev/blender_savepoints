@@ -23,12 +23,12 @@ class NodeEnumItem(bpy_struct):
 
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def description(self) -> Annotated[str, "is_animatable=False"]:
 
         ...
     @description.setter
-    def description(self, value: Annotated[str, "is_animatable=False"]):
+    def description(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...

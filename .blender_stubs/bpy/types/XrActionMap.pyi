@@ -26,7 +26,7 @@ class XrActionMap(bpy_struct):
         """Name of the action map"""
         ...
     @name.setter
-    def name(self, value: Annotated[str, "is_animatable=False"]):
+    def name(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def actionmap_items(self) -> Annotated['XrActionMapItems', "is_animatable=False"]:
@@ -37,5 +37,5 @@ class XrActionMap(bpy_struct):
 
         ...
     @selected_item.setter
-    def selected_item(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+    def selected_item(self, value: Annotated[int, "step=1", "is_animatable=False"]) -> None:
         ...

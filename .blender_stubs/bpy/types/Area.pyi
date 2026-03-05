@@ -35,21 +35,21 @@ class Area(bpy_struct):
         """Show menus in the header"""
         ...
     @show_menus.setter
-    def show_menus(self, value: bool):
+    def show_menus(self, value: bool) -> None:
         ...
     @property
     def type(self) -> Annotated[Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES'], "is_animatable=False"]:
         """Current editor type for this area"""
         ...
     @type.setter
-    def type(self, value: Annotated[Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES'], "is_animatable=False"]):
+    def type(self, value: Annotated[Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES'], "is_animatable=False"]) -> None:
         ...
     @property
     def ui_type(self) -> Annotated[str, "is_animatable=False"]:
         """Current editor type for this area"""
         ...
     @ui_type.setter
-    def ui_type(self, value: Annotated[str, "is_animatable=False"]):
+    def ui_type(self, value: Annotated[str, "is_animatable=False"]) -> None:
         ...
     @property
     def x(self) -> Annotated[int, "step=1"]:

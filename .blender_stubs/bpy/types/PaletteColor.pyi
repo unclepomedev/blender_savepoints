@@ -23,19 +23,19 @@ class PaletteColor(bpy_struct):
 
         ...
     @color.setter
-    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]):
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def strength(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
 
         ...
     @strength.setter
-    def strength(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def strength(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...
     @property
     def weight(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
 
         ...
     @weight.setter
-    def weight(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+    def weight(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]) -> None:
         ...

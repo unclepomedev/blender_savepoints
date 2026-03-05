@@ -23,5 +23,5 @@ class LayoutPanelState(bpy_struct):
 
         ...
     @is_open.setter
-    def is_open(self, value: bool):
+    def is_open(self, value: bool) -> None:
         ...
