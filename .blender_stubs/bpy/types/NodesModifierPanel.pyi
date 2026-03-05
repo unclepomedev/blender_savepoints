@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class NodesModifierPanel(bpy_struct):
 
-    is_open: bool
-    """Whether the panel is expanded or closed"""
+    @property
+    def is_open(self) -> bool:
+        """Whether the panel is expanded or closed"""
+        ...
+    @is_open.setter
+    def is_open(self, value: bool):
+        ...

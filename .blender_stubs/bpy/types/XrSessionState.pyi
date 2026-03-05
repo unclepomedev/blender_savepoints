@@ -29,20 +29,45 @@ class XrSessionState(bpy_struct):
     def viewer_pose_rotation(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3", "is_animatable=False"]:
         """Last known rotation of the viewer pose (center between the eyes) in world space"""
         ...
-    navigation_location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Location offset to apply to base pose when determining viewer location"""
-    navigation_rotation: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Rotation offset to apply to base pose when determining viewer rotation"""
-    navigation_scale: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]
-    """Additional scale multiplier to apply to base scale when determining viewer scale"""
+    @property
+    def navigation_location(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Location offset to apply to base pose when determining viewer location"""
+        ...
+    @navigation_location.setter
+    def navigation_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def navigation_rotation(self) -> Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Rotation offset to apply to base pose when determining viewer rotation"""
+        ...
+    @navigation_rotation.setter
+    def navigation_rotation(self, value: Annotated[list[float], "subtype='QUATERNION'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def navigation_scale(self) -> Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]:
+        """Additional scale multiplier to apply to base scale when determining viewer scale"""
+        ...
+    @navigation_scale.setter
+    def navigation_scale(self, value: Annotated[float, "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
     @property
     def actionmaps(self) -> Annotated['XrActionMaps', "is_animatable=False"]:
 
         ...
-    active_actionmap: Annotated[int, "step=1", "is_animatable=False"]
+    @property
+    def active_actionmap(self) -> Annotated[int, "step=1", "is_animatable=False"]:
 
-    selected_actionmap: Annotated[int, "step=1", "is_animatable=False"]
+        ...
+    @active_actionmap.setter
+    def active_actionmap(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def selected_actionmap(self) -> Annotated[int, "step=1", "is_animatable=False"]:
 
+        ...
+    @selected_actionmap.setter
+    def selected_actionmap(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...
     def is_running(self, *args, **kwargs) -> Any: ...
     def reset_to_base_pose(self, *args, **kwargs) -> Any: ...
     def action_set_create(self, *args, **kwargs) -> Any: ...

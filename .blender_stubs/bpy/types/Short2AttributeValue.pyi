@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class Short2AttributeValue(bpy_struct):
 
-    value: Annotated[list[int], "step=1"]
-    """2D vector"""
+    @property
+    def value(self) -> Annotated[list[int], "step=1"]:
+        """2D vector"""
+        ...
+    @value.setter
+    def value(self, value: Annotated[list[int], "step=1"]):
+        ...

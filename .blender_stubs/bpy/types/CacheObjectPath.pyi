@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class CacheObjectPath(bpy_struct):
 
-    path: Annotated[str, "is_animatable=False"]
-    """Object path"""
+    @property
+    def path(self) -> Annotated[str, "is_animatable=False"]:
+        """Object path"""
+        ...
+    @path.setter
+    def path(self, value: Annotated[str, "is_animatable=False"]):
+        ...

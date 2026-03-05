@@ -26,8 +26,13 @@ class TexPaintSlot(bpy_struct):
     def icon_value(self) -> Annotated[int, "step=1"]:
         """Paint slot icon"""
         ...
-    uv_layer: Annotated[str, "is_animatable=False"]
-    """Name of UV map"""
+    @property
+    def uv_layer(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of UV map"""
+        ...
+    @uv_layer.setter
+    def uv_layer(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def is_valid(self) -> bool:
         """Slot has a valid image and UV map"""

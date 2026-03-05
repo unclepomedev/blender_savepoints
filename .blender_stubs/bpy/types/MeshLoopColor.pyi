@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class MeshLoopColor(bpy_struct):
 
-    color: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]
-    """Color in sRGB color space"""
+    @property
+    def color(self) -> Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]:
+        """Color in sRGB color space"""
+        ...
+    @color.setter
+    def color(self, value: Annotated[list[float], "subtype='COLOR'", "step=10.0", "precision=3"]):
+        ...

@@ -18,9 +18,24 @@ from .bpy_struct import bpy_struct
 
 class ConsoleLine(bpy_struct):
 
-    body: Annotated[str, "is_animatable=False"]
-    """Text in the line"""
-    current_character: Annotated[int, "step=1"]
+    @property
+    def body(self) -> Annotated[str, "is_animatable=False"]:
+        """Text in the line"""
+        ...
+    @body.setter
+    def body(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def current_character(self) -> Annotated[int, "step=1"]:
 
-    type: Literal['OUTPUT', 'INPUT', 'INFO', 'ERROR']
-    """Console line type when used in scrollback"""
+        ...
+    @current_character.setter
+    def current_character(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def type(self) -> Literal['OUTPUT', 'INPUT', 'INFO', 'ERROR']:
+        """Console line type when used in scrollback"""
+        ...
+    @type.setter
+    def type(self, value: Literal['OUTPUT', 'INPUT', 'INFO', 'ERROR']):
+        ...

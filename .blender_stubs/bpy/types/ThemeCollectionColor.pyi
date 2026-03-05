@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class ThemeCollectionColor(bpy_struct):
 
-    color: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]
-    """Collection Color Tag"""
+    @property
+    def color(self) -> Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]:
+        """Collection Color Tag"""
+        ...
+    @color.setter
+    def color(self, value: Annotated[list[float], "subtype='COLOR_GAMMA'", "step=10.0", "precision=3"]):
+        ...

@@ -19,7 +19,17 @@ from .Object import Object
 
 class ConstraintTarget(bpy_struct):
 
-    target: Annotated[Optional['Object'], "is_animatable=False"]
-    """Target object"""
-    subtarget: Annotated[str, "is_animatable=False"]
-    """Armature bone, mesh or lattice vertex group, ..."""
+    @property
+    def target(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Target object"""
+        ...
+    @target.setter
+    def target(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def subtarget(self) -> Annotated[str, "is_animatable=False"]:
+        """Armature bone, mesh or lattice vertex group, ..."""
+        ...
+    @subtarget.setter
+    def subtarget(self, value: Annotated[str, "is_animatable=False"]):
+        ...

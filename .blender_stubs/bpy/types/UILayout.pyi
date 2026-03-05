@@ -18,38 +18,108 @@ from .bpy_struct import bpy_struct
 
 class UILayout(bpy_struct):
 
-    active: bool
+    @property
+    def active(self) -> bool:
 
-    active_default: bool
-    """When true, an operator button defined after this will be activated when pressing return(use with popup dialogs)"""
-    activate_init: bool
-    """When true, buttons defined in popups will be activated on first display (use so you can type into a field without having to click on it first)"""
-    operator_context: Literal['INVOKE_DEFAULT', 'INVOKE_REGION_WIN', 'INVOKE_REGION_CHANNELS', 'INVOKE_REGION_PREVIEW', 'INVOKE_AREA', 'INVOKE_SCREEN', 'EXEC_DEFAULT', 'EXEC_REGION_WIN', 'EXEC_REGION_CHANNELS', 'EXEC_REGION_PREVIEW', 'EXEC_AREA', 'EXEC_SCREEN']
-    """Typically set to 'INVOKE_REGION_WIN', except some cases in :class:`bpy.types.Menu` when it's set to 'EXEC_REGION_WIN'."""
-    enabled: bool
-    """When false, this (sub)layout is grayed out"""
-    alert: bool
+        ...
+    @active.setter
+    def active(self, value: bool):
+        ...
+    @property
+    def active_default(self) -> bool:
+        """When true, an operator button defined after this will be activated when pressing return(use with popup dialogs)"""
+        ...
+    @active_default.setter
+    def active_default(self, value: bool):
+        ...
+    @property
+    def activate_init(self) -> bool:
+        """When true, buttons defined in popups will be activated on first display (use so you can type into a field without having to click on it first)"""
+        ...
+    @activate_init.setter
+    def activate_init(self, value: bool):
+        ...
+    @property
+    def operator_context(self) -> Literal['INVOKE_DEFAULT', 'INVOKE_REGION_WIN', 'INVOKE_REGION_CHANNELS', 'INVOKE_REGION_PREVIEW', 'INVOKE_AREA', 'INVOKE_SCREEN', 'EXEC_DEFAULT', 'EXEC_REGION_WIN', 'EXEC_REGION_CHANNELS', 'EXEC_REGION_PREVIEW', 'EXEC_AREA', 'EXEC_SCREEN']:
+        """Typically set to 'INVOKE_REGION_WIN', except some cases in :class:`bpy.types.Menu` when it's set to 'EXEC_REGION_WIN'."""
+        ...
+    @operator_context.setter
+    def operator_context(self, value: Literal['INVOKE_DEFAULT', 'INVOKE_REGION_WIN', 'INVOKE_REGION_CHANNELS', 'INVOKE_REGION_PREVIEW', 'INVOKE_AREA', 'INVOKE_SCREEN', 'EXEC_DEFAULT', 'EXEC_REGION_WIN', 'EXEC_REGION_CHANNELS', 'EXEC_REGION_PREVIEW', 'EXEC_AREA', 'EXEC_SCREEN']):
+        ...
+    @property
+    def enabled(self) -> bool:
+        """When false, this (sub)layout is grayed out"""
+        ...
+    @enabled.setter
+    def enabled(self, value: bool):
+        ...
+    @property
+    def alert(self) -> bool:
 
-    alignment: Literal['EXPAND', 'LEFT', 'CENTER', 'RIGHT']
+        ...
+    @alert.setter
+    def alert(self, value: bool):
+        ...
+    @property
+    def alignment(self) -> Literal['EXPAND', 'LEFT', 'CENTER', 'RIGHT']:
 
+        ...
+    @alignment.setter
+    def alignment(self, value: Literal['EXPAND', 'LEFT', 'CENTER', 'RIGHT']):
+        ...
     @property
     def direction(self) -> Literal['HORIZONTAL', 'VERTICAL']:
 
         ...
-    scale_x: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
-    """Scale factor along the X for items in this (sub)layout"""
-    scale_y: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
-    """Scale factor along the Y for items in this (sub)layout"""
-    ui_units_x: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
-    """Fixed size along the X for items in this (sub)layout"""
-    ui_units_y: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]
-    """Fixed size along the Y for items in this (sub)layout"""
-    emboss: Literal['NORMAL', 'NONE', 'PULLDOWN_MENU', 'PIE_MENU', 'NONE_OR_STATUS']
+    @property
+    def scale_x(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
+        """Scale factor along the X for items in this (sub)layout"""
+        ...
+    @scale_x.setter
+    def scale_x(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def scale_y(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
+        """Scale factor along the Y for items in this (sub)layout"""
+        ...
+    @scale_y.setter
+    def scale_y(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def ui_units_x(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
+        """Fixed size along the X for items in this (sub)layout"""
+        ...
+    @ui_units_x.setter
+    def ui_units_x(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def ui_units_y(self) -> Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]:
+        """Fixed size along the Y for items in this (sub)layout"""
+        ...
+    @ui_units_y.setter
+    def ui_units_y(self, value: Annotated[float, "subtype='UNSIGNED'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def emboss(self) -> Literal['NORMAL', 'NONE', 'PULLDOWN_MENU', 'PIE_MENU', 'NONE_OR_STATUS']:
 
-    use_property_split: bool
+        ...
+    @emboss.setter
+    def emboss(self, value: Literal['NORMAL', 'NONE', 'PULLDOWN_MENU', 'PIE_MENU', 'NONE_OR_STATUS']):
+        ...
+    @property
+    def use_property_split(self) -> bool:
 
-    use_property_decorate: bool
+        ...
+    @use_property_split.setter
+    def use_property_split(self, value: bool):
+        ...
+    @property
+    def use_property_decorate(self) -> bool:
 
+        ...
+    @use_property_decorate.setter
+    def use_property_decorate(self, value: bool):
+        ...
     def row(self, *args, **kwargs) -> Any: ...
     def column(self, *args, **kwargs) -> Any: ...
     def panel(self, *args, **kwargs) -> Any: ...

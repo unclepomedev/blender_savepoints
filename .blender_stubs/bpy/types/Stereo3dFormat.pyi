@@ -18,15 +18,45 @@ from .bpy_struct import bpy_struct
 
 class Stereo3dFormat(bpy_struct):
 
-    display_mode: Annotated[Literal['ANAGLYPH', 'INTERLACE', 'SIDEBYSIDE', 'TOPBOTTOM'], "is_animatable=False"]
+    @property
+    def display_mode(self) -> Annotated[Literal['ANAGLYPH', 'INTERLACE', 'SIDEBYSIDE', 'TOPBOTTOM'], "is_animatable=False"]:
 
-    anaglyph_type: Annotated[Literal['RED_CYAN', 'GREEN_MAGENTA', 'YELLOW_BLUE'], "is_animatable=False"]
+        ...
+    @display_mode.setter
+    def display_mode(self, value: Annotated[Literal['ANAGLYPH', 'INTERLACE', 'SIDEBYSIDE', 'TOPBOTTOM'], "is_animatable=False"]):
+        ...
+    @property
+    def anaglyph_type(self) -> Annotated[Literal['RED_CYAN', 'GREEN_MAGENTA', 'YELLOW_BLUE'], "is_animatable=False"]:
 
-    interlace_type: Annotated[Literal['ROW_INTERLEAVED', 'COLUMN_INTERLEAVED', 'CHECKERBOARD_INTERLEAVED'], "is_animatable=False"]
+        ...
+    @anaglyph_type.setter
+    def anaglyph_type(self, value: Annotated[Literal['RED_CYAN', 'GREEN_MAGENTA', 'YELLOW_BLUE'], "is_animatable=False"]):
+        ...
+    @property
+    def interlace_type(self) -> Annotated[Literal['ROW_INTERLEAVED', 'COLUMN_INTERLEAVED', 'CHECKERBOARD_INTERLEAVED'], "is_animatable=False"]:
 
-    use_interlace_swap: Annotated[bool, "is_animatable=False"]
-    """Swap left and right stereo channels"""
-    use_sidebyside_crosseyed: Annotated[bool, "is_animatable=False"]
-    """Right eye should see left image and vice versa"""
-    use_squeezed_frame: Annotated[bool, "is_animatable=False"]
-    """Combine both views in a squeezed image"""
+        ...
+    @interlace_type.setter
+    def interlace_type(self, value: Annotated[Literal['ROW_INTERLEAVED', 'COLUMN_INTERLEAVED', 'CHECKERBOARD_INTERLEAVED'], "is_animatable=False"]):
+        ...
+    @property
+    def use_interlace_swap(self) -> Annotated[bool, "is_animatable=False"]:
+        """Swap left and right stereo channels"""
+        ...
+    @use_interlace_swap.setter
+    def use_interlace_swap(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_sidebyside_crosseyed(self) -> Annotated[bool, "is_animatable=False"]:
+        """Right eye should see left image and vice versa"""
+        ...
+    @use_sidebyside_crosseyed.setter
+    def use_sidebyside_crosseyed(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_squeezed_frame(self) -> Annotated[bool, "is_animatable=False"]:
+        """Combine both views in a squeezed image"""
+        ...
+    @use_squeezed_frame.setter
+    def use_squeezed_frame(self, value: Annotated[bool, "is_animatable=False"]):
+        ...

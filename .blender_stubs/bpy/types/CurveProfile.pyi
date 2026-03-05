@@ -21,14 +21,34 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class CurveProfile(bpy_struct):
 
-    preset: Literal['LINE', 'SUPPORTS', 'CORNICE', 'CROWN', 'STEPS']
+    @property
+    def preset(self) -> Literal['LINE', 'SUPPORTS', 'CORNICE', 'CROWN', 'STEPS']:
 
-    use_clip: bool
-    """Force the path view to fit a defined boundary"""
-    use_sample_straight_edges: bool
-    """Sample edges with vector handles"""
-    use_sample_even_lengths: bool
-    """Sample edges with even lengths"""
+        ...
+    @preset.setter
+    def preset(self, value: Literal['LINE', 'SUPPORTS', 'CORNICE', 'CROWN', 'STEPS']):
+        ...
+    @property
+    def use_clip(self) -> bool:
+        """Force the path view to fit a defined boundary"""
+        ...
+    @use_clip.setter
+    def use_clip(self, value: bool):
+        ...
+    @property
+    def use_sample_straight_edges(self) -> bool:
+        """Sample edges with vector handles"""
+        ...
+    @use_sample_straight_edges.setter
+    def use_sample_straight_edges(self, value: bool):
+        ...
+    @property
+    def use_sample_even_lengths(self) -> bool:
+        """Sample edges with even lengths"""
+        ...
+    @use_sample_even_lengths.setter
+    def use_sample_even_lengths(self, value: bool):
+        ...
     @property
     def points(self) -> Annotated['CurveProfilePoints', "is_animatable=False"]:
         """Profile control points"""

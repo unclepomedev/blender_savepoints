@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class TextLine(bpy_struct):
 
-    body: Annotated[str, "is_animatable=False"]
-    """Text in the line"""
+    @property
+    def body(self) -> Annotated[str, "is_animatable=False"]:
+        """Text in the line"""
+        ...
+    @body.setter
+    def body(self, value: Annotated[str, "is_animatable=False"]):
+        ...

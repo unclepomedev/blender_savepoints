@@ -21,29 +21,84 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class MaskLayer(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique name of layer"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique name of layer"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def splines(self) -> Annotated['MaskSplines', "is_animatable=False"]:
         """Collection of splines which defines this layer"""
         ...
-    hide: bool
-    """Restrict visibility in the viewport"""
-    hide_select: bool
-    """Restrict selection in the viewport"""
-    hide_render: bool
-    """Restrict renderability"""
-    select: bool
-    """Layer is selected for editing in the Dope Sheet"""
-    alpha: Annotated[float, "step=0.10000000149011612", "precision=3"]
-    """Render Opacity"""
-    blend: Literal['MERGE_ADD', 'MERGE_SUBTRACT', 'ADD', 'SUBTRACT', 'LIGHTEN', 'DARKEN', 'MUL', 'REPLACE', 'DIFFERENCE']
-    """Method of blending mask layers"""
-    invert: bool
-    """Invert the mask black/white"""
-    falloff: Literal['SMOOTH', 'SPHERE', 'ROOT', 'INVERSE_SQUARE', 'SHARP', 'LINEAR']
-    """Falloff type of the feather"""
-    use_fill_holes: bool
-    """Calculate holes when filling overlapping curves"""
-    use_fill_overlap: bool
-    """Calculate self intersections and overlap before filling"""
+    @property
+    def hide(self) -> bool:
+        """Restrict visibility in the viewport"""
+        ...
+    @hide.setter
+    def hide(self, value: bool):
+        ...
+    @property
+    def hide_select(self) -> bool:
+        """Restrict selection in the viewport"""
+        ...
+    @hide_select.setter
+    def hide_select(self, value: bool):
+        ...
+    @property
+    def hide_render(self) -> bool:
+        """Restrict renderability"""
+        ...
+    @hide_render.setter
+    def hide_render(self, value: bool):
+        ...
+    @property
+    def select(self) -> bool:
+        """Layer is selected for editing in the Dope Sheet"""
+        ...
+    @select.setter
+    def select(self, value: bool):
+        ...
+    @property
+    def alpha(self) -> Annotated[float, "step=0.10000000149011612", "precision=3"]:
+        """Render Opacity"""
+        ...
+    @alpha.setter
+    def alpha(self, value: Annotated[float, "step=0.10000000149011612", "precision=3"]):
+        ...
+    @property
+    def blend(self) -> Literal['MERGE_ADD', 'MERGE_SUBTRACT', 'ADD', 'SUBTRACT', 'LIGHTEN', 'DARKEN', 'MUL', 'REPLACE', 'DIFFERENCE']:
+        """Method of blending mask layers"""
+        ...
+    @blend.setter
+    def blend(self, value: Literal['MERGE_ADD', 'MERGE_SUBTRACT', 'ADD', 'SUBTRACT', 'LIGHTEN', 'DARKEN', 'MUL', 'REPLACE', 'DIFFERENCE']):
+        ...
+    @property
+    def invert(self) -> bool:
+        """Invert the mask black/white"""
+        ...
+    @invert.setter
+    def invert(self, value: bool):
+        ...
+    @property
+    def falloff(self) -> Literal['SMOOTH', 'SPHERE', 'ROOT', 'INVERSE_SQUARE', 'SHARP', 'LINEAR']:
+        """Falloff type of the feather"""
+        ...
+    @falloff.setter
+    def falloff(self, value: Literal['SMOOTH', 'SPHERE', 'ROOT', 'INVERSE_SQUARE', 'SHARP', 'LINEAR']):
+        ...
+    @property
+    def use_fill_holes(self) -> bool:
+        """Calculate holes when filling overlapping curves"""
+        ...
+    @use_fill_holes.setter
+    def use_fill_holes(self, value: bool):
+        ...
+    @property
+    def use_fill_overlap(self) -> bool:
+        """Calculate self intersections and overlap before filling"""
+        ...
+    @use_fill_overlap.setter
+    def use_fill_overlap(self, value: bool):
+        ...

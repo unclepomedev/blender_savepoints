@@ -18,9 +18,24 @@ from .bpy_struct import bpy_struct
 
 class SequencerCacheOverlay(bpy_struct):
 
-    show_cache: bool
-    """Visualize cached images on the timeline"""
-    show_cache_final_out: bool
-    """Visualize cached complete frames"""
-    show_cache_raw: bool
-    """Visualize cached raw images"""
+    @property
+    def show_cache(self) -> bool:
+        """Visualize cached images on the timeline"""
+        ...
+    @show_cache.setter
+    def show_cache(self, value: bool):
+        ...
+    @property
+    def show_cache_final_out(self) -> bool:
+        """Visualize cached complete frames"""
+        ...
+    @show_cache_final_out.setter
+    def show_cache_final_out(self, value: bool):
+        ...
+    @property
+    def show_cache_raw(self) -> bool:
+        """Visualize cached raw images"""
+        ...
+    @show_cache_raw.setter
+    def show_cache_raw(self, value: bool):
+        ...

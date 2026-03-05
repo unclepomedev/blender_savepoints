@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class AssetTag(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """The identifier that makes up this tag"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """The identifier that makes up this tag"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...

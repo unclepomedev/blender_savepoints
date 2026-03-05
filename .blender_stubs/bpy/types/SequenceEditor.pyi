@@ -38,30 +38,80 @@ class SequenceEditor(bpy_struct):
     def channels(self) -> Annotated[bpy_prop_collection['SequenceTimelineChannel'], "is_animatable=False"]:
 
         ...
-    active_strip: Annotated[Optional['Strip'], "is_animatable=False"]
-    """Sequencer's active strip"""
+    @property
+    def active_strip(self) -> Annotated[Optional['Strip'], "is_animatable=False"]:
+        """Sequencer's active strip"""
+        ...
+    @active_strip.setter
+    def active_strip(self, value: Annotated[Optional['Strip'], "is_animatable=False"]):
+        ...
     @property
     def selected_retiming_keys(self) -> bool:
 
         ...
-    show_overlay_frame: bool
-    """Partial overlay on top of the sequencer with a frame offset"""
-    use_overlay_frame_lock: bool
+    @property
+    def show_overlay_frame(self) -> bool:
+        """Partial overlay on top of the sequencer with a frame offset"""
+        ...
+    @show_overlay_frame.setter
+    def show_overlay_frame(self, value: bool):
+        ...
+    @property
+    def use_overlay_frame_lock(self) -> bool:
 
-    show_missing_media: bool
-    """Render missing images/movies with a solid magenta color"""
-    overlay_frame: Annotated[int, "step=1"]
-    """Number of frames to offset"""
-    proxy_storage: Literal['PER_STRIP', 'PROJECT']
-    """How to store proxies for this project"""
-    proxy_dir: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]
+        ...
+    @use_overlay_frame_lock.setter
+    def use_overlay_frame_lock(self, value: bool):
+        ...
+    @property
+    def show_missing_media(self) -> bool:
+        """Render missing images/movies with a solid magenta color"""
+        ...
+    @show_missing_media.setter
+    def show_missing_media(self, value: bool):
+        ...
+    @property
+    def overlay_frame(self) -> Annotated[int, "step=1"]:
+        """Number of frames to offset"""
+        ...
+    @overlay_frame.setter
+    def overlay_frame(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def proxy_storage(self) -> Literal['PER_STRIP', 'PROJECT']:
+        """How to store proxies for this project"""
+        ...
+    @proxy_storage.setter
+    def proxy_storage(self, value: Literal['PER_STRIP', 'PROJECT']):
+        ...
+    @property
+    def proxy_dir(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
 
-    use_cache_raw: bool
-    """Cache raw images read from disk, for faster tweaking of strip parameters at the cost of memory usage"""
-    use_cache_final: bool
-    """Cache final image for each frame"""
-    use_prefetch: bool
-    """Render frames ahead of current frame in the background for faster playback"""
+        ...
+    @proxy_dir.setter
+    def proxy_dir(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]):
+        ...
+    @property
+    def use_cache_raw(self) -> bool:
+        """Cache raw images read from disk, for faster tweaking of strip parameters at the cost of memory usage"""
+        ...
+    @use_cache_raw.setter
+    def use_cache_raw(self, value: bool):
+        ...
+    @property
+    def use_cache_final(self) -> bool:
+        """Cache final image for each frame"""
+        ...
+    @use_cache_final.setter
+    def use_cache_final(self, value: bool):
+        ...
+    @property
+    def use_prefetch(self) -> bool:
+        """Render frames ahead of current frame in the background for faster playback"""
+        ...
+    @use_prefetch.setter
+    def use_prefetch(self, value: bool):
+        ...
     @property
     def cache_raw_size(self) -> Annotated[int, "step=1", "is_animatable=False"]:
         """Size of raw source images cache in megabytes"""

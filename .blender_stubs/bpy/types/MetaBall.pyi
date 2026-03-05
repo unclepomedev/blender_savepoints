@@ -29,8 +29,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class MetaBall(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -55,10 +60,20 @@ class MetaBall(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -71,14 +86,24 @@ class MetaBall(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -91,8 +116,13 @@ class MetaBall(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -105,20 +135,55 @@ class MetaBall(ID):
     def elements(self) -> Annotated['MetaBallElements', "is_animatable=False"]:
         """Metaball elements"""
         ...
-    update_method: Literal['UPDATE_ALWAYS', 'HALFRES', 'FAST', 'NEVER']
-    """Metaball edit update behavior"""
-    resolution: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=2.5", "precision=3"]
-    """Polygonization resolution in the 3D viewport"""
-    render_resolution: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=2.5", "precision=3"]
-    """Polygonization resolution in rendering"""
-    threshold: Annotated[float, "step=10.0", "precision=3"]
-    """Influence of metaball elements"""
-    use_auto_texspace: bool
-    """Adjust active object's texture space automatically when transforming object"""
-    texspace_location: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Texture space location"""
-    texspace_size: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
-    """Texture space size"""
+    @property
+    def update_method(self) -> Literal['UPDATE_ALWAYS', 'HALFRES', 'FAST', 'NEVER']:
+        """Metaball edit update behavior"""
+        ...
+    @update_method.setter
+    def update_method(self, value: Literal['UPDATE_ALWAYS', 'HALFRES', 'FAST', 'NEVER']):
+        ...
+    @property
+    def resolution(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=2.5", "precision=3"]:
+        """Polygonization resolution in the 3D viewport"""
+        ...
+    @resolution.setter
+    def resolution(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=2.5", "precision=3"]):
+        ...
+    @property
+    def render_resolution(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=2.5", "precision=3"]:
+        """Polygonization resolution in rendering"""
+        ...
+    @render_resolution.setter
+    def render_resolution(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=2.5", "precision=3"]):
+        ...
+    @property
+    def threshold(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Influence of metaball elements"""
+        ...
+    @threshold.setter
+    def threshold(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def use_auto_texspace(self) -> bool:
+        """Adjust active object's texture space automatically when transforming object"""
+        ...
+    @use_auto_texspace.setter
+    def use_auto_texspace(self, value: bool):
+        ...
+    @property
+    def texspace_location(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Texture space location"""
+        ...
+    @texspace_location.setter
+    def texspace_location(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def texspace_size(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
+        """Texture space size"""
+        ...
+    @texspace_size.setter
+    def texspace_size(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+        ...
     @property
     def materials(self) -> Annotated['IDMaterials', "is_animatable=False"]:
 

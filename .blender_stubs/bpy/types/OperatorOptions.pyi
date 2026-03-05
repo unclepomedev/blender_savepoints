@@ -34,5 +34,10 @@ class OperatorOptions(bpy_struct):
     def is_repeat_last(self) -> bool:
         """True when run from the operator 'Repeat Last'"""
         ...
-    use_cursor_region: bool
-    """Enable to use the region under the cursor for modal execution"""
+    @property
+    def use_cursor_region(self) -> bool:
+        """Enable to use the region under the cursor for modal execution"""
+        ...
+    @use_cursor_region.setter
+    def use_cursor_region(self, value: bool):
+        ...

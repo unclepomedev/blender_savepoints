@@ -18,7 +18,17 @@ from .bpy_struct import bpy_struct
 
 class PreferencesKeymap(bpy_struct):
 
-    show_ui_keyconfig: bool
+    @property
+    def show_ui_keyconfig(self) -> bool:
 
-    active_keyconfig: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]
-    """The name of the active key configuration"""
+        ...
+    @show_ui_keyconfig.setter
+    def show_ui_keyconfig(self, value: bool):
+        ...
+    @property
+    def active_keyconfig(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
+        """The name of the active key configuration"""
+        ...
+    @active_keyconfig.setter
+    def active_keyconfig(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]):
+        ...

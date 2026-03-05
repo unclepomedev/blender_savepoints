@@ -18,10 +18,20 @@ from .bpy_struct import bpy_struct
 
 class WorkSpaceTool(bpy_struct):
 
-    idname: Annotated[str, "is_animatable=False"]
+    @property
+    def idname(self) -> Annotated[str, "is_animatable=False"]:
 
-    idname_fallback: Annotated[str, "is_animatable=False"]
+        ...
+    @idname.setter
+    def idname(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def idname_fallback(self) -> Annotated[str, "is_animatable=False"]:
 
+        ...
+    @idname_fallback.setter
+    def idname_fallback(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def index(self) -> Annotated[int, "step=1"]:
 

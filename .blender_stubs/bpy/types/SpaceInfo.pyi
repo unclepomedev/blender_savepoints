@@ -22,17 +22,52 @@ class SpaceInfo(Space):
     def type(self) -> Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES']:
         """Space data type"""
         ...
-    show_locked_time: bool
-    """Synchronize the visible timeline range with other time-based editors"""
-    show_region_header: bool
+    @property
+    def show_locked_time(self) -> bool:
+        """Synchronize the visible timeline range with other time-based editors"""
+        ...
+    @show_locked_time.setter
+    def show_locked_time(self, value: bool):
+        ...
+    @property
+    def show_region_header(self) -> bool:
 
-    show_report_debug: bool
-    """Display debug reporting info"""
-    show_report_info: bool
-    """Display general information"""
-    show_report_operator: bool
-    """Display the operator log"""
-    show_report_warning: bool
-    """Display warnings"""
-    show_report_error: bool
-    """Display error text"""
+        ...
+    @show_region_header.setter
+    def show_region_header(self, value: bool):
+        ...
+    @property
+    def show_report_debug(self) -> bool:
+        """Display debug reporting info"""
+        ...
+    @show_report_debug.setter
+    def show_report_debug(self, value: bool):
+        ...
+    @property
+    def show_report_info(self) -> bool:
+        """Display general information"""
+        ...
+    @show_report_info.setter
+    def show_report_info(self, value: bool):
+        ...
+    @property
+    def show_report_operator(self) -> bool:
+        """Display the operator log"""
+        ...
+    @show_report_operator.setter
+    def show_report_operator(self, value: bool):
+        ...
+    @property
+    def show_report_warning(self) -> bool:
+        """Display warnings"""
+        ...
+    @show_report_warning.setter
+    def show_report_warning(self, value: bool):
+        ...
+    @property
+    def show_report_error(self) -> bool:
+        """Display error text"""
+        ...
+    @show_report_error.setter
+    def show_report_error(self, value: bool):
+        ...

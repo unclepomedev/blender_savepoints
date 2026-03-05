@@ -21,11 +21,21 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class PreferencesExtensions(bpy_struct):
 
-    use_online_access_handled: bool
-    """The user has been shown the "Online Access" prompt and made a choice"""
+    @property
+    def use_online_access_handled(self) -> bool:
+        """The user has been shown the "Online Access" prompt and made a choice"""
+        ...
+    @use_online_access_handled.setter
+    def use_online_access_handled(self, value: bool):
+        ...
     @property
     def repos(self) -> Annotated['UserExtensionRepoCollection', "is_animatable=False"]:
 
         ...
-    active_repo: Annotated[int, "step=1"]
-    """Index of the extensions repository being edited in the Preferences UI"""
+    @property
+    def active_repo(self) -> Annotated[int, "step=1"]:
+        """Index of the extensions repository being edited in the Preferences UI"""
+        ...
+    @active_repo.setter
+    def active_repo(self, value: Annotated[int, "step=1"]):
+        ...

@@ -26,5 +26,10 @@ class ModifierViewerPathElem(ViewerPathElem):
     def ui_name(self) -> Annotated[str, "is_animatable=False"]:
         """Name that can be displayed in the UI for this element"""
         ...
-    modifier_uid: Annotated[int, "step=1"]
-    """The persistent UID of the modifier"""
+    @property
+    def modifier_uid(self) -> Annotated[int, "step=1"]:
+        """The persistent UID of the modifier"""
+        ...
+    @modifier_uid.setter
+    def modifier_uid(self, value: Annotated[int, "step=1"]):
+        ...

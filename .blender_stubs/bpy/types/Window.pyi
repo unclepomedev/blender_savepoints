@@ -29,14 +29,34 @@ class Window(bpy_struct):
     def parent(self) -> Annotated[Optional['Window'], "is_animatable=False"]:
         """Active workspace and scene follow this window"""
         ...
-    scene: Annotated['Scene', "is_animatable=False"]
-    """Active scene to be edited in the window"""
-    workspace: Annotated['WorkSpace', "is_animatable=False"]
-    """Active workspace showing in the window"""
-    screen: Annotated['Screen', "is_animatable=False"]
-    """Active workspace screen showing in the window"""
-    view_layer: Annotated['ViewLayer', "is_animatable=False"]
-    """The active workspace view layer showing in the window"""
+    @property
+    def scene(self) -> Annotated['Scene', "is_animatable=False"]:
+        """Active scene to be edited in the window"""
+        ...
+    @scene.setter
+    def scene(self, value: Annotated['Scene', "is_animatable=False"]):
+        ...
+    @property
+    def workspace(self) -> Annotated['WorkSpace', "is_animatable=False"]:
+        """Active workspace showing in the window"""
+        ...
+    @workspace.setter
+    def workspace(self, value: Annotated['WorkSpace', "is_animatable=False"]):
+        ...
+    @property
+    def screen(self) -> Annotated['Screen', "is_animatable=False"]:
+        """Active workspace screen showing in the window"""
+        ...
+    @screen.setter
+    def screen(self, value: Annotated['Screen', "is_animatable=False"]):
+        ...
+    @property
+    def view_layer(self) -> Annotated['ViewLayer', "is_animatable=False"]:
+        """The active workspace view layer showing in the window"""
+        ...
+    @view_layer.setter
+    def view_layer(self, value: Annotated['ViewLayer', "is_animatable=False"]):
+        ...
     @property
     def x(self) -> Annotated[int, "step=1"]:
         """Horizontal location of the window"""

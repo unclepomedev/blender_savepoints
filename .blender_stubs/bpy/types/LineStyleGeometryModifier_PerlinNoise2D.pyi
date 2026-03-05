@@ -18,23 +18,63 @@ from .LineStyleGeometryModifier import LineStyleGeometryModifier
 
 class LineStyleGeometryModifier_PerlinNoise2D(LineStyleGeometryModifier):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name of the modifier"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of the modifier"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['2D_OFFSET', '2D_TRANSFORM', 'BACKBONE_STRETCHER', 'BEZIER_CURVE', 'BLUEPRINT', 'GUIDING_LINES', 'PERLIN_NOISE_1D', 'PERLIN_NOISE_2D', 'POLYGONIZATION', 'SAMPLING', 'SIMPLIFICATION', 'SINUS_DISPLACEMENT', 'SPATIAL_NOISE', 'TIP_REMOVER']:
         """Type of the modifier"""
         ...
-    use: bool
-    """Enable or disable this modifier during stroke rendering"""
-    expanded: bool
-    """True if the modifier tab is expanded"""
-    frequency: Annotated[float, "step=10.0", "precision=3"]
-    """Frequency of the Perlin noise"""
-    amplitude: Annotated[float, "step=10.0", "precision=3"]
-    """Amplitude of the Perlin noise"""
-    octaves: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Number of octaves (i.e., the amount of detail of the Perlin noise)"""
-    angle: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]
-    """Displacement direction"""
-    seed: Annotated[int, "step=1"]
-    """Seed for random number generation (if negative, time is used as a seed instead)"""
+    @property
+    def use(self) -> bool:
+        """Enable or disable this modifier during stroke rendering"""
+        ...
+    @use.setter
+    def use(self, value: bool):
+        ...
+    @property
+    def expanded(self) -> bool:
+        """True if the modifier tab is expanded"""
+        ...
+    @expanded.setter
+    def expanded(self, value: bool):
+        ...
+    @property
+    def frequency(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Frequency of the Perlin noise"""
+        ...
+    @frequency.setter
+    def frequency(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def amplitude(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Amplitude of the Perlin noise"""
+        ...
+    @amplitude.setter
+    def amplitude(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def octaves(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Number of octaves (i.e., the amount of detail of the Perlin noise)"""
+        ...
+    @octaves.setter
+    def octaves(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def angle(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]:
+        """Displacement direction"""
+        ...
+    @angle.setter
+    def angle(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def seed(self) -> Annotated[int, "step=1"]:
+        """Seed for random number generation (if negative, time is used as a seed instead)"""
+        ...
+    @seed.setter
+    def seed(self, value: Annotated[int, "step=1"]):
+        ...

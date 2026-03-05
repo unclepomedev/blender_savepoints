@@ -19,10 +19,20 @@ from .RenderSlot import RenderSlot
 
 class RenderSlots(bpy_struct):
 
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Active render slot of the image"""
-    active: Annotated[Optional['RenderSlot'], "is_animatable=False"]
-    """Active render slot of the image"""
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Active render slot of the image"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def active(self) -> Annotated[Optional['RenderSlot'], "is_animatable=False"]:
+        """Active render slot of the image"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['RenderSlot'], "is_animatable=False"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...
     def __iter__(self) -> Iterator['RenderSlot']: ...

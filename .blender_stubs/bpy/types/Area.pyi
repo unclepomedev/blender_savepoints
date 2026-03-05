@@ -30,12 +30,27 @@ class Area(bpy_struct):
     def regions(self) -> Annotated[bpy_prop_collection['Region'], "is_animatable=False"]:
         """Regions this area is subdivided in"""
         ...
-    show_menus: bool
-    """Show menus in the header"""
-    type: Annotated[Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES'], "is_animatable=False"]
-    """Current editor type for this area"""
-    ui_type: Annotated[str, "is_animatable=False"]
-    """Current editor type for this area"""
+    @property
+    def show_menus(self) -> bool:
+        """Show menus in the header"""
+        ...
+    @show_menus.setter
+    def show_menus(self, value: bool):
+        ...
+    @property
+    def type(self) -> Annotated[Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES'], "is_animatable=False"]:
+        """Current editor type for this area"""
+        ...
+    @type.setter
+    def type(self, value: Annotated[Literal['EMPTY', 'VIEW_3D', 'IMAGE_EDITOR', 'NODE_EDITOR', 'SEQUENCE_EDITOR', 'CLIP_EDITOR', 'DOPESHEET_EDITOR', 'GRAPH_EDITOR', 'NLA_EDITOR', 'TEXT_EDITOR', 'CONSOLE', 'INFO', 'TOPBAR', 'STATUSBAR', 'OUTLINER', 'PROPERTIES', 'FILE_BROWSER', 'SPREADSHEET', 'PREFERENCES'], "is_animatable=False"]):
+        ...
+    @property
+    def ui_type(self) -> Annotated[str, "is_animatable=False"]:
+        """Current editor type for this area"""
+        ...
+    @ui_type.setter
+    def ui_type(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def x(self) -> Annotated[int, "step=1"]:
         """The window relative vertical location of the area"""

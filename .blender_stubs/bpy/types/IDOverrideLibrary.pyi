@@ -30,10 +30,20 @@ class IDOverrideLibrary(bpy_struct):
     def hierarchy_root(self) -> Annotated[Optional['ID'], "is_animatable=False"]:
         """Library override ID used as root of the override hierarchy this ID is a member of"""
         ...
-    is_in_hierarchy: bool
-    """Whether this library override is defined as part of a library hierarchy, or as a single, isolated and autonomous override"""
-    is_system_override: bool
-    """Whether this library override exists only for the override hierarchy, or if it is actually editable by the user"""
+    @property
+    def is_in_hierarchy(self) -> bool:
+        """Whether this library override is defined as part of a library hierarchy, or as a single, isolated and autonomous override"""
+        ...
+    @is_in_hierarchy.setter
+    def is_in_hierarchy(self, value: bool):
+        ...
+    @property
+    def is_system_override(self) -> bool:
+        """Whether this library override exists only for the override hierarchy, or if it is actually editable by the user"""
+        ...
+    @is_system_override.setter
+    def is_system_override(self, value: bool):
+        ...
     @property
     def properties(self) -> Annotated['IDOverrideLibraryProperties', "is_animatable=False"]:
         """List of overridden properties"""

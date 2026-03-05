@@ -18,11 +18,31 @@ from .bpy_struct import bpy_struct
 
 class StripCrop(bpy_struct):
 
-    max_y: Annotated[int, "subtype='PIXEL'", "step=1"]
-    """Number of pixels to crop from the top"""
-    min_y: Annotated[int, "subtype='PIXEL'", "step=1"]
-    """Number of pixels to crop from the bottom"""
-    min_x: Annotated[int, "subtype='PIXEL'", "step=1"]
-    """Number of pixels to crop from the left side"""
-    max_x: Annotated[int, "subtype='PIXEL'", "step=1"]
-    """Number of pixels to crop from the right side"""
+    @property
+    def max_y(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+        """Number of pixels to crop from the top"""
+        ...
+    @max_y.setter
+    def max_y(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]):
+        ...
+    @property
+    def min_y(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+        """Number of pixels to crop from the bottom"""
+        ...
+    @min_y.setter
+    def min_y(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]):
+        ...
+    @property
+    def min_x(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+        """Number of pixels to crop from the left side"""
+        ...
+    @min_x.setter
+    def min_x(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]):
+        ...
+    @property
+    def max_x(self) -> Annotated[int, "subtype='PIXEL'", "step=1"]:
+        """Number of pixels to crop from the right side"""
+        ...
+    @max_x.setter
+    def max_x(self, value: Annotated[int, "subtype='PIXEL'", "step=1"]):
+        ...

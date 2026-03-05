@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class Float2AttributeValue(bpy_struct):
 
-    vector: Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]
-    """2D vector"""
+    @property
+    def vector(self) -> Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]:
+        """2D vector"""
+        ...
+    @vector.setter
+    def vector(self, value: Annotated[list[float], "subtype='DIRECTION'", "step=10.0", "precision=3"]):
+        ...

@@ -18,9 +18,24 @@ from .bpy_struct import bpy_struct
 
 class MovieTrackingPlaneMarker(bpy_struct):
 
-    frame: Annotated[int, "step=1"]
-    """Frame number marker is keyframed on"""
-    corners: Annotated[list[float], "subtype='MATRIX'", "step=1.0", "precision=5", "is_animatable=False"]
-    """Array of coordinates which represents UI rectangle corners in frame normalized coordinates"""
-    mute: bool
-    """Is marker muted for current frame"""
+    @property
+    def frame(self) -> Annotated[int, "step=1"]:
+        """Frame number marker is keyframed on"""
+        ...
+    @frame.setter
+    def frame(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def corners(self) -> Annotated[list[float], "subtype='MATRIX'", "step=1.0", "precision=5", "is_animatable=False"]:
+        """Array of coordinates which represents UI rectangle corners in frame normalized coordinates"""
+        ...
+    @corners.setter
+    def corners(self, value: Annotated[list[float], "subtype='MATRIX'", "step=1.0", "precision=5", "is_animatable=False"]):
+        ...
+    @property
+    def mute(self) -> bool:
+        """Is marker muted for current frame"""
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...

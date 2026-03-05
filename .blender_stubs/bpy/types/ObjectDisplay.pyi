@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class ObjectDisplay(bpy_struct):
 
-    show_shadows: Annotated[bool, "is_animatable=False"]
-    """Object cast shadows in the 3D viewport"""
+    @property
+    def show_shadows(self) -> Annotated[bool, "is_animatable=False"]:
+        """Object cast shadows in the 3D viewport"""
+        ...
+    @show_shadows.setter
+    def show_shadows(self, value: Annotated[bool, "is_animatable=False"]):
+        ...

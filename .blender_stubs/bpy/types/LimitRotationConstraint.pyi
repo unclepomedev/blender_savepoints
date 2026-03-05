@@ -19,8 +19,13 @@ from .Object import Object
 
 class LimitRotationConstraint(Constraint):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Constraint name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Constraint name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['CAMERA_SOLVER', 'FOLLOW_TRACK', 'OBJECT_SOLVER', 'COPY_LOCATION', 'COPY_ROTATION', 'COPY_SCALE', 'COPY_TRANSFORMS', 'LIMIT_DISTANCE', 'LIMIT_LOCATION', 'LIMIT_ROTATION', 'LIMIT_SCALE', 'MAINTAIN_VOLUME', 'TRANSFORM', 'TRANSFORM_CACHE', 'CLAMP_TO', 'DAMPED_TRACK', 'IK', 'LOCKED_TRACK', 'SPLINE_IK', 'STRETCH_TO', 'TRACK_TO', 'ACTION', 'ARMATURE', 'CHILD_OF', 'FLOOR', 'FOLLOW_PATH', 'GEOMETRY_ATTRIBUTE', 'PIVOT', 'SHRINKWRAP']:
 
@@ -29,28 +34,73 @@ class LimitRotationConstraint(Constraint):
     def is_override_data(self) -> bool:
         """In a local override object, whether this constraint comes from the linked reference object, or is local to the override"""
         ...
-    owner_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']
-    """Space that owner is evaluated in"""
-    target_space: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']
-    """Space that target is evaluated in"""
-    space_object: Annotated[Optional['Object'], "is_animatable=False"]
-    """Object for Custom Space"""
-    space_subtarget: Annotated[str, "is_animatable=False"]
-    """Armature bone, mesh or lattice vertex group, ..."""
-    mute: bool
-    """Enable/Disable Constraint"""
-    enabled: bool
-    """Use the results of this constraint"""
-    show_expanded: bool
-    """Constraint's panel is expanded in UI"""
+    @property
+    def owner_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']:
+        """Space that owner is evaluated in"""
+        ...
+    @owner_space.setter
+    def owner_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL']):
+        ...
+    @property
+    def target_space(self) -> Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']:
+        """Space that target is evaluated in"""
+        ...
+    @target_space.setter
+    def target_space(self, value: Literal['WORLD', 'CUSTOM', 'POSE', 'LOCAL_WITH_PARENT', 'LOCAL', 'LOCAL_OWNER_ORIENT']):
+        ...
+    @property
+    def space_object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """Object for Custom Space"""
+        ...
+    @space_object.setter
+    def space_object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def space_subtarget(self) -> Annotated[str, "is_animatable=False"]:
+        """Armature bone, mesh or lattice vertex group, ..."""
+        ...
+    @space_subtarget.setter
+    def space_subtarget(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def mute(self) -> bool:
+        """Enable/Disable Constraint"""
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...
+    @property
+    def enabled(self) -> bool:
+        """Use the results of this constraint"""
+        ...
+    @enabled.setter
+    def enabled(self, value: bool):
+        ...
+    @property
+    def show_expanded(self) -> bool:
+        """Constraint's panel is expanded in UI"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
     @property
     def is_valid(self) -> bool:
         """Constraint has valid settings and can be evaluated"""
         ...
-    active: bool
-    """Constraint is the one being edited"""
-    influence: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Amount of influence constraint will have on the final solution"""
+    @property
+    def active(self) -> bool:
+        """Constraint is the one being edited"""
+        ...
+    @active.setter
+    def active(self, value: bool):
+        ...
+    @property
+    def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Amount of influence constraint will have on the final solution"""
+        ...
+    @influence.setter
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
     @property
     def error_location(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in Blender space unit for constraints that work on position"""
@@ -59,27 +109,87 @@ class LimitRotationConstraint(Constraint):
     def error_rotation(self) -> Annotated[float, "step=10.0", "precision=3"]:
         """Amount of residual error in radians for constraints that work on orientation"""
         ...
-    use_limit_x: bool
-    """Use the minimum X value"""
-    use_limit_y: bool
-    """Use the minimum Y value"""
-    use_limit_z: bool
-    """Use the minimum Z value"""
-    min_x: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]
-    """Lower X angle bound"""
-    min_y: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]
-    """Lower Y angle bound"""
-    min_z: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]
-    """Lower Z angle bound"""
-    max_x: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]
-    """Upper X angle bound"""
-    max_y: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]
-    """Upper Y angle bound"""
-    max_z: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]
-    """Upper Z angle bound"""
-    euler_order: Literal['AUTO', 'XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX']
-    """Explicitly specify the euler rotation order"""
-    use_transform_limit: bool
-    """Transform tools are affected by this constraint as well"""
-    use_legacy_behavior: bool
-    """Use the old semi-broken behavior that does not understand that rotations loop around"""
+    @property
+    def use_limit_x(self) -> bool:
+        """Use the minimum X value"""
+        ...
+    @use_limit_x.setter
+    def use_limit_x(self, value: bool):
+        ...
+    @property
+    def use_limit_y(self) -> bool:
+        """Use the minimum Y value"""
+        ...
+    @use_limit_y.setter
+    def use_limit_y(self, value: bool):
+        ...
+    @property
+    def use_limit_z(self) -> bool:
+        """Use the minimum Z value"""
+        ...
+    @use_limit_z.setter
+    def use_limit_z(self, value: bool):
+        ...
+    @property
+    def min_x(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]:
+        """Lower X angle bound"""
+        ...
+    @min_x.setter
+    def min_x(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]):
+        ...
+    @property
+    def min_y(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]:
+        """Lower Y angle bound"""
+        ...
+    @min_y.setter
+    def min_y(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]):
+        ...
+    @property
+    def min_z(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]:
+        """Lower Z angle bound"""
+        ...
+    @min_z.setter
+    def min_z(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]):
+        ...
+    @property
+    def max_x(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]:
+        """Upper X angle bound"""
+        ...
+    @max_x.setter
+    def max_x(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]):
+        ...
+    @property
+    def max_y(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]:
+        """Upper Y angle bound"""
+        ...
+    @max_y.setter
+    def max_y(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]):
+        ...
+    @property
+    def max_z(self) -> Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]:
+        """Upper Z angle bound"""
+        ...
+    @max_z.setter
+    def max_z(self, value: Annotated[float, "subtype='ANGLE'", "unit='ROTATION'", "step=10.0", "precision=1"]):
+        ...
+    @property
+    def euler_order(self) -> Literal['AUTO', 'XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX']:
+        """Explicitly specify the euler rotation order"""
+        ...
+    @euler_order.setter
+    def euler_order(self, value: Literal['AUTO', 'XYZ', 'XZY', 'YXZ', 'YZX', 'ZXY', 'ZYX']):
+        ...
+    @property
+    def use_transform_limit(self) -> bool:
+        """Transform tools are affected by this constraint as well"""
+        ...
+    @use_transform_limit.setter
+    def use_transform_limit(self, value: bool):
+        ...
+    @property
+    def use_legacy_behavior(self) -> bool:
+        """Use the old semi-broken behavior that does not understand that rotations loop around"""
+        ...
+    @use_legacy_behavior.setter
+    def use_legacy_behavior(self, value: bool):
+        ...

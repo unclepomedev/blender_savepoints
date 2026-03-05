@@ -19,25 +19,60 @@ from .ColorRamp import ColorRamp
 
 class LineStyleColorModifier_Material(LineStyleColorModifier):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name of the modifier"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of the modifier"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def type(self) -> Literal['ALONG_STROKE', 'CREASE_ANGLE', 'CURVATURE_3D', 'DISTANCE_FROM_CAMERA', 'DISTANCE_FROM_OBJECT', 'MATERIAL', 'NOISE', 'TANGENT']:
         """Type of the modifier"""
         ...
-    blend: Literal['MIX', 'DARKEN', 'MULTIPLY', 'BURN', 'LIGHTEN', 'SCREEN', 'DODGE', 'ADD', 'OVERLAY', 'SOFT_LIGHT', 'LINEAR_LIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUBTRACT', 'DIVIDE', 'HUE', 'SATURATION', 'COLOR', 'VALUE']
-    """Specify how the modifier value is blended into the base value"""
-    influence: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Influence factor by which the modifier changes the property"""
-    use: bool
-    """Enable or disable this modifier during stroke rendering"""
-    expanded: bool
-    """True if the modifier tab is expanded"""
-    material_attribute: Literal['LINE', 'LINE_R', 'LINE_G', 'LINE_B', 'LINE_A', 'DIFF', 'DIFF_R', 'DIFF_G', 'DIFF_B', 'SPEC', 'SPEC_R', 'SPEC_G', 'SPEC_B', 'SPEC_HARD', 'ALPHA']
-    """Specify which material attribute is used"""
+    @property
+    def blend(self) -> Literal['MIX', 'DARKEN', 'MULTIPLY', 'BURN', 'LIGHTEN', 'SCREEN', 'DODGE', 'ADD', 'OVERLAY', 'SOFT_LIGHT', 'LINEAR_LIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUBTRACT', 'DIVIDE', 'HUE', 'SATURATION', 'COLOR', 'VALUE']:
+        """Specify how the modifier value is blended into the base value"""
+        ...
+    @blend.setter
+    def blend(self, value: Literal['MIX', 'DARKEN', 'MULTIPLY', 'BURN', 'LIGHTEN', 'SCREEN', 'DODGE', 'ADD', 'OVERLAY', 'SOFT_LIGHT', 'LINEAR_LIGHT', 'DIFFERENCE', 'EXCLUSION', 'SUBTRACT', 'DIVIDE', 'HUE', 'SATURATION', 'COLOR', 'VALUE']):
+        ...
+    @property
+    def influence(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Influence factor by which the modifier changes the property"""
+        ...
+    @influence.setter
+    def influence(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def use(self) -> bool:
+        """Enable or disable this modifier during stroke rendering"""
+        ...
+    @use.setter
+    def use(self, value: bool):
+        ...
+    @property
+    def expanded(self) -> bool:
+        """True if the modifier tab is expanded"""
+        ...
+    @expanded.setter
+    def expanded(self, value: bool):
+        ...
+    @property
+    def material_attribute(self) -> Literal['LINE', 'LINE_R', 'LINE_G', 'LINE_B', 'LINE_A', 'DIFF', 'DIFF_R', 'DIFF_G', 'DIFF_B', 'SPEC', 'SPEC_R', 'SPEC_G', 'SPEC_B', 'SPEC_HARD', 'ALPHA']:
+        """Specify which material attribute is used"""
+        ...
+    @material_attribute.setter
+    def material_attribute(self, value: Literal['LINE', 'LINE_R', 'LINE_G', 'LINE_B', 'LINE_A', 'DIFF', 'DIFF_R', 'DIFF_G', 'DIFF_B', 'SPEC', 'SPEC_R', 'SPEC_G', 'SPEC_B', 'SPEC_HARD', 'ALPHA']):
+        ...
     @property
     def color_ramp(self) -> Annotated[Optional['ColorRamp'], "is_animatable=False"]:
         """Color ramp used to change line color"""
         ...
-    use_ramp: bool
-    """Use color ramp to map the BW average into an RGB color"""
+    @property
+    def use_ramp(self) -> bool:
+        """Use color ramp to map the BW average into an RGB color"""
+        ...
+    @use_ramp.setter
+    def use_ramp(self, value: bool):
+        ...

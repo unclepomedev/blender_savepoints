@@ -32,14 +32,34 @@ class LayerCollection(bpy_struct):
     def children(self) -> Annotated[bpy_prop_collection['LayerCollection'], "is_animatable=False"]:
         """Layer collection children"""
         ...
-    exclude: Annotated[bool, "is_animatable=False"]
-    """Exclude from view layer"""
-    holdout: Annotated[bool, "is_animatable=False"]
-    """Mask out objects in collection from view layer"""
-    indirect_only: Annotated[bool, "is_animatable=False"]
-    """Objects in collection only contribute indirectly (through shadows and reflections) in the view layer"""
-    hide_viewport: Annotated[bool, "is_animatable=False"]
-    """Temporarily hide in viewport"""
+    @property
+    def exclude(self) -> Annotated[bool, "is_animatable=False"]:
+        """Exclude from view layer"""
+        ...
+    @exclude.setter
+    def exclude(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def holdout(self) -> Annotated[bool, "is_animatable=False"]:
+        """Mask out objects in collection from view layer"""
+        ...
+    @holdout.setter
+    def holdout(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def indirect_only(self) -> Annotated[bool, "is_animatable=False"]:
+        """Objects in collection only contribute indirectly (through shadows and reflections) in the view layer"""
+        ...
+    @indirect_only.setter
+    def indirect_only(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def hide_viewport(self) -> Annotated[bool, "is_animatable=False"]:
+        """Temporarily hide in viewport"""
+        ...
+    @hide_viewport.setter
+    def hide_viewport(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def is_visible(self) -> Annotated[bool, "is_animatable=False"]:
         """Whether this collection is visible for the view layer, take into account the collection parent"""

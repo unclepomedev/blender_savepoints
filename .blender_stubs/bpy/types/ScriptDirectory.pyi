@@ -18,7 +18,17 @@ from .bpy_struct import bpy_struct
 
 class ScriptDirectory(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Identifier for the Python scripts directory"""
-    directory: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]
-    """Alternate script path, matching the default layout with sub-directories: startup, add-ons, modules, and presets (requires restart)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Identifier for the Python scripts directory"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def directory(self) -> Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]:
+        """Alternate script path, matching the default layout with sub-directories: startup, add-ons, modules, and presets (requires restart)"""
+        ...
+    @directory.setter
+    def directory(self, value: Annotated[str, "subtype='DIR_PATH'", "is_animatable=False"]):
+        ...

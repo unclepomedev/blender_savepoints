@@ -22,8 +22,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class KeyConfig(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name of the key configuration"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of the key configuration"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def keymaps(self) -> Annotated['KeyMaps', "is_animatable=False"]:
         """Key maps configured as part of this configuration"""

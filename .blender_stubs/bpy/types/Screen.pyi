@@ -25,8 +25,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Screen(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -51,10 +56,20 @@ class Screen(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -67,14 +82,24 @@ class Screen(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -87,8 +112,13 @@ class Screen(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -117,28 +147,83 @@ class Screen(ID):
     def show_fullscreen(self) -> bool:
         """An area is maximized, filling this screen"""
         ...
-    show_statusbar: bool
-    """Show status bar"""
-    use_play_top_left_3d_editor: bool
+    @property
+    def show_statusbar(self) -> bool:
+        """Show status bar"""
+        ...
+    @show_statusbar.setter
+    def show_statusbar(self, value: bool):
+        ...
+    @property
+    def use_play_top_left_3d_editor(self) -> bool:
 
-    use_play_3d_editors: bool
+        ...
+    @use_play_top_left_3d_editor.setter
+    def use_play_top_left_3d_editor(self, value: bool):
+        ...
+    @property
+    def use_play_3d_editors(self) -> bool:
 
-    use_follow: bool
-    """Follow current frame in editors"""
-    use_play_animation_editors: bool
+        ...
+    @use_play_3d_editors.setter
+    def use_play_3d_editors(self, value: bool):
+        ...
+    @property
+    def use_follow(self) -> bool:
+        """Follow current frame in editors"""
+        ...
+    @use_follow.setter
+    def use_follow(self, value: bool):
+        ...
+    @property
+    def use_play_animation_editors(self) -> bool:
 
-    use_play_properties_editors: bool
+        ...
+    @use_play_animation_editors.setter
+    def use_play_animation_editors(self, value: bool):
+        ...
+    @property
+    def use_play_properties_editors(self) -> bool:
 
-    use_play_image_editors: bool
+        ...
+    @use_play_properties_editors.setter
+    def use_play_properties_editors(self, value: bool):
+        ...
+    @property
+    def use_play_image_editors(self) -> bool:
 
-    use_play_sequence_editors: bool
+        ...
+    @use_play_image_editors.setter
+    def use_play_image_editors(self, value: bool):
+        ...
+    @property
+    def use_play_sequence_editors(self) -> bool:
 
-    use_play_node_editors: bool
+        ...
+    @use_play_sequence_editors.setter
+    def use_play_sequence_editors(self, value: bool):
+        ...
+    @property
+    def use_play_node_editors(self) -> bool:
 
-    use_play_clip_editors: bool
+        ...
+    @use_play_node_editors.setter
+    def use_play_node_editors(self, value: bool):
+        ...
+    @property
+    def use_play_clip_editors(self) -> bool:
 
-    use_play_spreadsheet_editors: bool
+        ...
+    @use_play_clip_editors.setter
+    def use_play_clip_editors(self, value: bool):
+        ...
+    @property
+    def use_play_spreadsheet_editors(self) -> bool:
 
+        ...
+    @use_play_spreadsheet_editors.setter
+    def use_play_spreadsheet_editors(self, value: bool):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

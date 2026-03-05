@@ -19,10 +19,20 @@ from .KeyingSet import KeyingSet
 
 class KeyingSetsAll(bpy_struct):
 
-    active: Annotated[Optional['KeyingSet'], "is_animatable=False"]
-    """Active Keying Set used to insert/delete keyframes"""
-    active_index: Annotated[int, "step=1"]
-    """Current Keying Set index (negative for 'builtin' and positive for 'absolute')"""
+    @property
+    def active(self) -> Annotated[Optional['KeyingSet'], "is_animatable=False"]:
+        """Active Keying Set used to insert/delete keyframes"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['KeyingSet'], "is_animatable=False"]):
+        ...
+    @property
+    def active_index(self) -> Annotated[int, "step=1"]:
+        """Current Keying Set index (negative for 'builtin' and positive for 'absolute')"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "step=1"]):
+        ...
     def __contains__(self, key: Union[str, int]) -> bool: ...
     def __iter__(self) -> Iterator['KeyingSet']: ...
     def __getitem__(self, key: Union[str, int]) -> 'KeyingSet': ...

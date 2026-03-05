@@ -19,10 +19,20 @@ from .VertexGroup import VertexGroup
 
 class VertexGroups(bpy_struct):
 
-    active: Annotated[Optional['VertexGroup'], "is_animatable=False"]
-    """Vertex groups of the object"""
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """Active index in vertex group array"""
+    @property
+    def active(self) -> Annotated[Optional['VertexGroup'], "is_animatable=False"]:
+        """Vertex groups of the object"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['VertexGroup'], "is_animatable=False"]):
+        ...
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """Active index in vertex group array"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def clear(self, *args, **kwargs) -> Any: ...

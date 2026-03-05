@@ -20,12 +20,27 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class MeshLoopColorLayer(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name of Vertex color layer"""
-    active: Annotated[bool, "is_animatable=False"]
-    """Sets the layer as active for display and editing"""
-    active_render: Annotated[bool, "is_animatable=False"]
-    """Sets the layer as active for rendering"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name of Vertex color layer"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def active(self) -> Annotated[bool, "is_animatable=False"]:
+        """Sets the layer as active for display and editing"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def active_render(self) -> Annotated[bool, "is_animatable=False"]:
+        """Sets the layer as active for rendering"""
+        ...
+    @active_render.setter
+    def active_render(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def data(self) -> Annotated[bpy_prop_collection['MeshLoopColor'], "is_animatable=False"]:
 

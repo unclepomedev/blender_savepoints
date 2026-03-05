@@ -18,8 +18,13 @@ from .bpy_struct import bpy_struct
 
 class StripElement(bpy_struct):
 
-    filename: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]
-    """Name of the source file"""
+    @property
+    def filename(self) -> Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]:
+        """Name of the source file"""
+        ...
+    @filename.setter
+    def filename(self, value: Annotated[str, "subtype='FILE_NAME'", "is_animatable=False"]):
+        ...
     @property
     def orig_width(self) -> Annotated[int, "step=1"]:
         """Original image width"""

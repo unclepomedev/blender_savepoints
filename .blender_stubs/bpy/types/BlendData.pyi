@@ -109,8 +109,13 @@ class BlendData(bpy_struct):
     def is_saved(self) -> bool:
         """Has the current session been saved to disk as a .blend file"""
         ...
-    use_autopack: bool
-    """Automatically pack all external data into .blend file"""
+    @property
+    def use_autopack(self) -> bool:
+        """Automatically pack all external data into .blend file"""
+        ...
+    @use_autopack.setter
+    def use_autopack(self, value: bool):
+        ...
     @property
     def version(self) -> Annotated[list[int], "subtype='XYZ'", "step=1"]:
         """File format version the .blend file was saved with"""

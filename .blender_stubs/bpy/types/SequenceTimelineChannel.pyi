@@ -18,8 +18,24 @@ from .bpy_struct import bpy_struct
 
 class SequenceTimelineChannel(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
 
-    lock: bool
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def lock(self) -> bool:
 
-    mute: bool
+        ...
+    @lock.setter
+    def lock(self, value: bool):
+        ...
+    @property
+    def mute(self) -> bool:
+
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...

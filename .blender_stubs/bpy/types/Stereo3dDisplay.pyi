@@ -18,13 +18,38 @@ from .bpy_struct import bpy_struct
 
 class Stereo3dDisplay(bpy_struct):
 
-    display_mode: Literal['ANAGLYPH', 'INTERLACE', 'TIMESEQUENTIAL', 'SIDEBYSIDE', 'TOPBOTTOM']
+    @property
+    def display_mode(self) -> Literal['ANAGLYPH', 'INTERLACE', 'TIMESEQUENTIAL', 'SIDEBYSIDE', 'TOPBOTTOM']:
 
-    anaglyph_type: Literal['RED_CYAN', 'GREEN_MAGENTA', 'YELLOW_BLUE']
+        ...
+    @display_mode.setter
+    def display_mode(self, value: Literal['ANAGLYPH', 'INTERLACE', 'TIMESEQUENTIAL', 'SIDEBYSIDE', 'TOPBOTTOM']):
+        ...
+    @property
+    def anaglyph_type(self) -> Literal['RED_CYAN', 'GREEN_MAGENTA', 'YELLOW_BLUE']:
 
-    interlace_type: Literal['ROW_INTERLEAVED', 'COLUMN_INTERLEAVED', 'CHECKERBOARD_INTERLEAVED']
+        ...
+    @anaglyph_type.setter
+    def anaglyph_type(self, value: Literal['RED_CYAN', 'GREEN_MAGENTA', 'YELLOW_BLUE']):
+        ...
+    @property
+    def interlace_type(self) -> Literal['ROW_INTERLEAVED', 'COLUMN_INTERLEAVED', 'CHECKERBOARD_INTERLEAVED']:
 
-    use_interlace_swap: bool
-    """Swap left and right stereo channels"""
-    use_sidebyside_crosseyed: bool
-    """Right eye should see left image and vice versa"""
+        ...
+    @interlace_type.setter
+    def interlace_type(self, value: Literal['ROW_INTERLEAVED', 'COLUMN_INTERLEAVED', 'CHECKERBOARD_INTERLEAVED']):
+        ...
+    @property
+    def use_interlace_swap(self) -> bool:
+        """Swap left and right stereo channels"""
+        ...
+    @use_interlace_swap.setter
+    def use_interlace_swap(self, value: bool):
+        ...
+    @property
+    def use_sidebyside_crosseyed(self) -> bool:
+        """Right eye should see left image and vice versa"""
+        ...
+    @use_sidebyside_crosseyed.setter
+    def use_sidebyside_crosseyed(self, value: bool):
+        ...

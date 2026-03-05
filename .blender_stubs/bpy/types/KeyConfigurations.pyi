@@ -19,8 +19,13 @@ from .KeyConfig import KeyConfig
 
 class KeyConfigurations(bpy_struct):
 
-    active: Annotated[Optional['KeyConfig'], "is_animatable=False"]
-    """Active key configuration (preset)"""
+    @property
+    def active(self) -> Annotated[Optional['KeyConfig'], "is_animatable=False"]:
+        """Active key configuration (preset)"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['KeyConfig'], "is_animatable=False"]):
+        ...
     @property
     def default(self) -> Annotated[Optional['KeyConfig'], "subtype=''", "unit='MASS'", "is_animatable=False"]:
         """Default builtin key configuration"""

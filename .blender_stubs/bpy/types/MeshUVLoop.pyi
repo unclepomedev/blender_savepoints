@@ -18,6 +18,17 @@ from .bpy_struct import bpy_struct
 
 class MeshUVLoop(bpy_struct):
 
-    uv: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]
+    @property
+    def uv(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]:
 
-    pin_uv: Annotated[bool, "is_animatable=False"]
+        ...
+    @uv.setter
+    def uv(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def pin_uv(self) -> Annotated[bool, "is_animatable=False"]:
+
+        ...
+    @pin_uv.setter
+    def pin_uv(self, value: Annotated[bool, "is_animatable=False"]):
+        ...

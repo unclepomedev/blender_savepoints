@@ -25,10 +25,25 @@ class ColorRamp(bpy_struct):
     def elements(self) -> Annotated['ColorRampElements', "subtype='COLOR'", "is_animatable=False"]:
 
         ...
-    interpolation: Literal['EASE', 'CARDINAL', 'LINEAR', 'B_SPLINE', 'CONSTANT']
-    """Set interpolation between color stops"""
-    hue_interpolation: Literal['NEAR', 'FAR', 'CW', 'CCW']
-    """Set color interpolation"""
-    color_mode: Literal['RGB', 'HSV', 'HSL']
-    """Set color mode to use for interpolation"""
+    @property
+    def interpolation(self) -> Literal['EASE', 'CARDINAL', 'LINEAR', 'B_SPLINE', 'CONSTANT']:
+        """Set interpolation between color stops"""
+        ...
+    @interpolation.setter
+    def interpolation(self, value: Literal['EASE', 'CARDINAL', 'LINEAR', 'B_SPLINE', 'CONSTANT']):
+        ...
+    @property
+    def hue_interpolation(self) -> Literal['NEAR', 'FAR', 'CW', 'CCW']:
+        """Set color interpolation"""
+        ...
+    @hue_interpolation.setter
+    def hue_interpolation(self, value: Literal['NEAR', 'FAR', 'CW', 'CCW']):
+        ...
+    @property
+    def color_mode(self) -> Literal['RGB', 'HSV', 'HSL']:
+        """Set color mode to use for interpolation"""
+        ...
+    @color_mode.setter
+    def color_mode(self, value: Literal['RGB', 'HSV', 'HSL']):
+        ...
     def evaluate(self, *args, **kwargs) -> Any: ...

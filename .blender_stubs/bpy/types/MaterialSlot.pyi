@@ -19,10 +19,20 @@ from .Material import Material
 
 class MaterialSlot(bpy_struct):
 
-    link: Annotated[Literal['OBJECT', 'DATA'], "is_animatable=False"]
-    """Link material to object or the object's data"""
-    material: Annotated[Optional['Material'], "is_animatable=False"]
-    """Material data-block used by this material slot"""
+    @property
+    def link(self) -> Annotated[Literal['OBJECT', 'DATA'], "is_animatable=False"]:
+        """Link material to object or the object's data"""
+        ...
+    @link.setter
+    def link(self, value: Annotated[Literal['OBJECT', 'DATA'], "is_animatable=False"]):
+        ...
+    @property
+    def material(self) -> Annotated[Optional['Material'], "is_animatable=False"]:
+        """Material data-block used by this material slot"""
+        ...
+    @material.setter
+    def material(self, value: Annotated[Optional['Material'], "is_animatable=False"]):
+        ...
     @property
     def slot_index(self) -> Annotated[int, "step=1", "is_animatable=False"]:
 

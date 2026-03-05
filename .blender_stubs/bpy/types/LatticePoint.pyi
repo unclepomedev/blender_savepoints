@@ -20,16 +20,31 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class LatticePoint(bpy_struct):
 
-    select: bool
-    """Selection status"""
+    @property
+    def select(self) -> bool:
+        """Selection status"""
+        ...
+    @select.setter
+    def select(self, value: bool):
+        ...
     @property
     def co(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
         """Original undeformed location used to calculate the strength of the deform effect (edit/animate the Deformed Location instead)"""
         ...
-    co_deform: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]
+    @property
+    def co_deform(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]:
 
-    weight_softbody: Annotated[float, "step=10.0", "precision=3"]
-    """Softbody goal weight"""
+        ...
+    @co_deform.setter
+    def co_deform(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def weight_softbody(self) -> Annotated[float, "step=10.0", "precision=3"]:
+        """Softbody goal weight"""
+        ...
+    @weight_softbody.setter
+    def weight_softbody(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
     @property
     def groups(self) -> Annotated[bpy_prop_collection['VertexGroupElement'], "is_animatable=False"]:
         """Weights for the vertex groups this point is member of"""

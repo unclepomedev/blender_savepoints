@@ -26,8 +26,13 @@ from .LibraryWeakReference import LibraryWeakReference
 
 class LightProbeSphere(LightProbe):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -52,10 +57,20 @@ class LightProbeSphere(LightProbe):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -68,14 +83,24 @@ class LightProbeSphere(LightProbe):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -88,8 +113,13 @@ class LightProbeSphere(LightProbe):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -102,48 +132,143 @@ class LightProbeSphere(LightProbe):
     def type(self) -> Literal['SPHERE', 'PLANE', 'VOLUME']:
         """Type of light probe"""
         ...
-    clip_start: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Probe clip start, below which objects will not appear in reflections"""
-    show_clip: bool
-    """Show the clipping distances in the 3D view"""
-    show_influence: bool
-    """Show the influence volume in the 3D view"""
-    influence_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Influence distance of the probe"""
-    visibility_buffer_bias: Annotated[float, "step=1.0", "precision=3"]
-    """Bias for reducing self shadowing (Deprecated)"""
-    visibility_bleed_bias: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Bias for reducing light-bleed on variance shadow maps (Deprecated)"""
-    visibility_blur: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Filter size of the visibility blur (Deprecated)"""
-    visibility_collection: Annotated[Optional['Collection'], "is_animatable=False"]
-    """Restrict objects visible for this probe (Deprecated)"""
-    invert_visibility_collection: bool
-    """Invert visibility collection (Deprecated)"""
-    show_data: bool
-    """Deprecated, use use_data_display instead"""
-    use_data_display: bool
-    """Display sampled data in the viewport to debug captured light"""
-    data_display_size: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]
-    """Viewport display size of the sampled data"""
+    @property
+    def clip_start(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Probe clip start, below which objects will not appear in reflections"""
+        ...
+    @clip_start.setter
+    def clip_start(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def show_clip(self) -> bool:
+        """Show the clipping distances in the 3D view"""
+        ...
+    @show_clip.setter
+    def show_clip(self, value: bool):
+        ...
+    @property
+    def show_influence(self) -> bool:
+        """Show the influence volume in the 3D view"""
+        ...
+    @show_influence.setter
+    def show_influence(self, value: bool):
+        ...
+    @property
+    def influence_distance(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Influence distance of the probe"""
+        ...
+    @influence_distance.setter
+    def influence_distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def visibility_buffer_bias(self) -> Annotated[float, "step=1.0", "precision=3"]:
+        """Bias for reducing self shadowing (Deprecated)"""
+        ...
+    @visibility_buffer_bias.setter
+    def visibility_buffer_bias(self, value: Annotated[float, "step=1.0", "precision=3"]):
+        ...
+    @property
+    def visibility_bleed_bias(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Bias for reducing light-bleed on variance shadow maps (Deprecated)"""
+        ...
+    @visibility_bleed_bias.setter
+    def visibility_bleed_bias(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def visibility_blur(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Filter size of the visibility blur (Deprecated)"""
+        ...
+    @visibility_blur.setter
+    def visibility_blur(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def visibility_collection(self) -> Annotated[Optional['Collection'], "is_animatable=False"]:
+        """Restrict objects visible for this probe (Deprecated)"""
+        ...
+    @visibility_collection.setter
+    def visibility_collection(self, value: Annotated[Optional['Collection'], "is_animatable=False"]):
+        ...
+    @property
+    def invert_visibility_collection(self) -> bool:
+        """Invert visibility collection (Deprecated)"""
+        ...
+    @invert_visibility_collection.setter
+    def invert_visibility_collection(self, value: bool):
+        ...
+    @property
+    def show_data(self) -> bool:
+        """Deprecated, use use_data_display instead"""
+        ...
+    @show_data.setter
+    def show_data(self, value: bool):
+        ...
+    @property
+    def use_data_display(self) -> bool:
+        """Display sampled data in the viewport to debug captured light"""
+        ...
+    @use_data_display.setter
+    def use_data_display(self, value: bool):
+        ...
+    @property
+    def data_display_size(self) -> Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]:
+        """Viewport display size of the sampled data"""
+        ...
+    @data_display_size.setter
+    def data_display_size(self, value: Annotated[float, "subtype='FACTOR'", "step=1.0", "precision=3"]):
+        ...
     @property
     def animation_data(self) -> Annotated[Optional['AnimData'], "is_animatable=False"]:
         """Animation data for this data-block"""
         ...
-    influence_type: Literal['ELIPSOID', 'BOX']
-    """Type of influence volume"""
-    falloff: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]
-    """Control how fast the probe influence decreases"""
-    clip_end: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Probe clip end, beyond which objects will not appear in reflections"""
-    use_custom_parallax: bool
-    """Enable custom settings for the parallax correction volume"""
-    show_parallax: bool
-    """Show the parallax correction volume in the 3D view"""
-    parallax_type: Literal['ELIPSOID', 'BOX']
-    """Type of parallax volume"""
-    parallax_distance: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Lowest corner of the parallax bounding box"""
+    @property
+    def influence_type(self) -> Literal['ELIPSOID', 'BOX']:
+        """Type of influence volume"""
+        ...
+    @influence_type.setter
+    def influence_type(self, value: Literal['ELIPSOID', 'BOX']):
+        ...
+    @property
+    def falloff(self) -> Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]:
+        """Control how fast the probe influence decreases"""
+        ...
+    @falloff.setter
+    def falloff(self, value: Annotated[float, "subtype='FACTOR'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def clip_end(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Probe clip end, beyond which objects will not appear in reflections"""
+        ...
+    @clip_end.setter
+    def clip_end(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def use_custom_parallax(self) -> bool:
+        """Enable custom settings for the parallax correction volume"""
+        ...
+    @use_custom_parallax.setter
+    def use_custom_parallax(self, value: bool):
+        ...
+    @property
+    def show_parallax(self) -> bool:
+        """Show the parallax correction volume in the 3D view"""
+        ...
+    @show_parallax.setter
+    def show_parallax(self, value: bool):
+        ...
+    @property
+    def parallax_type(self) -> Literal['ELIPSOID', 'BOX']:
+        """Type of parallax volume"""
+        ...
+    @parallax_type.setter
+    def parallax_type(self, value: Literal['ELIPSOID', 'BOX']):
+        ...
+    @property
+    def parallax_distance(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Lowest corner of the parallax bounding box"""
+        ...
+    @parallax_distance.setter
+    def parallax_distance(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

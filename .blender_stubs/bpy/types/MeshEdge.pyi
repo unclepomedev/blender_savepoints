@@ -18,16 +18,41 @@ from .bpy_struct import bpy_struct
 
 class MeshEdge(bpy_struct):
 
-    vertices: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """Vertex indices"""
-    select: Annotated[bool, "is_animatable=False"]
+    @property
+    def vertices(self) -> Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """Vertex indices"""
+        ...
+    @vertices.setter
+    def vertices(self, value: Annotated[list[int], "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def select(self) -> Annotated[bool, "is_animatable=False"]:
 
-    hide: Annotated[bool, "is_animatable=False"]
+        ...
+    @select.setter
+    def select(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def hide(self) -> Annotated[bool, "is_animatable=False"]:
 
-    use_seam: bool
-    """Seam edge for UV unwrapping"""
-    use_edge_sharp: bool
-    """Sharp edge for shading"""
+        ...
+    @hide.setter
+    def hide(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_seam(self) -> bool:
+        """Seam edge for UV unwrapping"""
+        ...
+    @use_seam.setter
+    def use_seam(self, value: bool):
+        ...
+    @property
+    def use_edge_sharp(self) -> bool:
+        """Sharp edge for shading"""
+        ...
+    @use_edge_sharp.setter
+    def use_edge_sharp(self, value: bool):
+        ...
     @property
     def is_loose(self) -> bool:
         """Edge is not connected to any faces"""

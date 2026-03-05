@@ -26,4 +26,10 @@ class GroupNodeViewerPathElem(ViewerPathElem):
     def ui_name(self) -> Annotated[str, "is_animatable=False"]:
         """Name that can be displayed in the UI for this element"""
         ...
-    node_id: Annotated[int, "step=1"]
+    @property
+    def node_id(self) -> Annotated[int, "step=1"]:
+
+        ...
+    @node_id.setter
+    def node_id(self, value: Annotated[int, "step=1"]):
+        ...

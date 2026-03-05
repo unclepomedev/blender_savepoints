@@ -137,7 +137,13 @@ def create_vse_timelapse(directory_path, scene_name_suffix="_Timelapse"):
                 channel=1,
                 frame_start=current_frame,
             )
-            strip.frame_final_duration = FRAMES_PER_IMAGE
+            # Blender 6+ uses handles for duration
+            # TODO: This implementation was inferred through API analysis using Blender Probe. Its correctness will be verified once the official documentation is released.
+            if hasattr(strip, "right_handle") and hasattr(strip, "left_handle"):
+                strip.right_handle = strip.left_handle + FRAMES_PER_IMAGE
+            else:
+                strip.frame_final_duration = FRAMES_PER_IMAGE
+
             current_frame += FRAMES_PER_IMAGE
 
         new_scene.frame_end = current_frame - 1

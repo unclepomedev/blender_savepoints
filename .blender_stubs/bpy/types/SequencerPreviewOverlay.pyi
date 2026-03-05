@@ -18,14 +18,45 @@ from .bpy_struct import bpy_struct
 
 class SequencerPreviewOverlay(bpy_struct):
 
-    show_safe_areas: bool
-    """Show TV title safe and action safe areas in preview"""
-    show_safe_center: bool
-    """Show safe areas to fit content in a different aspect ratio"""
-    show_metadata: bool
-    """Show metadata of first visible strip"""
-    show_annotation: bool
-    """Show annotations for this view"""
-    show_image_outline: bool
+    @property
+    def show_safe_areas(self) -> bool:
+        """Show TV title safe and action safe areas in preview"""
+        ...
+    @show_safe_areas.setter
+    def show_safe_areas(self, value: bool):
+        ...
+    @property
+    def show_safe_center(self) -> bool:
+        """Show safe areas to fit content in a different aspect ratio"""
+        ...
+    @show_safe_center.setter
+    def show_safe_center(self, value: bool):
+        ...
+    @property
+    def show_metadata(self) -> bool:
+        """Show metadata of first visible strip"""
+        ...
+    @show_metadata.setter
+    def show_metadata(self, value: bool):
+        ...
+    @property
+    def show_annotation(self) -> bool:
+        """Show annotations for this view"""
+        ...
+    @show_annotation.setter
+    def show_annotation(self, value: bool):
+        ...
+    @property
+    def show_image_outline(self) -> bool:
 
-    show_cursor: bool
+        ...
+    @show_image_outline.setter
+    def show_image_outline(self, value: bool):
+        ...
+    @property
+    def show_cursor(self) -> bool:
+
+        ...
+    @show_cursor.setter
+    def show_cursor(self, value: bool):
+        ...

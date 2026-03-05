@@ -18,11 +18,31 @@ from .bpy_struct import bpy_struct
 
 class DisplaySafeAreas(bpy_struct):
 
-    title: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Safe area for text and graphics"""
-    action: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Safe area for general elements"""
-    title_center: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Safe area for text and graphics in a different aspect ratio"""
-    action_center: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]
-    """Safe area for general elements in a different aspect ratio"""
+    @property
+    def title(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Safe area for text and graphics"""
+        ...
+    @title.setter
+    def title(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def action(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Safe area for general elements"""
+        ...
+    @action.setter
+    def action(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def title_center(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Safe area for text and graphics in a different aspect ratio"""
+        ...
+    @title_center.setter
+    def title_center(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def action_center(self) -> Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """Safe area for general elements in a different aspect ratio"""
+        ...
+    @action_center.setter
+    def action_center(self, value: Annotated[list[float], "subtype='XYZ'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...

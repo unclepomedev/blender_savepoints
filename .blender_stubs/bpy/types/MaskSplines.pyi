@@ -20,10 +20,20 @@ from .MaskSplinePoint import MaskSplinePoint
 
 class MaskSplines(bpy_struct):
 
-    active: Annotated[Optional['MaskSpline'], "is_animatable=False"]
-    """Active spline of masking layer"""
-    active_point: Annotated[Optional['MaskSplinePoint'], "is_animatable=False"]
-    """Active point of masking layer"""
+    @property
+    def active(self) -> Annotated[Optional['MaskSpline'], "is_animatable=False"]:
+        """Active spline of masking layer"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['MaskSpline'], "is_animatable=False"]):
+        ...
+    @property
+    def active_point(self) -> Annotated[Optional['MaskSplinePoint'], "is_animatable=False"]:
+        """Active point of masking layer"""
+        ...
+    @active_point.setter
+    def active_point(self, value: Annotated[Optional['MaskSplinePoint'], "is_animatable=False"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

@@ -18,11 +18,31 @@ from .bpy_struct import bpy_struct
 
 class SceneRenderView(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Render view name"""
-    file_suffix: Annotated[str, "is_animatable=False"]
-    """Suffix added to the render images for this view"""
-    camera_suffix: Annotated[str, "is_animatable=False"]
-    """Suffix to identify the cameras to use, and added to the render images for this view"""
-    use: Annotated[bool, "is_animatable=False"]
-    """Disable or enable the render view"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Render view name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def file_suffix(self) -> Annotated[str, "is_animatable=False"]:
+        """Suffix added to the render images for this view"""
+        ...
+    @file_suffix.setter
+    def file_suffix(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def camera_suffix(self) -> Annotated[str, "is_animatable=False"]:
+        """Suffix to identify the cameras to use, and added to the render images for this view"""
+        ...
+    @camera_suffix.setter
+    def camera_suffix(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def use(self) -> Annotated[bool, "is_animatable=False"]:
+        """Disable or enable the render view"""
+        ...
+    @use.setter
+    def use(self, value: Annotated[bool, "is_animatable=False"]):
+        ...

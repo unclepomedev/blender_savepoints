@@ -18,5 +18,10 @@ from .bpy_struct import bpy_struct
 
 class XrComponentPath(bpy_struct):
 
-    path: Annotated[str, "is_animatable=False"]
-    """OpenXR component path"""
+    @property
+    def path(self) -> Annotated[str, "is_animatable=False"]:
+        """OpenXR component path"""
+        ...
+    @path.setter
+    def path(self, value: Annotated[str, "is_animatable=False"]):
+        ...

@@ -23,14 +23,45 @@ class ParticleTarget(bpy_struct):
     def name(self) -> Annotated[str, "is_animatable=False"]:
         """Particle target name"""
         ...
-    object: Annotated[Optional['Object'], "is_animatable=False"]
-    """The object that has the target particle system (empty if same object)"""
-    system: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """The index of particle system on the target object"""
-    time: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]
+    @property
+    def object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
+        """The object that has the target particle system (empty if same object)"""
+        ...
+    @object.setter
+    def object(self, value: Annotated[Optional['Object'], "is_animatable=False"]):
+        ...
+    @property
+    def system(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """The index of particle system on the target object"""
+        ...
+    @system.setter
+    def system(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def time(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]:
 
-    duration: Annotated[float, "step=10.0", "precision=3"]
+        ...
+    @time.setter
+    def time(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3"]):
+        ...
+    @property
+    def duration(self) -> Annotated[float, "step=10.0", "precision=3"]:
 
-    is_valid: Annotated[bool, "is_animatable=False"]
-    """Keyed particles target is valid"""
-    alliance: Annotated[Literal['FRIEND', 'NEUTRAL', 'ENEMY'], "is_animatable=False"]
+        ...
+    @duration.setter
+    def duration(self, value: Annotated[float, "step=10.0", "precision=3"]):
+        ...
+    @property
+    def is_valid(self) -> Annotated[bool, "is_animatable=False"]:
+        """Keyed particles target is valid"""
+        ...
+    @is_valid.setter
+    def is_valid(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def alliance(self) -> Annotated[Literal['FRIEND', 'NEUTRAL', 'ENEMY'], "is_animatable=False"]:
+
+        ...
+    @alliance.setter
+    def alliance(self, value: Annotated[Literal['FRIEND', 'NEUTRAL', 'ENEMY'], "is_animatable=False"]):
+        ...

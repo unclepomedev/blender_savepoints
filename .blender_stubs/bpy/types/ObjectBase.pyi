@@ -23,7 +23,17 @@ class ObjectBase(bpy_struct):
     def object(self) -> Annotated[Optional['Object'], "is_animatable=False"]:
         """Object this base links to"""
         ...
-    select: Annotated[bool, "is_animatable=False"]
-    """Object base selection state"""
-    hide_viewport: Annotated[bool, "is_animatable=False"]
-    """Temporarily hide in viewport"""
+    @property
+    def select(self) -> Annotated[bool, "is_animatable=False"]:
+        """Object base selection state"""
+        ...
+    @select.setter
+    def select(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def hide_viewport(self) -> Annotated[bool, "is_animatable=False"]:
+        """Temporarily hide in viewport"""
+        ...
+    @hide_viewport.setter
+    def hide_viewport(self, value: Annotated[bool, "is_animatable=False"]):
+        ...

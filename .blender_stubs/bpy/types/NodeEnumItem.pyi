@@ -18,6 +18,17 @@ from .bpy_struct import bpy_struct
 
 class NodeEnumItem(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
 
-    description: Annotated[str, "is_animatable=False"]
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def description(self) -> Annotated[str, "is_animatable=False"]:
+
+        ...
+    @description.setter
+    def description(self, value: Annotated[str, "is_animatable=False"]):
+        ...

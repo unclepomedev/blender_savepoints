@@ -20,10 +20,20 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class DriverVariable(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Name to use in scripted expressions/functions (no spaces or dots are allowed, and must start with a letter)"""
-    type: Literal['SINGLE_PROP', 'TRANSFORMS', 'ROTATION_DIFF', 'LOC_DIFF', 'CONTEXT_PROP']
-    """Driver variable type"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Name to use in scripted expressions/functions (no spaces or dots are allowed, and must start with a letter)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def type(self) -> Literal['SINGLE_PROP', 'TRANSFORMS', 'ROTATION_DIFF', 'LOC_DIFF', 'CONTEXT_PROP']:
+        """Driver variable type"""
+        ...
+    @type.setter
+    def type(self, value: Literal['SINGLE_PROP', 'TRANSFORMS', 'ROTATION_DIFF', 'LOC_DIFF', 'CONTEXT_PROP']):
+        ...
     @property
     def targets(self) -> Annotated[bpy_prop_collection['DriverTarget'], "is_animatable=False"]:
         """Sources of input data for evaluating this variable"""

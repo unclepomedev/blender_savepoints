@@ -30,8 +30,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Action(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -56,10 +61,20 @@ class Action(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -72,14 +87,24 @@ class Action(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -92,8 +117,13 @@ class Action(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -126,16 +156,41 @@ class Action(ID):
     def pose_markers(self) -> Annotated['ActionPoseMarkers', "is_animatable=False"]:
         """Markers specific to this action, for labeling poses"""
         ...
-    use_frame_range: Annotated[bool, "is_animatable=False"]
-    """Manually specify the intended playback frame range for the action (this range is used by some tools, but does not affect animation evaluation)"""
-    use_cyclic: Annotated[bool, "is_animatable=False"]
-    """The action is intended to be used as a cycle looping over its manually set playback frame range (enabling this does not automatically make it loop)"""
-    frame_start: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]
-    """The start frame of the manually set intended playback range"""
-    frame_end: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]
-    """The end frame of the manually set intended playback range"""
-    frame_range: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]
-    """The intended playback frame range of this action, using the manually set range if available, or the combined frame range of all F-Curves within this action if not (assigning sets the manual frame range)"""
+    @property
+    def use_frame_range(self) -> Annotated[bool, "is_animatable=False"]:
+        """Manually specify the intended playback frame range for the action (this range is used by some tools, but does not affect animation evaluation)"""
+        ...
+    @use_frame_range.setter
+    def use_frame_range(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def use_cyclic(self) -> Annotated[bool, "is_animatable=False"]:
+        """The action is intended to be used as a cycle looping over its manually set playback frame range (enabling this does not automatically make it loop)"""
+        ...
+    @use_cyclic.setter
+    def use_cyclic(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def frame_start(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """The start frame of the manually set intended playback range"""
+        ...
+    @frame_start.setter
+    def frame_start(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def frame_end(self) -> Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]:
+        """The end frame of the manually set intended playback range"""
+        ...
+    @frame_end.setter
+    def frame_end(self, value: Annotated[float, "subtype='TIME'", "unit='TIME'", "step=10.0", "precision=3", "is_animatable=False"]):
+        ...
+    @property
+    def frame_range(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]:
+        """The intended playback frame range of this action, using the manually set range if available, or the combined frame range of all F-Curves within this action if not (assigning sets the manual frame range)"""
+        ...
+    @frame_range.setter
+    def frame_range(self, value: Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]):
+        ...
     @property
     def curve_frame_range(self) -> Annotated[list[float], "subtype='XYZ'", "step=1.0", "precision=3"]:
         """The combined frame range of all F-Curves within this action"""

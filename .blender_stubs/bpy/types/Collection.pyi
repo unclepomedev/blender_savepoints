@@ -31,8 +31,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Collection(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -57,10 +62,20 @@ class Collection(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -73,14 +88,24 @@ class Collection(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -93,8 +118,13 @@ class Collection(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -103,8 +133,13 @@ class Collection(ID):
     def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
-    instance_offset: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=5"]
-    """Offset from the origin to use when instancing"""
+    @property
+    def instance_offset(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=5"]:
+        """Offset from the origin to use when instancing"""
+        ...
+    @instance_offset.setter
+    def instance_offset(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=10.0", "precision=5"]):
+        ...
     @property
     def objects(self) -> Annotated['CollectionObjects', "is_animatable=False"]:
         """Objects that are directly in this collection"""
@@ -129,26 +164,76 @@ class Collection(ID):
     def exporters(self) -> Annotated['CollectionExports', "is_animatable=False"]:
         """Export Handlers configured for the collection"""
         ...
-    active_exporter_index: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]
-    """Active index in the exporters list"""
-    hide_select: Annotated[bool, "is_animatable=False"]
-    """Disable selection in viewport"""
-    hide_viewport: Annotated[bool, "is_animatable=False"]
-    """Globally disable in viewports"""
-    hide_render: Annotated[bool, "is_animatable=False"]
-    """Globally disable in renders"""
-    lineart_usage: Literal['INCLUDE', 'OCCLUSION_ONLY', 'EXCLUDE', 'INTERSECTION_ONLY', 'NO_INTERSECTION', 'FORCE_INTERSECTION']
-    """How to use this collection in Line Art calculation"""
-    lineart_use_intersection_mask: bool
-    """Use custom intersection mask for faces in this collection"""
-    lineart_intersection_mask: list[bool]
-    """Intersection generated by this collection will have this mask value"""
-    lineart_intersection_priority: Annotated[int, "step=1"]
-    """The intersection line will be included into the object with the higher intersection priority value"""
-    use_lineart_intersection_priority: bool
-    """Assign intersection priority value for this collection"""
-    color_tag: Literal['NONE', 'COLOR_01', 'COLOR_02', 'COLOR_03', 'COLOR_04', 'COLOR_05', 'COLOR_06', 'COLOR_07', 'COLOR_08']
-    """Color tag for a collection"""
+    @property
+    def active_exporter_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]:
+        """Active index in the exporters list"""
+        ...
+    @active_exporter_index.setter
+    def active_exporter_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def hide_select(self) -> Annotated[bool, "is_animatable=False"]:
+        """Disable selection in viewport"""
+        ...
+    @hide_select.setter
+    def hide_select(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def hide_viewport(self) -> Annotated[bool, "is_animatable=False"]:
+        """Globally disable in viewports"""
+        ...
+    @hide_viewport.setter
+    def hide_viewport(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def hide_render(self) -> Annotated[bool, "is_animatable=False"]:
+        """Globally disable in renders"""
+        ...
+    @hide_render.setter
+    def hide_render(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
+    @property
+    def lineart_usage(self) -> Literal['INCLUDE', 'OCCLUSION_ONLY', 'EXCLUDE', 'INTERSECTION_ONLY', 'NO_INTERSECTION', 'FORCE_INTERSECTION']:
+        """How to use this collection in Line Art calculation"""
+        ...
+    @lineart_usage.setter
+    def lineart_usage(self, value: Literal['INCLUDE', 'OCCLUSION_ONLY', 'EXCLUDE', 'INTERSECTION_ONLY', 'NO_INTERSECTION', 'FORCE_INTERSECTION']):
+        ...
+    @property
+    def lineart_use_intersection_mask(self) -> bool:
+        """Use custom intersection mask for faces in this collection"""
+        ...
+    @lineart_use_intersection_mask.setter
+    def lineart_use_intersection_mask(self, value: bool):
+        ...
+    @property
+    def lineart_intersection_mask(self) -> list[bool]:
+        """Intersection generated by this collection will have this mask value"""
+        ...
+    @lineart_intersection_mask.setter
+    def lineart_intersection_mask(self, value: list[bool]):
+        ...
+    @property
+    def lineart_intersection_priority(self) -> Annotated[int, "step=1"]:
+        """The intersection line will be included into the object with the higher intersection priority value"""
+        ...
+    @lineart_intersection_priority.setter
+    def lineart_intersection_priority(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def use_lineart_intersection_priority(self) -> bool:
+        """Assign intersection priority value for this collection"""
+        ...
+    @use_lineart_intersection_priority.setter
+    def use_lineart_intersection_priority(self, value: bool):
+        ...
+    @property
+    def color_tag(self) -> Literal['NONE', 'COLOR_01', 'COLOR_02', 'COLOR_03', 'COLOR_04', 'COLOR_05', 'COLOR_06', 'COLOR_07', 'COLOR_08']:
+        """Color tag for a collection"""
+        ...
+    @color_tag.setter
+    def color_tag(self, value: Literal['NONE', 'COLOR_01', 'COLOR_02', 'COLOR_03', 'COLOR_04', 'COLOR_05', 'COLOR_06', 'COLOR_07', 'COLOR_08']):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

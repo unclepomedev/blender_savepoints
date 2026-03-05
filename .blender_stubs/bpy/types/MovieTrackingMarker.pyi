@@ -18,21 +18,56 @@ from .bpy_struct import bpy_struct
 
 class MovieTrackingMarker(bpy_struct):
 
-    co: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]
-    """Marker position at frame in normalized coordinates"""
-    frame: Annotated[int, "step=1"]
-    """Frame number marker is keyframed on"""
-    mute: bool
-    """Is marker muted for current frame"""
-    pattern_corners: Annotated[list[float], "subtype='MATRIX'", "step=1.0", "precision=5", "is_animatable=False"]
-    """Array of coordinates which represents pattern's corners in normalized coordinates relative to marker position"""
+    @property
+    def co(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]:
+        """Marker position at frame in normalized coordinates"""
+        ...
+    @co.setter
+    def co(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5"]):
+        ...
+    @property
+    def frame(self) -> Annotated[int, "step=1"]:
+        """Frame number marker is keyframed on"""
+        ...
+    @frame.setter
+    def frame(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def mute(self) -> bool:
+        """Is marker muted for current frame"""
+        ...
+    @mute.setter
+    def mute(self, value: bool):
+        ...
+    @property
+    def pattern_corners(self) -> Annotated[list[float], "subtype='MATRIX'", "step=1.0", "precision=5", "is_animatable=False"]:
+        """Array of coordinates which represents pattern's corners in normalized coordinates relative to marker position"""
+        ...
+    @pattern_corners.setter
+    def pattern_corners(self, value: Annotated[list[float], "subtype='MATRIX'", "step=1.0", "precision=5", "is_animatable=False"]):
+        ...
     @property
     def pattern_bound_box(self) -> Annotated[list[float], "step=10.0", "precision=3"]:
         """Pattern area bounding box in normalized coordinates"""
         ...
-    search_min: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]
-    """Left-bottom corner of search area in normalized coordinates relative to marker position"""
-    search_max: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]
-    """Right-bottom corner of search area in normalized coordinates relative to marker position"""
-    is_keyed: Annotated[bool, "is_animatable=False"]
-    """Whether the position of the marker is keyframed or tracked"""
+    @property
+    def search_min(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]:
+        """Left-bottom corner of search area in normalized coordinates relative to marker position"""
+        ...
+    @search_min.setter
+    def search_min(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]):
+        ...
+    @property
+    def search_max(self) -> Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]:
+        """Right-bottom corner of search area in normalized coordinates relative to marker position"""
+        ...
+    @search_max.setter
+    def search_max(self, value: Annotated[list[float], "subtype='TRANSLATION'", "unit='LENGTH'", "step=1.0", "precision=5", "is_animatable=False"]):
+        ...
+    @property
+    def is_keyed(self) -> Annotated[bool, "is_animatable=False"]:
+        """Whether the position of the marker is keyframed or tracked"""
+        ...
+    @is_keyed.setter
+    def is_keyed(self, value: Annotated[bool, "is_animatable=False"]):
+        ...

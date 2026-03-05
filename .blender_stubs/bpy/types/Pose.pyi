@@ -26,18 +26,38 @@ class Pose(bpy_struct):
     def bones(self) -> Annotated[bpy_prop_collection['PoseBone'], "is_animatable=False"]:
         """Individual pose bones for the armature"""
         ...
-    ik_solver: Literal['LEGACY', 'ITASC']
-    """Selection of IK solver for IK chain"""
+    @property
+    def ik_solver(self) -> Literal['LEGACY', 'ITASC']:
+        """Selection of IK solver for IK chain"""
+        ...
+    @ik_solver.setter
+    def ik_solver(self, value: Literal['LEGACY', 'ITASC']):
+        ...
     @property
     def ik_param(self) -> Annotated[Optional['IKParam'], "is_animatable=False"]:
         """Parameters for IK solver"""
         ...
-    use_mirror_x: bool
-    """Apply changes to matching bone on opposite side of X-Axis"""
-    use_mirror_relative: bool
-    """Apply relative transformations in X-mirror mode (not supported with Auto IK)"""
-    use_auto_ik: bool
-    """Add temporary IK constraints while grabbing bones in Pose Mode"""
+    @property
+    def use_mirror_x(self) -> bool:
+        """Apply changes to matching bone on opposite side of X-Axis"""
+        ...
+    @use_mirror_x.setter
+    def use_mirror_x(self, value: bool):
+        ...
+    @property
+    def use_mirror_relative(self) -> bool:
+        """Apply relative transformations in X-mirror mode (not supported with Auto IK)"""
+        ...
+    @use_mirror_relative.setter
+    def use_mirror_relative(self, value: bool):
+        ...
+    @property
+    def use_auto_ik(self) -> bool:
+        """Add temporary IK constraints while grabbing bones in Pose Mode"""
+        ...
+    @use_auto_ik.setter
+    def use_auto_ik(self, value: bool):
+        ...
     @property
     def animation_visualization(self) -> Annotated['AnimViz', "is_animatable=False"]:
         """Animation data for this data-block"""

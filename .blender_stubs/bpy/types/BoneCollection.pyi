@@ -20,12 +20,27 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class BoneCollection(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique within the Armature"""
-    is_expanded: bool
-    """This bone collection is expanded in the bone collections tree view"""
-    is_visible: bool
-    """Bones in this collection will be visible in pose/object mode"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique within the Armature"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def is_expanded(self) -> bool:
+        """This bone collection is expanded in the bone collections tree view"""
+        ...
+    @is_expanded.setter
+    def is_expanded(self, value: bool):
+        ...
+    @property
+    def is_visible(self) -> bool:
+        """Bones in this collection will be visible in pose/object mode"""
+        ...
+    @is_visible.setter
+    def is_visible(self, value: bool):
+        ...
     @property
     def is_visible_ancestors(self) -> bool:
         """True when all of the ancestors of this bone collection are marked as visible; always True for root bone collections"""
@@ -34,8 +49,13 @@ class BoneCollection(bpy_struct):
     def is_visible_effectively(self) -> bool:
         """Whether this bone collection is effectively visible in the viewport. This is True when this bone collection and all of its ancestors are visible, or when it is marked as 'solo'."""
         ...
-    is_solo: bool
-    """Show only this bone collection, and others also marked as 'solo'"""
+    @property
+    def is_solo(self) -> bool:
+        """Show only this bone collection, and others also marked as 'solo'"""
+        ...
+    @is_solo.setter
+    def is_solo(self, value: bool):
+        ...
     @property
     def is_local_override(self) -> bool:
         """This collection was added via a library override in the current blend file"""
@@ -52,14 +72,24 @@ class BoneCollection(bpy_struct):
     def children(self) -> Annotated[bpy_prop_collection['BoneCollection'], "is_animatable=False"]:
 
         ...
-    parent: Annotated[Optional['BoneCollection'], "is_animatable=False"]
-    """Parent bone collection. Note that accessing this requires a scan of all the bone collections to find the parent."""
+    @property
+    def parent(self) -> Annotated[Optional['BoneCollection'], "is_animatable=False"]:
+        """Parent bone collection. Note that accessing this requires a scan of all the bone collections to find the parent."""
+        ...
+    @parent.setter
+    def parent(self, value: Annotated[Optional['BoneCollection'], "is_animatable=False"]):
+        ...
     @property
     def index(self) -> Annotated[int, "step=1"]:
         """Index of this bone collection in the armature.collections_all array. Note that finding this index requires a scan of all the bone collections, so do access this with care."""
         ...
-    child_number: Annotated[int, "step=1"]
-    """Index of this collection into its parent's list of children. Note that finding this index requires a scan of all the bone collections, so do access this with care."""
+    @property
+    def child_number(self) -> Annotated[int, "step=1"]:
+        """Index of this collection into its parent's list of children. Note that finding this index requires a scan of all the bone collections, so do access this with care."""
+        ...
+    @child_number.setter
+    def child_number(self, value: Annotated[int, "step=1"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def assign(self, *args, **kwargs) -> Any: ...
     def unassign(self, *args, **kwargs) -> Any: ...

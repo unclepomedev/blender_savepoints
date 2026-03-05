@@ -27,10 +27,20 @@ class EvaluateClosureNodeViewerPathElem(ViewerPathElem):
     def ui_name(self) -> Annotated[str, "is_animatable=False"]:
         """Name that can be displayed in the UI for this element"""
         ...
-    evaluate_node_id: Annotated[int, "step=1"]
+    @property
+    def evaluate_node_id(self) -> Annotated[int, "step=1"]:
 
-    source_output_node_id: Annotated[int, "step=1"]
+        ...
+    @evaluate_node_id.setter
+    def evaluate_node_id(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def source_output_node_id(self) -> Annotated[int, "step=1"]:
 
+        ...
+    @source_output_node_id.setter
+    def source_output_node_id(self, value: Annotated[int, "step=1"]):
+        ...
     @property
     def source_node_tree(self) -> Annotated[Optional['NodeTree'], "is_animatable=False"]:
 

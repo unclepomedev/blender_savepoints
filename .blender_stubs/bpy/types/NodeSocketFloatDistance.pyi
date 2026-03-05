@@ -19,8 +19,13 @@ from .Node import Node
 
 class NodeSocketFloatDistance(NodeSocketStandard):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Socket name"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Socket name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def label(self) -> Annotated[str, "is_animatable=False"]:
         """Custom dynamic defined socket label"""
@@ -29,8 +34,13 @@ class NodeSocketFloatDistance(NodeSocketStandard):
     def identifier(self) -> Annotated[str, "is_animatable=False"]:
         """Unique identifier for mapping sockets"""
         ...
-    description: Annotated[str, "is_animatable=False"]
-    """Socket tooltip"""
+    @property
+    def description(self) -> Annotated[str, "is_animatable=False"]:
+        """Socket tooltip"""
+        ...
+    @description.setter
+    def description(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def is_output(self) -> bool:
         """True if the socket is an output, otherwise input"""
@@ -39,12 +49,27 @@ class NodeSocketFloatDistance(NodeSocketStandard):
     def select(self) -> bool:
         """True if the socket is selected"""
         ...
-    hide: bool
-    """Hide the socket"""
-    enabled: bool
-    """Enable the socket"""
-    link_limit: Annotated[int, "step=1"]
-    """Max number of links allowed for this socket"""
+    @property
+    def hide(self) -> bool:
+        """Hide the socket"""
+        ...
+    @hide.setter
+    def hide(self, value: bool):
+        ...
+    @property
+    def enabled(self) -> bool:
+        """Enable the socket"""
+        ...
+    @enabled.setter
+    def enabled(self, value: bool):
+        ...
+    @property
+    def link_limit(self) -> Annotated[int, "step=1"]:
+        """Max number of links allowed for this socket"""
+        ...
+    @link_limit.setter
+    def link_limit(self, value: Annotated[int, "step=1"]):
+        ...
     @property
     def is_linked(self) -> bool:
         """True if the socket is connected"""
@@ -57,8 +82,13 @@ class NodeSocketFloatDistance(NodeSocketStandard):
     def is_multi_input(self) -> bool:
         """True if the socket can accept multiple ordered input links"""
         ...
-    show_expanded: bool
-    """Socket links are expanded in the user interface"""
+    @property
+    def show_expanded(self) -> bool:
+        """Socket links are expanded in the user interface"""
+        ...
+    @show_expanded.setter
+    def show_expanded(self, value: bool):
+        ...
     @property
     def is_inactive(self) -> bool:
         """Socket is grayed out because it has been detected to not have any effect on the output"""
@@ -67,30 +97,70 @@ class NodeSocketFloatDistance(NodeSocketStandard):
     def is_icon_visible(self) -> bool:
         """Socket is drawn as interactive icon in the node editor"""
         ...
-    hide_value: bool
-    """Hide the socket input value"""
-    pin_gizmo: Annotated[bool, "is_animatable=False"]
-    """Keep gizmo visible even when the node is not selected"""
+    @property
+    def hide_value(self) -> bool:
+        """Hide the socket input value"""
+        ...
+    @hide_value.setter
+    def hide_value(self, value: bool):
+        ...
+    @property
+    def pin_gizmo(self) -> Annotated[bool, "is_animatable=False"]:
+        """Keep gizmo visible even when the node is not selected"""
+        ...
+    @pin_gizmo.setter
+    def pin_gizmo(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def node(self) -> Annotated[Optional['Node'], "is_animatable=False"]:
         """Node owning this socket"""
         ...
-    type: Literal['CUSTOM', 'VALUE', 'INT', 'BOOLEAN', 'VECTOR', 'ROTATION', 'MATRIX', 'STRING', 'RGBA', 'SHADER', 'OBJECT', 'IMAGE', 'GEOMETRY', 'COLLECTION', 'TEXTURE', 'MATERIAL', 'MENU', 'BUNDLE', 'CLOSURE']
-    """Data type"""
-    display_shape: Literal['CIRCLE', 'SQUARE', 'DIAMOND', 'CIRCLE_DOT', 'SQUARE_DOT', 'DIAMOND_DOT', 'LINE', 'VOLUME_GRID', 'LIST']
-    """Socket shape"""
+    @property
+    def type(self) -> Literal['CUSTOM', 'VALUE', 'INT', 'BOOLEAN', 'VECTOR', 'ROTATION', 'MATRIX', 'STRING', 'RGBA', 'SHADER', 'OBJECT', 'IMAGE', 'GEOMETRY', 'COLLECTION', 'TEXTURE', 'MATERIAL', 'MENU', 'BUNDLE', 'CLOSURE']:
+        """Data type"""
+        ...
+    @type.setter
+    def type(self, value: Literal['CUSTOM', 'VALUE', 'INT', 'BOOLEAN', 'VECTOR', 'ROTATION', 'MATRIX', 'STRING', 'RGBA', 'SHADER', 'OBJECT', 'IMAGE', 'GEOMETRY', 'COLLECTION', 'TEXTURE', 'MATERIAL', 'MENU', 'BUNDLE', 'CLOSURE']):
+        ...
+    @property
+    def display_shape(self) -> Literal['CIRCLE', 'SQUARE', 'DIAMOND', 'CIRCLE_DOT', 'SQUARE_DOT', 'DIAMOND_DOT', 'LINE', 'VOLUME_GRID', 'LIST']:
+        """Socket shape"""
+        ...
+    @display_shape.setter
+    def display_shape(self, value: Literal['CIRCLE', 'SQUARE', 'DIAMOND', 'CIRCLE_DOT', 'SQUARE_DOT', 'DIAMOND_DOT', 'LINE', 'VOLUME_GRID', 'LIST']):
+        ...
     @property
     def inferred_structure_type(self) -> Literal['AUTO', 'DYNAMIC', 'FIELD', 'GRID', 'LIST', 'SINGLE']:
         """Best known structure type of the socket. This may not match the socket shape, e.g. for unlinked input sockets"""
         ...
-    bl_idname: Annotated[str, "is_animatable=False"]
+    @property
+    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
 
-    bl_label: Annotated[str, "is_animatable=False"]
-    """Label to display for the socket type in the UI"""
-    bl_subtype_label: Annotated[str, "is_animatable=False"]
-    """Label to display for the socket subtype in the UI"""
-    default_value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]
-    """Input value used for unconnected socket"""
+        ...
+    @bl_idname.setter
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_label(self) -> Annotated[str, "is_animatable=False"]:
+        """Label to display for the socket type in the UI"""
+        ...
+    @bl_label.setter
+    def bl_label(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def bl_subtype_label(self) -> Annotated[str, "is_animatable=False"]:
+        """Label to display for the socket subtype in the UI"""
+        ...
+    @bl_subtype_label.setter
+    def bl_subtype_label(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def default_value(self) -> Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]:
+        """Input value used for unconnected socket"""
+        ...
+    @default_value.setter
+    def default_value(self, value: Annotated[float, "subtype='DISTANCE'", "unit='LENGTH'", "step=10.0", "precision=3"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def draw(self, *args, **kwargs) -> Any: ...
     def draw_color(self, *args, **kwargs) -> Any: ...

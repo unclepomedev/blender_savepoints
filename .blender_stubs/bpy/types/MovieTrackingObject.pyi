@@ -24,8 +24,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class MovieTrackingObject(bpy_struct):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique name of object"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique name of object"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def is_camera(self) -> bool:
         """Object is used for camera tracking"""
@@ -42,9 +47,24 @@ class MovieTrackingObject(bpy_struct):
     def reconstruction(self) -> Annotated[Optional['MovieTrackingReconstruction'], "is_animatable=False"]:
 
         ...
-    scale: Annotated[float, "step=1.0", "precision=4", "is_animatable=False"]
-    """Scale of object solution in camera space"""
-    keyframe_a: Annotated[int, "step=1", "is_animatable=False"]
-    """First keyframe used for reconstruction initialization"""
-    keyframe_b: Annotated[int, "step=1", "is_animatable=False"]
-    """Second keyframe used for reconstruction initialization"""
+    @property
+    def scale(self) -> Annotated[float, "step=1.0", "precision=4", "is_animatable=False"]:
+        """Scale of object solution in camera space"""
+        ...
+    @scale.setter
+    def scale(self, value: Annotated[float, "step=1.0", "precision=4", "is_animatable=False"]):
+        ...
+    @property
+    def keyframe_a(self) -> Annotated[int, "step=1", "is_animatable=False"]:
+        """First keyframe used for reconstruction initialization"""
+        ...
+    @keyframe_a.setter
+    def keyframe_a(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...
+    @property
+    def keyframe_b(self) -> Annotated[int, "step=1", "is_animatable=False"]:
+        """Second keyframe used for reconstruction initialization"""
+        ...
+    @keyframe_b.setter
+    def keyframe_b(self, value: Annotated[int, "step=1", "is_animatable=False"]):
+        ...

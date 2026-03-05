@@ -19,10 +19,20 @@ from .TimelineMarker import TimelineMarker
 
 class ActionPoseMarkers(bpy_struct):
 
-    active: Annotated[Optional['TimelineMarker'], "is_animatable=False"]
-    """Active pose marker for this action"""
-    active_index: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Index of active pose marker"""
+    @property
+    def active(self) -> Annotated[Optional['TimelineMarker'], "is_animatable=False"]:
+        """Active pose marker for this action"""
+        ...
+    @active.setter
+    def active(self, value: Annotated[Optional['TimelineMarker'], "is_animatable=False"]):
+        ...
+    @property
+    def active_index(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Index of active pose marker"""
+        ...
+    @active_index.setter
+    def active_index(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
     def new(self, *args, **kwargs) -> Any: ...
     def remove(self, *args, **kwargs) -> Any: ...
     def __contains__(self, key: Union[str, int]) -> bool: ...

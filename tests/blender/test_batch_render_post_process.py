@@ -69,11 +69,20 @@ class TestBatchRenderPostProcess(SavePointsTestCase):
 
             # Check individual strips
             for strip in strips:
-                self.assertEqual(
-                    strip.frame_final_duration,
-                    FRAMES_PER_IMAGE,
-                    "Strip duration should match FRAMES_PER_IMAGE",
-                )
+                if hasattr(strip, "duration"):
+                    # Blender 6+
+                    self.assertEqual(
+                        strip.duration,
+                        FRAMES_PER_IMAGE,
+                        "Strip duration should match FRAMES_PER_IMAGE",
+                    )
+                else:
+                    # Blender 4.x, 5.x
+                    self.assertEqual(
+                        strip.frame_final_duration,
+                        FRAMES_PER_IMAGE,
+                        "Strip duration should match FRAMES_PER_IMAGE",
+                    )
 
             # Check scene duration
             expected_duration = 3 * FRAMES_PER_IMAGE

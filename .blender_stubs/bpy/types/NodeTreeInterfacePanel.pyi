@@ -35,12 +35,27 @@ class NodeTreeInterfacePanel(NodeTreeInterfaceItem):
     def index(self) -> Annotated[int, "step=1"]:
         """Global index of the item among all items in the interface"""
         ...
-    name: Annotated[str, "is_animatable=False"]
-    """Panel name"""
-    description: Annotated[str, "is_animatable=False"]
-    """Panel description"""
-    default_closed: Annotated[bool, "is_animatable=False"]
-    """Panel is closed by default on new nodes"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Panel name"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def description(self) -> Annotated[str, "is_animatable=False"]:
+        """Panel description"""
+        ...
+    @description.setter
+    def description(self, value: Annotated[str, "is_animatable=False"]):
+        ...
+    @property
+    def default_closed(self) -> Annotated[bool, "is_animatable=False"]:
+        """Panel is closed by default on new nodes"""
+        ...
+    @default_closed.setter
+    def default_closed(self, value: Annotated[bool, "is_animatable=False"]):
+        ...
     @property
     def interface_items(self) -> Annotated[bpy_prop_collection['NodeTreeInterfaceItem'], "is_animatable=False"]:
         """Items in the node panel"""

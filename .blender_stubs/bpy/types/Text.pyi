@@ -25,8 +25,13 @@ from .bpy_prop_collection import bpy_prop_collection
 
 class Text(ID):
 
-    name: Annotated[str, "is_animatable=False"]
-    """Unique data-block ID name (within a same type and library)"""
+    @property
+    def name(self) -> Annotated[str, "is_animatable=False"]:
+        """Unique data-block ID name (within a same type and library)"""
+        ...
+    @name.setter
+    def name(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def name_full(self) -> Annotated[str, "is_animatable=False"]:
         """Unique data-block ID name, including library one if any"""
@@ -51,10 +56,20 @@ class Text(ID):
     def users(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
         """Number of times this data-block is referenced"""
         ...
-    use_fake_user: bool
-    """Save this data-block even if it has no users"""
-    use_extra_user: bool
-    """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+    @property
+    def use_fake_user(self) -> bool:
+        """Save this data-block even if it has no users"""
+        ...
+    @use_fake_user.setter
+    def use_fake_user(self, value: bool):
+        ...
+    @property
+    def use_extra_user(self) -> bool:
+        """Indicates whether an extra user is set or not (mainly for internal/debug usages)"""
+        ...
+    @use_extra_user.setter
+    def use_extra_user(self, value: bool):
+        ...
     @property
     def is_embedded_data(self) -> bool:
         """This data-block is not an independent one, but is actually a sub-data of another ID (typical example: root node trees or master collections)"""
@@ -67,14 +82,24 @@ class Text(ID):
     def is_missing(self) -> bool:
         """This data-block is a place-holder for missing linked data (i.e. it is [an override of] a linked data that could not be found anymore)"""
         ...
-    is_runtime_data: bool
-    """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+    @property
+    def is_runtime_data(self) -> bool:
+        """This data-block is runtime data, i.e. it won't be saved in .blend file. Note that e.g. evaluated IDs are always runtime, so this value is only editable for data-blocks in Main data-base."""
+        ...
+    @is_runtime_data.setter
+    def is_runtime_data(self, value: bool):
+        ...
     @property
     def is_editable(self) -> bool:
         """This data-block is editable in the user interface. Linked data-blocks are not editable, except if they were loaded as editable assets."""
         ...
-    tag: bool
-    """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+    @property
+    def tag(self) -> bool:
+        """Tools can use this to tag data for their own purposes (initial state is undefined)"""
+        ...
+    @tag.setter
+    def tag(self, value: bool):
+        ...
     @property
     def is_library_indirect(self) -> bool:
         """Is this ID block linked indirectly"""
@@ -87,8 +112,13 @@ class Text(ID):
     def library_weak_reference(self) -> Annotated[Optional['LibraryWeakReference'], "is_animatable=False"]:
         """Weak reference to a data-block in another library .blend file (used to re-use already appended data instead of appending new copies)"""
         ...
-    asset_data: Annotated[Optional['AssetMetaData'], "is_animatable=False"]
-    """Additional data for an asset data-block"""
+    @property
+    def asset_data(self) -> Annotated[Optional['AssetMetaData'], "is_animatable=False"]:
+        """Additional data for an asset data-block"""
+        ...
+    @asset_data.setter
+    def asset_data(self, value: Annotated[Optional['AssetMetaData'], "is_animatable=False"]):
+        ...
     @property
     def override_library(self) -> Annotated[Optional['IDOverrideLibrary'], "is_animatable=False"]:
         """Library override data"""
@@ -97,8 +127,13 @@ class Text(ID):
     def preview(self) -> Annotated[Optional['ImagePreview'], "is_animatable=False"]:
         """Preview image and icon of this data-block (always None if not supported for this type of data)"""
         ...
-    filepath: Annotated[str, "is_animatable=False"]
-    """Filename of the text file"""
+    @property
+    def filepath(self) -> Annotated[str, "is_animatable=False"]:
+        """Filename of the text file"""
+        ...
+    @filepath.setter
+    def filepath(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     @property
     def is_dirty(self) -> bool:
         """Text file has been edited since last save"""
@@ -111,10 +146,20 @@ class Text(ID):
     def is_in_memory(self) -> bool:
         """Text file is in memory, without a corresponding file on disk"""
         ...
-    use_module: bool
-    """Run this text as a Python script on loading"""
-    indentation: Literal['TABS', 'SPACES']
-    """Use tabs or spaces for indentation"""
+    @property
+    def use_module(self) -> bool:
+        """Run this text as a Python script on loading"""
+        ...
+    @use_module.setter
+    def use_module(self, value: bool):
+        ...
+    @property
+    def indentation(self) -> Literal['TABS', 'SPACES']:
+        """Use tabs or spaces for indentation"""
+        ...
+    @indentation.setter
+    def indentation(self, value: Literal['TABS', 'SPACES']):
+        ...
     @property
     def lines(self) -> Annotated[bpy_prop_collection['TextLine'], "is_animatable=False"]:
         """Lines of text"""
@@ -123,18 +168,38 @@ class Text(ID):
     def current_line(self) -> Annotated['TextLine', "is_animatable=False"]:
         """Current line, and start line of selection if one exists"""
         ...
-    current_character: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Index of current character in current line, and also start index of character in selection if one exists"""
-    current_line_index: Annotated[int, "step=1"]
-    """Index of current TextLine in TextLine collection"""
+    @property
+    def current_character(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Index of current character in current line, and also start index of character in selection if one exists"""
+        ...
+    @current_character.setter
+    def current_character(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
+    @property
+    def current_line_index(self) -> Annotated[int, "step=1"]:
+        """Index of current TextLine in TextLine collection"""
+        ...
+    @current_line_index.setter
+    def current_line_index(self, value: Annotated[int, "step=1"]):
+        ...
     @property
     def select_end_line(self) -> Annotated['TextLine', "is_animatable=False"]:
         """End line of selection"""
         ...
-    select_end_line_index: Annotated[int, "step=1"]
-    """Index of last TextLine in selection"""
-    select_end_character: Annotated[int, "subtype='UNSIGNED'", "step=1"]
-    """Index of character after end of selection in the selection end line"""
+    @property
+    def select_end_line_index(self) -> Annotated[int, "step=1"]:
+        """Index of last TextLine in selection"""
+        ...
+    @select_end_line_index.setter
+    def select_end_line_index(self, value: Annotated[int, "step=1"]):
+        ...
+    @property
+    def select_end_character(self) -> Annotated[int, "subtype='UNSIGNED'", "step=1"]:
+        """Index of character after end of selection in the selection end line"""
+        ...
+    @select_end_character.setter
+    def select_end_character(self, value: Annotated[int, "subtype='UNSIGNED'", "step=1"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...
     def rename(self, *args, **kwargs) -> Any: ...
     def evaluated_get(self, *args, **kwargs) -> Any: ...

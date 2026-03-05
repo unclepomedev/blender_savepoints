@@ -18,6 +18,11 @@ from .bpy_struct import bpy_struct
 
 class KeyConfigPreferences(bpy_struct):
 
-    bl_idname: Annotated[str, "is_animatable=False"]
+    @property
+    def bl_idname(self) -> Annotated[str, "is_animatable=False"]:
 
+        ...
+    @bl_idname.setter
+    def bl_idname(self, value: Annotated[str, "is_animatable=False"]):
+        ...
     def bl_system_properties_get(self, *args, **kwargs) -> Any: ...

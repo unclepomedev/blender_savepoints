@@ -26,4 +26,10 @@ class ForeachGeometryElementZoneViewerPathElem(ViewerPathElem):
     def ui_name(self) -> Annotated[str, "is_animatable=False"]:
         """Name that can be displayed in the UI for this element"""
         ...
-    zone_output_node_id: Annotated[int, "step=1"]
+    @property
+    def zone_output_node_id(self) -> Annotated[int, "step=1"]:
+
+        ...
+    @zone_output_node_id.setter
+    def zone_output_node_id(self, value: Annotated[int, "step=1"]):
+        ...
