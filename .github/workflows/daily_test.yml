@@ -27,7 +27,7 @@ jobs:
         run: uv sync --frozen || uv sync
 
       - name: Setup Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4
 
       - name: Setup Blender (Daily)
         uses: unclepomedev/setup-blup@v0
