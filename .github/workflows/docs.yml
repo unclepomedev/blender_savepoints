@@ -28,7 +28,7 @@ jobs:
           mdbook-version: 'latest'
 
       - name: Install Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4
 
       - name: Build with Just
         run: just docs
