@@ -34,8 +34,6 @@ SavePoints is a version control system that provides a visual UX for fast recove
 - **🏷️ Tags**: Mark versions as "Stable" or "Milestone" to keep your history organized.
 - **🛡️ Safe & Clean**: Autosaves run in the background without cluttering your list. Restoring a version automatically backs up your current state—zero data loss.
 
-> [!NOTE]
-> **Comprehensive documentation is currently under development and will be linked here soon.**
 
 ## Table of Contents
 
