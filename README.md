@@ -1,6 +1,5 @@
 # SavePoints: Visual History & Timelapse
 
-[![Blender Extensions](https://img.shields.io/badge/Blender_Extensions-Available-F5792A?logo=blender&logoColor=white)](https://extensions.blender.org/add-ons/savepoints/)
 [![License](https://img.shields.io/github/license/unclepomedev/blender_savepoints)](https://github.com/unclepomedev/blender_savepoints/blob/main/LICENSE)
 [![Release Blender Addon](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml/badge.svg)](https://github.com/unclepomedev/blender_savepoints/actions/workflows/release.yml)
 <!-- BLENDER_BADGES_START -->
@@ -47,7 +46,7 @@ SavePoints is a version control system that provides a visual UX for fast recove
 ## Usage
 
 1. **Installation**: Install the add-on zip file in Blender.
-   It has been released on Blender Extensions, so you can get it from [there](https://extensions.blender.org/add-ons/savepoints/).
+    Download the latest version from the [Releases page](https://github.com/unclepomedev/blender_savepoints/releases/latest).
 2. **Locate the Panel**: Open the 3D Viewport and find the **SavePoints** tab in the N-Panel.
 3. **Save a Version**:
    - Click **Save Version** or use shortcuts:

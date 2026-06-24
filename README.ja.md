@@ -11,8 +11,6 @@
 
 ---
 
-**セーブは、復旧のために。**
-
 SavePointsは、迅速な復旧のための視覚的なUXを提供するバージョン管理システムであり、セーブを少し楽しくするタイムラプス機能も備えています。
 
 ## Why SavePoints?
@@ -37,7 +35,7 @@ SavePointsは、迅速な復旧のための視覚的なUXを提供するバー�
 ## 使い方
 
 1. **Installation**: アドオンのzipファイルをBlenderにインストールします。
-   [Blender Extensions](https://extensions.blender.org/add-ons/savepoints/) からも入手可能です。
+    最新版は [Releases ページ](https://github.com/unclepomedev/blender_savepoints/releases/latest) からダウンロードできます。
 2. **Locate the Panel**: 3Dビューポートの **N-Panel** (サイドバー) にある **SavePoints** タブを開きます。
 3. **Save a Version**:
    - **Save Version** ボタンをクリックするか、ショートカットを使用します：

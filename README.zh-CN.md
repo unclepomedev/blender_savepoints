@@ -37,7 +37,7 @@ SavePoints 是一个版本控制系统，它为快速恢复提供了可视化的
 ## 使用方法 (Usage)
 
 1.  **Installation (安装)**: 在 Blender 中安装插件 zip 文件。
-    它已在 Blender Extensions 上发布，因此您可以从 [那里](https://extensions.blender.org/add-ons/savepoints/) 获取。
+    请从 [Releases 页面](https://github.com/unclepomedev/blender_savepoints/releases/latest) 下载最新版本。
 2.  **Locate the Panel (找到面板)**: 打开 3D 视口并在 N-Panel (侧边栏) 中找到 **SavePoints** 选项卡。
 3.  **Save a Version (保存版本)**:
     * 点击 **Save Version** 或使用快捷键：
