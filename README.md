@@ -23,6 +23,8 @@
 
 SavePoints is a version control system that provides a visual UX for fast recovery, and it also has a time-lapse feature that makes saving a little more fun.
 
+Previously distributed on Blender Extensions; now provided via GitHub only.
+
 ## Why SavePoints?
 
 - **📸 Visual Versioning**: See exactly what each version looks like with automatic thumbnails.
