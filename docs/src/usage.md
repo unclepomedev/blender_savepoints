@@ -28,7 +28,7 @@
    - Toggle on/off and set the interval (minimum 1 minute).
    - Auto-save overwrites a single "autosave" slot, so your history list doesn't get cluttered.
    - **Note**: Auto-save does not generate thumbnails to avoid rendering interruptions.
-   - **Safety Mode**: To prevent crashes and interruptions, auto-save is **skipped** while you are in interactive modes (e.g., Sculpt, Weight Paint) or rendering. The save is delayed and will automatically trigger shortly after you **exit these modes**.
+   - **Safety**: Auto-save is delayed while a blocking interactive operation (such as an active brush stroke or transform) or rendering is running. It retries shortly after the operation finishes; simply staying in Sculpt, Weight Paint, or Edit Mode does not block saving.
 6. **Disk Management & Protection**:
    - **Snapshot Compression**: Enabled by default in the General settings. Keep this ON to save disk space, or turn it OFF if you prioritize maximum save speed over file size.
    - **Limit Versions**: Enable "Limit Versions" in the Disk Management section to automatically keep only the latest N versions (default 50) excluding locked versions.

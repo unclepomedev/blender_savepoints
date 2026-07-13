@@ -143,7 +143,7 @@ ZH_HANS: dict[str, str] = {
     "Shape Modified": "形状已修改",
     "Moved / Transformed": "已移动 / 变换",
     "SNAPSHOT MODE (REVIEW MODE)": "快照模式（审阅模式）",
-    "Not auto-saved for {minutes} min. Switch to Object Mode.": "已有 {minutes} 分钟未自动保存，请切换到物体模式。",
+    "Not auto-saved for {minutes} min.": "已有 {minutes} 分钟未自动保存。",
     # Operators and reports
     "Edit Note": "编辑备注",
     "Failed to update note: {error}": "更新备注失败：{error}",
@@ -453,7 +453,7 @@ JA_JP: dict[str, str] = {
     "Shape Modified": "形状を変更",
     "Moved / Transformed": "移動 / 変形",
     "SNAPSHOT MODE (REVIEW MODE)": "スナップショットモード（確認モード）",
-    "Not auto-saved for {minutes} min. Switch to Object Mode.": "{minutes} 分間自動保存されていません。オブジェクトモードに切り替えてください。",
+    "Not auto-saved for {minutes} min.": "{minutes} 分間自動保存されていません。",
     # Operators and reports
     "Edit Note": "メモを編集",
     "Failed to update note: {error}": "メモの更新に失敗しました：{error}",

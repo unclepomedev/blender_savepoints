@@ -14,7 +14,10 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints.services.autosave import autosave_timer
+from savepoints.services.autosave import (
+    autosave_timer,
+    has_blocking_modal_operator,
+)
 from savepoints_test_case import SavePointsTestCase
 
 
@@ -48,8 +51,8 @@ class TestAutosaveSafety(SavePointsTestCase):
         )
         self.assertTrue((autosave_dir / "snapshot.blend_snapshot").exists())
 
-    def test_autosave_inhibited_in_edit_mesh_mode(self):
-        """Test that autosave is inhibited in EDIT_MESH mode (Unsafe mode)"""
+    def test_autosave_runs_in_edit_mesh_mode(self):
+        """Test that an idle edit-mode session can be auto-saved."""
         # Ensure we have a mesh object to enter edit mode
         bpy.ops.mesh.primitive_cube_add()
         bpy.ops.object.mode_set(mode="EDIT")
@@ -61,13 +64,10 @@ class TestAutosaveSafety(SavePointsTestCase):
         # Run timer
         autosave_timer()
 
-        # It should NOT have created a snapshot
-        self.assertFalse(
-            autosave_dir.exists(), "Autosave should be inhibited in EDIT_MESH mode"
-        )
+        self.assertTrue(autosave_dir.exists(), "Autosave should run in EDIT_MESH mode")
 
-    def test_autosave_inhibited_in_sculpt_mode(self):
-        """Test that autosave is inhibited in SCULPT mode (Unsafe mode)"""
+    def test_autosave_runs_in_sculpt_mode(self):
+        """Test that an idle sculpt-mode session can be auto-saved."""
         bpy.ops.mesh.primitive_cube_add()
         bpy.ops.object.mode_set(mode="SCULPT")
         self.assertEqual(bpy.context.mode, "SCULPT")
@@ -78,13 +78,10 @@ class TestAutosaveSafety(SavePointsTestCase):
         # Run timer
         autosave_timer()
 
-        # It should NOT have created a snapshot
-        self.assertFalse(
-            autosave_dir.exists(), "Autosave should be inhibited in SCULPT mode"
-        )
+        self.assertTrue(autosave_dir.exists(), "Autosave should run in SCULPT mode")
 
-    def test_autosave_inhibited_in_weight_paint_mode(self):
-        """Test that autosave is inhibited in PAINT_WEIGHT mode (Unsafe mode)"""
+    def test_autosave_runs_in_weight_paint_mode(self):
+        """Test that an idle weight-paint session can be auto-saved."""
         bpy.ops.mesh.primitive_cube_add()
         bpy.ops.object.mode_set(mode="WEIGHT_PAINT")
         self.assertEqual(bpy.context.mode, "PAINT_WEIGHT")
@@ -92,9 +89,37 @@ class TestAutosaveSafety(SavePointsTestCase):
         history_dir = self.test_dir / ".test_project_history"
         autosave_dir = history_dir / "autosave"
         autosave_timer()
-        self.assertFalse(
-            autosave_dir.exists(), "Autosave should be inhibited in PAINT_WEIGHT mode"
+        self.assertTrue(
+            autosave_dir.exists(), "Autosave should run in PAINT_WEIGHT mode"
         )
+
+    def test_blocking_modal_operator_is_detected(self):
+        """A running brush/transform must defer autosave until it finishes."""
+
+        class BlockingOperator:
+            bl_options = {"BLOCKING"}
+
+        class Window:
+            modal_operators = [BlockingOperator()]
+
+        class WindowManager:
+            windows = [Window()]
+
+        self.assertTrue(has_blocking_modal_operator(WindowManager()))
+
+    def test_non_blocking_modal_operator_does_not_defer_autosave(self):
+        """Persistent non-blocking add-on modals must not disable autosave."""
+
+        class NonBlockingOperator:
+            bl_options = {"REGISTER"}
+
+        class Window:
+            modal_operators = [NonBlockingOperator()]
+
+        class WindowManager:
+            windows = [Window()]
+
+        self.assertFalse(has_blocking_modal_operator(WindowManager()))
 
     def test_autosave_inhibited_during_render(self):
         """Test that autosave is inhibited when a render job is running"""
