@@ -5,15 +5,19 @@ from pathlib import Path
 
 import bpy
 from bpy_extras.io_utils import ExportHelper
+from .i18n import TranslatedOperatorMixin, iface, report as rpt
 from .services.storage import get_history_dir_for_path
 
 
-class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
+class SAVEPOINTS_OT_export_project_zip(
+    TranslatedOperatorMixin, bpy.types.Operator, ExportHelper
+):
     """Export the current project and its history as a ZIP archive"""
 
     bl_idname = "savepoints.export_project_zip"
     bl_label = "SavePoints Project (.zip)"
     bl_description = "Export current project and history as ZIP"
+    translation_description = "Export current project and history as ZIP"
 
     filename_ext = ".zip"
 
@@ -25,7 +29,7 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
     def invoke(self, context, event):
         if not bpy.data.is_saved:
-            self.report({"ERROR"}, "Save the file first")
+            self.report({"ERROR"}, rpt("Save the file first"))
             return {"CANCELLED"}
 
         if not self.filepath:
@@ -37,7 +41,7 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
     def execute(self, context):
         if not bpy.data.is_saved:
-            self.report({"ERROR"}, "Project must be saved before exporting.")
+            self.report({"ERROR"}, rpt("Project must be saved before exporting."))
             return {"CANCELLED"}
 
         project_path = Path(bpy.data.filepath)
@@ -71,11 +75,14 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
                         processed += 1
                         wm.progress_update(int(processed / total_files * 100))
 
-            self.report({"INFO"}, f"Exported project to {output_zip_path.name}")
+            self.report(
+                {"INFO"},
+                rpt("Exported project to {name}").format(name=output_zip_path.name),
+            )
             return {"FINISHED"}
 
         except Exception as e:
-            self.report({"ERROR"}, f"Export failed: {str(e)}")
+            self.report({"ERROR"}, rpt("Export failed: {error}").format(error=str(e)))
             return {"CANCELLED"}
 
         finally:
@@ -86,7 +93,8 @@ class SAVEPOINTS_OT_export_project_zip(bpy.types.Operator, ExportHelper):
 
 def menu_func(self, _context):
     self.layout.operator(
-        SAVEPOINTS_OT_export_project_zip.bl_idname, text="SavePoints Project (.zip)"
+        SAVEPOINTS_OT_export_project_zip.bl_idname,
+        text=iface("SavePoints Project (.zip)"),
     )
 
 

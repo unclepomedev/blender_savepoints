@@ -7,6 +7,7 @@ from typing import Any
 
 from send2trash import send2trash
 
+from ..i18n import iface
 from .manifest import load_manifest, save_manifest
 from .storage import (
     to_posix_path,
@@ -186,12 +187,12 @@ def generate_default_note(context) -> str:
     try:
         obj = context.active_object
         if not obj:
-            return "No Active Object"
+            return iface("No Active Object")
 
         mode = obj.mode
 
         if mode == "EDIT":
-            friendly_mode = f"Edit {obj.type.title()}"
+            friendly_mode = iface("Edit {type}").format(type=obj.type.title())
         else:
             mode_map = {
                 "OBJECT": "Object",
@@ -202,9 +203,10 @@ def generate_default_note(context) -> str:
                 "TEXTURE_PAINT": "Texture Paint",
                 "PARTICLE_EDIT": "Particle Edit",
             }
-            friendly_mode = mode_map.get(mode, mode.replace("_", " ").title())
+            mode_name = mode_map.get(mode, mode.replace("_", " ").title())
+            friendly_mode = iface(mode_name)
 
-        return f"{friendly_mode}: {obj.name}"
+        return iface("{mode}: {name}").format(mode=friendly_mode, name=obj.name)
     except Exception:
         return ""
 

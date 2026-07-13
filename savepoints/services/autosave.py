@@ -3,25 +3,29 @@
 import time
 
 import bpy
+from ..i18n import iface
 from .snapshot import create_snapshot
 from .storage import get_parent_path_from_snapshot
 from .versioning import delete_version_by_id
-
-UNSAFE_MODES = {
-    "SCULPT",
-    "PAINT_VERTEX",
-    "PAINT_WEIGHT",
-    "PAINT_TEXTURE",
-    "PAINT_GPENCIL",
-    "SCULPT_GPENCIL",
-    "SCULPT_CURVES",
-    "EDIT_MESH",
-}
 
 
 def is_rendering():
     """Check if a render job is running."""
     return bpy.app.is_job_running("RENDER")
+
+
+def has_blocking_modal_operator(window_manager):
+    """Return whether an interactive blocking operation is still running."""
+    for window in window_manager.windows:
+        for operator in getattr(window, "modal_operators", ()):
+            try:
+                if "BLOCKING" in operator.bl_options:
+                    return True
+            except (AttributeError, TypeError):
+                # An unknown running modal operator is safer to defer than to
+                # interrupt with file/dependency-graph operations.
+                return True
+    return False
 
 
 class AutoSaveManager:
@@ -84,7 +88,9 @@ class AutoSaveManager:
 
         if should_warn:
             self.settings.show_autosave_warning = True
-            self.settings.autosave_warning_message = f"Not auto-saved for {int(minutes_since_save)} min. Switch to Object Mode."
+            self.settings.autosave_warning_message = iface(
+                "Not auto-saved for {minutes} min."
+            ).format(minutes=int(minutes_since_save))
             self._tag_redraw()
         else:
             if self.settings.show_autosave_warning:
@@ -95,10 +101,14 @@ class AutoSaveManager:
         if not self.settings:
             return False
 
-        if self.context.mode in UNSAFE_MODES:
+        if is_rendering():
             return False
 
-        if is_rendering():
+        window_manager = self.context.window_manager
+        if getattr(window_manager, "is_interface_locked", False):
+            return False
+
+        if has_blocking_modal_operator(window_manager):
             return False
 
         last_save = self.get_last_save_time()

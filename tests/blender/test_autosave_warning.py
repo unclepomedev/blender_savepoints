@@ -2,6 +2,7 @@ import sys
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch, PropertyMock
 
 import bpy
 
@@ -26,23 +27,25 @@ class TestAutosaveWarning(SavePointsTestCase):
 
     def test_autosave_warning_triggered(self):
         """Test that autosave warning is triggered after threshold"""
-        from unittest.mock import patch, PropertyMock
         from savepoints.services.autosave import AutoSaveManager
 
         # Set last save to 20 minutes ago (threshold is max(15, 1+5) = 15 mins)
         # So 20 mins > 15 mins, should warn.
         self.settings.last_autosave_timestamp = str(time.time() - (20 * 60))
 
-        # We need to be in an unsafe mode for the warning to persist without autosaving?
-        # Actually warning logic runs regardless of mode, but if mode is SAFE, autosave might run and CLEAR the warning.
-        # So to test warning persistence, we should be in UNSAFE mode.
         bpy.ops.mesh.primitive_cube_add()
-        bpy.ops.object.mode_set(mode="EDIT")  # Unsafe mode
 
-        # Mock is_dirty to be True, as it might be unreliable in test environment
-        with patch.object(
-            AutoSaveManager, "is_dirty", new_callable=PropertyMock
-        ) as mock_dirty:
+        # Keep the warning visible by simulating an active blocking operation,
+        # which defers the save without relying on a blanket mode blacklist.
+        with (
+            patch.object(
+                AutoSaveManager, "is_dirty", new_callable=PropertyMock
+            ) as mock_dirty,
+            patch(
+                "savepoints.services.autosave.has_blocking_modal_operator",
+                return_value=True,
+            ),
+        ):
             mock_dirty.return_value = True
             autosave_timer()
 
@@ -82,9 +85,12 @@ class TestAutosaveWarning(SavePointsTestCase):
         # Threshold is 15 mins.
 
         bpy.ops.mesh.primitive_cube_add()
-        bpy.ops.object.mode_set(mode="EDIT")  # Unsafe mode to prevent save
 
-        autosave_timer()
+        with patch(
+            "savepoints.services.autosave.has_blocking_modal_operator",
+            return_value=True,
+        ):
+            autosave_timer()
 
         self.assertFalse(self.settings.show_autosave_warning)
 

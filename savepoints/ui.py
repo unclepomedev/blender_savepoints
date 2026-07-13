@@ -13,6 +13,7 @@ from . import (
     operators_render,
     operators_snapshot,
     operators_tools,
+    properties,
 )
 from .services.selection import get_selected_versions
 from .services.storage import (
@@ -23,8 +24,26 @@ from .services.storage import (
     get_project_stem,
 )
 from .services.post_save import PostSaveManager
+from .i18n import iface
+from .translations import TRANSLATION_CONTEXT
 
 LOW_DISK_SPACE_THRESHOLD = 10 * 1024 * 1024 * 1024  # 10 GB
+
+FILTER_TAG_ITEMS = (
+    ("ALL", "All", "FILTER"),
+    ("STABLE", "Stable", "CHECKMARK"),
+    ("MILESTONE", "Milestone", "BOOKMARKS"),
+    ("EXPERIMENT", "Experiment", "EXPERIMENTAL"),
+    ("BUG", "Bug", "ERROR"),
+)
+
+
+def _display_version_id(version_id: str) -> str:
+    return iface("Auto Save") if version_id == "autosave" else version_id
+
+
+def _display_note(note: str) -> str:
+    return iface("Auto Save") if note == "Auto Save" else note
 
 
 def _draw_disk_space_alert(layout, check_dir: str | None):
@@ -42,18 +61,24 @@ def _draw_disk_space_alert(layout, check_dir: str | None):
     if 0 < free_space < LOW_DISK_SPACE_THRESHOLD:
         row = layout.row()
         row.alert = True
-        row.label(text=f"Low Disk Space: {format_file_size(free_space)}", icon="ERROR")
+        row.label(
+            text=iface("Low Disk Space: {space}").format(
+                space=format_file_size(free_space)
+            ),
+            icon="ERROR",
+        )
 
 
 class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
     bl_label = "Set Tag"
     bl_idname = "SAVEPOINTS_MT_tag_menu"
+    bl_translation_context = TRANSLATION_CONTEXT
 
     def draw(self, context):
         layout = self.layout
         item = getattr(context, "savepoints_item", None)
         if not item:
-            layout.label(text="No Item Selected")
+            layout.label(text=iface("No Item Selected"))
             return
 
         tags = [
@@ -67,11 +92,29 @@ class SAVEPOINTS_MT_tag_menu(bpy.types.Menu):
         for tag_id, tag_name, tag_icon in tags:
             op = layout.operator(
                 operators_attributes.SAVEPOINTS_OT_set_tag.bl_idname,
-                text=tag_name,
+                text=iface(tag_name),
                 icon=tag_icon,
             )
             op.version_id = item.version_id
             op.tag = tag_id
+
+
+class SAVEPOINTS_MT_filter_tag(bpy.types.Menu):
+    bl_label = "Filter"
+    bl_idname = "SAVEPOINTS_MT_filter_tag"
+    bl_translation_context = TRANSLATION_CONTEXT
+
+    def draw(self, context):
+        settings = context.scene.savepoints_settings
+        for value, label, icon in FILTER_TAG_ITEMS:
+            properties.draw_setting_value(
+                self.layout,
+                settings,
+                "filter_tag",
+                value,
+                text=iface(label),
+                icon=icon,
+            )
 
 
 class SAVEPOINTS_UL_version_list(bpy.types.UIList):
@@ -81,7 +124,13 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
         settings = context.scene.savepoints_settings
         if item.version_id != "autosave":
             if settings.is_batch_mode:
-                layout.prop(item, "selected", text="")
+                selection_op = layout.operator(
+                    properties.SAVEPOINTS_OT_toggle_version_selection.bl_idname,
+                    text="",
+                    icon="CHECKBOX_HLT" if item.selected else "CHECKBOX_DEHLT",
+                    emboss=False,
+                )
+                selection_op.version_id = item.version_id
         elif settings.is_batch_mode:
             layout.label(text="", icon="BLANK1")
 
@@ -90,14 +139,16 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
         if pcoll and item.version_id in pcoll:
             icon_val = pcoll[item.version_id].icon_id
 
+        display_id = _display_version_id(item.version_id)
+        display_note = _display_note(item.note)
         if icon_val:
             layout.label(
-                text=f"{item.version_id} - {item.note} ({item.timestamp})",
+                text=f"{display_id} - {display_note} ({item.timestamp})",
                 icon_value=icon_val,
             )
         else:
             layout.label(
-                text=f"{item.version_id} - {item.note} ({item.timestamp})",
+                text=f"{display_id} - {display_note} ({item.timestamp})",
                 icon="FILE_BACKUP",
             )
 
@@ -190,36 +241,36 @@ class SAVEPOINTS_UL_version_list(bpy.types.UIList):
 
 def _draw_snapshot_mode(layout, parent_filepath):
     box = layout.box()
-    box.label(text="Snapshot Mode", icon="INFO")
+    box.label(text=iface("Snapshot Mode"), icon="INFO")
     filename = os.path.basename(parent_filepath)
-    box.label(text=f"Parent: {filename}")
+    box.label(text=iface("Parent: {filename}").format(filename=filename))
 
     col = box.column(align=True)
     col.operator(
         operators_snapshot.SAVEPOINTS_OT_restore.bl_idname,
-        text="Save as Parent",
+        text=iface("Save as Parent"),
         icon="FILE_TICK",
     )
     col.operator(
         operators_snapshot.SAVEPOINTS_OT_fork_version.bl_idname,
-        text="Fork (Save as New)",
+        text=iface("Fork (Save as New)"),
         icon="DUPLICATE",
     )
     col.operator(
         operators_snapshot.SAVEPOINTS_OT_open_parent.bl_idname,
-        text="Return to Parent",
+        text=iface("Return to Parent"),
         icon="LOOP_BACK",
     )
 
     layout.separator()
-    layout.label(text="To view history, restore to parent.")
+    layout.label(text=iface("To view history, restore to parent."))
 
 
 def _draw_history_list(layout, settings):
     if not settings.is_batch_mode:
         layout.operator(
             operators_core.SAVEPOINTS_OT_commit.bl_idname,
-            text="Save Version",
+            text=iface("Save Version"),
             icon="FILE_TICK",
         )
 
@@ -230,11 +281,20 @@ def _draw_history_list(layout, settings):
         _draw_disk_space_alert(layout, history_dir)
 
     layout.separator()
-    layout.label(text="History:")
+    layout.label(text=iface("History:"))
 
     # Filter Tag and Batch Toggle
     row = layout.row()
-    row.prop(settings, "filter_tag", text="Filter")
+    current_filter_label = next(
+        label
+        for value, label, _icon in FILTER_TAG_ITEMS
+        if value == settings.filter_tag
+    )
+    row.menu(
+        SAVEPOINTS_MT_filter_tag.bl_idname,
+        text=iface(current_filter_label),
+        icon="FILTER",
+    )
 
     icon = "CHECKBOX_HLT" if settings.is_batch_mode else "CHECKBOX_DEHLT"
     row.operator(
@@ -248,17 +308,29 @@ def _draw_history_list(layout, settings):
         row = layout.row(align=True)
         row.operator(
             operators_render.SAVEPOINTS_OT_select_all.bl_idname,
-            text="Select All",
+            text=iface("Select All"),
             icon="CHECKBOX_HLT",
         )
         row.operator(
             operators_render.SAVEPOINTS_OT_deselect_all.bl_idname,
-            text="Deselect All",
+            text=iface("Deselect All"),
             icon="CHECKBOX_DEHLT",
         )
 
-        row = layout.row()
-        row.prop(settings, "batch_output_format", expand=True)
+        output_row = layout.row(align=True)
+        output_row.label(text=iface("Output Format"))
+        for value, label in (
+            ("SCENE", "Scene Settings"),
+            ("PNG", "PNG"),
+            ("JPEG", "JPEG"),
+        ):
+            properties.draw_setting_value(
+                output_row,
+                settings,
+                "batch_output_format",
+                value,
+                text=iface(label),
+            )
 
     row = layout.row()
     row.template_list(
@@ -285,7 +357,7 @@ def _draw_history_list(layout, settings):
 
         row.operator(
             operators_render.SAVEPOINTS_OT_batch_render.bl_idname,
-            text=f"Batch Render Selected ({count})",
+            text=iface("Batch Render Selected ({count})").format(count=count),
             icon="RENDER_STILL",
         )
 
@@ -313,50 +385,71 @@ def _draw_version_details(layout, settings, context):
             else:
                 row = box.row()
                 row.alignment = "CENTER"
-                row.label(text="No Preview", icon="IMAGE_DATA")
+                row.label(text=iface("No Preview"), icon="IMAGE_DATA")
 
-        box.label(text=f"ID: {item.version_id}")
-        box.label(text=f"Date: {item.timestamp}")
-        box.label(text=f"Note: {item.note}")
-        box.label(text=f"Objects: {item.object_count} | Size: {item.file_size_display}")
+        box.label(
+            text=iface("ID: {id}").format(id=_display_version_id(item.version_id))
+        )
+        box.label(text=iface("Date: {date}").format(date=item.timestamp))
+        box.label(text=iface("Note: {note}").format(note=_display_note(item.note)))
+        box.label(
+            text=iface("Objects: {count} | Size: {size}").format(
+                count=item.object_count, size=item.file_size_display
+            )
+        )
 
         layout.operator(
             operators_core.SAVEPOINTS_OT_checkout.bl_idname,
-            text="Checkout (Restore)",
+            text=iface("Checkout (Restore)"),
             icon="RECOVER_LAST",
         )
 
         addon_prefs = context.preferences.addons.get(__package__)
         if addon_prefs and addon_prefs.preferences.enable_glb_export:
             box = layout.box()
-            box.label(text="Background GLB Export", icon="EXPORT")
-            box.prop(settings, "glb_export_path")
+            box.label(text=iface("Background GLB Export"), icon="EXPORT")
+            properties.draw_property_with_help(
+                box,
+                settings,
+                "glb_export_path",
+                text=iface("Export Path"),
+                message="Directory to export .glb files",
+            )
             col = box.column(align=True)
-            col.prop(settings, "glb_export_filename")
+            properties.draw_property_with_help(
+                col,
+                settings,
+                "glb_export_filename",
+                text=iface("Filename"),
+                message="Filename (stem) for the exported .glb file. Default (empty) is .blend filename. Use {version} for version string.",
+            )
             if not settings.glb_export_filename:
                 current_stem = get_project_stem()
-                col.label(text=f"Default: {current_stem}.glb", icon="INFO")
+                col.label(
+                    text=iface("Default: {filename}.glb").format(filename=current_stem),
+                    icon="INFO",
+                )
             box.operator(
                 operators_export.SAVEPOINTS_OT_export_glb.bl_idname,
-                text="Export GLB",
+                text=iface("Export GLB"),
                 icon="EXPORT",
             )
 
 
 def _draw_empty_state(layout):
     box = layout.box()
-    box.label(text="No history found for this file.")
+    box.label(text=iface("No history found for this file."))
     box.operator(
         operators_tools.SAVEPOINTS_OT_link_history.bl_idname,
-        text="Link Existing History Folder",
+        text=iface("Link Existing History Folder"),
         icon="FILE_FOLDER",
     )
 
     layout.separator()
-    layout.label(text="Or start a new history:")
+    layout.label(text=iface("Or start a new history:"))
     layout.operator(
         operators_core.SAVEPOINTS_OT_commit.bl_idname,
-        text="Create First Version",
+        text=iface("Create First Version"),
         icon="FILE_TICK",
     )
 
@@ -367,26 +460,58 @@ def _draw_empty_state(layout):
 
 def _draw_general_settings(layout, settings):
     box = layout.box()
-    box.label(text="General", icon="PREFERENCES")
+    box.label(text=iface("General"), icon="PREFERENCES")
     col = box.column()
-    col.prop(settings, "show_save_dialog")
-    col.prop(settings, "show_preview")
+    properties.draw_setting_toggle(
+        col,
+        settings,
+        "show_save_dialog",
+        text=iface("Show Save Dialog"),
+    )
+    properties.draw_setting_toggle(
+        col,
+        settings,
+        "show_preview",
+        text=iface("Show Preview"),
+    )
 
 
 def _draw_auto_save_settings(layout, settings):
     box = layout.box()
-    box.label(text="Auto Save", icon="TIME")
-    box.prop(settings, "use_auto_save")
+    box.label(text=iface("Auto Save"), icon="TIME")
+    properties.draw_setting_toggle(
+        box,
+        settings,
+        "use_auto_save",
+        text=iface("Auto Save"),
+    )
     if settings.use_auto_save:
-        box.prop(settings, "auto_save_interval")
+        properties.draw_property_with_help(
+            box,
+            settings,
+            "auto_save_interval",
+            text=iface("Interval (min)"),
+            message="Auto-save interval in minutes",
+        )
 
 
 def _draw_disk_management_settings(layout, settings):
     box = layout.box()
-    box.label(text="Disk Management", icon="DISK_DRIVE")
-    box.prop(settings, "use_limit_versions")
+    box.label(text=iface("Disk Management"), icon="DISK_DRIVE")
+    properties.draw_setting_toggle(
+        box,
+        settings,
+        "use_limit_versions",
+        text=iface("Limit Versions"),
+    )
     if settings.use_limit_versions:
-        box.prop(settings, "max_versions_to_keep", text="Max Versions (Excl. Locked)")
+        properties.draw_property_with_help(
+            box,
+            settings,
+            "max_versions_to_keep",
+            text=iface("Max Versions (Excl. Locked)"),
+            message="Number of versions to keep (when enabled)",
+        )
 
 
 class SAVEPOINTS_PT_main(bpy.types.Panel):
@@ -404,15 +529,15 @@ class SAVEPOINTS_PT_main(bpy.types.Panel):
         if PostSaveManager().is_running:
             box = layout.box()
             row = box.row()
-            row.label(text="Processing Post-Save Command...", icon="TIME")
+            row.label(text=iface("Processing Post-Save Command..."), icon="TIME")
             row.operator(
                 operators_core.SAVEPOINTS_OT_cancel_post_save.bl_idname,
-                text="Cancel",
+                text=iface("Cancel"),
                 icon="X",
             )
 
         if not bpy.data.filepath:
-            layout.label(text="Please save the file first.", icon="INFO")
+            layout.label(text=iface("Please save the file first."), icon="INFO")
             return
 
         # Dynamic check for Snapshot Mode

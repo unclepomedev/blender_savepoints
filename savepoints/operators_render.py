@@ -7,6 +7,9 @@ import tempfile
 
 import bpy
 
+from .i18n import TranslatedOperatorMixin, iface, report as rpt
+from .properties import draw_property_with_help, draw_setting_value
+from .translations import TRANSLATION_CONTEXT
 from .services.batch_executor import BatchRenderExecutor
 from .services.batch_render import (
     extract_render_settings,
@@ -29,9 +32,15 @@ def draw_batch_dialog(operator, layout, context):
     settings = scene.savepoints_settings
 
     # Dry Run Toggle
-    row = layout.row()
+    row = draw_property_with_help(
+        layout,
+        operator,
+        "dry_run",
+        text=iface("Dry Run (Low Quality)"),
+        message="Render low quality JPEG for quick check (_dryrun suffix)",
+        toggle=True,
+    )
     row.scale_y = 1.2
-    row.prop(operator, "dry_run", toggle=True)
 
     if operator.dry_run:
         _draw_dry_run_info(layout)
@@ -44,13 +53,13 @@ def _draw_dry_run_info(layout):
     col = box.column(align=True)
     row = col.row()
     row.alignment = "CENTER"
-    row.label(text="🚀 DRY RUN MODE", icon="TIME")
+    row.label(text=iface("🚀 DRY RUN MODE"), icon="TIME")
     col.separator()
-    col.label(text="• Resolution: 25% (Fast)")
-    col.label(text="• Samples: 1 + Denoise")
-    col.label(text="• Output: JPEG (Quality 70)")
-    col.label(text="• Folder: ..._dryrun")
-    box.label(text="Files will be saved for quick review.", icon="INFO")
+    col.label(text=iface("• Resolution: 25% (Fast)"))
+    col.label(text=iface("• Samples: 1 + Denoise"))
+    col.label(text=iface("• Output: JPEG (Quality 70)"))
+    col.label(text=iface("• Folder: ..._dryrun"))
+    box.label(text=iface("Files will be saved for quick review."), icon="INFO")
 
 
 def _draw_final_render_info(layout, scene, settings):
@@ -59,13 +68,16 @@ def _draw_final_render_info(layout, scene, settings):
     col = box.column(align=True)
     row = col.row()
     row.alignment = "CENTER"
-    row.label(text=f"🎬 FINAL RENDER ({count} Versions)", icon="RENDER_STILL")
+    row.label(
+        text=iface("🎬 FINAL RENDER ({count} Versions)").format(count=count),
+        icon="RENDER_STILL",
+    )
 
     main_settings = scene.render.image_settings
     col.separator()
     sub = col.column(align=True)
     sub.scale_y = 0.8
-    sub.label(text="Output Settings (Inherited):", icon="PREFERENCES")
+    sub.label(text=iface("Output Settings (Inherited):"), icon="PREFERENCES")
 
     # Format Display Logic
     fmt = settings.batch_output_format
@@ -80,27 +92,69 @@ def _draw_final_render_info(layout, scene, settings):
         fmt_label = fmt
         details = "Override Active"
 
-    sub.label(text=f"  Format: {fmt_label}")
+    sub.label(text=iface("Format: {format}").format(format=fmt_label))
     if fmt == "SCENE":
-        sub.label(text=f"  Details: {details}")
+        sub.label(text=iface("Details: {details}").format(details=details))
 
     # Timelapse Settings
     sub.separator()
-    row = sub.row()
-    row.prop(settings, "batch_create_mp4")
+    row = draw_property_with_help(
+        sub,
+        settings,
+        "batch_create_mp4",
+        text=iface("Create Timelapse MP4"),
+        message="Automatically create and export an MP4 timelapse after batch rendering",
+    )
     if settings.batch_create_mp4:
         row.label(text="", icon="FILE_MOVIE")
         split = sub.split(factor=0.05)
         split.separator()
         col_sub = split.column(align=True)
-        col_sub.prop(settings, "batch_burn_in")
+        draw_property_with_help(
+            col_sub,
+            settings,
+            "batch_burn_in",
+            text=iface("Burn-in Version ID"),
+            message="Overlay version ID on the video",
+        )
         if settings.batch_burn_in:
-            col_sub.prop(settings, "batch_burn_in_pos")
+            position_labels = {
+                "TL": "Top-Left",
+                "TR": "Top-Right",
+                "BL": "Bottom-Left",
+                "BR": "Bottom-Right",
+            }
+            col_sub.menu(
+                SAVEPOINTS_MT_burn_in_position.bl_idname,
+                text=iface(position_labels[settings.batch_burn_in_pos]),
+            )
 
-    box.label(text="This may take a while.", icon="INFO")
+    box.label(text=iface("This may take a while."), icon="INFO")
 
 
-class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
+class SAVEPOINTS_MT_burn_in_position(bpy.types.Menu):
+    bl_label = "Position"
+    bl_idname = "SAVEPOINTS_MT_burn_in_position"
+    bl_translation_context = TRANSLATION_CONTEXT
+
+    def draw(self, context):
+        settings = context.scene.savepoints_settings
+        for value, label in (
+            ("TL", "Top-Left"),
+            ("TR", "Top-Right"),
+            ("BL", "Bottom-Left"),
+            ("BR", "Bottom-Right"),
+        ):
+            draw_setting_value(
+                self.layout,
+                settings,
+                "batch_burn_in_pos",
+                value,
+                text=iface(label),
+            )
+
+
+class SAVEPOINTS_OT_batch_render(TranslatedOperatorMixin, bpy.types.Operator):
     """
     Batch Render selected versions. (Shift+Click to Skip Dialog & RENDER)
 
@@ -113,19 +167,23 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     bl_idname = "savepoints.batch_render"
     bl_label = "Batch Render Snapshots"
     bl_options = {"REGISTER"}
+    translation_description = (
+        "Render the selected snapshot versions in background Blender processes"
+    )
 
     _timer = None
 
     dry_run: bpy.props.BoolProperty(
         name="Dry Run (Low Quality)",
-        description="Render low quality JPEG for quick check (_dryrun suffix)",
+        description="",
         default=False,
+        translation_context=TRANSLATION_CONTEXT,
     )
 
     def invoke(self, context, event):
         if event.shift:
             self.dry_run = False
-            self.report({"INFO"}, "🚀 Instant Batch Render Started! (Shift+Click)")
+            self.report({"INFO"}, rpt("🚀 Instant Batch Render Started! (Shift+Click)"))
             return self.execute(context)
         return context.window_manager.invoke_props_dialog(self, width=400)
 
@@ -134,19 +192,24 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
     def execute(self, context):
         if not bpy.data.filepath:
-            self.report({"ERROR"}, "Blend file must be saved before batch rendering.")
+            self.report(
+                {"ERROR"}, rpt("Blend file must be saved before batch rendering.")
+            )
             return {"CANCELLED"}
 
         try:
             self._prepare_execution(context)
         except Exception as e:
-            self.report({"ERROR"}, str(e))
+            self.report({"ERROR"}, rpt("Batch render failed: {error}").format(error=e))
             if hasattr(self, "temp_dir") and os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
             return {"CANCELLED"}
 
         total_tasks = len(self.target_versions)
-        self.report({"INFO"}, f"Batch Render Started: {total_tasks} versions.")
+        self.report(
+            {"INFO"},
+            rpt("Batch Render Started: {count} versions.").format(count=total_tasks),
+        )
         context.window_manager.progress_begin(0, total_tasks)
 
         self._timer = context.window_manager.event_timer_add(0.5, window=context.window)
@@ -159,7 +222,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             return self._handle_executor_update(context)
         elif event.type == "ESC":
             self.executor.cancel()
-            self.report({"WARNING"}, "Batch Render Cancelled by User.")
+            self.report({"WARNING"}, rpt("Batch Render Cancelled by User."))
             return self.finish(context)
 
         return {"PASS_THROUGH"}
@@ -170,7 +233,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
         self.target_versions = get_selected_versions(self.settings)
 
         if not self.target_versions:
-            raise Exception("No versions found to render.")
+            raise RuntimeError(rpt("No versions found to render."))
 
         self.temp_dir = tempfile.mkdtemp(prefix="sp_batch_")
         self.settings_path = os.path.join(self.temp_dir, "render_config.json")
@@ -178,7 +241,9 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
 
         if not os.path.exists(self.worker_script_path):
             raise FileNotFoundError(
-                f"Worker script not found at {self.worker_script_path}"
+                rpt("Worker script not found at {path}").format(
+                    path=self.worker_script_path
+                )
             )
 
         try:
@@ -186,7 +251,7 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             with open(self.settings_path, "w") as f:
                 json.dump(render_settings, f, indent=4)
         except Exception as e:
-            raise Exception(f"Initialization failed: {e}")
+            raise RuntimeError(rpt("Initialization failed: {error}").format(error=e))
 
         self.output_dir = get_batch_render_output_dir(dry_run=self.dry_run)
         os.makedirs(self.output_dir, exist_ok=True)
@@ -219,18 +284,35 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
     def _on_task_finished(self, context, info):
         vid = info["version_id"]
         if info["return_code"] == 0:
-            self.report({"INFO"}, f"Finished: {vid}")
+            self.report({"INFO"}, rpt("Finished: {version}").format(version=vid))
         else:
-            self.report({"ERROR"}, f"Failed: {vid} (Code {info['return_code']})")
+            self.report(
+                {"ERROR"},
+                rpt("Failed: {version} (Code {code})").format(
+                    version=vid, code=info["return_code"]
+                ),
+            )
             create_error_log_text_block(vid, info["log_path"])
-            self.report({"WARNING"}, f"Check Text Editor 'Log_{vid}' for details.")
+            self.report(
+                {"WARNING"},
+                rpt("Check Text Editor 'Log_{version}' for details.").format(
+                    version=vid
+                ),
+            )
 
         context.window_manager.progress_update(info["progress"][0])
-        msg = f"SavePoints Batch: Processed {info['progress'][0]}/{info['progress'][1]} versions..."
+        msg = iface("SavePoints Batch: Processed {done}/{total} versions...").format(
+            done=info["progress"][0], total=info["progress"][1]
+        )
         context.workspace.status_text_set(msg)
 
     def _on_task_skipped(self, context, info):
-        self.report({"WARNING"}, f"Skipping {info['version_id']}: File not found.")
+        self.report(
+            {"WARNING"},
+            rpt("Skipping {version}: File not found.").format(
+                version=info["version_id"]
+            ),
+        )
         context.window_manager.progress_update(info["progress"][0])
 
     def finish(self, context):
@@ -258,11 +340,16 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             if is_cancelled:
                 self.report(
                     {"WARNING"},
-                    f"Batch Render Interrupted. ({completed_count} completed)",
+                    rpt("Batch Render Interrupted. ({count} completed)").format(
+                        count=completed_count
+                    ),
                 )
             else:
                 self.report(
-                    {"INFO"}, f"Batch Render Complete! ({completed_count} versions)"
+                    {"INFO"},
+                    rpt("Batch Render Complete! ({count} versions)").format(
+                        count=completed_count
+                    ),
                 )
 
             open_folder_platform_independent(self.output_dir)
@@ -270,11 +357,12 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             if not self.dry_run and not is_cancelled:
                 self._process_timelapse_creation(context)
                 send_os_notification(
-                    "SavePoints Batch Render", f"Completed! {completed_count} versions."
+                    iface("SavePoints Batch Render"),
+                    iface("Completed! {count} versions.").format(count=completed_count),
                 )
         else:
             self.report(
-                {"WARNING"}, "Batch Render finished but no tasks were completed."
+                {"WARNING"}, rpt("Batch Render finished but no tasks were completed.")
             )
 
         return {"FINISHED"}
@@ -296,9 +384,11 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
                 )
                 if success:
                     mp4_triggered = True
-                    self.report({"INFO"}, "MP4 generation started in background...")
+                    self.report(
+                        {"INFO"}, rpt("MP4 generation started in background...")
+                    )
                 else:
-                    self.report({"ERROR"}, "Failed to start MP4 generation.")
+                    self.report({"ERROR"}, rpt("Failed to start MP4 generation."))
 
             if scene_name and not bpy.app.background:
                 count = (
@@ -322,53 +412,69 @@ class SAVEPOINTS_OT_batch_render(bpy.types.Operator):
             new_text = bpy.data.texts.new(name=text_name)
             new_text.write(error_msg)
 
-            self.report({"ERROR"}, f"Timelapse Error. Check '{text_name}'")
+            self.report(
+                {"ERROR"},
+                rpt("Timelapse Error. Check '{name}'").format(name=text_name),
+            )
 
     @staticmethod
     def _show_timelapse_notification(context, scene_name, mp4_triggered, count):
         def draw_notification(self_, _context):
             layout = self_.layout
-            layout.label(text=f"Successfully processed {count} versions.")
+            layout.label(
+                text=iface("Successfully processed {count} versions.").format(
+                    count=count
+                )
+            )
             layout.separator()
-            layout.label(text="Auto-Timelapse created:", icon="SEQUENCE")
-            layout.label(text=f"  Scene: {scene_name}")
-            layout.label(text="  (Switch scene to view playback)", icon="INFO")
+            layout.label(text=iface("Auto-Timelapse created:"), icon="SEQUENCE")
+            layout.label(text=iface("Scene: {scene}").format(scene=scene_name))
+            layout.label(text=iface("(Switch scene to view playback)"), icon="INFO")
 
             if mp4_triggered:
                 layout.separator()
-                layout.label(text="Exporting MP4 in background...", icon="FILE_MOVIE")
-                layout.label(text="Check folder later.", icon="FILE_FOLDER")
+                layout.label(
+                    text=iface("Exporting MP4 in background..."), icon="FILE_MOVIE"
+                )
+                layout.label(text=iface("Check folder later."), icon="FILE_FOLDER")
 
         context.window_manager.popup_menu(
-            draw_notification, title="Batch Render Complete", icon="CHECKMARK"
+            draw_notification, title=iface("Batch Render Complete"), icon="CHECKMARK"
         )
 
 
-class SAVEPOINTS_OT_switch_scene(bpy.types.Operator):
+class SAVEPOINTS_OT_switch_scene(TranslatedOperatorMixin, bpy.types.Operator):
     """Switch to the specified scene"""
 
     bl_idname = "savepoints.switch_scene"
     bl_label = "Switch Scene"
+    translation_description = "Switch to the generated timelapse scene"
 
     scene_name: bpy.props.StringProperty()
 
     def execute(self, context):
         if self.scene_name not in bpy.data.scenes:
-            self.report({"WARNING"}, f"Scene '{self.scene_name}' not found.")
+            self.report(
+                {"WARNING"},
+                rpt("Scene '{scene}' not found.").format(scene=self.scene_name),
+            )
             return {"CANCELLED"}
         if not context.window:
-            self.report({"WARNING"}, "Cannot switch scene: No active window found.")
+            self.report(
+                {"WARNING"}, rpt("Cannot switch scene: No active window found.")
+            )
             return {"CANCELLED"}
         context.window.scene = bpy.data.scenes[self.scene_name]
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_toggle_batch_mode(bpy.types.Operator):
+class SAVEPOINTS_OT_toggle_batch_mode(TranslatedOperatorMixin, bpy.types.Operator):
     """Toggle Batch Operation Mode"""
 
     bl_idname = "savepoints.toggle_batch_mode"
     bl_label = "Toggle Batch Mode"
     bl_options = {"REGISTER"}
+    translation_description = "Toggle batch operation mode"
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
@@ -376,12 +482,13 @@ class SAVEPOINTS_OT_toggle_batch_mode(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_select_all(bpy.types.Operator):
+class SAVEPOINTS_OT_select_all(TranslatedOperatorMixin, bpy.types.Operator):
     """Select all visible versions for batch operations"""
 
     bl_idname = "savepoints.select_all"
     bl_label = "Select All"
     bl_options = {"REGISTER"}
+    translation_description = "Select all visible versions for batch operations"
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
@@ -398,12 +505,13 @@ class SAVEPOINTS_OT_select_all(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_deselect_all(bpy.types.Operator):
+class SAVEPOINTS_OT_deselect_all(TranslatedOperatorMixin, bpy.types.Operator):
     """Deselect all versions"""
 
     bl_idname = "savepoints.deselect_all"
     bl_label = "Deselect All"
     bl_options = {"REGISTER"}
+    translation_description = "Deselect all versions"
 
     def execute(self, context):
         settings = context.scene.savepoints_settings

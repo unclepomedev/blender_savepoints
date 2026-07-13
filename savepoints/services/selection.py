@@ -26,37 +26,53 @@ def preserve_selection():
     try:
         yield
     finally:
-        if bpy.context.mode != "OBJECT":
-            try:
-                poll_func = getattr(bpy.ops.object.mode_set, "poll", None)
-                if poll_func and poll_func():
-                    bpy.ops.object.mode_set(mode="OBJECT")
-            except Exception as e:
-                print(f"[SavePoints] Warning: Failed to switch to OBJECT mode: {e}")
+        current_active = view_layer.objects.active
+        current_active_name = current_active.name if current_active else None
+        current_mode = current_active.mode if current_active else bpy.context.mode
+        current_selected_names = {obj.name for obj in bpy.context.selected_objects}
 
-        for obj in bpy.context.selected_objects:
-            obj.select_set(False)
+        # Most snapshot operations do not touch selection or mode. Avoid an
+        # unnecessary mode round-trip in that common case: leaving an active
+        # paint/sculpt stroke frees its runtime cache while the modal operator
+        # still holds the stroke, which can crash on the next input event.
+        state_changed = (
+            current_active_name != active_name
+            or current_mode != original_mode
+            or current_selected_names != set(selected_names)
+        )
 
-        view_layer.objects.active = None
-        if active_name and active_name in bpy.data.objects:
-            obj = bpy.data.objects[active_name]
-            view_layer.objects.active = obj
-
-        for name in selected_names:
-            if name in bpy.data.objects:
-                bpy.data.objects[name].select_set(True)
-
-        if active_name and original_mode != "OBJECT":
-            if (
-                view_layer.objects.active
-                and view_layer.objects.active.name == active_name
-            ):
+        if state_changed:
+            if bpy.context.mode != "OBJECT":
                 try:
-                    bpy.ops.object.mode_set(mode=original_mode)
+                    poll_func = getattr(bpy.ops.object.mode_set, "poll", None)
+                    if poll_func and poll_func():
+                        bpy.ops.object.mode_set(mode="OBJECT")
                 except Exception as e:
-                    print(
-                        f"[SavePoints] Warning: Failed to restore mode {original_mode}: {e}"
-                    )
+                    print(f"[SavePoints] Warning: Failed to switch to OBJECT mode: {e}")
+
+            for obj in bpy.context.selected_objects:
+                obj.select_set(False)
+
+            view_layer.objects.active = None
+            if active_name and active_name in bpy.data.objects:
+                obj = bpy.data.objects[active_name]
+                view_layer.objects.active = obj
+
+            for name in selected_names:
+                if name in bpy.data.objects:
+                    bpy.data.objects[name].select_set(True)
+
+            if active_name and original_mode != "OBJECT":
+                if (
+                    view_layer.objects.active
+                    and view_layer.objects.active.name == active_name
+                ):
+                    try:
+                        bpy.ops.object.mode_set(mode=original_mode)
+                    except Exception as e:
+                        print(
+                            f"[SavePoints] Warning: Failed to restore mode {original_mode}: {e}"
+                        )
 
 
 def get_selected_versions(settings):

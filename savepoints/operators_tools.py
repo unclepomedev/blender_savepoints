@@ -6,6 +6,7 @@ from pathlib import Path
 import bpy
 from bpy_extras.io_utils import ImportHelper
 
+from .i18n import TranslatedOperatorMixin, iface, report as rpt
 from .properties import RetrieveObjectItem
 from .services.ghost import get_ghost_collection_name, load_ghost, unload_ghost
 from .services.linking import link_history, resolve_history_path_from_selection
@@ -20,12 +21,17 @@ from .services.versioning import is_safe_filename
 from .ui_utils import sync_history_to_props
 
 
-class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
+class SAVEPOINTS_OT_link_history(
+    TranslatedOperatorMixin, bpy.types.Operator, ImportHelper
+):
     """Link an existing history folder to this file"""
 
     bl_idname = "savepoints.link_history"
     bl_label = "Link Existing History Folder"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = (
+        "Move an existing SavePoints history folder to this project"
+    )
 
     # Explicitly define directory to ensure it exists and can be passed
     directory: bpy.props.StringProperty(subtype="DIR_PATH", options={"HIDDEN"})
@@ -39,10 +45,15 @@ class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
         try:
             target_path_str = link_history(selected_path, bpy.data.filepath)
             self.report(
-                {"INFO"}, f"History linked successfully: {Path(target_path_str).name}"
+                {"INFO"},
+                rpt("History linked successfully: {name}").format(
+                    name=Path(target_path_str).name
+                ),
             )
         except Exception as e:
-            self.report({"ERROR"}, str(e))
+            self.report(
+                {"ERROR"}, rpt("Failed to link history: {error}").format(error=e)
+            )
             return {"CANCELLED"}
 
         # Refresh UI
@@ -51,12 +62,15 @@ class SAVEPOINTS_OT_link_history(bpy.types.Operator, ImportHelper):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
+class SAVEPOINTS_OT_retrieve_objects(TranslatedOperatorMixin, bpy.types.Operator):
     """Retrieve Objects: Append objects from this version"""
 
     bl_idname = "savepoints.retrieve_objects"
     bl_label = "Retrieve Objects"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = (
+        "Append selected objects from this version into the current scene"
+    )
 
     version_id: bpy.props.StringProperty()
 
@@ -72,12 +86,17 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
         self.version_id = version_id
 
         if not is_safe_filename(version_id):
-            self.report({"ERROR"}, "Invalid version ID")
+            self.report({"ERROR"}, rpt("Invalid version ID"))
             return {"CANCELLED"}
 
         snapshot_path = find_snapshot_path(version_id)
         if not snapshot_path:
-            self.report({"ERROR"}, f"Snapshot file not found for version: {version_id}")
+            self.report(
+                {"ERROR"},
+                rpt("Snapshot file not found for version: {version}").format(
+                    version=version_id
+                ),
+            )
             return {"CANCELLED"}
 
         try:
@@ -89,14 +108,16 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
                 obj_item.selected = False
 
         except Exception as e:
-            self.report({"ERROR"}, f"Failed to read snapshot: {e}")
+            self.report(
+                {"ERROR"}, rpt("Failed to read snapshot: {error}").format(error=e)
+            )
             return {"CANCELLED"}
 
         return context.window_manager.invoke_props_dialog(self, width=400)
 
     def draw(self, _context):
         layout = self.layout
-        layout.label(text="Select Objects to Retrieve:")
+        layout.label(text=iface("Select Objects to Retrieve:"))
 
         box = layout.box()
         col = box.column()
@@ -118,12 +139,15 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
                     ].version_id
 
         if not self.version_id:
-            self.report({"ERROR"}, "No version specified")
+            self.report({"ERROR"}, rpt("No version specified"))
             return {"CANCELLED"}
 
         snapshot_path = find_snapshot_path(self.version_id)
         if not snapshot_path:
-            self.report({"ERROR"}, f"Snapshot not found: {self.version_id}")
+            self.report(
+                {"ERROR"},
+                rpt("Snapshot not found: {version}").format(version=self.version_id),
+            )
             return {"CANCELLED"}
 
         temp_path = None
@@ -131,16 +155,19 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
             target_objects = [item.name for item in self.objects if item.selected]
 
             if not target_objects:
-                self.report({"WARNING"}, "No objects selected.")
+                self.report({"WARNING"}, rpt("No objects selected."))
                 return {"CANCELLED"}
 
             temp_path = create_retrieve_temp_file(snapshot_path)
 
             appended = append_objects(temp_path, target_objects)
-            self.report({"INFO"}, f"Retrieved {len(appended)} objects.")
+            self.report(
+                {"INFO"},
+                rpt("Retrieved {count} objects.").format(count=len(appended)),
+            )
 
         except Exception as e:
-            self.report({"ERROR"}, f"Retrieve failed: {e}")
+            self.report({"ERROR"}, rpt("Retrieve failed: {error}").format(error=e))
             return {"CANCELLED"}
         finally:
             if temp_path:
@@ -149,12 +176,13 @@ class SAVEPOINTS_OT_retrieve_objects(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
+class SAVEPOINTS_OT_toggle_ghost(TranslatedOperatorMixin, bpy.types.Operator):
     """Toggle Ghost Reference: Overlay this version as wireframe"""
 
     bl_idname = "savepoints.toggle_ghost"
     bl_label = "Toggle Ghost Reference"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = "Overlay this version as a wireframe ghost reference"
 
     version_id: bpy.props.StringProperty()
 
@@ -165,7 +193,7 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
         else:
             version_id = self.version_id
         if not version_id:
-            self.report({"ERROR"}, "No version specified")
+            self.report({"ERROR"}, rpt("No version specified"))
             return {"CANCELLED"}
         collection_name = get_ghost_collection_name(version_id)
 
@@ -173,27 +201,36 @@ class SAVEPOINTS_OT_toggle_ghost(bpy.types.Operator):
 
         if existing_col:
             unload_ghost(version_id, context)
-            self.report({"INFO"}, f"Ghost Reference {version_id} removed.")
+            self.report(
+                {"INFO"},
+                rpt("Ghost Reference {version} removed.").format(version=version_id),
+            )
             return {"FINISHED"}
 
         else:
             try:
                 count = load_ghost(version_id, context)
                 self.report(
-                    {"INFO"}, f"Ghost Reference {version_id} loaded ({count} objects)."
+                    {"INFO"},
+                    rpt("Ghost Reference {version} loaded ({count} objects).").format(
+                        version=version_id, count=count
+                    ),
                 )
                 return {"FINISHED"}
             except Exception as e:
-                self.report({"ERROR"}, f"Failed to load ghost: {e}")
+                self.report(
+                    {"ERROR"}, rpt("Failed to load ghost: {error}").format(error=e)
+                )
                 return {"CANCELLED"}
 
 
-class SAVEPOINTS_OT_report_message(bpy.types.Operator):
+class SAVEPOINTS_OT_report_message(TranslatedOperatorMixin, bpy.types.Operator):
     """Internal operator to show report messages from background threads/timers"""
 
     bl_idname = "savepoints.report_message"
     bl_label = "Report Message"
     bl_options = {"INTERNAL"}
+    translation_description = "Display a SavePoints status message"
 
     message: bpy.props.StringProperty()
     type: bpy.props.StringProperty(default="INFO")

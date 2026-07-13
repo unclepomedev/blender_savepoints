@@ -4,13 +4,17 @@ import shutil
 
 import bpy
 
+from .i18n import TranslatedOperatorMixin, report as rpt
 from .services.export import create_glb_export_executor, process_export_failure
 
 
-class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
+class SAVEPOINTS_OT_export_glb(TranslatedOperatorMixin, bpy.types.Operator):
     bl_idname = "savepoints.export_glb"
     bl_label = "Export GLB (Background)"
     bl_description = (
+        "Export selected objects from the specified version to .glb in background"
+    )
+    translation_description = (
         "Export selected objects from the specified version to .glb in background"
     )
 
@@ -25,7 +29,7 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
         if settings.active_version_index < 0 or settings.active_version_index >= len(
             settings.versions
         ):
-            self.report({"ERROR"}, "No version selected")
+            self.report({"ERROR"}, rpt("No version selected"))
             return {"CANCELLED"}
 
         version = settings.versions[settings.active_version_index]
@@ -33,7 +37,7 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
         # Get selected objects in the CURRENT scene
         selected_objects = [obj.name for obj in context.selected_objects]
         if not selected_objects:
-            self.report({"ERROR"}, "No objects selected in current scene")
+            self.report({"ERROR"}, rpt("No objects selected in current scene"))
             return {"CANCELLED"}
 
         try:
@@ -44,13 +48,13 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
                 filename_template=settings.glb_export_filename,
             )
         except ValueError as e:
-            self.report({"ERROR"}, str(e))
+            self.report({"ERROR"}, rpt("Export failed: {error}").format(error=e))
             return {"CANCELLED"}
         except OSError as e:
-            self.report({"ERROR"}, f"File System Error: {e}")
+            self.report({"ERROR"}, rpt("File System Error: {error}").format(error=e))
             return {"CANCELLED"}
         except Exception as e:
-            self.report({"ERROR"}, f"Unexpected Error: {e}")
+            self.report({"ERROR"}, rpt("Unexpected Error: {error}").format(error=e))
             return {"CANCELLED"}
 
         # Start modal
@@ -59,7 +63,10 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
         wm.modal_handler_add(self)
 
         self.report(
-            {"INFO"}, f"Started background export for version {version.version_id}"
+            {"INFO"},
+            rpt("Started background export for version {version}").format(
+                version=version.version_id
+            ),
         )
         return {"RUNNING_MODAL"}
 
@@ -69,20 +76,26 @@ class SAVEPOINTS_OT_export_glb(bpy.types.Operator):
                 status = self._executor.update()
 
                 if status["status"] == "FINISHED":
-                    self.report({"INFO"}, "Export Process Finished")
+                    self.report({"INFO"}, rpt("Export Process Finished"))
                     return self.finish(context)
                 elif status["status"] == "TASK_FINISHED":
                     if status.get("return_code") != 0:
                         self.report(
-                            {"ERROR"}, f"Export failed for {status['version_id']}"
+                            {"ERROR"},
+                            rpt("Export failed for {version}").format(
+                                version=status["version_id"]
+                            ),
                         )
                         process_export_failure(status)
                     else:
                         self.report(
-                            {"INFO"}, f"Exported {status['version_id']} successfully"
+                            {"INFO"},
+                            rpt("Exported {version} successfully").format(
+                                version=status["version_id"]
+                            ),
                         )
                 elif status["status"] == "CANCELLED":
-                    self.report({"WARNING"}, "Export Cancelled")
+                    self.report({"WARNING"}, rpt("Export Cancelled"))
                     return self.finish(context)
 
         return {"PASS_THROUGH"}
