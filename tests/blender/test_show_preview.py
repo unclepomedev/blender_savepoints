@@ -12,7 +12,7 @@ if str(CURRENT_DIR) not in sys.path:
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from savepoints import ui
+from savepoints import properties, ui
 from savepoints_test_case import SavePointsTestCase
 
 
@@ -52,10 +52,24 @@ class TestShowPreview(SavePointsTestCase):
             layout_mock.box.return_value = box_mock
             box_mock.column.return_value = col_mock
 
+            created_operators = []
+
+            def operator_side_effect(*args, **kwargs):
+                op = MagicMock()
+                created_operators.append((args, op))
+                return op
+
+            col_mock.operator.side_effect = operator_side_effect
+
             ui._draw_general_settings(layout_mock, self.settings)
 
-            prop_calls = [args[1] for args, _ in col_mock.prop.call_args_list]
-            self.assertIn("show_preview", prop_calls)
+            toggled_settings = [
+                op.setting
+                for args, op in created_operators
+                if args
+                and args[0] == properties.SAVEPOINTS_OT_toggle_setting.bl_idname
+            ]
+            self.assertIn("show_preview", toggled_settings)
 
         # --- Step 3: Detail View UI (Conditional Drawing) ---
         with self.subTest(step="3. Detail View UI"):
