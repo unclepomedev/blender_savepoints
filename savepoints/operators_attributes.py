@@ -2,6 +2,8 @@
 # pyright: reportOptionalMemberAccess=false
 
 import bpy
+from .i18n import TranslatedOperatorMixin, iface, report as rpt
+from .translations import TRANSLATION_CONTEXT
 from .services.versioning import (
     update_version_note,
     update_version_tag,
@@ -10,15 +12,18 @@ from .services.versioning import (
 from .ui_utils import sync_history_to_props
 
 
-class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
+class SAVEPOINTS_OT_edit_note(TranslatedOperatorMixin, bpy.types.Operator):
     """Edit the note of an existing version"""
 
     bl_idname = "savepoints.edit_note"
     bl_label = "Edit Note"
     bl_options = {"REGISTER"}
+    translation_description = "Edit the note of an existing version"
 
     version_id: bpy.props.StringProperty(options={"HIDDEN"})
-    new_note: bpy.props.StringProperty(name="Note")
+    new_note: bpy.props.StringProperty(
+        name="Note", translation_context=TRANSLATION_CONTEXT
+    )
 
     def invoke(self, context, event):
         item = getattr(context, "savepoints_item", None)
@@ -35,7 +40,7 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
 
     def draw(self, _context):
         layout = self.layout
-        layout.prop(self, "new_note")
+        layout.prop(self, "new_note", text=iface("Note"))
 
     def execute(self, context):
         item = getattr(context, "savepoints_item", None)
@@ -49,7 +54,9 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         try:
             update_version_note(version_id, self.new_note)
         except Exception as e:
-            self.report({"ERROR"}, f"Failed to update note: {e}")
+            self.report(
+                {"ERROR"}, rpt("Failed to update note: {error}").format(error=e)
+            )
             return {"CANCELLED"}
 
         sync_history_to_props(context)
@@ -61,12 +68,13 @@ class SAVEPOINTS_OT_edit_note(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
+class SAVEPOINTS_OT_set_tag(TranslatedOperatorMixin, bpy.types.Operator):
     """Set tag for a version"""
 
     bl_idname = "savepoints.set_tag"
     bl_label = "Set Tag"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = "Set a tag for this version"
 
     version_id: bpy.props.StringProperty(options={"HIDDEN"})
     tag: bpy.props.EnumProperty(
@@ -76,7 +84,8 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
             ("MILESTONE", "Milestone", "", "BOOKMARKS", 2),
             ("EXPERIMENT", "Experiment", "", "LAB", 3),
             ("BUG", "Bug", "", "ERROR", 4),
-        ]
+        ],
+        translation_context=TRANSLATION_CONTEXT,
     )
 
     def execute(self, context):
@@ -91,7 +100,7 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
         try:
             update_version_tag(version_id, self.tag)
         except Exception as e:
-            self.report({"ERROR"}, f"Failed to set tag: {e}")
+            self.report({"ERROR"}, rpt("Failed to set tag: {error}").format(error=e))
             return {"CANCELLED"}
 
         # Update UI property directly instead of full sync
@@ -111,12 +120,13 @@ class SAVEPOINTS_OT_set_tag(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_toggle_protection(bpy.types.Operator):
+class SAVEPOINTS_OT_toggle_protection(TranslatedOperatorMixin, bpy.types.Operator):
     """Toggle protection for a version"""
 
     bl_idname = "savepoints.toggle_protection"
     bl_label = "Toggle Protection"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = "Lock or unlock this version"
 
     version_id: bpy.props.StringProperty()
 

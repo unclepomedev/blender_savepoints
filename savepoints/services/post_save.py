@@ -7,6 +7,7 @@ import tempfile
 from pathlib import Path
 
 import bpy
+from ..i18n import report as rpt
 from .storage import get_history_dir
 
 
@@ -79,7 +80,9 @@ class PostSaveManager:
         formatted_cmd = format_command(command_str, context_dict)
         if formatted_cmd is None:
             if self._on_error:
-                self._on_error("Command formatting failed. Check placeholders.", "")
+                self._on_error(
+                    rpt("Command formatting failed. Check placeholders."), ""
+                )
             return
         print(f"[SavePoints] Starting post-save command: {formatted_cmd}")
 
@@ -98,7 +101,7 @@ class PostSaveManager:
             bpy.app.timers.register(self._monitor_process)
 
         except Exception as e:
-            msg = f"Failed to start command: {e}"
+            msg = rpt("Failed to start command: {error}").format(error=e)
             print(msg)
             if self._on_error:
                 self._on_error(msg, str(e))
@@ -175,12 +178,12 @@ class PostSaveManager:
                 area.tag_redraw()
 
         if ret_code == 0:
-            msg = "Post-save command finished successfully."
+            msg = rpt("Post-save command finished successfully.")
             print(msg)
             if self._on_success:
                 self._on_success(msg)
         else:
-            msg = f"Post-save command failed (Code {ret_code})."
+            msg = rpt("Post-save command failed (Code {code}).").format(code=ret_code)
             print(msg)
             details = f"STDOUT:\n{stdout}\nSTDERR:\n{stderr}"
             if self._on_error:

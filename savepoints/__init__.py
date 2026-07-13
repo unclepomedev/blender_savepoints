@@ -6,6 +6,7 @@ import traceback
 import bpy
 from bpy.app.handlers import persistent
 from . import hud
+from . import i18n
 from . import operators_attributes
 from . import operators_core
 from . import operators_export
@@ -26,6 +27,12 @@ classes = (
     properties.SavePointsVersion,
     properties.SavePointsSettings,
     properties.SavePointsPreferences,
+    properties.SAVEPOINTS_OT_set_language,
+    properties.SAVEPOINTS_OT_toggle_preference,
+    properties.SAVEPOINTS_OT_toggle_setting,
+    properties.SAVEPOINTS_OT_toggle_version_selection,
+    properties.SAVEPOINTS_OT_set_setting_value,
+    properties.SAVEPOINTS_OT_help,
     operators_core.SAVEPOINTS_OT_commit,
     operators_tools.SAVEPOINTS_OT_link_history,
     operators_attributes.SAVEPOINTS_OT_edit_note,
@@ -46,12 +53,14 @@ classes = (
     operators_render.SAVEPOINTS_OT_select_all,
     operators_render.SAVEPOINTS_OT_deselect_all,
     operators_render.SAVEPOINTS_OT_batch_render,
+    operators_render.SAVEPOINTS_MT_burn_in_position,
     operators_object_history.SavePointsObjectHistoryItem,
     operators_object_history.SAVEPOINTS_UL_object_history,
     operators_object_history.SAVEPOINTS_OT_show_object_history,
     operators_io.SAVEPOINTS_OT_export_project_zip,
     operators_export.SAVEPOINTS_OT_export_glb,
     ui.SAVEPOINTS_MT_tag_menu,
+    ui.SAVEPOINTS_MT_filter_tag,
     ui.SAVEPOINTS_UL_version_list,
     ui.SAVEPOINTS_PT_main,
 )
@@ -128,9 +137,10 @@ def register():
     )
     bpy.types.WindowManager.savepoints_object_history_show_all = bpy.props.BoolProperty(
         name="Show All Versions",
-        description="Include versions where no changes were detected (e.g. Sculpting)",
+        description="",
         default=False,
         update=operators_object_history.update_history_view_mode,
+        translation_context=i18n.TRANSLATION_CONTEXT,
     )
     bpy.types.VIEW3D_MT_object_context_menu.append(
         operators_object_history.draw_object_context_menu
@@ -141,6 +151,9 @@ def register():
 
     if not bpy.app.timers.is_registered(autosave_timer):
         bpy.app.timers.register(autosave_timer, first_interval=10.0, persistent=True)
+
+    # Preferences must be registered before the saved manual language can be read.
+    i18n.register()
 
     # Register Keymaps
     wm = bpy.context.window_manager
@@ -211,6 +224,7 @@ def unregister():
     del bpy.types.WindowManager.savepoints_object_history
     del bpy.types.WindowManager.savepoints_object_history_index
     del bpy.types.WindowManager.savepoints_object_history_show_all
+    i18n.unregister()
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@
 import time
 
 import bpy
+from ..i18n import iface
 from .snapshot import create_snapshot
 from .storage import get_parent_path_from_snapshot
 from .versioning import delete_version_by_id
@@ -84,7 +85,9 @@ class AutoSaveManager:
 
         if should_warn:
             self.settings.show_autosave_warning = True
-            self.settings.autosave_warning_message = f"Not auto-saved for {int(minutes_since_save)} min. Switch to Object Mode."
+            self.settings.autosave_warning_message = iface(
+                "Not auto-saved for {minutes} min. Switch to Object Mode."
+            ).format(minutes=int(minutes_since_save))
             self._tag_redraw()
         else:
             if self.settings.show_autosave_warning:

@@ -3,6 +3,8 @@
 
 import bpy
 
+from .i18n import TranslatedOperatorMixin, iface
+from .properties import draw_property_with_help
 from .services.ghost import load_single_object_ghost, cleanup_single_object_ghost
 from .services.object_history import compare_object_history
 
@@ -12,6 +14,16 @@ CHANGE_TYPE_ICONS = {
     "MOVED": "CON_LOCLIKE",
     "RECORD": "FILE_BACKUP",
 }
+
+
+def _translated_details(item):
+    if item.change_type == "MAJOR" and item.details.endswith(" verts"):
+        return iface("{diff} verts").format(diff=item.details.removesuffix(" verts"))
+    return iface(item.details)
+
+
+def _translated_note(note):
+    return iface("Auto Save") if note == "Auto Save" else note
 
 
 class SavePointsObjectHistoryItem(bpy.types.PropertyGroup):
@@ -77,15 +89,15 @@ class SAVEPOINTS_UL_object_history(bpy.types.UIList):
         split_2 = split.split(factor=0.25)
 
         icon_name = CHANGE_TYPE_ICONS.get(item.change_type, "DOT")
-        split_2.label(text=item.change_type, icon=icon_name)
+        split_2.label(text=iface(item.change_type), icon=icon_name)
 
         # --- Column 3: Details (Remaining space split) ---
         split_3 = split_2.split(factor=0.5)
-        split_3.label(text=item.details)
+        split_3.label(text=_translated_details(item))
 
         # --- Column 4: Note (Remaining) ---
         if item.note:
-            split_3.label(text=item.note, icon="TEXT")
+            split_3.label(text=_translated_note(item.note), icon="TEXT")
 
 
 def update_ghost_preview(_, context):
@@ -112,12 +124,13 @@ def update_ghost_preview(_, context):
         cleanup_single_object_ghost(obj.name, context)
 
 
-class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
+class SAVEPOINTS_OT_show_object_history(TranslatedOperatorMixin, bpy.types.Operator):
     """Show history and ghost previews for the active object"""
 
     bl_idname = "savepoints.show_object_history"
     bl_label = "Object History"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = "Show the version history of the active object"
 
     @classmethod
     def poll(cls, context):
@@ -139,12 +152,17 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
         obj = context.active_object
 
         row = layout.row()
-        row.label(text=f"History for: {obj.name}", icon="OBJECT_DATAMODE")
+        row.label(
+            text=iface("History for: {name}").format(name=obj.name),
+            icon="OBJECT_DATAMODE",
+        )
 
-        row.prop(
+        draw_property_with_help(
+            row,
             wm,
             "savepoints_object_history_show_all",
-            text="Show All Versions",
+            text=iface("Show All Versions"),
+            message="Include versions where no changes were detected (e.g. Sculpting)",
             toggle=True,
         )
         layout.separator()
@@ -159,7 +177,7 @@ class SAVEPOINTS_OT_show_object_history(bpy.types.Operator):
         )
 
         layout.separator()
-        layout.label(text="Click an entry to preview ghost overlay", icon="INFO")
+        layout.label(text=iface("Click an entry to preview ghost overlay"), icon="INFO")
 
     def execute(self, context):
         self._cleanup(context)
@@ -180,6 +198,6 @@ def draw_object_context_menu(self, _context):
     layout.operator_context = "INVOKE_DEFAULT"
     layout.operator(
         SAVEPOINTS_OT_show_object_history.bl_idname,
-        text="Show Object History",
+        text=iface("Show Object History"),
         icon="TIME",
     )

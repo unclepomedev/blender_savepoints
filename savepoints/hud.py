@@ -5,6 +5,7 @@ import bpy
 import gpu
 from gpu_extras.batch import batch_for_shader
 
+from .i18n import iface
 from .services.storage import get_parent_path_from_snapshot
 
 _draw_handler = None
@@ -52,7 +53,12 @@ class HUDManager:
         show_warning = self.settings and self.settings.show_autosave_warning
 
         if parent_path:
-            return "SNAPSHOT MODE (REVIEW MODE)", (1.0, 0.3, 0.3, 1.0)  # Red
+            return iface("SNAPSHOT MODE (REVIEW MODE)"), (
+                1.0,
+                0.3,
+                0.3,
+                1.0,
+            )  # Red
 
         if show_warning and self.settings:
             return (

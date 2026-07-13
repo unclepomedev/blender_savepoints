@@ -2,6 +2,9 @@
 # pyright: reportOptionalMemberAccess=false
 
 import bpy
+from .i18n import TranslatedOperatorMixin, iface, report as rpt
+from .properties import draw_property_with_help
+from .translations import TRANSLATION_CONTEXT
 from .services.manifest import load_manifest
 from .services.logging import write_error_log
 from .services.post_save import (
@@ -20,18 +23,25 @@ from .services.versioning import (
 from .ui_utils import sync_history_to_props
 
 
-class SAVEPOINTS_OT_commit(bpy.types.Operator):
+class SAVEPOINTS_OT_commit(TranslatedOperatorMixin, bpy.types.Operator):
     """Save a new version of the current project"""
 
     bl_idname = "savepoints.commit"
     bl_label = "Save Version"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = "Save a new version of the current project"
 
     note: bpy.props.StringProperty(
-        name="Commit Message", default="", options={"SKIP_SAVE"}
+        name="Commit Message",
+        default="",
+        options={"SKIP_SAVE"},
+        translation_context=TRANSLATION_CONTEXT,
     )
     force_quick: bpy.props.BoolProperty(
-        name="Force Quick Save", default=False, options={"SKIP_SAVE", "HIDDEN"}
+        name="Force Quick Save",
+        default=False,
+        options={"SKIP_SAVE", "HIDDEN"},
+        translation_context=TRANSLATION_CONTEXT,
     )
 
     @classmethod
@@ -53,11 +63,11 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
 
     def draw(self, _context):
         layout = self.layout
-        layout.prop(self, "note")
+        layout.prop(self, "note", text=iface("Commit Message"))
 
     def execute(self, context):
         if not bpy.data.filepath:
-            self.report({"ERROR"}, "Save the project first!")
+            self.report({"ERROR"}, rpt("Save the project first!"))
             return {"CANCELLED"}
 
         # Ensure default note is set if empty (especially for non-interactive execution)
@@ -75,7 +85,9 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
             if deleted > 0:
                 sync_history_to_props(context)
 
-        self.report({"INFO"}, f"Version {new_id_str} saved.")
+        self.report(
+            {"INFO"}, rpt("Version {version} saved.").format(version=new_id_str)
+        )
 
         def on_success(msg):
             if hasattr(bpy.ops.savepoints, "report_message"):
@@ -98,25 +110,31 @@ class SAVEPOINTS_OT_commit(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_checkout(bpy.types.Operator):
+class SAVEPOINTS_OT_checkout(TranslatedOperatorMixin, bpy.types.Operator):
     """Restore selected version"""
 
     bl_idname = "savepoints.checkout"
     bl_label = "Checkout"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = "Open the selected version for review or restoration"
 
     confirm_save: bpy.props.BoolProperty(
         name="Save current changes",
-        description="Save current file before opening version",
+        description="",
         default=True,
         options={"SKIP_SAVE"},
+        translation_context=TRANSLATION_CONTEXT,
     )
 
     def draw(self, _context):
         layout = self.layout
-        row = layout.row()
-        row.alignment = "LEFT"
-        row.prop(self, "confirm_save")
+        draw_property_with_help(
+            layout,
+            self,
+            "confirm_save",
+            text=iface("Save current changes"),
+            message="Save current file before opening version",
+        )
 
     def invoke(self, context, _event):
         if bpy.data.is_dirty:
@@ -128,7 +146,7 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
         if settings.active_version_index < 0 or settings.active_version_index >= len(
             settings.versions
         ):
-            self.report({"ERROR"}, "No version selected")
+            self.report({"ERROR"}, rpt("No version selected"))
             return {"CANCELLED"}
 
         item = settings.versions[settings.active_version_index]
@@ -138,7 +156,9 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
             version_id = item.version_id
             self.report(
                 {"WARNING"},
-                f"Snapshot file not found. Removed version {version_id} from list.",
+                rpt(
+                    "Snapshot file not found. Removed version {version} from list."
+                ).format(version=version_id),
             )
             delete_version_by_id(version_id)
             sync_history_to_props(context)
@@ -151,11 +171,14 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
                     try:
                         bpy.ops.wm.save_mainfile()
                     except Exception as e:
-                        self.report({"ERROR"}, f"Failed to save current file: {e}")
+                        self.report(
+                            {"ERROR"},
+                            rpt("Failed to save current file: {error}").format(error=e),
+                        )
                         return {"CANCELLED"}
                 else:
                     self.report(
-                        {"ERROR"}, "Current file is not saved. Cannot overwrite."
+                        {"ERROR"}, rpt("Current file is not saved. Cannot overwrite.")
                     )
                     return {"CANCELLED"}
 
@@ -163,12 +186,13 @@ class SAVEPOINTS_OT_checkout(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_delete(bpy.types.Operator):
+class SAVEPOINTS_OT_delete(TranslatedOperatorMixin, bpy.types.Operator):
     """Delete selected version"""
 
     bl_idname = "savepoints.delete"
     bl_label = "Delete"
     bl_options = {"REGISTER", "UNDO"}
+    translation_description = "Delete the selected version"
 
     def execute(self, context):
         settings = context.scene.savepoints_settings
@@ -179,7 +203,12 @@ class SAVEPOINTS_OT_delete(bpy.types.Operator):
         item = settings.versions[idx]
 
         if item.is_protected:
-            self.report({"WARNING"}, f"Cannot delete locked version: {item.version_id}")
+            self.report(
+                {"WARNING"},
+                rpt("Cannot delete locked version: {version}").format(
+                    version=item.version_id
+                ),
+            )
             return {"CANCELLED"}
 
         delete_version_by_id(item.version_id)
@@ -188,11 +217,12 @@ class SAVEPOINTS_OT_delete(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_refresh(bpy.types.Operator):
+class SAVEPOINTS_OT_refresh(TranslatedOperatorMixin, bpy.types.Operator):
     """Refresh list"""
 
     bl_idname = "savepoints.refresh"
     bl_label = "Refresh"
+    translation_description = "Refresh the version history"
 
     def execute(self, context):
         cleanup_retrieve_temp_files()
@@ -207,11 +237,12 @@ class SAVEPOINTS_OT_refresh(bpy.types.Operator):
         return {"FINISHED"}
 
 
-class SAVEPOINTS_OT_cancel_post_save(bpy.types.Operator):
+class SAVEPOINTS_OT_cancel_post_save(TranslatedOperatorMixin, bpy.types.Operator):
     """Cancel running post-save command"""
 
     bl_idname = "savepoints.cancel_post_save"
     bl_label = "Cancel Post-Save"
+    translation_description = "Cancel the running post-save command"
 
     def execute(self, context):
         PostSaveManager().cancel()
